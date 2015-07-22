@@ -1,0 +1,32 @@
+<section class="row topic-panel" ng-if="topic" ng-cloak>
+    <div class="page-header">
+        {{topic.title}}<b>({{topic.point}}分)</b>
+    </div>
+
+    <ul class="list-unstyled options col-lg-7">
+        <li ng-repeat="opt in topic.options">
+            <a ng-class="{checked: checkedOpt==$index}" href ng-click="check($index)" >
+                {{$index+1}}. {{opt}}
+            </a>
+        </li>
+    </ul>
+
+    <section class="col-lg-5" ng-cloak>
+
+        <div class="panel panel-default" ng-show="topic.isActived()">
+            <div class="panel-heading" >
+                <span ng-show="topic.isCorrect()" class="text-success"><i class="fa fa-smile-o"></i> 正确 +10分</span>
+                <span ng-show="topic.isInCorrect()" class="text-danger"><i class="fa fa-frown-o"></i> 错误</span>
+                <span ng-show="topic.isTimeout()" class="text-danger"><i class="fa fa-frown-o"></i> 回答超时</span>
+            </div>
+
+            <div class="panel-body">
+                正确答案: {{topic.message}}
+            </div>
+        </div>
+
+        <div ng-show="!topic.isActived()">
+            请在 <b class="text-warning">{{countdown}}</b> 秒之内做出选择
+        </div>
+    </section>
+</section>

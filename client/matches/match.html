@@ -1,0 +1,61 @@
+
+<div  ng-if="!topic">
+    <div class="row" ng-if="!stat">
+        <!-- start new match-->
+        <div class="col-xs-12 text-center">
+            <!--<h1>共有{{::totalSize}}道题目</h1>-->
+
+            <div style="margin: 40px">
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-4" >
+                        <select class="form-control" ng-options="opt as opt.number for opt in topicNumOpt"
+                                ng-model="number">
+                            <option value="">--选择答题数量---</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 text-left">
+                        <h5 class="text-info" ng-show="number">
+                            您将获得额外 {{number.reward}} 积分
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <button style="margin-top: 30px" class="btn btn-info btn-lg" ng-click="start(number.number)">Start</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div ng-if="stat">
+        <div class="row" >
+            <div class="col-md-3 col-md-offset-4" >
+                <div ng-include="'components/matches/match-result.html'"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div ng-if="topic">
+
+    <div class="row">
+        <section class=" col-lg-offset-1">
+            <topic-panel class="col-lg-8" topic="topic"></topic-panel>
+            <match-stat class="col-lg-3"></match-stat>
+        </section>
+    </div>
+    <div class="row">
+        <footer class="col-lg-offset-1 col-lg-10">
+
+            <button class="btn btn-danger pull-right" ng-click="cancel()"> 放弃答题</button>
+            <button class="btn btn-info pull-left" ng-disabled="!topic.isActived()" ng-click="next()">下一题 <i
+                    class="fa fa-caret-square-o-right"></i></button>
+        </footer>
+
+    </div>
+
+</div>
+
+

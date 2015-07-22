@@ -1,0 +1,40 @@
+<div class="statistics" ng-if="stat && stat.totalNum > 0">
+    <header class="page-header" style=" margin-bottom: 0;border-bottom: 0;">统计信息</header>
+    <table class="table">
+        <tr>
+            <td style="width: 100px">答题数量:</td>
+            <td>{{stat.totalNum}}</td>
+        </tr>
+        <tr>
+            <td style="width: 100px">正确题数:</td>
+            <td>{{stat.correctNum}}</td>
+        </tr>
+        <tr>
+            <td style="width: 100px">错误题数:</td>
+            <td>{{stat.incorrectNum}}</td>
+        </tr>
+        <tr>
+            <td style="width: 100px">超时题数:</td>
+            <td>{{stat.timeoutNum}}</td>
+        </tr>
+        <tr>
+            <td style="width: 100px">耗时:</td>
+            <td>
+                {{stat.duration | number: 1}} 秒
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 100px">获得积分:</td>
+            <td>
+                {{stat.point}}分
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 100px">奖励积分:</td>
+            <td>
+                {{stat.totalNum / 2}} 分
+            </td>
+        </tr>
+    </table>
+    <button class="btn btn-default" ng-click="init()">重新答题</button>
+</div>
