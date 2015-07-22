@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LuckStar</title>
+    <meta name="viewport" content="width=device-width">
+    <base href="/">
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.min.css"/>
+    <link rel="stylesheet" href="libs/css/font-awesome.min.css"/>
+
+    <link rel="stylesheet" href="main.css"/>
+    <link rel="stylesheet" href="components/modal/modal.css"/>
+    <link rel="stylesheet" href="matches/match.css"/>
+</head>
+<body onselectstart="return false">
+<div class="container" >
+    <header ng-include src="'/components/navbar/navbar.html'"></header>
+    <div ng-view></div>
+</div>
+
+<script type="text/javascript" src="libs/require.js" data-main="require.config.js"></script>
+</body>
+</html>

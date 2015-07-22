@@ -1,0 +1,30 @@
+{
+  "name": "luckstar",
+  "version": "0.0.1",
+  "authors": [
+    "hyxkangta123 <kang7213@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.0",
+    "bootstrap": "~3.3.4",
+    "jquery": "~2.1.4",
+    "angular-bootstrap": "~0.13.0",
+    "angular-animate": "~1.4.1",
+    "angular-cookies": "~1.4.1",
+    "angular-atomic-notify": "~1.0.1",
+    "angular-resource": "~1.4.1",
+    "angular-mocks": "~1.4.2",
+    "angular-motion": "~0.4.2",
+    "bootstrap-additions": "~0.3.1",
+    "angular-sanitize": "~1.4.3"
+  }
+}

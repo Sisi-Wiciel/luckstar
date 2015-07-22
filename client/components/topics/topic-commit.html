@@ -1,0 +1,51 @@
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-2" for="title">题目:</label>
+
+        <div class="col-sm-8">
+            <textarea class="" class="form-control" ng-model="topic.title" cols="50" rows="4"></textarea>
+        </div>
+    </div>
+    <div class="form-group" ng-repeat="opt in topic.opts">
+        <label class="col-sm-2">选项 {{opt.title}}:</label>
+
+        <div class="col-sm-8">
+            <input class="form-control" ng-model="opt.value"/>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-default" ng-if="$last"  ng-click="addOpt()">
+                <i class="fa fa-plus text-success"></i>
+            </button>
+            <button class="btn btn-default" ng-if="!$last" ng-click="removeOpt(opt)">
+                <i class="fa fa-minus text-muted" ></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2">建议分值:</label>
+
+        <div class="col-sm-5">
+
+            <select   class="form-control" ng-model="topic.point">
+                <option ng-selected="true" value="5">5分</option>
+                <option value="10">10分</option>
+                <option value="15">15分</option>
+                <option value="20">20分</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2">正确答案:</label>
+
+        <div class="col-sm-5">
+            <select class="form-control" ng-model="topic.corrector">
+                <option ng-selected="$first" value="{{$index}}" ng-repeat="opt in topic.opts">选项 {{opt.title}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group pull-right">
+        <button class="btn btn-success" ng-click="submit()">提交</button>
+        <button class="btn btn-default" ng-click="reset()">重置</button>
+    </div>
+</form>
