@@ -65,6 +65,8 @@ function addTopic(req, res) {
     if (err) {
       return errorHandler(res, err);
     }
+
+    redisCli.addTopic(topic);
     return res.status(201).json(topic);
   });
 };

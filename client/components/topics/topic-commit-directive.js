@@ -44,18 +44,18 @@ define([
             var t = $scope.topic;
 
             if(!t.title){
-              $scope.error("请填写题目");
+              alert("请填写题目");
               return ;
             };
             t.options = _.map(t.opts, function(opt){
               return opt.value;
             });
             if(_.compact(t.options).length < 2){
-              $scope.error("请填写至少2个选项");
+              alert("请填写至少2个选项");
               return ;
             };
             new Topic(t).$save(function(){
-              $scope.info("题目提交成功");
+              alert("题目提交成功");
               $scope.reset();
             });
 

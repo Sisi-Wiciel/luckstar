@@ -31,3 +31,7 @@ exports.randomTopics = function(number, cb){
     }
   });
 };
+
+exports.addTopic = function(topic){
+  client.SADD("topics", JSON.stringify(topic));
+}
