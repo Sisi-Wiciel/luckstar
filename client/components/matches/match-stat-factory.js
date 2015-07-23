@@ -11,7 +11,7 @@ define([
     };
 
     function queryStat() {
-      return httpq.post('/api/match/statistics').then(function (result) {
+      return httpq.get('/api/match/statistics').then(function (result) {
         _.assign(stat, result);
         return stat;
       });

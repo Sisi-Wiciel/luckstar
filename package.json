@@ -16,11 +16,12 @@
     "express-error-handler": "^1.0.1",
     "mongoose": "^4.0.5",
     "morgan": "~1.5.3",
+    "passport": "~0.2.0",
+    "passport-local": "1.0.0",
+    "redis": "^0.12.1",
     "requirejs": "^2.1.19",
     "serve-favicon": "~2.2.1",
-    "ws": "^0.7.2",
-    "passport": "~0.2.0",
-    "passport-local": "1.0.0"
+    "ws": "^0.7.2"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.2",

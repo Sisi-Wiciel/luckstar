@@ -32,7 +32,8 @@ app.use(express.static(path.join(__dirname, '../client')));
 app.use(errorHandler({ dumpExceptions: true, showStack: true }));
 
 // load router config
-require('./route')(app);
+require('./config/route')(app);
+require('./config/redis').init();
 
 
 module.exports = app;

@@ -8,6 +8,7 @@ var router = express.Router();
 
 function end (req, res) {
   var _stat = req.stat;
+
   if (!_stat.isComplete()) {
     req.session.stat = null;
     return res.status(200);
