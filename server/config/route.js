@@ -33,10 +33,7 @@ module.exports = function (app) {
   app.use(function(err, req, res, next) {
     //console.info(err);
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: {}
-    });
+    console.info(err.message);
   });
 
 };

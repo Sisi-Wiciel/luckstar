@@ -14,9 +14,8 @@
     <link rel="stylesheet" href="matches/match.css"/>
 </head>
 <body onselectstart="return false">
-<div class="container" >
-    <header ng-include src="'/components/navbar/navbar.html'"></header>
-    <div ng-view></div>
+<div class="container">
+    <div ui-view></div>
 </div>
 
 <script type="text/javascript" src="libs/require.js" data-main="require.config.js"></script>

@@ -24,7 +24,7 @@
     "angular-resource": "~1.4.1",
     "angular-mocks": "~1.4.2",
     "angular-motion": "~0.4.2",
-    "bootstrap-additions": "~0.3.1",
-    "angular-sanitize": "~1.4.3"
+    "angular-sanitize": "~1.4.3",
+    "angular-ui-router": "~0.2.15"
   }
 }

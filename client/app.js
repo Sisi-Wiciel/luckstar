@@ -4,7 +4,7 @@ define([
     'lodash',
     'require',
     'bootstrap',
-    'angular-route',
+    'angular-ui-route',
     'angular-cookie',
     'angular-animate',
     'angular-sanitize',
@@ -30,20 +30,32 @@ define([
       'luckStar.users',
     ];
 
-    var app = angular.module('luckStar', ['ngRoute', 'ngAnimate', 'ngResource', 'ngSanitize'/*, 'ui.bootstrap'*/]);
+    var app = angular.module('luckStar', ['ui.router', 'ngAnimate', 'ngResource', 'ngSanitize'/*, 'ui.bootstrap'*/]);
 
-    app.config(function ($routeProvider, $provide, $httpProvider, $locationProvider) {
-      //$routeProvider
-      //  .when('/', {
-      //    templateUrl: 'home.html',
-      //  })
+    app.config(function ($stateProvider, $httpProvider, $locationProvider) {
 
-      $locationProvider.html5Mode(true);
-      $httpProvider.interceptors.push('authInterceptor');
-    })
+        $stateProvider
+          .state('index', {
+            abstract: true,
+            templateUrl: "/auth.html"
+          })
+          .state('home', {
+            //url: "/home",
+            template: '<div class="container" >' +
+            '<header ng-include src="\'/components/navbar/navbar.html\'"></header>' +
+            '<div ui-view></div> </div> ',
+
+          })
+          .state('home.index', {
+            url: "/home",
+            templateUrl: 'home.html'
+          });
+
+        $locationProvider.html5Mode(true);
+        $httpProvider.interceptors.push('authInterceptor');
+      })
       .factory('authInterceptor', function ($rootScope, $q, store, $location) {
         return {
-          // Add authorization token to headers
           request: function (config) {
             config.headers = config.headers || {};
             if (store.get('token')) {
@@ -52,10 +64,9 @@ define([
             return config;
           },
 
-          // Intercept 401s and redirect you to login
           responseError: function (response) {
             if (response.status === 401) {
-              $location.path('/login');
+              $location.path('/');
               store.delete('token');
               return $q.reject(response);
             }
@@ -72,7 +83,14 @@ define([
             .element(document)
             .ready(function () {
               angular.bootstrap(document, apps_deps)
-                .invoke(['$rootScope', function ($rootScope) {
+                .invoke(['$rootScope', '$location', 'store', function ($rootScope, $location, store) {
+                  $rootScope.$on('$stateChangeSuccess',
+                    function(event, toState, toParams, fromState, fromParams){
+                      if(_.startsWith(toState.url, '/home') && !store.get('token')){
+                        //event.preventDefault();
+                        $location.path('/');
+                      }
+                    })
                 }]);
             });
         })();

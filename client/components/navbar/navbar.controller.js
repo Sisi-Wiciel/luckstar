@@ -7,10 +7,10 @@ define([
   app.controller('NavbarCtrl', function ($scope, $location, authSrv) {
     $scope.menu = [{
       'title': '答题',
-      'link': '/'
+      'link': '/home/match'
     }, {
       'title': '贡献题目',
-      'link': '/topic/contribute'
+      'link': '/home/topic'
     }];
 
     $scope.isCollapsed = true;
@@ -19,7 +19,7 @@ define([
 
     $scope.logout = function () {
       authSrv.logout();
-      $location.path('/login');
+      $location.path('/');
     };
 
     $scope.isActive = function (route) {

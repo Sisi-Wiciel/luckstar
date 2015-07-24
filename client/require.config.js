@@ -3,7 +3,7 @@ require.config({
     angular: 'bower_components/angular/angular.min',
     bootstrap: 'bower_components/bootstrap/dist/js/bootstrap.min',
     jquery: 'bower_components/jquery/dist/jquery.min',
-    'angular-route': 'bower_components/angular-route/angular-route.min',
+    'angular-ui-route': 'bower_components/angular-ui-router/release/angular-ui-router.min',
     'lodash': 'bower_components/lodash/lodash.min',
     'angular-animate': 'bower_components/angular-animate/angular-animate.min',
     'angular-sanitize': 'bower_components/angular-sanitize/angular-sanitize.min',
@@ -29,7 +29,7 @@ require.config({
       exports: 'lodash'
     },
 
-    'angular-route': ['angular'],
+    'angular-ui-route': ['angular'],
 
     'angular-cookie':   ['angular'],
 

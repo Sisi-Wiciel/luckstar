@@ -8,7 +8,7 @@ define([
     $scope.login = function(user){
 
       authSrv.login(user).then(function(){
-        $location.path('/');
+        $location.path('/home');
       }, function(err){
         alert(err.message);
       });

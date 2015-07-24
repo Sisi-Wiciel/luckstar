@@ -77,7 +77,7 @@ define([
         },
         'template': '<div class="form-group has-feedback row" ng-class="{\'has-error\': isError()}">' +
         '<label class="col-sm-2 control-label"></label>' +
-        '<div class="col-sm-4">' +
+        '<div class="col-sm-6">' +
         '<input class="form-control" >' +
         '<div ng-transclude></div>' +
         '</div>' +

@@ -1,5 +1,4 @@
-<section class="well">
-    <div class="container">
+<section ng-controller="signupCtrl">
         <div class="page-header">注册新用户</div>
         <ngbs-form name="regForm" on-submit="signup(target)">
             <ngbs-fieldset name="username" label="用户名" min="5" max="10" required="true">
@@ -27,5 +26,4 @@
 
             <ngbs-controller></ngbs-controller>
         </ngbs-form>
-    </div>
 </section>

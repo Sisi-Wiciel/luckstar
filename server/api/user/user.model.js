@@ -9,6 +9,7 @@ var UserSchema = new Schema({
   email: {type: String, lowercase: true},
   create: {type: Date, default: Date.now},
   stats: [{type: Schema.Types.ObjectId, ref: 'Stat'}],
+  friends: [{type: Schema.Types.ObjectId, ref: 'User', default: []}],
   hashedPassword: String,
   salt: String,
 });

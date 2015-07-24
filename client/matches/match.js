@@ -5,17 +5,12 @@ define([
 
   var matches = angular.module('luckStar.matches', []);
 
-  matches.config(function ($routeProvider) {
-    $routeProvider.when('/', {
+  matches.config(function ($stateProvider) {
+    $stateProvider.state('home.match', {
+      url: '/home/match',
       templateUrl: '/matches/match.html',
       controller: 'matchCtrl',
-      //resolve: {
-      //  current: function(auth, $q){
-      //
-      //  }
-      //}
     });
-
   });
   return matches;
 });
