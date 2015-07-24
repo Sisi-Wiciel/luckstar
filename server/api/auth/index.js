@@ -7,7 +7,11 @@ var LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy({
     usernameField: 'username',
+<<<<<<< HEAD
     passwordField: 'password'
+=======
+    passwordField: 'password' // this is the virtual field on the model
+>>>>>>> origin/master
   },
   function (username, password, done) {
     User.findOne({

@@ -19,7 +19,7 @@ define([
 
     $scope.logout = function () {
       authSrv.logout();
-      $location.path('/');
+      $location.path('/login');
     };
 
     $scope.isActive = function (route) {

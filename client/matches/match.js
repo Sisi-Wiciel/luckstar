@@ -5,6 +5,7 @@ define([
 
   var matches = angular.module('luckStar.matches', []);
 
+
   matches.config(function ($stateProvider) {
     $stateProvider.state('home.match', {
       url: '/home/match',
