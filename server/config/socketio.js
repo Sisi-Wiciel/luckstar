@@ -1,9 +1,29 @@
+var sio = require('socket.io'),
+  userSocket = require('../api/user/user.socket');
 
+function onConnect(socket){
+  userSocket.register(socket);
+}
+
+function onDisconnect(socket){
+  userSocket.deregister(socket);
+}
 
 module.exports = function(server){
-  //var socketio = require('socket.io')(server, {
-  //  serveClient: (config.env === 'production') ? false : true,
-  //  path: '/socket.io-client'
-  //});
+  var socketio = sio(server);
+  socketio.on('connection', function (socket) {
 
+    socket.connectedAt = new Date();
+
+    // Call onDisconnect.
+    socket.on('disconnect', function () {
+      onDisconnect(socket);
+      console.info('SOCKET DISCONNECTED');
+    });
+
+    // Call onConnect.
+    onConnect(socket);
+    console.info('SOCKET CONNECTED');
+  });
 }
+

@@ -20,6 +20,7 @@ define([
       'matches/all',
       'topics/all',
       'users/all',
+      'components/all',
       'components/all'
     ];
 
@@ -32,23 +33,24 @@ define([
 
     var app = angular.module('luckStar', ['ui.router', 'ngAnimate', 'ngResource', 'ngSanitize'/*, 'ui.bootstrap'*/]);
 
-    app.config(function ($stateProvider, $httpProvider, $locationProvider) {
-
+    app.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
+        $urlRouterProvider.otherwise("/login");
         $stateProvider
           .state('index', {
             abstract: true,
-            templateUrl: "/auth.html"
+            templateUrl: "/index-tpl.html"
           })
           .state('home', {
-            //url: "/home",
-            template: '<div class="container" >' +
-            '<header ng-include src="\'/components/navbar/navbar.html\'"></header>' +
-            '<div ui-view></div> </div> ',
-
+            templateUrl: '/home-tpl.html',
+            resolve: {
+              user: function(authSrv){
+                return authSrv.getCurrentUser();
+              }
+            }
           })
           .state('home.index', {
             url: "/home",
-            templateUrl: 'home.html'
+            templateUrl: 'home.html',
           });
 
         $locationProvider.html5Mode(true);

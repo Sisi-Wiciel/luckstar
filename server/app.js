@@ -1,6 +1,6 @@
 var express = require('express');
-var app = express();
 var mongoose = require('mongoose');
+var app = express();
 
 mongoose.connect('mongodb://localhost/luckstar');
 
@@ -11,3 +11,5 @@ require('./config/redis').init();
 
 
 module.exports = app;
+
+

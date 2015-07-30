@@ -1,0 +1,12 @@
+<div class="page-header">
+    所有用户
+</div>
+<div class="list-group">
+
+    <a href class="list-group-item" ng-repeat="user in userlist">
+        <i class="fa fa-circle" ng-class="{'text-success': user.status == 1, 'text-muted': user.status == 0}"></i>
+        {{user.username}}
+    </a>
+
+</div>
+

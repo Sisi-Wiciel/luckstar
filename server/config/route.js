@@ -31,9 +31,13 @@ module.exports = function (app) {
     });
 
   app.use(function(err, req, res, next) {
-    //console.info(err);
-    res.status(err.status || 500);
-    console.info(err.message);
+    if(err){
+      res.status(err.status || 500);
+      return res.status(err.status).json({
+        'message': err.message
+      });
+    }
+
   });
 
 };

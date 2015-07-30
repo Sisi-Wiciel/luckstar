@@ -48,26 +48,13 @@ function checkTopic(req, res) {
 };
 
 function queryTopics(req, res){
-<<<<<<< HEAD
+
   var stat = req.stat;
   var num = stat ? stat.totalNum : 1;
 
   redisCli.randomTopics(num, function(_topics){
     return res.status(200).json(_.map(_topics, JSON.parse));
   });
-
-=======
-  Topic.find(function (err, topics) {
-    if (err) {
-      return errorHandler(res, err);
-    }
-
-    var stat = req.stat;
-    var num = stat ? stat.totalNum : 1;
-
-    return res.status(200).json(_.chain(topics).shuffle().take(num).value());
-  });
->>>>>>> origin/master
 }
 
 function addTopic(req, res) {
@@ -79,11 +66,7 @@ function addTopic(req, res) {
     if (err) {
       return errorHandler(res, err);
     }
-<<<<<<< HEAD
-
     redisCli.addTopic(topic);
-=======
->>>>>>> origin/master
     return res.status(201).json(topic);
   });
 };

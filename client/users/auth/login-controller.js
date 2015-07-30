@@ -10,7 +10,6 @@ define([
       authSrv.login(user).then(function(){
         $location.path('/home');
       }, function(err){
-        alert(err.message);
       });
     }
   });

@@ -6,17 +6,13 @@ var SECRET = "LuCk_StAr_SeCrEt";
 
 function isAuthenticated() {
   return compose()
-    // Validate jwt
     .use(function(req, res, next) {
-      // allow access_token to be passed through query parameter as well
       if(req.query && req.query.hasOwnProperty('access_token')) {
         req.headers.authorization = 'Bearer ' + req.query.access_token;
       }
       expressJwt({ secret: SECRET })(req, res, next);
     })
-    // Attach user to request
     .use(function(req, res, next) {
-
       User.findById(req.user._id, '-salt -hashedPassword').populate('stats').exec(function (err, user) {
         if (err) return next(err);
         if (!user) return res.send(401);

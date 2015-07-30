@@ -1,6 +1,7 @@
 require.config({
   paths: {
     angular: 'bower_components/angular/angular.min',
+    socketio: 'libs/socket.io',
     bootstrap: 'bower_components/bootstrap/dist/js/bootstrap.min',
     jquery: 'bower_components/jquery/dist/jquery.min',
     'angular-ui-route': 'bower_components/angular-ui-router/release/angular-ui-router.min',
@@ -14,6 +15,7 @@ require.config({
     'app': 'app'
   },
   shim: {
+
     app: {
       exports: 'app'
     },
@@ -28,7 +30,9 @@ require.config({
     lodash: {
       exports: 'lodash'
     },
-
+    'socketio': {
+      exports: 'socketio'
+    },
     'angular-ui-route': ['angular'],
 
     'angular-cookie':   ['angular'],
