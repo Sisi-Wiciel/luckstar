@@ -5,34 +5,6 @@ var User = require('../api/user/user.model');
 
 var client = redis.createClient();
 
-var loadTopic = function () {
-
-  Topic.find(function (err, topics) {
-    if (err) {
-      console.error(err);
-    }
-    _.each(topics, function (topic) {
-      client.SADD("topics", JSON.stringify(topic));
-    });
-  });
-};
-
-var loadUser = function () {
-  User.find(function (err, users) {
-    if (err) {
-      console.error(err);
-    }
-
-    _.each(users, function (user) {
-      client.HMSET("users:" + user._id, {
-        id: user._id,
-        status: 0,
-        username: user.username,
-      });
-    });
-  })
-};
-
 var clean = function () {
   client.keys('*', function (err, keys) {
     if (err) return console.log(err);
@@ -42,46 +14,80 @@ var clean = function () {
     }
   });
 }
-exports.init = function () {
-  client.on('ready', function () {
-    clean();
-    loadTopic();
-    loadUser();
-  });
-};
+module.exports = {
+  init: function () {
+    var self = this;
+    client.on('ready', function () {
+      clean();
 
-exports.randomTopics = function (number, cb) {
-  var _cb = cb || _.noop;
+      Topic.find(function (err, topics) {
+        if (err) {
+          console.error(err);
+        }
+        _.each(topics, function (topic) {
+          client.SADD("topics", JSON.stringify(topic));
+        });
+      });
 
-  client.srandmember("topics", number, function (err, objs) {
-    if (err) {
-      console.info(err);
-    } else {
-      _cb(objs);
+      User.find(function (err, users) {
+        if (err) {
+          console.error(err);
+        }
+
+        _.each(users, function (user) {
+          self.addUser(user);
+        });
+      })
+    });
+  },
+  randomTopics: function (number, cb) {
+    var _cb = cb || _.noop;
+
+    client.srandmember("topics", number, function (err, objs) {
+      if (err) {
+        console.info(err);
+      } else {
+        _cb(objs);
+      }
+    });
+  },
+  addTopic: function (topic) {
+    client.SADD("topics", JSON.stringify(topic));
+  },
+  changeUserStatus: function (id, status, cb) {
+    if(id){
+      var _cb = cb || _.noop;
+      client.hset("users:" + id, "status", status, _cb);
+    }else{
+      console.error("changeUserStatus: invalid id", id, status, cb);
     }
-  });
-};
 
-exports.addTopic = function (topic) {
-  client.SADD("topics", JSON.stringify(topic));
-}
+  },
+  addUser: function (user) {
+    if(user._id){
+      client.HMSET("users:" + user._id, {
+        id: user._id,
+        status: 0,
+        username: user.username,
+      });
+    }else{
+      console.error("addUser: invalid id", user);
+    }
 
-exports.online = function (id, cb) {
-  var _cb = cb || _.noop;
-  client.hset("users:" + id, "status", 1, _cb);
-};
-
-exports.getUsersWithStatus = function (cb) {
-  client.keys('users*', function (err, keys) {
-    if (err) return console.log(err);
+  },
+  getUsersWithStatus: function (cb) {
+    client.keys('users*', function (err, keys) {
+      if (err) return console.log(err);
       var users = [];
       _.each(keys, function (key, index) {
-          client.hgetall(key, function (err, user) {
-            users.push(user);
-            if (index == keys.length - 1) {
-              cb(users);
-            }
-          })
+        client.hgetall(key, function (err, user) {
+          users.push(user);
+          if (index == keys.length - 1) {
+            cb(users);
+          }
+        })
       })
-  });
+    });
+  }
 }
+

@@ -4,7 +4,7 @@ define([
 ], function(angular, app){
   "use strict";
 
-  app.service('authSrv', function(httpq, store, $q, User, $timeout){
+  app.service('authSrv', function(httpq, store, $q, User, $timeout, socketSrv){
     var self = this;
 
     var currentUser = {};
@@ -28,6 +28,7 @@ define([
 
     this.logout = function(){
       store.delete('token');
+      socketSrv.userOffline();
       currentUser = {};
     };
 

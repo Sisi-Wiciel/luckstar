@@ -7,22 +7,17 @@ define([
   app.factory('socketSrv', function(){
     var socket = io.connect('http://localhost:3000');
     return {
-      register: function(eventName, arr, cb){
+      register: function(eventName, cb){
         var _cb = cb || _.noop;
         socket.on(eventName, function(items){
-          if(_.isArray(items)){
-            _.each(items, function(item){
-              arr.push(item);
-            })
-            //_.assign(arr, items);
-          }else{
-            arr.push(item);
-          }
-          _cb();
+          _cb(items);
         });
       },
-      online: function(id){
-        socket.emit('online', id);
+      userOnline: function(id){
+        socket.emit('user online', id);
+      },
+      userOffline: function(){
+        socket.emit('user offline');
       }
     }
   });

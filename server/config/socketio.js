@@ -15,6 +15,8 @@ module.exports = function(server){
 
     socket.connectedAt = new Date();
 
+    socket.io = socketio;
+
     // Call onDisconnect.
     socket.on('disconnect', function () {
       onDisconnect(socket);

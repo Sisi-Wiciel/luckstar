@@ -44,7 +44,7 @@ define([
             templateUrl: '/home-tpl.html',
             resolve: {
               user: function(authSrv){
-                return authSrv.getCurrentUser();
+                return authSrv.getCurrentUser().$promise;
               }
             }
           })
