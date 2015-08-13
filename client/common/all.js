@@ -1,3 +1,3 @@
 define([
-  './index-contoller'
+  './home-contoller'
 ], function(){});

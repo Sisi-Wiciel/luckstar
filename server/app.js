@@ -6,7 +6,7 @@ mongoose.connect('mongodb://localhost/luckstar');
 
 require('./config/express')(app);
 require('./config/route')(app);
-require('./config/socketio')()
+require('./config/socketio').init();
 require('./config/redis').init();
 
 

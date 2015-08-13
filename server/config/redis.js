@@ -5,6 +5,8 @@ var User = require('../api/user/user.model');
 
 var client = redis.createClient();
 
+var CHAT_ID = "CHATID";
+
 var clean = function () {
   client.keys('*', function (err, keys) {
     if (err) return console.log(err);
@@ -37,7 +39,10 @@ module.exports = {
         _.each(users, function (user) {
           self.addUser(user);
         });
-      })
+      });
+
+      client.set(CHAT_ID, 0);
+
     });
   },
   randomTopics: function (number, cb) {
@@ -61,7 +66,11 @@ module.exports = {
     }else{
       console.error("changeUserStatus: invalid id", id, status, cb);
     }
-
+  },
+  setUserSid: function(uid, sid){
+    if(uid && sid){
+      client.hset("users:" + uid, "sid", sid);
+    }
   },
   addUser: function (user) {
     if(user._id){
@@ -69,14 +78,16 @@ module.exports = {
         id: user._id,
         status: 0,
         username: user.username,
+        sid: ''
       });
     }else{
       console.error("addUser: invalid id", user);
     }
 
   },
-  getUsersWithStatus: function (cb) {
-    client.keys('users*', function (err, keys) {
+  getUsersWithStatus: function (id, cb) {
+    var _id = id || '*';
+    client.keys('users:'+_id, function (err, keys) {
       if (err) return console.log(err);
       var users = [];
       _.each(keys, function (key, index) {
@@ -87,6 +98,11 @@ module.exports = {
           }
         })
       })
+    });
+  },
+  getChatId: function(cb){
+    client.incr(CHAT_ID, function(err, id){
+      cb(id);
     });
   }
 }

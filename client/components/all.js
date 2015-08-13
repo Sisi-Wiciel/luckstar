@@ -9,9 +9,10 @@ define([
   './auth/users-service',
   './auth/auth-service',
   './users/online-list-directive',
+  './users/user-chat-directive',
   './navbar/navbar.controller',
   './modal/modal.service',
-  './socketio/socketio',
+  './socketio/socket-service',
 ], function () {
 });
 

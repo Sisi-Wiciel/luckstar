@@ -1,30 +1,33 @@
 <div class="panel panel-default" style="margin-bottom:0">
-  <!-- Default panel contents -->
-  <div class="panel-heading">
-      <div class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="fa" ng-class="status.cls"></i> {{status.display}} <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-              <li ng-repeat="stat in statusList">
-                  <a href ng-click="$parent.status=stat">
-                      <i class="fa" ng-class="stat.cls"></i> {{stat.display}}
-                  </a>
-              </li>
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <div class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+               aria-expanded="false">
+                <i class="fa" ng-class="status.cls"></i> {{status.display}} <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li ng-repeat="stat in statusList">
+                    <a href ng-click="$parent.status=stat">
+                        <i class="fa" ng-class="stat.cls"></i> {{stat.display}}
+                    </a>
+                </li>
 
-          </ul>
-      </div>
+            </ul>
+        </div>
 
-  </div>
-  </div>
-  <div class="list-group" style="min-height: 400px">
+    </div>
+    <ul class="list-group" style="min-height: 400px">
+        <li class="list-group-item" ng-repeat="user in userlist" ng-if="user.id != curr._id"
+            ng-show="status.value < 0 || status.value == user.status">
+            <i class="fa fa-circle" ng-class="{'text-success': user.status == 1, 'text-muted': user.status == 0}"></i>
+            {{user.username}}
+            <a ng-show="user.status == 1" class="pull-right" href ng-click="sendTo({to: user})">
+                <i class="fa fa-comments"></i>
+            </a>
 
-    <a href class="list-group-item" ng-repeat="user in userlist" ng-show="status.value < 0 || status.value == user.status">
-      <i class="fa fa-circle" ng-class="{'text-success': user.status == 1, 'text-muted': user.status == 0}"></i>
-      {{user.username}}
-    </a>
-
-  </div>
+        </li>
+    </ul>
 </div>
 
 

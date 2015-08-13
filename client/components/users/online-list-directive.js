@@ -9,6 +9,7 @@ define([
     return {
       templateUrl: 'components/users/online-list.html',
       scope: {
+        sendTo: '&'
       },
       controller: function($scope, $timeout, socketSrv, authSrv){
         $scope.statusList = [
@@ -20,7 +21,8 @@ define([
 
         $scope.status = $scope.statusList[0];
         $scope.userlist = [];
-        var curr = authSrv.getCurrentUser();
+
+        $scope.curr = authSrv.getCurrentUser();
 
         socketSrv.register('users', function(users){
           if(_.isArray(users)){
@@ -30,8 +32,7 @@ define([
           }
           $scope.$apply();
         });
-        console.info(curr, curr._id);
-        socketSrv.userOnline(curr._id);
+        socketSrv.userOnline($scope.curr._id);
       }
     }
   });

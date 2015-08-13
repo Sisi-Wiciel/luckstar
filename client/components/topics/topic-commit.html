@@ -1,15 +1,15 @@
 <form class="form-horizontal">
     <div class="form-group">
-        <label class="col-sm-2" for="title">题目:</label>
+        <label class="col-sm-3" for="title">题目:</label>
 
         <div class="col-sm-8">
-            <textarea class="" class="form-control" ng-model="topic.title" cols="50" rows="4"></textarea>
+            <textarea class="form-control" ng-model="topic.title" cols="80" rows="4"></textarea>
         </div>
     </div>
     <div class="form-group" ng-repeat="opt in topic.opts">
-        <label class="col-sm-2">选项 {{opt.title}}:</label>
+        <label class="col-sm-3">选项 {{opt.title}}:</label>
 
-        <div class="col-sm-8">
+        <div class="col-sm-7">
             <input class="form-control" ng-model="opt.value"/>
         </div>
         <div class="col-sm-2">
@@ -23,7 +23,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2">建议分值:</label>
+        <label class="col-sm-3">建议分值:</label>
 
         <div class="col-sm-5">
 
@@ -36,7 +36,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2">正确答案:</label>
+        <label class="col-sm-3">正确答案:</label>
 
         <div class="col-sm-5">
             <select class="form-control" ng-model="topic.corrector">

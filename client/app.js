@@ -42,6 +42,7 @@ define([
           })
           .state('home', {
             templateUrl: '/home-tpl.html',
+            controller: 'homeCtrl',
             resolve: {
               user: function(authSrv){
                 return authSrv.getCurrentUser().$promise;
@@ -67,6 +68,7 @@ define([
           },
 
           responseError: function (response) {
+            console.info("response error", response.status);
             if (response.status === 401) {
               $location.path('/');
               store.delete('token');
