@@ -1,7 +1,5 @@
 var socketio = require('../api/socket/socket.service');
 
-module.exports = {
-  init: function(){
-    socketio.init();
-  }
+module.exports = function(){
+  socketio.init();
 }
