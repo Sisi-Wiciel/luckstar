@@ -20,10 +20,11 @@ module.exports = {
     io.on('connection', function (socket) {
       socket.auth = false;
       socket.on('authenticate', function(data){
+        console.info("auth")
         try {
           var decoded = jwt.decode(data.token, "LuCk_StAr_SeCrEt");
           if(decoded && decoded._id){
-
+            console.log("Authenticated socket ", socket.id);
             socket.auth = true;
             socket.io = io;
 
@@ -34,7 +35,7 @@ module.exports = {
 
         } catch (err) {
           console.error(err);
-          console.log("Authenticated socket ", socket.id);
+
         }
       });
 

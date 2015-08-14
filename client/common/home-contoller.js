@@ -6,6 +6,26 @@ define([
   angular.module('luckStar').controller('homeCtrl', function($scope, socketSrv, $window){
     $scope.chatting = false;
     $scope.messages = [];
+
+    socketSrv.init(function(){
+      socketSrv.register('receive messages', function(item){
+
+        $scope.addMessage(item)
+
+        if($scope.chatting && item.from.id == $scope.toUser.id){
+          $scope.showChatPanel(item.from);
+        }else{
+          if($window.confirm(item.from.username + ":"+item.content)){
+            $scope.showChatPanel(item.from);
+          }
+        }
+        $scope.$broadcast('receivedMessage');
+
+        $scope.$apply();
+      });
+
+    });
+
     $scope.showChatPanel = function(to){
       $scope.toUser = to;
       $scope.chatting = true;
@@ -24,20 +44,6 @@ define([
       $scope.messages[item.from.id].push(item);
     };
 
-    socketSrv.register('receive messages', function(item){
-
-      $scope.addMessage(item)
-
-      if($scope.chatting && item.from.id == $scope.toUser.id){
-          $scope.showChatPanel(item.from);
-      }else{
-        if($window.confirm(item.from.username + ":"+item.content)){
-          $scope.showChatPanel(item.from);
-        }
-      }
-
-      $scope.$apply();
-    });
 
   });
 

@@ -5,7 +5,9 @@ var userOnline = function(socket, id){
 
   redis.changeUserStatus(id, 1);
 
+  console.info("emit users event");
   redis.getUsersWithStatus('', function (users) {
+    console.info(users);
     socket.io.emit("users", users);
   });
 }
@@ -22,7 +24,9 @@ var userOffline = function(socket){
 }
 
 exports.register = function (socket) {
+  console.info("register");
   socket.on('user online', function (id) {
+    console.info("user online ", id);
     userOnline(socket, id);
   });
 

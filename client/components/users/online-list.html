@@ -1,4 +1,4 @@
-<div class="panel panel-default" style="margin-bottom:0">
+<div class="panel panel-default" style="margin-bottom:0;height: 600px">
     <!-- Default panel contents -->
     <div class="panel-heading">
         <div class="dropdown">
@@ -17,7 +17,7 @@
         </div>
 
     </div>
-    <ul class="list-group" style="min-height: 400px">
+    <ul class="list-group" >
         <li class="list-group-item" ng-repeat="user in userlist" ng-if="user.id != curr._id"
             ng-show="status.value < 0 || status.value == user.status">
             <i class="fa fa-circle" ng-class="{'text-success': user.status == 1, 'text-muted': user.status == 0}"></i>

@@ -3,16 +3,16 @@
         <i class="fa fa-comments"></i><span class="text-info"> {{toUser.username}} </span>
         <a href ng-click="goBack()"><small class="text-muted pull-right"><i class="fa fa-reply"></i></small></a>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" style="height: 500px;overflow-y: auto">
         <div class="item" ng-repeat="msg in messages[toUser.id]">
             <p class="message">
-               <div class="text-info">
+               <div class="text-warning">
                     <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{::msg.time | date:'hh:MM:ss'}}</small>
                     {{::msg.from.username}}
                 </div>
 
 
-                <div>
+                <div ng-class="{'text-info': toUser.id == msg.from.id, 'text-muted': toUser.id == msg.from.id}">
                     {{::msg.content}}
                 </div>
 
