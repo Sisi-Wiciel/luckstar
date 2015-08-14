@@ -1,6 +1,6 @@
 var User = require("./user.model");
 var _ = require('lodash');
-var redis = require('../../config/redis');
+var redis = require('../redis/redis.service');
 
 function save (req, res) {
   User.create(req.body, function (err, user) {

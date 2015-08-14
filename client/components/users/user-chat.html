@@ -12,7 +12,7 @@
                 </div>
 
 
-                <div ng-class="{'text-info': toUser.id == msg.from.id, 'text-muted': toUser.id == msg.from.id}">
+                <div ng-class="{'text-info': toUser.id == msg.from.id, 'text-muted': toUser.id !== msg.from.id}">
                     {{::msg.content}}
                 </div>
 

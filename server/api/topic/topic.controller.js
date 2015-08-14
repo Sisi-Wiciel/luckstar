@@ -7,7 +7,7 @@ var errorHandler = require('express-error-handler');
 var auth = require('../auth/auth.service');
 var router = express.Router();
 
-var redisCli = require('../../config/redis');
+var redisCli = require('../redis/redis.service');
 
 function checkTopic(req, res) {
 

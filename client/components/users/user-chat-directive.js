@@ -18,6 +18,10 @@ define([
 
         $scope.send = function(){
           var msg = $scope.messageInput;
+          if(!msg){
+            $window.alert("想说什么呢?");
+            return ;
+          }
           socketSrv.sendMsg($scope.curr._id, $scope.toUser.id, msg);
           if(!$scope.messages[$scope.toUser.id]){
             $scope.messages[$scope.toUser.id] = [];
@@ -30,20 +34,24 @@ define([
           $scope.messageInput = "";
           $scope.$apply();
         }
-
-
       },
       link: function(scope, ele){
         var $elem = $(ele);
+
+        var scrollBottom = function(){
+          $elem.find('.panel-body').animate({
+            scrollTop: $(document).height() * scope.messages[scope.toUser.id].length
+          }, 1000);
+        }
         scope.$on('receivedMessage', function (event) {
-          $elem.find('.panel-body').scrollTop(600);
+          scrollBottom();
         });
 
         $elem.find("input").on('keydown', function(event){
-            if(event.keyCode == 13){
-              scope.send();
-              $elem.find('.panel-body').scrollTop(600);
-            }
+          if(event.keyCode == 13){
+            scope.send();
+            scrollBottom();
+          }
         })
 
       }

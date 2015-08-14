@@ -1,4 +1,4 @@
-var redis = require('../../config/redis');
+var redis = require('../redis/redis.service');
 
 var userOnline = function(socket, id){
   socket.uid = id;
