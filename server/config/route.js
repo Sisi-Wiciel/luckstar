@@ -1,4 +1,4 @@
-
+var log = require('../log');
 module.exports = function (app) {
 
   app.use('/api/topic', require('./../api/topic/'));
@@ -9,19 +9,7 @@ module.exports = function (app) {
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
     .get(function(err, req, res){
-      console.info("404 error")
-      //var viewFilePathx`   = '404';
-      //var statusCode = 404;
-      //var result = {
-      //  status: statusCode
-      //};
-      //
-      //res.status(result.status);
-      //res.render(viewFilePath, function (err) {
-      //  if (err) { return res.json(result, result.status); }
-      //
-      //  res.render(viewFilePath);
-      //});
+      log.error("404 error", err.message);
     });
 
   // All other routes should redirect to the index.html
@@ -33,6 +21,7 @@ module.exports = function (app) {
   app.use(function(err, req, res, next) {
     if(err){
       res.status(err.status || 500);
+      log.error("500 error ", err.message);
       return res.status(err.status).json({
         'message': err.message
       });

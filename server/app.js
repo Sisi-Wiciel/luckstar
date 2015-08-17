@@ -6,9 +6,10 @@ mongoose.connect('mongodb://localhost/luckstar');
 
 require('./config/express')(app);
 require('./config/route')(app);
-require('./config/socketio').init();
-require('./config/redis').init();
-
+require('./config/socketio')();
+require('./config/redis')();
+var winston = require('winston');
+winston.level = 'debug'
 
 module.exports = app;
 

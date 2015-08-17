@@ -7,9 +7,11 @@ var client = redis.createClient();
 
 var CHAT_ID = "CHATID";
 
+var log = require('../../log');
+
 var clean = function () {
   client.keys('*', function (err, keys) {
-    if (err) return console.log(err);
+    if (err) return log.error(err);
 
     for (var i = 0, len = keys.length; i < len; i++) {
       client.del(keys[i]);
@@ -24,7 +26,7 @@ module.exports = {
 
       Topic.find(function (err, topics) {
         if (err) {
-          console.error(err);
+          log.error(err);
         }
         _.each(topics, function (topic) {
           client.SADD("topics", JSON.stringify(topic));
@@ -33,7 +35,7 @@ module.exports = {
 
       User.find(function (err, users) {
         if (err) {
-          console.error(err);
+          log.error(err);
         }
 
         _.each(users, function (user) {
@@ -50,7 +52,7 @@ module.exports = {
 
     client.srandmember("topics", number, function (err, objs) {
       if (err) {
-        console.info(err);
+        log.error(err);
       } else {
         _cb(objs);
       }
@@ -64,7 +66,7 @@ module.exports = {
       var _cb = cb || _.noop;
       client.hset("users:" + id, "status", status, _cb);
     }else{
-      console.error("changeUserStatus: invalid id", id, status, cb);
+      log.error("changeUserStatus: invalid id", id, status, cb);
     }
   },
   setUserSid: function(uid, sid){
@@ -81,14 +83,14 @@ module.exports = {
         sid: ''
       });
     }else{
-      console.error("addUser: invalid id", user);
+      log.error("addUser: invalid id", user);
     }
 
   },
   getUsersWithStatus: function (id, cb) {
     var _id = id || '*';
     client.keys('users:'+_id, function (err, keys) {
-      if (err) return console.log(err);
+      if (err) return log.error(err);
       var users = [];
       _.each(keys, function (key, index) {
         client.hgetall(key, function (err, user) {

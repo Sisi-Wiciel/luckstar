@@ -1,20 +1,23 @@
 var redis = require('../redis/redis.service');
 
+var log = require('../../log');
+
 var userOnline = function(socket, id){
+  log.debug("received user online event", id);
   socket.uid = id;
 
   redis.changeUserStatus(id, 1);
 
-  console.info("emit users event");
+
   redis.getUsersWithStatus('', function (users) {
-    console.info(users);
     socket.io.emit("users", users);
   });
 }
 
 var userOffline = function(socket){
+  log.debug('received user offline event');
   var id = socket.uid;
-  console.info("user offline ", id);
+
   if(socket.uid){
     redis.changeUserStatus(id, 0);
     redis.getUsersWithStatus('', function (users) {
@@ -24,9 +27,7 @@ var userOffline = function(socket){
 }
 
 exports.register = function (socket) {
-  console.info("register");
   socket.on('user online', function (id) {
-    console.info("user online ", id);
     userOnline(socket, id);
   });
 
@@ -36,7 +37,6 @@ exports.register = function (socket) {
 
 
   socket.on('send message', function(message){
-    //todo 这样写好丑啊!!!
     redis.getUsersWithStatus(message.to, function (toUser) {
 
       redis.getUsersWithStatus(message.from, function (fromUser) {

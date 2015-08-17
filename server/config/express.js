@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var express = require('express');
 
+
 module.exports = function(app){
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'ejs');

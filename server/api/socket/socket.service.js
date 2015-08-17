@@ -3,6 +3,7 @@ var io = require('socket.io').listen(setting.SOCKET.PORT);
 var userSocket = require('../user/user.socket');
 var redis = require('../redis/redis.service');
 var jwt = require('jwt-simple');
+var log = require('../../log');
 
 function onConnect(socket){
   userSocket.register(socket);
@@ -24,7 +25,7 @@ module.exports = {
         try {
           var decoded = jwt.decode(data.token, setting.SECRET_KEY);
           if(decoded && decoded._id){
-            console.log("Authenticated socket ", socket.id);
+            log.debug("Authenticated socket with id", socket.id);
             socket.auth = true;
             socket.io = io;
 
@@ -34,14 +35,13 @@ module.exports = {
           cb(socket);
 
         } catch (err) {
-          console.error(err);
-
+          log.error(err.message);
         }
       });
 
       setTimeout(function(){
         if (!socket.auth) {
-          console.log("Disconnecting socket ", socket.id);
+          log.debug("Disconnecting socket with id", socket.id);
           socket.disconnect('unauthorized');
         }
       }, setting.SOCKET.AUTH_TIME_OUT);
@@ -57,11 +57,11 @@ module.exports = {
 
       socket.on('disconnect', function () {
         onDisconnect(socket);
-        console.log("Disconnecting socket ", socket.id);
+        log.debug("Disconnecting socket with id", socket.id);
       });
 
       onConnect(socket);
-      console.info('SOCKET CONNECTED WITH id ', socket.id);
+      log.info('Socket connected with id', socket.id);
     });
 
   }
