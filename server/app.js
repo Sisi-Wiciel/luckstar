@@ -8,8 +8,7 @@ require('./config/express')(app);
 require('./config/route')(app);
 require('./config/socketio')();
 require('./config/redis')();
-var winston = require('winston');
-winston.level = 'debug'
+
 
 module.exports = app;
 

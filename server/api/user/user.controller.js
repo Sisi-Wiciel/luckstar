@@ -1,22 +1,26 @@
 var User = require("./user.model");
 var _ = require('lodash');
-var redis = require('../redis/redis.service');
+var userService = require('./user.service');
 
 function save (req, res) {
-  User.create(req.body, function (err, user) {
-    if (err) {
-      return handleError(res, err)
-    }
+    User.create(req.body, function (err, user) {
+        if (err) {
+            return handleError(res, err)
+        }
 
-    redis.addUser(user);
-    return res.status(200).json({});
-  })
+        userService.add(user).then(function(){
+            return res.status(200).json({});
+        })
+
+    })
 };
 
 function get (req, res) {
-  var userJson = req.user.toJSON();
-  userJson.point = req.user.point;
-  return res.status(200).json(userJson);
+    User.findById(req.user._id, '-salt -hashedPassword').populate('stats').exec(function (err, user) {
+        var userJson = req.user.toJSON();
+        userJson.point = req.user.point;
+        return res.status(200).json(userJson);
+    });
 };
 
 exports.get = get;

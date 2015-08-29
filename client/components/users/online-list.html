@@ -17,8 +17,10 @@
         </div>
 
     </div>
-    <ul class="list-group" >
-        <li class="list-group-item" ng-repeat="user in userlist" ng-if="user.id != curr._id"
+    <ul class="list-unstyled" >
+        <li class="list-group-item" style="border:0"
+            ng-repeat="user in userlist"
+            ng-if="user.id != curr._id"
             ng-show="status.value < 0 || status.value == user.status">
             <i class="fa fa-circle" ng-class="{'text-success': user.status == 1, 'text-muted': user.status == 0}"></i>
             {{user.username}}

@@ -9,6 +9,9 @@ define([
       'title': '答题',
       'link': '/home/match'
     }, {
+      'title': '多人答题',
+      'link': '/home/multimatch'
+    }, {
       'title': '贡献题目',
       'link': '/home/topic'
     }];

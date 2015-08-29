@@ -31,4 +31,5 @@ node_modules
 .idea
 
 test.js
-luckstar.log
+luckstar*.log
+client/bower_components

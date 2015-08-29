@@ -7,75 +7,75 @@ var errorHandler = require('express-error-handler');
 var auth = require('../auth/auth.service');
 var router = express.Router();
 
-var redisCli = require('../redis/redis.service');
+var db = require('../redis/redis.service');
 
-function checkTopic(req, res) {
+function checkTopic (req, res) {
 
-  var checked = req.query.option || "";
+    var checked = req.query.option || "";
 
-  Topic.findById(req.params.id, "+corrector", function (err, topic) {
+    Topic.findById(req.params.id, "+corrector", function (err, topic) {
 
-    if (err) {
-      return errorHandler(res, err)
-    }
+        if (err) {
+            return errorHandler(res, err)
+        }
 
-    var isCorrect = topic.corrector.toString() == checked.toString();
-    var status = 0;
-    var _stat = req.stat;
-    if(!checked){
-      status = 2;
-      _stat.timeout(topic);
-    }else{
-      if(isCorrect){
-        status = 0;
-        _stat.correct(topic);
-      }else{
-        status = 1;
-        _stat.incorrect(topic);
-      }
-    }
+        var isCorrect = topic.corrector.toString() == checked.toString();
+        var status = 0;
+        var _stat = req.stat;
+        if (!checked) {
+            status = 2;
+            _stat.timeout(topic);
+        } else {
+            if (isCorrect) {
+                status = 0;
+                _stat.correct(topic);
+            } else {
+                status = 1;
+                _stat.incorrect(topic);
+            }
+        }
 
-    _stat.save();
+        _stat.save();
 
-    return res.status(200)
-      .json({
-        status: status,
-        message: topic.options[topic.corrector],
-        stats: _stat
-      });
-  });
+        return res.status(200)
+            .json({
+                status: status,
+                message: topic.options[topic.corrector],
+                stats: _stat
+            });
+    });
 
 };
 
-function queryTopics(req, res){
+function queryTopics (req, res) {
 
-  var stat = req.stat;
-  var num = stat ? stat.totalNum : 1;
+    var stat = req.stat;
+    var num = stat ? stat.totalNum : 1;
 
-  redisCli.randomTopics(num, function(_topics){
-    return res.status(200).json(_.map(_topics, JSON.parse));
-  });
+    db.random('topics', num).then(function (topics) {
+        return res.status(200).json(_.map(topics, JSON.parse));
+    });
 }
 
-function addTopic(req, res) {
-  var topic = req.body;
-  if(req.user){
-    topic.creator = req.user;
-  }
-  Topic.create(topic, function (err, topic) {
-    if (err) {
-      return errorHandler(res, err);
+function addTopic (req, res) {
+    var topic = req.body;
+    if (req.user) {
+        topic.creator = req.user;
     }
-    redisCli.addTopic(topic);
-    return res.status(201).json(topic);
-  });
+    Topic.create(topic, function (err, topic) {
+        if (err) {
+            return errorHandler(res, err);
+        }
+        db.addTopic(topic);
+        return res.status(201).json(topic);
+    });
 };
 
-function getTotalSize(req, res){
-  Topic.find({}, function(err, topics){
-    if(err) return errorHandler(res, err);
-    return res.status(200).json({'total': topics.length});
-  })
+function getTotalSize (req, res) {
+    Topic.find({}, function (err, topics) {
+        if (err) return errorHandler(res, err);
+        return res.status(200).json({'total': topics.length});
+    })
 }
 
 exports.queryTopics = queryTopics;

@@ -1,7 +1,8 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./match.controller');
+var matchCtl = require('./match.controller');
+var roomCtl = require('./room/room.controller');
 var auth = require('../auth/auth.service');
 var stat = require('../match/matchstat.service');
 
@@ -9,8 +10,10 @@ var router = express.Router();
 
 module.exports = router;
 
-router.get('/statistics', auth.isAuth(), stat.fetch(), controller.statistics);
+router.get('/statistics', auth.isAuth(), stat.fetch(), matchCtl.statistics);
 
-router.post('/end', auth.isAuth(), stat.fetch(), controller.end);
+router.post('/end', auth.isAuth(), stat.fetch(), matchCtl.end);
 
-router.post('/startup/:number', auth.isAuth(), controller.startup);
+router.post('/startup/:number', auth.isAuth(), matchCtl.startup);
+
+router.post('/room', auth.isAuth(), roomCtl.new);

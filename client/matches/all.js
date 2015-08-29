@@ -1,4 +1,5 @@
 define([
   './match',
-  './match-controller'
+  './match-controller',
+  './match-multi-controller'
 ], function(){});

@@ -3,7 +3,7 @@
     <div class="row" ng-if="!stat">
         <!-- start new match-->
         <div class="col-xs-12 text-center">
-            <!--<h1>共有{{::totalSize}}道题目</h1>-->
+            <h1>共有{{::totalSize}}道题目</h1>
 
             <div style="margin: 40px">
                 <div class="row">
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="row">
-                    <button style="margin-top: 30px" class="btn btn-info btn-lg" ng-click="start(number.number)">开始答题</button>
+                    <button style="margin-top: 30px" class="btn btn-primary btn-lg" ng-click="start(number.number)">开始答题</button>
                 </div>
 
             </div>
@@ -50,7 +50,7 @@
         <footer class="col-lg-offset-1 col-lg-10">
 
             <button class="btn btn-danger pull-right" ng-click="cancel()"> 放弃答题</button>
-            <button class="btn btn-info pull-left" ng-disabled="!topic.isActived()" ng-click="next()">下一题 <i
+            <button class="btn btn-primary pull-left" ng-disabled="!topic.isActived()" ng-click="next()">下一题 <i
                     class="fa fa-caret-square-o-right"></i></button>
         </footer>
 

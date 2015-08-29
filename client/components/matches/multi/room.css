@@ -1,0 +1,24 @@
+#room-list .room-list-item>.title{
+    padding: 10px 15px;
+    border: dotted 1px #efefef;
+}
+
+#room-list .room-list-item>.content {
+    padding: 10px 15px;
+}
+
+#room-list .room-list-item>.content .join-btn{
+    margin-top: 10px;
+}
+
+
+#room-list .room-list-item>.content div.user{
+    display: block;
+    padding: 4px;
+    width: 90px;
+    height: 60px;
+    float: left;
+    border: 1px solid #979797;
+    border-radius: 5px;
+    margin: 0 5px;
+}

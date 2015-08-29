@@ -173,7 +173,7 @@ define([
         'transclude': true,
         'template': '<div class="form-group">' +
         '<div class="col-sm-offset-2 col-sm-8">' +
-        '<button class="btn btn-info" type="button" ng-click="submit()">提交</button> ' +
+        '<button class="btn btn-success" type="button" ng-click="submit()">提交</button> ' +
         '<button class="btn btn-default" type="button" ng-click="reset()">重置</button>' +
         '</div>' +
         '</div>',

@@ -39,9 +39,12 @@ define([
         var $elem = $(ele);
 
         var scrollBottom = function(){
-          $elem.find('.panel-body').animate({
-            scrollTop: $(document).height() * scope.messages[scope.toUser.id].length
-          }, 1000);
+            if(scope.messages[scope.toUser.id]){
+                $elem.find('.panel-body').animate({
+                    scrollTop: $(document).height() * scope.messages[scope.toUser.id].length
+                }, 1000);
+            }
+
         }
         scope.$on('receivedMessage', function (event) {
           scrollBottom();

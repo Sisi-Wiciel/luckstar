@@ -1,111 +1,90 @@
-var redis = require('redis');
 var _ = require('lodash');
 var Topic = require('../topic/topic.model');
 var User = require('../user/user.model');
-
-var client = redis.createClient();
-
-var CHAT_ID = "CHATID";
-
 var log = require('../../log');
 
-var clean = function () {
-  client.keys('*', function (err, keys) {
-    if (err) return log.error(err);
+var RSVP = require('rsvp');
 
-    for (var i = 0, len = keys.length; i < len; i++) {
-      client.del(keys[i]);
-    }
-  });
-}
 module.exports = {
-  init: function () {
-    var self = this;
-    client.on('ready', function () {
-      clean();
 
-      Topic.find(function (err, topics) {
-        if (err) {
-          log.error(err);
-        }
-        _.each(topics, function (topic) {
-          client.SADD("topics", JSON.stringify(topic));
+    init: function (db) {
+        var self = this;
+        this.db = db;
+
+        db.on('ready', function () {
+
+            db.keys('*').then(function (keys) {
+
+                for (var i = 0, len = keys.length; i < len; i++) {
+                    db.del(keys[i]);
+                }
+
+            });
+
+            Topic.find(function (err, topics) {
+                if (err) {
+                    log.error(err);
+                }
+                _.each(topics, function (topic) {
+                    db.sadd("topics", JSON.stringify(topic));
+                });
+            });
+
+            User.find(function (err, users) {
+                if (err) {
+                    log.error(err);
+                }
+
+                _.each(users, function (user) {
+                    db.hmset("users:" + user._id, {
+                        id: user._id,
+                        status: 0,
+                        username: user.username,
+                        sid: ''
+                    })
+                });
+            });
         });
-      });
 
-      User.find(function (err, users) {
-        if (err) {
-          log.error(err);
-        }
+    },
+    random: function (key, number) {
+        return this.db.srandmember(key, number);
+    },
+    save: function (key, obj) {
+        var _key = key + ":" + obj.id
+        log.debug("REDIS: save obj [%s] = ", _key, obj);
+        return this.db.hmset(_key, obj);
+    },
+    list: function (key, id) {
+        var _key = key + ":" + (id || '*');
+        var _db = this.db;
 
-        _.each(users, function (user) {
-          self.addUser(user);
+        return new RSVP.Promise(function (resolve, reject) {
+
+            _db.keys(_key).then(function (keys) {
+                var promises = [];
+                log.debug("REDIS: get list with key [%s] = ", _key, keys);
+
+                _.each(keys, function (key, index) {
+                    promises.push(_db.hgetall(key));
+                });
+
+                RSVP.all(promises).then(resolve).catch(reject);
+            }).catch(reject);
         });
-      });
 
-      client.set(CHAT_ID, 0);
+    },
+    set: function (key, name, value) {
+        return this.db.hset(key, name, value);
+    },
+    addTopic: function (topic) {
+        this.db.sadd("topics", JSON.stringify(topic));
+    },
+    setUserSid: function (uid, sid) {
+        if (uid && sid) {
+            this.set("users:" + uid, "sid", sid);
+        }
+    },
 
-    });
-  },
-  randomTopics: function (number, cb) {
-    var _cb = cb || _.noop;
-
-    client.srandmember("topics", number, function (err, objs) {
-      if (err) {
-        log.error(err);
-      } else {
-        _cb(objs);
-      }
-    });
-  },
-  addTopic: function (topic) {
-    client.SADD("topics", JSON.stringify(topic));
-  },
-  changeUserStatus: function (id, status, cb) {
-    if(id){
-      var _cb = cb || _.noop;
-      client.hset("users:" + id, "status", status, _cb);
-    }else{
-      log.error("changeUserStatus: invalid id", id, status, cb);
-    }
-  },
-  setUserSid: function(uid, sid){
-    if(uid && sid){
-      client.hset("users:" + uid, "sid", sid);
-    }
-  },
-  addUser: function (user) {
-    if(user._id){
-      client.HMSET("users:" + user._id, {
-        id: user._id,
-        status: 0,
-        username: user.username,
-        sid: ''
-      });
-    }else{
-      log.error("addUser: invalid id", user);
-    }
-
-  },
-  getUsersWithStatus: function (id, cb) {
-    var _id = id || '*';
-    client.keys('users:'+_id, function (err, keys) {
-      if (err) return log.error(err);
-      var users = [];
-      _.each(keys, function (key, index) {
-        client.hgetall(key, function (err, user) {
-          users.push(user);
-          if (index == keys.length - 1) {
-            cb(users);
-          }
-        })
-      })
-    });
-  },
-  getChatId: function(cb){
-    client.incr(CHAT_ID, function(err, id){
-      cb(id);
-    });
-  }
 }
 

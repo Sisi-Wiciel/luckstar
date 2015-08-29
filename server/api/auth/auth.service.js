@@ -13,7 +13,7 @@ function isAuthenticated() {
       expressJwt({ secret: SECRET })(req, res, next);
     })
     .use(function(req, res, next) {
-      User.findById(req.user._id, '-salt -hashedPassword').populate('stats').exec(function (err, user) {
+      User.findById(req.user._id, '-salt -hashedPassword').exec(function (err, user) {
         if (err) return next(err);
         if (!user) return res.send(401);
 
@@ -24,7 +24,7 @@ function isAuthenticated() {
 }
 
 function genToken(user){
-  return jwt.sign({_id: user._id }, SECRET, { expiresInMinutes: 60 * 5 });
+  return jwt.sign({_id: user._id}, SECRET, { expiresInMinutes: 5*60});
 }
 exports.isAuth = isAuthenticated;
 exports.genToken= genToken;
