@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var express = require('express');
 
+var RSVP = require('rsvp');
 
 module.exports = function(app){
   app.set('views', path.join(__dirname, 'views'));
@@ -25,4 +26,11 @@ module.exports = function(app){
   app.use(express.static(path.join(__dirname, '../../client')));
 
   app.use(errorHandler({ dumpExceptions: true, showStack: true }));
+
+    RSVP.on('error', function(error, label) {
+        if (error) {
+            errorHandler(error);
+        }
+
+    });
 }

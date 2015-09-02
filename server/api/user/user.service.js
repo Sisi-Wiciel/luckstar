@@ -1,6 +1,7 @@
 "use strict";
 var db = require('../redis/redis.service');
 
+var RSVP = require('rsvp');
 var _ = require('lodash');
 
 exports.changeStatus = function(id, status){
@@ -27,10 +28,14 @@ exports.add = function (user) {
 
 exports.list = function(ids){
     var self = this;
+
     if(_.isArray(ids)){
-        return RSVP.all(_.map(ids, function (id) {
-            return self.list(id)
-        }));
+        var promises = _.map(ids, function (id) {
+            return db.list("users", id)
+        })
+        return RSVP.all(promises).then(function(users){
+            return _.flatten(users);
+        });
     }else{
         return db.list("users", ids);
     }

@@ -39,8 +39,8 @@ exports.register = function (socket) {
     socket.on('send message', function (message) {
 
         userService.list([socket.uid, message.to]).then(function(result){
-            var fromUser= result[0][0];
-            var toUser = result[1][0];
+            var fromUser= result[0];
+            var toUser = result[1];
 
             var toSocket = socket.io.sockets.connected[toUser.sid];
 

@@ -37,6 +37,12 @@ define([
             updateRooms: function () {
                 this.socket.emit('update rooms');
             },
+            joinRoom: function(id){
+                this.socket.emit('join room', id);
+            },
+            leaveRoom: function(id){
+                this.socket.emit('leave room', id);
+            },
             sendMsg: function (from, to, msg) {
                 this.socket.emit('send message', {
                     from: from,

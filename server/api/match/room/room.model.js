@@ -8,9 +8,9 @@ function room (obj, user) {
     this.title = obj.title;
     this.create = moment().format();
     this.id = uuid.v1();
-    this.admin = user._id;
+    this.admin = user._id.toString();
     this.status = 0;
-    this.users = [user._id];
+    this.users = [user._id.toString()];
 }
 
 exports.new = function(obj, user){

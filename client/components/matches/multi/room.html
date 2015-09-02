@@ -19,15 +19,14 @@
     </div>
     <div class="panel panel-default room-list-item" ng-repeat="room in rooms" ng-if="rooms.length > 0">
         <div class="title">
+            <span ng-show="room.mode == 0" class="label label-success ">合作模式</span>
+            <span ng-show="room.mode == 1" class="label label-default ">竞赛模式</span> |
             <b><span ng-show="room.status == 0" class="text-muted">准备中</span></b>
             <b><span ng-show="room.status == 1" class="text-success">正在进行</span></b> |
 
             <span class="text-info">{{::room.title}}</span>
 
-            <span ng-show="room.mode == 0" class="label label-success pull-right">合作模式</span>
-            <span ng-show="room.mode == 1" class="label label-default pull-right">竞赛模式</span>
-
-            <small class="text-muted pull-right">{{room.create|fromNow}}</small>
+            <small class="text-muted pull-right" from-now="{{room.create}}"></small>
         </div>
         <div class="content clearfix text-center">
             <div class="user" ng-repeat="user in room.users">
@@ -39,7 +38,23 @@
                     已准备
                 </h6>
             </div>
-            <a ng-disabled="room.status == 1" class="btn btn-success join-btn pull-right">加入</a>
+            <span ng-disabled="room.status == 1">
+                <p ng-show="!inRoom(room.users)">
+                    <a  ng-click="join(room.id)" class="btn btn-success join-btn pull-right">
+                        加入
+                    </a>
+                </p>
+                <p ng-show="inRoom(room.users)">
+                    <a ng-click="join(room.id)" class="btn btn-success leave-btn pull-right">
+                        进入
+                    </a>
+                    <a  ng-click="leave(room.id)" class="btn btn-danger leave-btn pull-right">
+                        离开
+                    </a>
+                </p>
+
+            </span>
+
         </div>
     </div>
 

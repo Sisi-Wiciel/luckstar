@@ -5,9 +5,17 @@ define([
     'moment'
 ], function (angular, _, app, moment) {
     "use strict";
-    app.filter('fromNow', function () {
-        return function(input){
-            return moment(input).fromNow();
+    app.directive('fromNow', function ($compile, $interval) {
+        return {
+            restrict: 'A',
+            link: function(scope, ele, attr){
+                ele.html(moment(attr.fromNow).fromNow());
+
+                $interval(function(){
+                    ele.html(moment(attr.fromNow).fromNow());
+                    console.info("refresh");
+                }, 60000)
+            }
         }
     });
 });

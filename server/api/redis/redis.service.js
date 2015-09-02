@@ -59,18 +59,15 @@ module.exports = {
         var _key = key + ":" + (id || '*');
         var _db = this.db;
 
-        return new RSVP.Promise(function (resolve, reject) {
+        return _db.keys(_key).then(function (keys) {
+            var promises = [];
+            log.debug("REDIS: get list with key [%s] = ", _key, keys);
 
-            _db.keys(_key).then(function (keys) {
-                var promises = [];
-                log.debug("REDIS: get list with key [%s] = ", _key, keys);
+            _.each(keys, function (key, index) {
+                promises.push(_db.hgetall(key));
+            });
 
-                _.each(keys, function (key, index) {
-                    promises.push(_db.hgetall(key));
-                });
-
-                RSVP.all(promises).then(resolve).catch(reject);
-            }).catch(reject);
+            return RSVP.all(promises);
         });
 
     },
@@ -85,6 +82,11 @@ module.exports = {
             this.set("users:" + uid, "sid", sid);
         }
     },
+    empty: function () {
+        return new RSVP.Promise(function (resolve, reject) {
+            resolve();
+        });
+    }
 
 }
 

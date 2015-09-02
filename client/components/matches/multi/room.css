@@ -7,7 +7,9 @@
     padding: 10px 15px;
 }
 
-#room-list .room-list-item>.content .join-btn{
+#room-list .room-list-item>.content .join-btn,
+#room-list .room-list-item>.content .leave-btn{
+    margin-right: 10px;
     margin-top: 10px;
 }
 

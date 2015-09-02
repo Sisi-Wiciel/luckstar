@@ -18,16 +18,16 @@ module.exports = function (app) {
             res.sendfile('client/index.html');
         });
 
-    //app.use(function (err, req, res, next) {
-    //    if (err) {
-    //        res.status(err.status || 500);
-    //        log.error("500 error ", err.message);
-    //        return res.status(err.status).json({
-    //            'message': err.message
-    //        });
-    //    }
-    //
-    //});
+    app.use(function (err, req, res, next) {
+        if (err) {
+            res.status(err.status || 500);
+            log.error("500 error ", err.message);
+            return res.status(err.status).json({
+                'message': err.message
+            });
+        }
+
+    });
 
 };
 

@@ -2,37 +2,41 @@
 
 var _ = require('lodash');
 var db = require('../../redis/redis.service');
+var userService = require('../../user/user.service');
 var log = require('../../../log');
+var RSVP = require('rsvp');
 
-exports.list = function(){
-    //var fakeData = [{
-    //    title: 'test1',
-    //    admin: 'aaaaa',
-    //    users: [
-    //        {username: 'test1', id: 'aaaaa', status: 0},
-    //        {username: 'test2', id: 'bbbbb', status: 0},
-    //    ],
-    //    id: 'roomidsaaaa',
-    //    status: 0,
-    //    mode: 0,
-    //    create: new Date(),
-    //}, {
-    //    title: 'test2',
-    //    admin: 'aaaaa',
-    //    users: [
-    //        {username: 'test1aaaa', id: 'aaaaa', status: 1},
-    //        {username: 'test2aaaa', id: 'bbbbb', status: 0},
-    //    ],
-    //    id: 'fsdafsadfsadf',
-    //    status: 1,
-    //    mode: 1,
-    //    create: new Date(),
-    //}];
-    return db.list("rooms");
+exports.list = function(id){
 
+    return db.list("rooms", id).then(function (result) {
+        var promises = [];
+        var rooms = _.map(result, function (room) {
+            promises.push(userService.list(room.admin).then(function(admin){
+                room.admin = admin;
+            }));
+
+            room.users = room.users.split(',');
+            promises.push(userService.list(room.users).then(function(users){
+                room.users = users;
+            }));
+            return room;
+        })
+        return RSVP.all(promises).then(function(){
+            return rooms;
+        })
+
+    })
 }
 
 
 exports.save = function(room){
+    room.users = _.map(room.users, function(user){
+        return _.isString(user)? user: user.id;
+    })
+
+    if(!_.isString(room.admin)){
+        room.admin = room.admin.id;
+    }
+
     return db.save("rooms", room);
 }
