@@ -1,4 +1,4 @@
-var log = require('../log');
+var errorHandler = require('express-error-handler');
 module.exports = function (app) {
 
     app.use('/api/topic', require('./../api/topic/'));
@@ -9,7 +9,7 @@ module.exports = function (app) {
     // All undefined asset or api routes should return a 404
     app.route('/:url(api|auth|components|app|bower_components|assets)/*')
         .get(function (err, req, res) {
-            log.error("404 error", err.message);
+            errorHandler(err);
         });
 
     // All other routes should redirect to the index.html
@@ -21,7 +21,7 @@ module.exports = function (app) {
     app.use(function (err, req, res, next) {
         if (err) {
             res.status(err.status || 500);
-            log.error("500 error ", err.message);
+            errorHandler(err);
             return res.status(err.status).json({
                 'message': err.message
             });
