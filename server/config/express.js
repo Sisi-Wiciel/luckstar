@@ -31,7 +31,6 @@ module.exports = function (app) {
         if (error) {
             errorHandler(error);
         }
-
     });
 
 }

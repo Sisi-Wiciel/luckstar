@@ -40,13 +40,19 @@ define([
             joinRoom: function(id){
                 this.socket.emit('join room', id);
             },
-            leaveRoom: function(id){
-                this.socket.emit('leave room', id);
+            leaveRoom: function(){
+                this.socket.emit('leave room');
             },
             sendMsg: function (from, to, msg) {
                 this.socket.emit('send message', {
                     from: from,
                     to: to,
+                    content: msg
+                });
+            },
+            sendRoomMsg: function (from, msg) {
+                this.socket.emit('send room message', {
+                    from: from,
                     content: msg
                 });
             }

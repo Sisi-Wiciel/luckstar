@@ -10,7 +10,7 @@ define([
       'link': '/home/match'
     }, {
       'title': '多人答题',
-      'link': '/home/multimatch'
+      'link': '/home/rooms'
     }, {
       'title': '贡献题目',
       'link': '/home/topic'

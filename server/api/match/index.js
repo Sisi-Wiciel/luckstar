@@ -17,3 +17,5 @@ router.post('/end', auth.isAuth(), stat.fetch(), matchCtl.end);
 router.post('/startup/:number', auth.isAuth(), matchCtl.startup);
 
 router.post('/room', auth.isAuth(), roomCtl.new);
+
+router.get('/room/:id', auth.isAuth(), roomCtl.get);

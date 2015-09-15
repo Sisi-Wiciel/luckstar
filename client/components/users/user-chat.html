@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <i class="fa fa-comments"></i><span class="text-info"> {{toUser.username}} </span>
-        <a href ng-click="goBack()"><small class="text-muted pull-right"><i class="fa fa-reply"></i></small></a>
+        <a href ng-click="goBack()"><small class="text-muted pull-right"><i class="fa fa-reply"></i>返回</small></a>
     </div>
     <div class="panel-body" style="height: 500px;overflow-y: auto">
         <div class="item" ng-repeat="msg in messages[toUser.id]">

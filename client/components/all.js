@@ -8,7 +8,6 @@ define([
     './matches/match-service',
     './matches/match-stat-directive',
     './matches/match-stat-factory',
-    './matches/multi/room-directive',
     './matches/multi/room-creation-directive',
     './matches/multi/room-service',
     './auth/users-service',

@@ -11,5 +11,9 @@ define([
             return httpq.post('/api/match/room', room);
         };
 
+        this.get = function(id){
+            return httpq.get('/api/match/room/'+id);
+        }
+
     });
 });

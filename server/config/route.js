@@ -1,4 +1,5 @@
 var errorHandler = require('express-error-handler');
+var log = require('../log');
 module.exports = function (app) {
 
     app.use('/api/topic', require('./../api/topic/'));
@@ -8,8 +9,9 @@ module.exports = function (app) {
 
     // All undefined asset or api routes should return a 404
     app.route('/:url(api|auth|components|app|bower_components|assets)/*')
-        .get(function (err, req, res) {
-            errorHandler(err);
+        .get(function (req, res) {
+            log.error('url %s cannot found, redirect to index.html', req.url);
+            //errorHandler(err);
         });
 
     // All other routes should redirect to the index.html

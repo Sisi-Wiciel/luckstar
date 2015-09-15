@@ -1,5 +1,7 @@
 define([
-  './match',
-  './match-controller',
-  './match-multi-controller'
-], function(){});
+    './match',
+    './match-controller',
+    './room/room-controller',
+    './room/room-list-controller'
+], function () {
+});

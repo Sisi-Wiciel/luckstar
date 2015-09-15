@@ -12,7 +12,7 @@ exports.list = function(id){
         var promises = [];
         var rooms = _.map(result, function (room) {
             promises.push(userService.list(room.admin).then(function(admin){
-                room.admin = admin;
+                room.admin = _.first(admin);
             }));
 
             room.users = room.users.split(',');
@@ -30,13 +30,18 @@ exports.list = function(id){
 
 
 exports.save = function(room){
-    room.users = _.map(room.users, function(user){
+    var _room = _.clone(room);
+    _room.users = _.map(_room.users, function(user){
         return _.isString(user)? user: user.id;
     })
 
-    if(!_.isString(room.admin)){
-        room.admin = room.admin.id;
+    if(!_.isString(_room.admin) && _room.admin.id){
+        _room.admin = _room.admin.id;
     }
 
-    return db.save("rooms", room);
+    return db.save("rooms", _room);
+}
+
+exports.remove = function(room){
+    return db.delete("rooms", room);
 }

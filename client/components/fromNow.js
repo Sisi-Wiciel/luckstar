@@ -13,8 +13,7 @@ define([
 
                 $interval(function(){
                     ele.html(moment(attr.fromNow).fromNow());
-                    console.info("refresh");
-                }, 60000)
+                }, 5000);
             }
         }
     });

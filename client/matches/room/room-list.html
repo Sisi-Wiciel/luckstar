@@ -39,20 +39,9 @@
                 </h6>
             </div>
             <span ng-disabled="room.status == 1">
-                <p ng-show="!inRoom(room.users)">
-                    <a  ng-click="join(room.id)" class="btn btn-success join-btn pull-right">
-                        加入
-                    </a>
-                </p>
-                <p ng-show="inRoom(room.users)">
-                    <a ng-click="join(room.id)" class="btn btn-success leave-btn pull-right">
-                        进入
-                    </a>
-                    <a  ng-click="leave(room.id)" class="btn btn-danger leave-btn pull-right">
-                        离开
-                    </a>
-                </p>
-
+                <a ng-click="join(room.id)" class="btn btn-success join-btn pull-right">
+                    加入
+                </a>
             </span>
 
         </div>

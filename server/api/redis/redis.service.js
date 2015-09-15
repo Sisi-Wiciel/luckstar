@@ -52,16 +52,22 @@ module.exports = {
     },
     save: function (key, obj) {
         var _key = key + ":" + obj.id
-        log.debug("REDIS: save obj [%s] = ", _key, obj);
+        log.debug("REDIS-SAVE: [%s] = ", _key, obj);
         return this.db.hmset(_key, obj);
     },
+    delete: function(key, obj){
+        var _key = key + ":" + obj.id;
+        log.debug("REDIS-DELETE: [%s] = ", _key, obj);
+        return this.db.del(_key);
+    },
     list: function (key, id) {
-        var _key = key + ":" + (id || '*');
+        id = id || '*'
+        var _key = key + ":" + id;
         var _db = this.db;
 
         return _db.keys(_key).then(function (keys) {
             var promises = [];
-            log.debug("REDIS: get list with key [%s] = ", _key, keys);
+            log.debug("REDIS-LIST: key [%s] = ", _key, keys);
 
             _.each(keys, function (key, index) {
                 promises.push(_db.hgetall(key));

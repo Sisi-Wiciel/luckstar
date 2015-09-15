@@ -39,7 +39,7 @@ define([
         var $elem = $(ele);
 
         var scrollBottom = function(){
-            if(scope.messages[scope.toUser.id]){
+            if(scope.toUser && scope.messages[scope.toUser.id]){
                 $elem.find('.panel-body').animate({
                     scrollTop: $(document).height() * scope.messages[scope.toUser.id].length
                 }, 1000);

@@ -1,20 +1,20 @@
 var setting = require('../../config/setting');
 var io = require('socket.io').listen(setting.SOCKET.PORT);
 var userSocket = require('../user/user.socket');
-var matchSocket = require('../match/match.socket');
+var roomSocket = require('../match/room/room.socket');
 var db = require('../redis/redis.service');
 var jwt = require('jwt-simple');
 var log = require('../../log');
 
 function onConnect (socket) {
     userSocket.register(socket);
-    matchSocket.register(socket);
+    roomSocket.register(socket);
 
 }
 
 function onDisconnect (socket) {
     userSocket.deregister(socket);
-    matchSocket.deregister(socket);
+    roomSocket.deregister(socket);
 }
 
 module.exports = {
