@@ -81,7 +81,7 @@ module.exports = {
         return this.db.hset(key, name, value);
     },
     addTopic: function (topic) {
-        this.db.sadd("topics", JSON.stringify(topic));
+        return this.db.sadd("topics", JSON.stringify(topic));
     },
     setUserSid: function (uid, sid) {
         if (uid && sid) {

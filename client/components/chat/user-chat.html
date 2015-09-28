@@ -1,0 +1,30 @@
+<div class="chat">
+    <ul class="list-unstyled">
+        <li ng-repeat="msg in messages" ng-class="{me: curr._id === msg.from._id, user: curr._id !== msg.from._id}">
+            <div ng-if="!msg.system">
+            <span class="time pull-right">
+                {{::msg.time|date: 'hh:MM'}}
+            </span>
+            <span class="username pull-left" ng-if="curr._id !== msg.from._id">
+            {{::msg.from.username}}
+            </span>
+
+                <div class="message text-muted">
+                    <p>
+                        {{::msg.content}}
+                    </p>
+                </div>
+            </div>
+            <div ng-if="msg.system" class="text-center">
+                <span class="help-block">{{::msg.content}}</span>
+            </div>
+        </li>
+    </ul>
+    <div class="input-group message-input">
+        <input type="text" class="form-control" ng-model="messageInput" placeholder="输入内容...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="send()">发送</button>
+        </span>
+    </div>
+
+</div>

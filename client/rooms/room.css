@@ -1,0 +1,35 @@
+div.room {
+    height: 700px;
+}
+
+div.room ul.user-list li{
+    border: 1px solid #ddd;
+    color:#999;
+    margin-right : 10px;
+    width: 85px;
+    height: 85px;
+}
+
+
+div.room ul.user-list li img{
+    width: 50px;
+    height: 45px;
+}
+
+
+div.room div.message-input {
+    width: 80%;
+}
+
+div.room button.btn-start{
+    position: absolute;
+    right: 30px;
+    bottom: 25px;
+}
+div.room div.chat ul > li.user div.message {
+    margin-left: 60px;
+}
+
+div.room div.complete {
+    height: 510px;
+}

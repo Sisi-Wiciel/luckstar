@@ -1,0 +1,23 @@
+section.topic-panel ul.options a:hover {
+    background: #777;
+    color: #fff;
+    padding: 5px 20px;
+}
+
+
+section.topic-panel ul.options  a.checked {
+    background: #29589B;
+    color: #fff;
+    padding: 5px 20px;
+}
+
+section.topic-panel ul.options  a{
+    text-decoration: none;
+    /*color: #404040;*/
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    outline: none;
+    line-height: 30px;
+}
+

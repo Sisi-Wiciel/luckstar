@@ -1,7 +1,8 @@
 module.exports = {
-  SOCKET: {
-    PORT: 8889,
-    AUTH_TIME_OUT: 1000
-  },
-  SECRET_KEY: "LuCk_StAr_SeCrEt",
+    SOCKET: {
+        PORT: 8889,
+        AUTH_TIME_OUT: 1000,
+        CLOSE_DELAY: 5000
+    },
+    SECRET_KEY: "LuCk_StAr_SeCrEt",
 }

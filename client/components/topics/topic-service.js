@@ -5,49 +5,44 @@ define([
 ], function (angular, _, app) {
   "use strict";
 
-  app.factory('Topic', function (httpq, $q, $resource, matchStat) {
-    var self = this;
+  app.service('topicSrv', function (httpq, Topic, matchStat) {
+      this.topics = [];
+      this.currIndex = -1;
+      this.id = "";
+      var self = this;
 
-    var Topic = $resource('/api/topic/:id/:controller', {
-      id: '@_id',
-      controller: '@_controller'
-    }, {
-      check: {
-        method: "POST",
-        params: {
-          controller: 'checkup',
-          option: ''
-        },
-        transformRequest: function(data){
-          Topic._topic = data;
-        },
-        transformResponse: function (data, header) {
-          var json = angular.fromJson(data);
-          _.defaults(json, Topic._topic);
+      this.getCurrIndex = function () {
+        return this.currIndex;
+      };
 
-          delete Topic._topic;
-          return json;
-        }
+      this.end = function(){
+        return httpq.post('/api/match/end').then(function(result){
+          result.duration = (new Date(result.endDate) - new Date(result.startDate) ) / 1000;
+          matchStat.set(result);
+        });
+      };
+
+      this.start = function (number) {
+        this.init();
+        return httpq.post('/api/match/startup/'+number).then(function(result){
+          self.id = result.id;
+          self.topics = Topic.query();
+            return self.topics.$promise;
+        });
       }
+
+      this.next = function () {
+        return this.topics[++this.currIndex];;
+      };
+
+      this.init = function(){
+        this.currIndex = -1;
+        this.topics = [];
+      }
+
+      this.getTotalSize = function(){
+          return httpq.get("/api/topic/totalsize");
+      }
+      this.init();
     });
-
-    Topic.prototype.isTimeout = function () {
-      return this.status == 2;
-    };
-    Topic.prototype.isCorrect = function () {
-      return this.status == 0;
-    };
-    Topic.prototype.isInCorrect = function () {
-      return this.status == 1;
-    };
-
-    Topic.prototype.isActived= function () {
-      return this.status >= 0;
-    };
-
-    Topic.getTotalSize = function () {
-      return httpq.get("/api/topic/totalsize");
-    }
-    return Topic;
-  });
 });

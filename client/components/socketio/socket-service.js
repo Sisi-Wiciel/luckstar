@@ -1,19 +1,21 @@
 define([
     'socketio',
     'lodash',
-    'app'
-], function (io, _, app) {
+    'app',
+    'settings',
+], function (io, _, app, settings) {
 
     app.factory('socketSrv', function (httpq, store, $q) {
         var connect = function (namespace) {
+            var _socket = settings.socket;
             var namespace = namespace || "";
-            return io.connect('http://localhost:8889/' + namespace);
+            return io.connect('http://'+_socket.host+':'+_socket.port + namespace);
         }
 
         return {
             connect: connect,
             init: function (cb) {
-                var cb = cb || _.noop();
+                var cb = cb || _.noop;
                 var self = this;
                 this.socket = connect();
 
@@ -24,9 +26,8 @@ define([
             },
             register: function (eventName, cb) {
                 var _cb = cb || _.noop;
-                this.socket.on(eventName, function (items) {
-                    _cb(items);
-                });
+                this.socket.off(eventName);
+                this.socket.on(eventName, _cb);
             },
             userOnline: function (id) {
                 this.socket.emit('user online', id);
@@ -43,18 +44,20 @@ define([
             leaveRoom: function(){
                 this.socket.emit('leave room');
             },
-            sendMsg: function (from, to, msg) {
-                this.socket.emit('send message', {
-                    from: from,
-                    to: to,
-                    content: msg
-                });
+            sendMsg: function (msg) {
+                this.socket.emit('send message', msg);
             },
-            sendRoomMsg: function (from, msg) {
-                this.socket.emit('send room message', {
-                    from: from,
-                    content: msg
-                });
+            sendRoomMsg: function (msg) {
+                this.socket.emit('send room message', msg);
+            },
+            readyCompete: function(){
+                this.socket.emit('ready compete');
+            },
+            startCompete: function(){
+                this.socket.emit('start compete');
+            },
+            topicCheckOpt: function(opt){
+                this.socket.emit('complete check topic', opt);
             }
         }
     });

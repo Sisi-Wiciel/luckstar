@@ -27,6 +27,7 @@
     "angular-sanitize": "~1.4.3",
     "angular-ui-router": "~0.2.15",
     "angular-strap": "~2.3.1",
-    "moment": "~2.10.6"
+    "moment": "~2.10.6",
+    "bootstrap-additions": "~0.3.1"
   }
 }

@@ -1,5 +1,6 @@
 require.config({
     paths: {
+        settings: 'common/setting',
         angular: 'bower_components/angular/angular.min',
         socketio: 'libs/socket.io',
         bootstrap: 'bower_components/bootstrap/dist/js/bootstrap.min',

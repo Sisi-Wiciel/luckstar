@@ -1,57 +1,58 @@
 define([
-  'angular',
-  'app'
-], function(angular, app){
-  "use strict";
+    'angular',
+    'app'
+], function (angular, app) {
+    "use strict";
 
-  app.directive('topicPanel', function(){
-    var COUNTDOWN = 15;
+    app.directive('topicPanel', function () {
 
-    return {
-      templateUrl: 'components/topics/topic-panel.html',
-      scope: {
-        'topic': '='
-      },
-      controller: function($scope, $timeout){
+        return {
+            templateUrl: 'components/topics/topic-panel.html',
+            scope: {
+                'topic': '='
+            },
+            controller: function ($scope, $timeout, socketSrv) {
+                $scope.checkedOpt = -1;
+                socketSrv.register('topicUpdateCountdown', function(number){
+                    $scope.countdown = number;
+                    $scope.$apply();
+                })
+                //var checkTimeout = function () {
+                //
+                //    $timeout(function () {
+                //        if (_.isEmpty($scope.topic) || $scope.topic.isActived()) {
+                //            $scope.countdown = COUNTDOWN;
+                //            return;
+                //        }
+                //
+                //        if ($scope.countdown > 0) {
+                //            $scope.countdown--;
+                //            checkTimeout();
+                //        }
+                //    }, 1000);
+                //
+                //};
 
-        $scope.countdown = COUNTDOWN;
-        $scope.checkedOpt = -1;
-        var checkTimeout = function(){
+                $scope.$watch('topic', function (newValue, oldValue) {
+                    if(newValue && newValue._id){
+                        //$scope.countdown = COUNTDOWN;
+                        $scope.checkedOpt = -1;
+                        //checkTimeout();
+                    }
+                });
 
-          $timeout(function () {
-            if(_.isEmpty($scope.topic) || $scope.topic.isActived()){
-              $scope.countdown = COUNTDOWN;
-              return;
+                $scope.check = function (opt) {
+                    //if ($scope.topic.isActived()) {
+                    //    return;
+                    //}
+                    //$scope.topic.$check({option: opt}, function () {
+                    //    $scope.$emit('topicDone', $scope.topic);
+                    //});
+                    socketSrv.topicCheckOpt(opt);
+                    $scope.checkedOpt = opt;
+                };
+
             }
-            $scope.countdown--;
-
-            if($scope.countdown > 0){
-              checkTimeout();
-            }else{
-              $scope.check();
-              $scope.countdown = COUNTDOWN;
-            }
-          }, 1000);
-
-        };
-
-        $scope.check = function (opt) {
-          if($scope.topic.isActived()){
-            return;
-          }
-          $scope.topic.$check({option: opt}, function(){
-            $scope.$emit('topicDone', $scope.topic);
-          });
-          $scope.checkedOpt = opt;
-        };
-
-        $scope.$on('topicNext', function (event) {
-          $scope.checkedOpt = -1;
-          checkTimeout();
-        });
-
-        checkTimeout();
-      }
-    }
-  });
+        }
+    });
 });

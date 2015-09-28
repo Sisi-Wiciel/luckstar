@@ -11,6 +11,7 @@ function room (obj, user) {
     this.admin = user._id.toString();
     this.status = 0;
     this.users = [user._id.toString()];
+    this.readyUsers = [];
 }
 
 exports.new = function(obj, user){

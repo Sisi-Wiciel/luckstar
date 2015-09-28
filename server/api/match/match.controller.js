@@ -41,14 +41,6 @@ function startup (req, res) {
         }
 
         req.session.stat = stat._id;
-        //
-        //var u = req.user;
-        //u.stats.push(stat);
-        //u.save(function (err) {
-        //    if (err) {
-        //        return handleError(res, err);
-        //    }
-        //});
 
         return res.status(200).json({
             id: stat._id

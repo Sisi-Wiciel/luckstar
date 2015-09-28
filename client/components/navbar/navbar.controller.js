@@ -6,8 +6,8 @@ define([
 
   app.controller('NavbarCtrl', function ($scope, $location, authSrv) {
     $scope.menu = [{
-      'title': '答题',
-      'link': '/home/match'
+      'title': '首页',
+      'link': '/home'
     }, {
       'title': '多人答题',
       'link': '/home/rooms'

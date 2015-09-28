@@ -2,13 +2,14 @@ var userService = require('./user.service');
 var _ = require('lodash');
 var log = require('../../log');
 var RSVP = require('rsvp');
+var moment = require('moment');
 
 var userOnline = function (socket, id) {
     log.debug("SOCKET: received user online event", id);
     socket.uid = id;
     userService.changeStatus(id, 1).then(function () {
         userService.list().then(function (users) {
-            socket.io.emit("users", users);
+            socket.io.emit("updateUser", users);
         });
     });
 }
@@ -45,8 +46,10 @@ exports.register = function (socket) {
             var toSocket = socket.io.sockets.connected[toUser.sid];
 
             if (toSocket) {
-                toSocket.emit('receive messages', {
+                toSocket.emit('updateMessage', {
                     from: fromUser,
+                    system: false,
+                    time: moment().format(),
                     content: message.content
                 })
             }

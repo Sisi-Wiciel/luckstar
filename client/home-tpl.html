@@ -1,12 +1,12 @@
 <header ng-include src="'/components/navbar/navbar.html'"></header>
-<div class="container">
+<div class="container-fluid" id="home">
+    <div id="alertContaner"></div>
     <div class="row">
         <div class="col-sm-9">
             <div ui-view></div>
         </div>
-        <div class="col-sm-3">
-            <online-list ng-show="!chatting" send-to="showChatPanel(to)"></online-list>
-            <user-chat ng-show="chatting" to-user="toUser" go-back="hideChatPanel()" messages="messages"></user-chat>
+        <div class="col-sm-3 hidden-xs">
+            <online-list></online-list>
         </div>
     </div>
 

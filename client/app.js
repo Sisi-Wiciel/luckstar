@@ -20,6 +20,7 @@ define([
         var componentRequires = [
             'common/all',
             'matches/all',
+            'rooms/all',
             'topics/all',
             'users/all',
             'components/all',
@@ -28,6 +29,7 @@ define([
 
         var apps_deps = [
             'luckStar',
+            'luckStar.rooms',
             'luckStar.matches',
             'luckStar.topics',
             'luckStar.users',
@@ -92,7 +94,25 @@ define([
                         .element(document)
                         .ready(function () {
                             angular.bootstrap(document, apps_deps)
-                                .invoke(['$rootScope', '$location', 'store', function ($rootScope, $location, store) {
+                                .invoke(['$rootScope', '$location', 'store', '$alert', function ($rootScope, $location, store, $alert) {
+                                    var _alert = function(type){
+                                        return function(content, title){
+                                            $alert({
+                                                title:  title || '',
+                                                content: content,
+                                                placement: 'top',
+                                                animation: "am-fade-and-slide-top",
+                                                type: type,
+                                                container: '#alertContaner',
+                                                duration: '3'
+                                            });
+                                        }
+                                    }
+                                    $rootScope.info = _alert('info');
+                                    $rootScope.warning = _alert('warning');
+                                    $rootScope.error = _alert('danger');
+                                    $rootScope.success = _alert('success');
+
                                     $rootScope.$on('$stateChangeSuccess',
                                         function (event, toState, toParams, fromState, fromParams) {
                                             if (_.startsWith(toState.url, '/home') && !store.get('token')) {

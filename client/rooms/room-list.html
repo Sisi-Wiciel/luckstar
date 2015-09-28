@@ -1,5 +1,5 @@
 <div class="page-header clearfix">
-    当前房间列表
+    <span class="text-warning">当前房间列表</span>
      <span class="pull-right">
          <button type="button"
                  class="btn btn-success btn-sm"
@@ -13,7 +13,7 @@
 
 <div id="room-list">
     <div ng-if="rooms.length == 0">
-        <p class="text-info">
+        <p >
             暂时没有任何房间
         </p>
     </div>
@@ -31,11 +31,11 @@
         <div class="content clearfix text-center">
             <div class="user" ng-repeat="user in room.users">
                 {{user.username}}
-                <h6 class="text-info" ng-show="user.status == 0">
-                    未准备
+                <h6 class="text-info" ng-show="user.id !== room.admin.id">
+                    用户
                 </h6>
-                <h6 class="text-success" ng-show="user.status == 1">
-                    已准备
+                <h6 class="text-success" ng-show="user.id === room.admin.id">
+                    管理员
                 </h6>
             </div>
             <span ng-disabled="room.status == 1">

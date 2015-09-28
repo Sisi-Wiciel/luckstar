@@ -1,0 +1,49 @@
+<div class="panel panel-default room">
+    <div class="panel-heading">
+        <span class="title">{{room.title}}</span>
+        <span class="label label-info">抢答模式</span>
+        <a href ng-click="leave(room.id)" comfirm="请确认是否要退出房间,管理员退出房间将会被关闭.">
+            <small class="text-muted pull-right"><i class="fa fa-reply"></i>离开</small>
+        </a>
+    </div>
+    <div class="panel-body">
+
+        <ul class="user-list list-inline">
+
+            <li class="text-center" ng-repeat="user in room.users"
+                ng-class="{'admin': isAdmin(user), 'user': !isAdmin(user)}">
+                <div class="head">
+                    <i ng-if="isAdmin(user)" class="fa fa-star"></i> {{user.username}}
+                </div>
+                <div class="body">
+                    <img src="../../libs/images/avatar.png"/>
+                </div>
+                <div class="foot" ng-class="" ng-if="room.status==1">
+                    <div ng-if="!verdict || (verdict.user && verdict.user.id != user.id)" class="bg-info">选择中...</div>
+
+                    <div ng-if="verdict && verdict.user.id == user.id">
+                        <div ng-if="verdict.verdict == 1" class="bg-success">
+                            <i class="fa fa-check"></i> 回答正确
+                        </div>
+                        <div ng-if="verdict.verdict == 0" class="bg-danger">
+                            <i class="fa fa-times"></i> 回答错误
+                        </div>
+                    </div>
+                    <div ng-if="verdict && !verdict.user && verdict.verdict == -1" class="bg-info">
+                        回答超时
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <div class="complete" room-reset-height="260">
+            <room-compete ng-if="room.status == 1"></room-compete>
+            <user-chat message="message" name="true" sender="sendRoomMsg(msg)"></user-chat>
+            <button ng-if="isAdmin() && room.status == 0" class="btn btn-success btn-start" ng-click="start()">
+                开始答题
+            </button>
+        </div>
+
+    </div>
+
+</div>

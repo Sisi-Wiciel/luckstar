@@ -6,6 +6,7 @@ var Topic = require('./topic.model');
 var errorHandler = require('express-error-handler');
 var auth = require('../auth/auth.service');
 var router = express.Router();
+var topicSrv = require('./topic.service');
 
 var db = require('../redis/redis.service');
 
@@ -51,8 +52,7 @@ function queryTopics (req, res) {
 
     var stat = req.stat;
     var num = stat ? stat.totalNum : 1;
-
-    db.random('topics', num).then(function (topics) {
+    topicSrv.list(num).then(function (topics) {
         return res.status(200).json(_.map(topics, JSON.parse));
     });
 }
@@ -62,13 +62,9 @@ function addTopic (req, res) {
     if (req.user) {
         topic.creator = req.user;
     }
-    Topic.create(topic, function (err, topic) {
-        if (err) {
-            return errorHandler(res, err);
-        }
-        db.addTopic(topic);
+    topicSrv.save(topic).then(function(topic){
         return res.status(201).json(topic);
-    });
+    })
 };
 
 function getTotalSize (req, res) {

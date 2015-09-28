@@ -1,4 +1,4 @@
-<div class="panel panel-default" style="margin-bottom:0;height: 600px">
+<div class="panel panel-default" style="margin-bottom:0;height: 600px"  ng-show="!chatting">
     <!-- Default panel contents -->
     <div class="panel-heading">
         <div class="dropdown">
@@ -17,19 +17,28 @@
         </div>
 
     </div>
-    <ul class="list-unstyled" >
+
+    <ul class="list-unstyled">
         <li class="list-group-item" style="border:0"
             ng-repeat="user in userlist"
             ng-if="user.id != curr._id"
             ng-show="status.value < 0 || status.value == user.status">
             <i class="fa fa-circle" ng-class="{'text-success': user.status == 1, 'text-muted': user.status == 0}"></i>
             {{user.username}}
-            <a ng-show="user.status == 1" class="pull-right" href ng-click="sendTo({to: user})">
+            <a ng-show="user.status == 1" class="pull-right" href ng-click="showChatPanel(user)">
                 <i class="fa fa-comments"></i>
             </a>
 
         </li>
     </ul>
 </div>
-
+<div class="panel panel-default"  ng-show="chatting">
+    <div class="panel-heading">
+        <i class="fa fa-comments"></i><span class="text-warning"> {{toUser.username}} </span>
+        <a href ng-click="hideChatPanel()"><small class="text-muted pull-right"><i class="fa fa-reply"></i>返回</small></a>
+    </div>
+    <div class="panel-body no-pad" style="height: 500px;">
+        <user-chat message="message" name="false" sender="sendMsg(msg)"></user-chat>
+    </div>
+</div>
 

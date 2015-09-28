@@ -1,17 +1,16 @@
 define([
     'angular',
-    'app',
+    './room',
 ], function (angular, app) {
     "use strict";
 
-    app.controller('roomListCtrl', function ($scope, socketSrv, roomSrv, $location, authSrv) {
+    app.controller('roomListCtrl', function ($scope, socketSrv, roomSrv, $location, authSrv, $rootScope) {
         $scope.rooms = [];
         $scope.curr = authSrv.getCurrentUser();
         $scope.popover = {
             "title": "创建房间",
             "content": " "
         };
-
         socketSrv.register('updateRooms', function (rooms) {
             $scope.rooms = rooms;
             $scope.$apply();

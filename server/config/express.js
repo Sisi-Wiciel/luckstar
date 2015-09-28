@@ -14,7 +14,7 @@ module.exports = function (app) {
     app.set('view engine', 'ejs');
 
     app.use(favicon(__dirname + '../../../client/libs/images/favicon.ico'));
-    app.use(logger('dev'));
+    //app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: false}));
     app.use(cookieParser());
@@ -28,6 +28,7 @@ module.exports = function (app) {
     app.use(errorHandler({dumpExceptions: true, showStack: true}));
 
     RSVP.on('error', function (error, label) {
+        console.error(error, label);
         if (error) {
             errorHandler(error);
         }
