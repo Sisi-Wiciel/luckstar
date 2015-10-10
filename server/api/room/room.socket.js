@@ -40,6 +40,10 @@ var getAndUpdateRoom = function (socket, id, cb) {
             })
 
         } else {
+            if(socket.room === id){
+                socket.leave(id);
+                socket.room = null
+            }
             log.error("getAndUpdateRoom: not found room ", id);
         }
 
@@ -66,15 +70,15 @@ var joinRoom = function (socket, id) {
 var leaveRoom = function (socket) {
     log.info("LeaveRoom");
     var room = socket.room;
+
     getAndUpdateRoom(socket, room, function (room, user) {
 
         if (user.id === room.admin.id) {
             room.admin = null;
+            socket.io.sockets.in(socket.room).emit('closeRoom');
         }
-
-        _.remove(room.users, 'id', user.id);
-
         socket.leave(room);
+        _.remove(room.users, 'id', user.id);
 
         sendSystemMessage(socket, '用户' + user.username + '离开房间');
 

@@ -24,43 +24,44 @@ define([
             $scope.verdict = verdict;
         });
 
+        socketSrv.register('closeRoom', function (room) {
+            $scope.error('管理员退出房间', '房间已关闭');
+            $scope.leave();
+            $scope.$apply();
+        });
+
         socketSrv.register('updateRoom', function (room) {
             $scope.room = room;
-            if(!room.admin){
-                $scope.error('管理员退出房间', '房间已关闭');
-                $scope.leave();
-            }else{
-                if(room.status == 1){
-                    $timeout(function(){
-                        $scope.$broadcast('eleChanged');
-                    });
-                }
+
+            if (room.status == 1) {
+                $timeout(function () {
+                    $scope.$broadcast('eleChanged');
+                });
             }
 
             $scope.$apply();
         });
-
 
         socketSrv.register('updateRoomMessage', function (msg) {
             $scope.message = msg;
             $scope.$apply();
         });
 
-        $scope.sendRoomMsg = function(content){
+        $scope.sendRoomMsg = function (content) {
             socketSrv.sendRoomMsg({
                 from: $scope.curr,
                 content: content
             });
         };
 
-        $scope.isAdmin = function(user){
-            if(!$scope.room || !$scope.room.admin){
+        $scope.isAdmin = function (user) {
+            if (!$scope.room || !$scope.room.admin) {
                 return false;
             }
             var adminId = $scope.room.admin.id;
-            if(user){
+            if (user) {
                 return adminId === user.id;
-            }else{
+            } else {
                 return adminId === $scope.curr._id;
             }
         }
@@ -69,7 +70,7 @@ define([
             $location.path('/home/rooms');
         };
 
-        $scope.start = function(){
+        $scope.start = function () {
             socketSrv.readyCompete();
         }
     });

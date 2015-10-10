@@ -6,7 +6,7 @@
                 {{::msg.time|date: 'hh:MM'}}
             </span>
             <span class="username pull-left" ng-if="curr._id !== msg.from._id">
-            {{::msg.from.username}}
+            <span ng-if="showName">{{::msg.from.username}}</span>
             </span>
 
                 <div class="message text-muted">
