@@ -19,7 +19,6 @@ define([
         socketSrv.updateRooms();
 
         $scope.join = function (roomId) {
-            //socketSrv.joinRoom(roomId);
             $location.path('/home/room/'+roomId);
         };
 

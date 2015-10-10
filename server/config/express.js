@@ -27,11 +27,5 @@ module.exports = function (app) {
 
     app.use(errorHandler({dumpExceptions: true, showStack: true}));
 
-    RSVP.on('error', function (error, label) {
-        console.error(error, label);
-        if (error) {
-            errorHandler(error);
-        }
-    });
 
 }

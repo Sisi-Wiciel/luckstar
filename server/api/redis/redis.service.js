@@ -3,15 +3,20 @@ var Topic = require('../topic/topic.model');
 var User = require('../user/user.model');
 var log = require('../../log');
 
-var RSVP = require('rsvp');
+var Promise = require('bluebird');
+var LOCK = require("redis-lock");
 
 module.exports = {
 
     init: function (db) {
+
         var self = this;
         this.db = db;
+        this.lock = LOCK(this.db._redisClient);
+        this.LOCK_KEY = "luckstart_lock";
 
         db.on('ready', function () {
+
 
             db.keys('*').then(function (keys) {
 
@@ -46,16 +51,52 @@ module.exports = {
             });
         });
 
+        db.on('error', function(error){
+            console.error(error);
+        })
+
     },
     random: function (key, number) {
         return this.db.srandmember(key, number);
     },
-    save: function (key, obj) {
-        var _key = key + ":" + obj.id
-        log.debug("REDIS-SAVE: [%s] = ", _key, obj);
-        return this.db.hmset(_key, obj);
+    save: function (key, obj, setFun) {
+        var _key = key + ":" + obj.id;
+        var self = this;
+
+        if (setFun && _.isFunction(setFun)) {
+            log.debug("REDIS-CAS-LOCK: [%s] = ", _key, obj);
+
+            return new Promise(function (resolve, reject){
+                self.lock(self.LOCK_KEY, function (done) {
+                    self.list(key, obj.id).then(function (Objs) {
+                        var lockedObj = _.first(Objs);
+
+                        if(lockedObj){
+                            setFun(_.clone(lockedObj)).then(function(_obj){
+                                self.db.hmset(_key, _obj).then(function(){
+                                    log.debug("REDIS-CAS-LOCK-UNLOCK: [%s] = ", _key, _obj);
+                                    done();
+                                    resolve(_obj);
+                                });
+                            })
+                        }else{
+                            log.error("Cannot save object, because it's not existed with key " + _key);
+                            reject(lockedObj);
+                        }
+
+                    })
+                });
+            });
+
+        } else {
+            log.debug("REDIS-SAVE: [%s] = ", _key, obj);
+            return this.db.hmset(_key, obj).then(function(){
+                return obj;
+            });
+        }
+
     },
-    delete: function(key, obj){
+    delete: function (key, obj) {
         var _key = key + ":" + obj.id;
         log.debug("REDIS-DELETE: [%s] = ", _key, obj);
         return this.db.del(_key);
@@ -66,14 +107,11 @@ module.exports = {
         var _db = this.db;
 
         return _db.keys(_key).then(function (keys) {
-            var promises = [];
-            log.debug("REDIS-LIST: key [%s] = ", _key, keys);
+            log.debug("REDIS-LIST: ", keys);
 
-            _.each(keys, function (key, index) {
-                promises.push(_db.hgetall(key));
+            return Promise.map(keys, function(key){
+                return _db.hgetall(key);
             });
-
-            return RSVP.all(promises);
         });
 
     },
@@ -88,11 +126,6 @@ module.exports = {
             this.set("users:" + uid, "sid", sid);
         }
     },
-    empty: function () {
-        return new RSVP.Promise(function (resolve, reject) {
-            resolve();
-        });
-    }
 
 }
 

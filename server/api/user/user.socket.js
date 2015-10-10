@@ -1,7 +1,6 @@
 var userService = require('./user.service');
 var _ = require('lodash');
 var log = require('../../log');
-var RSVP = require('rsvp');
 var moment = require('moment');
 
 var userOnline = function (socket, id) {

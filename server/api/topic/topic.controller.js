@@ -17,7 +17,7 @@ function checkTopic (req, res) {
     Topic.findById(req.params.id, "+corrector", function (err, topic) {
 
         if (err) {
-            return errorHandler(res, err)
+            return errorHandler(res, err);
         }
 
         var isCorrect = topic.corrector.toString() == checked.toString();

@@ -1,7 +1,7 @@
 "use strict";
 var db = require('../redis/redis.service');
 
-var RSVP = require('rsvp');
+var Promise = require('bluebird');
 var _ = require('lodash');
 
 exports.changeStatus = function(id, status){
@@ -33,9 +33,7 @@ exports.list = function(ids){
         var promises = _.map(ids, function (id) {
             return db.list("users", id)
         })
-        return RSVP.all(promises).then(function(users){
-            return _.flatten(users);
-        });
+        return Promise.all(promises).then(_.flatten);
     }else{
         return db.list("users", ids);
     }

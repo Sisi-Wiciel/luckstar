@@ -5,16 +5,23 @@ var competeSocket = require('./compete.socket');
 var log = require('../../log');
 var _ = require('lodash');
 var moment = require('moment');
-var RSVP = require('rsvp');
+var Promise = require('bluebird');
 var setting = require('../../config/setting');
 
 var updateRooms = function (socket) {
+    log.info("UpdateRooms");
     roomService.list().then(function (rooms) {
+        if(socket.room){
+            var currRoom = _.find(rooms, "id", socket.room);
+            socket.io.sockets.in(socket.room).emit('updateRoom', currRoom);
+        }
+
         socket.io.emit("updateRooms", rooms);
     });
 }
 
 var getAndUpdateRoom = function (socket, id, cb) {
+    log.info("GetAndUpdateRoom");
     if (!cb) {
         return;
     }
@@ -25,12 +32,10 @@ var getAndUpdateRoom = function (socket, id, cb) {
 
             userService.list(socket.uid).then(function (users) {
                 var postGET = function(){
-                    socket.io.sockets.in(room.id).emit('updateRoom', room);
                     updateRooms(socket);
                 }
 
                 var promise = cb(room, _.first(users));
-
                 promise && promise.then(postGET) || postGET();
             })
 
@@ -42,20 +47,24 @@ var getAndUpdateRoom = function (socket, id, cb) {
 }
 
 var joinRoom = function (socket, id) {
+    log.info("JoinRoom");
     socket.room = id;
     getAndUpdateRoom(socket, id, function (room, user) {
 
         socket.join(socket.room);
         if (!_.find(room.users, 'id', user.id)) {
-            room.users.push(user);
+
             sendSystemMessage(socket, '用户' + user.username + '加入房间');
-            return roomService.save(room);
+            return roomService.save(room, function(locked){
+                locked.users.push(user);
+            });
         }
 
     });
 };
 
 var leaveRoom = function (socket) {
+    log.info("LeaveRoom");
     var room = socket.room;
     getAndUpdateRoom(socket, room, function (room, user) {
 
@@ -94,22 +103,20 @@ var sendChatMessage = function (socket, msg) {
 };
 
 var readyRoomCompete = function(socket){
-
+    log.info("ReadyRoomCompete")
     getAndUpdateRoom(socket, socket.room, function (room, user) {
         if(room.admin.id !== user.id){
             log.error('readyRoomCompete: Only admin user can start competition');
             return;
         }
-        return new RSVP.Promise(function(resolve, reject) {
+        return new Promise(function(resolve, reject) {
             var countdown = 2;
 
             (function doCountDown(){
                 setTimeout(function(){
                     if(countdown == 0){
                         room.status = 1 ;
-                        roomService.save(room).then(function(){
-                            resolve();
-                        })
+                        resolve(roomService.save(room));
                     }else{
                         sendSystemMessage(socket, countdown-- + '秒后答题开始..');
                         doCountDown();
@@ -121,20 +128,19 @@ var readyRoomCompete = function(socket){
 };
 
 var startRoomCompete = function(socket){
+    log.info("StartRoomCompete");
+
     getAndUpdateRoom(socket, socket.room, function (room, user) {
-        if(!room.readyUsers){
-            room.readyUsers = [];
-        }
+
         if(room.readyUsers.indexOf(user.id) > -1){
             return ;
         }
 
-        room.readyUsers.push(user.id);
-        console.info(room.readyUsers);
-        sendSystemMessage(socket, '用户' +user.username + '已准备就绪.');
-
-
-        roomService.save(room).then(function(){
+        roomService.save(room, function(locked){
+            locked.readyUsers.push(user.id);
+            sendSystemMessage(socket, '用户' +user.username + '已准备就绪.');
+        }).then(function(room){
+            console.info("ready user length : ", room.readyUsers, room.users);
             if(room.readyUsers.length == room.users.length){
                 competeSocket.nextTopic(socket);
             }

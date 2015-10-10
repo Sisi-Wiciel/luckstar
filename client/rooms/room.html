@@ -23,14 +23,14 @@
 
                     <div ng-if="verdict && verdict.user.id == user.id">
                         <div ng-if="verdict.verdict == 1" class="bg-success">
-                            <i class="fa fa-check"></i> 回答正确
+                            <i class="fa fa-smile-o"></i> 回答正确
                         </div>
                         <div ng-if="verdict.verdict == 0" class="bg-danger">
-                            <i class="fa fa-times"></i> 回答错误
+                            <i class="fa fa-frown-o"></i> 回答错误
                         </div>
                     </div>
                     <div ng-if="verdict && !verdict.user && verdict.verdict == -1" class="bg-info">
-                        回答超时
+                        <i class="fa fa-frown-o"></i> 回答超时
                     </div>
                 </div>
             </li>

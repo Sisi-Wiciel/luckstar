@@ -1,7 +1,7 @@
 var db = require('../redis/redis.service');
 var Topic = require('./topic.model');
 var errorHandler = require('express-error-handler');
-var RSVP = require('rsvp');
+var Promise = require('bluebird');
 
 var getTopic = function(number){
     return db.random('topics', 1).then(function(topics){
@@ -10,7 +10,7 @@ var getTopic = function(number){
 }
 
 var isCorrect = function(id, answer){
-    return new RSVP.Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
         Topic.findById(id, "+corrector", function (err, topic) {
             if(err){
                 errorHandler(err);

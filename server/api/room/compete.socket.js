@@ -4,11 +4,10 @@ var roomService = require('./room.service');
 var log = require('../../log');
 var _ = require('lodash');
 var moment = require('moment');
-var RSVP = require('rsvp');
-
+var Promise = require('bluebird');
 var TOPIC_COUNT_DOWN = 15;
 
-var topicCountDown = function(socket, topic){
+var topicCountDown = function (socket, topic) {
     var number = TOPIC_COUNT_DOWN;
     (function countdown () {
         setTimeout(function () {
@@ -16,7 +15,7 @@ var topicCountDown = function(socket, topic){
             // 每秒钟都去redis查room的topic 有没有被改变.
             // 其实room绑定到socket最好, 就不用去redis 拿room信息了, 要每一个client的socket都绑定topic. 这样会存在问题 比如 刷新浏览器socket信息就没了
 
-            if(socket.room){
+            if (socket.room) {
                 roomService.list(socket.room).then(function (rooms) {
                     var room = rooms[0];
                     if (room && room.topic && room.topic === topic._id) {
@@ -27,19 +26,19 @@ var topicCountDown = function(socket, topic){
                             socket.io.sockets.in(socket.room).emit('topicVerdict', {
                                 verdict: -1
                             });
-                            self.nextTopic(socket);
+                            nextTopic(socket)
                         }
                     }
                 });
             }
-
 
         }, 1000);
 
     }).call(this);
 };
 
-exports.nextTopic = function (socket) {
+function nextTopic (socket) {
+    log.info("NextTopic");
     var self = this;
     roomService.list(socket.room).then(function (rooms) {
         var room = rooms[0];
@@ -58,13 +57,14 @@ exports.nextTopic = function (socket) {
     })
 };
 
-exports.checkTopic = function (socket, answer) {
+function checkTopic (socket, answer) {
+    log.info("CheckTopic");
     var self = this;
 
-    RSVP.hash({
+    Promise.props({
         'users': userService.list(socket.uid),
         'rooms': roomService.list(socket.room)
-    }).then(function(results) {
+    }).then(function (results) {
         var user = results.users[0];
         var room = results.rooms[0];
 
@@ -77,19 +77,23 @@ exports.checkTopic = function (socket, answer) {
                 user: user,
                 verdict: verdict
             });
-            self.nextTopic(socket);
+            nextTopic(socket);
         })
     });
 };
 
+exports.checkTopic = checkTopic;
+
+exports.nextTopic = nextTopic;
+
 exports.register = function (socket) {
     var self = this;
     socket.on('complete next topic', function () {
-        self.nextTopic(socket);
+        nextTopic(socket);
     });
 
     socket.on('complete check topic', function (answer) {
-        self.checkTopic(socket, answer);
+        checkTopic(socket, answer);
     });
 };
 
