@@ -30,12 +30,11 @@ exports.list = function(ids){
     var self = this;
 
     if(_.isArray(ids)){
-        var promises = _.map(ids, function (id) {
-            return db.list("users", id)
-        })
-        return Promise.all(promises).then(_.flatten);
+        return Promise.all(_.map(ids, function (id) {
+            return db.listObj("users", id)
+        })).then(_.flatten);
     }else{
-        return db.list("users", ids);
+        return db.listObj("users", ids);
     }
 
 }

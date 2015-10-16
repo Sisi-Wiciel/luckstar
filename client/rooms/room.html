@@ -18,7 +18,7 @@
                 <div class="body">
                     <img src="../../libs/images/avatar.png"/>
                 </div>
-                <div class="foot" ng-class="" ng-if="room.status==1">
+                <div class="foot" ng-if="room.status==1">
                     <div ng-if="!verdict || (verdict.user && verdict.user.id != user.id)" class="bg-info">选择中...</div>
 
                     <div ng-if="verdict && verdict.user.id == user.id">
@@ -36,14 +36,20 @@
             </li>
         </ul>
 
-        <div class="complete" room-reset-height="260">
-            <room-compete ng-if="room.status == 1"></room-compete>
+        <div class="room-complete">
+            <room-compete></room-compete>
+            <div ng-if="isAdmin() && room.status == 0 || room.status == 2">
+                <button class="btn btn-success btn-start"
+                        ng-click="start()">
+                    开始答题
+                </button>
+            </div>
+        </div>
+        <div class="room-chat">
             <user-chat message="message" name="true" sender="sendRoomMsg(msg)"></user-chat>
-            <button ng-if="isAdmin() && room.status == 0" class="btn btn-success btn-start" ng-click="start()">
-                开始答题
-            </button>
         </div>
 
     </div>
+
 
 </div>

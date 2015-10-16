@@ -8,6 +8,7 @@ define([
 
         return {
             templateUrl: 'components/chat/user-chat.html',
+            replace:true,
             scope: {
                 message: "=",
                 name: "@",

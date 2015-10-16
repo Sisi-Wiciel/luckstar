@@ -1,13 +1,37 @@
 var userService = require('../user/user.service');
 var topicService = require('../topic/topic.service');
 var roomService = require('./room.service');
+var roomScoket = require('./room.socket');
 var log = require('../../log');
 var _ = require('lodash');
 var moment = require('moment');
 var Promise = require('bluebird');
+
 var TOPIC_COUNT_DOWN = 15;
 
+var nodifyRoom = function(socket, key, obj){
+    socket.io.sockets.in(socket.room).emit(key, obj);
+}
+var nodifyVerdict = function(socket, room, verdictObj){
+    log.info("NodifyVerdict");
+
+    nodifyRoom(socket, 'topicVerdict', verdictObj);
+
+    roomService.updateRoomStat(room, verdictObj).then(function(roomStat){
+        if(roomStat.currNum > roomStat.maxNum){
+            roomService.finishCompete(room, roomStat).then(function(){
+                nodifyRoom(socket, 'updateRoomStat', roomStat);
+                roomScoket.updateRooms(socket);
+            })
+        }else{
+            nodifyRoom(socket, 'updateRoomStat', roomStat);
+            nextTopic(socket);
+        }
+
+    })
+}
 var topicCountDown = function (socket, topic) {
+    log.info("TopicCountDown");
     var number = TOPIC_COUNT_DOWN;
     (function countdown () {
         setTimeout(function () {
@@ -18,17 +42,17 @@ var topicCountDown = function (socket, topic) {
             if (socket.room) {
                 roomService.list(socket.room).then(function (rooms) {
                     var room = rooms[0];
-                    if (room && room.topic && room.topic === topic._id) {
+                    if (room && room.topic && room.topic === topic._id && room.status == 1) {
                         if (number > 0) {
-                            socket.io.sockets.in(socket.room).emit('topicUpdateCountdown', --number);
+                            nodifyRoom(socket, 'updateTopicCountdown', --number);
                             countdown();
                         } else {
-                            socket.io.sockets.in(socket.room).emit('topicVerdict', {
+                            nodifyVerdict(socket, room,{
                                 verdict: -1
                             });
-                            nextTopic(socket)
                         }
                     }
+
                 });
             }
 
@@ -45,9 +69,11 @@ function nextTopic (socket) {
 
         topicService.get().then(function (topic) {
 
+            delete topic.correct;
+
             room.topic = topic._id;
 
-            socket.io.sockets.in(socket.room).emit('topicUpdate', topic);
+            nodifyRoom(socket, 'topicUpdate', topic);
 
             roomService.save(room).then(function () {
                 topicCountDown(socket, topic);
@@ -68,16 +94,18 @@ function checkTopic (socket, answer) {
         var user = results.users[0];
         var room = results.rooms[0];
 
-        topicService.isCorrect(room.topic, answer).then(function () {
+        var verdictObj = {
+            user: user,
+        }
+        topicService.isCorrect(room.topic, answer).then(function (point) {
+            verdictObj.point = point;
             return 1;
-        }, function () {
+        }, function (point) {
+            verdictObj.point = point;
             return 0;
         }).then(function (verdict) {
-            socket.io.sockets.in(socket.room).emit('topicVerdict', {
-                user: user,
-                verdict: verdict
-            });
-            nextTopic(socket);
+            verdictObj.verdict = verdict;
+            nodifyVerdict(socket, room, verdictObj);
         })
     });
 };

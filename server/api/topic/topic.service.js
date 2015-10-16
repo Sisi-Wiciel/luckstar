@@ -3,29 +3,28 @@ var Topic = require('./topic.model');
 var errorHandler = require('express-error-handler');
 var Promise = require('bluebird');
 
-var getTopic = function(number){
-    return db.random('topics', 1).then(function(topics){
-        return JSON.parse(topics)
-    });
+var getTopic = function(){
+    return db.random('topics', 1).then(JSON.parse);
 }
 
 var isCorrect = function(id, answer){
     return new Promise(function(resolve, reject) {
-        Topic.findById(id, "+corrector", function (err, topic) {
+        Topic.findById(id, function (err, topic) {
             if(err){
                 errorHandler(err);
             }else{
                 if(topic.corrector.toString() == answer.toString()){
-                    resolve();
+                    resolve(topic.point);
                 }else{
-                    reject();
+                    reject(topic.point);
                 }
 
             }
         })
     });
+};
 
-}
+
 var saveTopic = function(topic){
     Topic.create(topic, function (err, topic) {
         if (err) {

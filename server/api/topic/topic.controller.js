@@ -1,7 +1,6 @@
 'use strict';
 var _ = require('lodash');
 var express = require('express');
-var Stat = require('../match/stat.model');
 var Topic = require('./topic.model');
 var errorHandler = require('express-error-handler');
 var auth = require('../auth/auth.service');

@@ -9,10 +9,19 @@ define([
         app.directive('roomCompete', function () {
 
             return {
+                replace:true,
                 templateUrl: "components/compete/compete.html",
                 controller: function ($scope, Topic, socketSrv) {
                     socketSrv.register('topicVerdict', function(obj){
-                        $scope.$emit('topicVerdict', obj);
+                        $scope.setVerdict(obj);
+                        $scope.$apply();
+                    });
+
+                    socketSrv.register('updateRoomStat', function(roomStat){
+                        $scope.roomStat = roomStat;
+                        if(roomStat.maxNum < roomStat.currNum){
+                            $scope.topic = {};
+                        }
                         $scope.$apply();
                     });
 
@@ -21,7 +30,6 @@ define([
                         $scope.$apply();
                     });
 
-                    socketSrv.startCompete();
                 },
                 link: function (scope, elem, attr) {
 

@@ -1,0 +1,7 @@
+div.online-list {
+    height: 500px;
+}
+
+div.online-list > div{
+    height: 100%;
+}

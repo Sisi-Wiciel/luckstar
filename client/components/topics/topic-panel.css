@@ -1,3 +1,6 @@
+section.topic-panel{
+    flex:1;
+}
 section.topic-panel ul.options a:hover {
     background: #777;
     color: #fff;

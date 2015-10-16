@@ -1,5 +1,4 @@
 div.room {
-    height: 700px;
 }
 
 div.room ul.user-list li{
@@ -17,19 +16,9 @@ div.room ul.user-list li img{
 }
 
 
-div.room div.message-input {
-    width: 80%;
+div.room div.room-complete {
+    height: 300px;
 }
-
-div.room button.btn-start{
-    position: absolute;
-    right: 30px;
-    bottom: 25px;
-}
-div.room div.chat ul > li.user div.message {
-    margin-left: 60px;
-}
-
-div.room div.complete {
-    height: 500px;
+div.room div.room-chat {
+    height: 200px;
 }

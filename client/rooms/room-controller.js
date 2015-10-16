@@ -20,9 +20,9 @@ define([
 
         socketSrv.joinRoom(room.id);
 
-        $scope.$on('topicVerdict', function (event, verdict) {
+        $scope.setVerdict = function(verdict){
             $scope.verdict = verdict;
-        });
+        }
 
         socketSrv.register('closeRoom', function (room) {
             $scope.error('管理员退出房间', '房间已关闭');
@@ -31,14 +31,14 @@ define([
         });
 
         socketSrv.register('updateRoom', function (room) {
-            $scope.room = room;
 
-            if (room.status == 1) {
-                $timeout(function () {
-                    $scope.$broadcast('eleChanged');
-                });
+            if (($scope.room.status == 0 || $scope.room.status == 2) && room.status == 1) {
+                socketSrv.startCompete();
+                //$timeout(function () {
+                //    $scope.$broadcast('eleChanged');
+                //});
             }
-
+            $scope.room = room;
             $scope.$apply();
         });
 

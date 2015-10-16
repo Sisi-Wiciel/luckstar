@@ -1,38 +1,42 @@
 div.chat {
-    position: relative;
     height: 100%;
-
+    flex-direction: column;
+    display: flex;
 }
 
 div.chat > ul {
-    overflow: auto;
-    height: inherit;
+    flex: 1;
+    overflow-x: hidden;
     padding: 10px 5px 0 10px;
 }
-div.chat li div.message {
-    position: relative;
 
-    margin-bottom: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    padding:2px 5px;
+div.chat > ul > li {
+    display: flex;
 }
-
-
-div.chat li div.message .head {
-    float: left;
-    width: 100%;
-    margin: 10px 0;
+div.chat li div.message {
+    display: flex;
+    flex: 1;
+}
+div.chat li.me div.message {
+    justify-content: flex-end;
+}
+div.chat li.user div.message {
+    /*justify-content: space-between;*/
 }
 
 div.chat li div.message > p{
+    position: relative;
+    flex-direction: row;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 8px;
     margin: 5px;
-    min-height: 18px;
     word-wrap: break-word;
+    max-width: 85%;
 }
 
-div.chat li div.message:after{
+div.chat li div.message > p:after{
     position: absolute;
     top:2px;
     display: inline-block;
@@ -44,8 +48,7 @@ div.chat li div.message:after{
     transform: translate(0, 0);
 
 }
-div.chat li.user div.message:after{
-    float: left;
+div.chat li.user div.message > p:after{
     content: "\f0d9";
     position: absolute;
     left:-4px;
@@ -54,34 +57,26 @@ div.chat li.user div.message:after{
     color: #A7DBD8;
 }
 
-div.chat li.user div.message {
+div.chat li.user div.message > p{
     background: #A7DBD8;
-    margin-right: 65px;
 }
 
 
-div.chat li.me div.message:after{
-    float: left;
-    right:-10px;
+div.chat li.me div.message > p:after{
+    right:-9px;
     width: 10px;
     height: 17px;
     content: "\f0da";
     color: #E0E4CC;
 }
 
-div.chat li.me div.message {
-    margin-left: 25px;
-    margin-right: 45px;
+div.chat li.me div.message > p{
     background: #E0E4CC;
 }
 
 
 div.chat li span.time{
-    top: 2px;
+    top: 5px;
     position: relative;
-}
-
-div.chat > div.message-input {
-    position: absolute;
-    bottom: -40px;
+    order: 1;
 }

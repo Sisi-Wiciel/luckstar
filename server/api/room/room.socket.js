@@ -44,7 +44,7 @@ var getAndUpdateRoom = function (socket, id, cb) {
                 socket.leave(id);
                 socket.room = null
             }
-            log.error("getAndUpdateRoom: not found room ", id);
+            log.warn("getAndUpdateRoom: not found room ", id);
         }
 
     });
@@ -107,7 +107,7 @@ var sendChatMessage = function (socket, msg) {
 };
 
 var readyRoomCompete = function(socket){
-    log.info("ReadyRoomCompete")
+    log.info("ReadyRoomCompete");
     getAndUpdateRoom(socket, socket.room, function (room, user) {
         if(room.admin.id !== user.id){
             log.error('readyRoomCompete: Only admin user can start competition');
@@ -119,8 +119,7 @@ var readyRoomCompete = function(socket){
             (function doCountDown(){
                 setTimeout(function(){
                     if(countdown == 0){
-                        room.status = 1 ;
-                        resolve(roomService.save(room));
+                        resolve(roomService.startCompete(room));
                     }else{
                         sendSystemMessage(socket, countdown-- + '秒后答题开始..');
                         doCountDown();
@@ -137,6 +136,7 @@ var startRoomCompete = function(socket){
     getAndUpdateRoom(socket, socket.room, function (room, user) {
 
         if(room.readyUsers.indexOf(user.id) > -1){
+            log.warn("User %s readied", user.id);
             return ;
         }
 
@@ -144,14 +144,17 @@ var startRoomCompete = function(socket){
             locked.readyUsers.push(user.id);
             sendSystemMessage(socket, '用户' +user.username + '已准备就绪.');
         }).then(function(room){
-            console.info("ready user length : ", room.readyUsers, room.users);
             if(room.readyUsers.length == room.users.length){
+                roomService.createRoomStateList(room).then(function(roomStat){
+                    socket.io.sockets.in(socket.room).emit('updateRoomStat', roomStat);
+                });
                 competeSocket.nextTopic(socket);
             }
         });
     });
 };
 
+exports.updateRooms = updateRooms;
 exports.register = function (socket) {
     socket.on('update rooms', function () {
         updateRooms(socket);

@@ -5,7 +5,6 @@ module.exports = function (app) {
     app.use('/api/topic', require('../api/topic/'));
     app.use('/api/user', require('../api/user/'));
     app.use('/api/auth', require('../api/auth/'));
-    app.use('/api/match', require('../api/match/'));
     app.use('/api/room', require('../api/room/'));
 
     app.route('/:url(api|auth|components|app|bower_components|complete)/*')

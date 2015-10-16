@@ -9,7 +9,7 @@ var topic = new Schema({
   active: Boolean,
   point: {type:Number, default: 10},
   creator: { type: Schema.Types.ObjectId, ref: 'User'},
-  corrector: {type: [Number], select: false}
+  corrector: {type: [Number]}
 });
 
 module.exports = mongoose.model('Topic', topic);

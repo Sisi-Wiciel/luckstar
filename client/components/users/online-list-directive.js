@@ -7,6 +7,7 @@ define([
     app.directive('onlineList', function () {
 
         return {
+            //replace: true,
             templateUrl: 'components/users/online-list.html',
 
             controller: function ($scope, $timeout, socketSrv, authSrv, $window) {

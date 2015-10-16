@@ -1,3 +1,55 @@
-<div>
-    <topic-panel topic="topic"></topic-panel>
+<div id="complete">
+    <div ng-if="room.status == 1" class="complete-topic">
+        <topic-panel topic="topic" ></topic-panel>
+    </div>
+
+    <div class="topic-statistic" ng-if="room.status == 1 && roomStat" >
+        <div>
+            <span class="pull-left">第{{roomStat.currNum}}题</span>
+            <span class="pull-right">共{{roomStat.maxNum}}题</span>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <td></td>
+                <td>正确数量</td>
+                <td>错误数量</td>
+                <td>超时数量</td>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in roomStat.users">
+                    <td ng-bind="user.username"></td>
+                    <td ng-bind="user.correctNum"></td>
+                    <td ng-bind="user.incorrectNum"></td>
+                    <td ng-bind="user.timeoutNum"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="statistic" ng-repeat="user in roomStat.users "  ng-if="room.status == 0 && roomStat">
+        <table class="table">
+            <tr>
+                <td ng-bind="user.username" colspan="2"></td>
+            </tr>
+            <tr>
+                <td >正确数量</td>
+                <td ng-bind="user.correctNum"></td>
+            </tr>
+            <tr>
+                <td >错误数量</td>
+                <td ng-bind="user.incorrectNum"></td>
+            </tr>
+            <tr>
+                <td >超时数量</td>
+                <td ng-bind="user.timeoutNum"></td>
+            </tr>
+            <tr>
+                <td>获得积分</td>
+                <td ng-bind="user.point"></td>
+            </tr>
+        </table>
+    </div>
+
 </div>

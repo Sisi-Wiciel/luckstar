@@ -59,7 +59,13 @@ module.exports = {
     random: function (key, number) {
         return this.db.srandmember(key, number);
     },
-    save: function (key, obj, setFun) {
+    save: function(key, value){
+        return this.db.set(key, value);
+    },
+    list: function(key){
+        return this.db.get(key);
+    },
+    saveObj: function (key, obj, setFun) {
         var _key = key + ":" + obj.id;
         var self = this;
 
@@ -68,7 +74,7 @@ module.exports = {
 
             return new Promise(function (resolve, reject){
                 self.lock(self.LOCK_KEY, function (done) {
-                    self.list(key, obj.id).then(function (Objs) {
+                    self.listObj(key, obj.id).then(function (Objs) {
                         var lockedObj = _.first(Objs);
 
                         if(lockedObj){
@@ -96,18 +102,17 @@ module.exports = {
         }
 
     },
-    delete: function (key, obj) {
-        var _key = key + ":" + obj.id;
-        log.debug("REDIS-DELETE: [%s] = ", _key, obj);
-        return this.db.del(_key);
+    delete: function (key) {
+        log.debug("REDIS-DELETE: [%s]", key);
+        return this.db.del(key);
     },
-    list: function (key, id) {
+    listObj: function (key, id) {
         id = id || '*'
         var _key = key + ":" + id;
         var _db = this.db;
 
         return _db.keys(_key).then(function (keys) {
-            log.debug("REDIS-LIST: ", keys);
+            log.debug("REDIS-LIST-OBJ: [%s] = ", _key, keys);
 
             return Promise.map(keys, function(key){
                 return _db.hgetall(key);

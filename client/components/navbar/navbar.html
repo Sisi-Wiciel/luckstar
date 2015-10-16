@@ -1,33 +1,32 @@
-
-    <div class="navbar navbar-default navbar-embossed" ng-controller="NavbarCtrl">
+<div class="navbar navbar-default navbar-embossed no-margin" ng-controller="NavbarCtrl">
 
     <div class="navbar-header">
-      <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="/home" class="navbar-brand">
-          LuckStar</a>
+        <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="/home" class="navbar-brand">
+            LuckStar</a>
     </div>
     <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
-      <ul class="nav navbar-nav">
-        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-            <a ng-href="{{item.link}}">{{item.title}}</a>
-        </li>
-      </ul>
+        <ul class="nav navbar-nav">
+            <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
+                <a ng-href="{{item.link}}">{{item.title}}</a>
+            </li>
+        </ul>
 
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-             <i class="fa fa-user"></i>   {{ getCurrentUser().username }}({{ getCurrentUser().point }})
-                 <!--<i class="caret"></i>-->
-         </a>
-        </li>
-        <li><a href="" ng-click="logout()"><i class="fa fa-sign-out"></i> 注销</a></li>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-user"></i> {{ getCurrentUser().username }}({{ getCurrentUser().point }})
+                    <!--<i class="caret"></i>-->
+                </a>
+            </li>
+            <li><a href="" ng-click="logout()"><i class="fa fa-sign-out"></i> 注销</a></li>
 
-      </ul>
+        </ul>
     </div>
-  </div>
+</div>
 
