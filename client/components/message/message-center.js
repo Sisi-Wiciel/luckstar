@@ -61,7 +61,14 @@ define([
         };
 
         var _show = function (data) {
-            _scope.messages.splice(0, 0, data);
+            //_messages[data.title]
+            var shown = _.find(_scope.messages, "title", data.title);
+            if(shown){
+                _.assign(shown, data);
+            }else{
+                _scope.messages.splice(0, 0, data);
+            }
+
         }
     });
 });
