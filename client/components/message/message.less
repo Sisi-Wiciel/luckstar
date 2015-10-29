@@ -1,0 +1,52 @@
+@import "lesshat";
+
+div.message-center{
+  position : fixed;
+  .display(flex);
+  .flex-direction(column);
+  right: 10px;
+  top: 10px;
+  width: 250px;
+
+  div.message-box {
+    .border-radius(5);
+    background-color: #A7DBD8;
+
+    padding: 10px;
+    margin: 5px 0;
+
+    .animated;
+    &.ng-enter {
+      .bounceInRight
+    }
+
+    &.ng-leave {
+      .zoomOutRight;
+    }
+
+    .body {
+      color:#fff;
+    }
+    .head {
+      .display(flex);
+      p{
+        .flex(1);
+      }
+      .close{
+        cursor: pointer;
+        .flex(0, 0, 1em);
+        &:hover{
+          color:#F38630;
+        }
+      }
+
+    }
+    .foot {
+      display: flex;
+      justify-content: center;
+      a{
+        margin: 0 5px;
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<div class="message-center">
+    <div class="message-box" ng-repeat="msg in messages">
+        <div class="head">
+            <p>{{msg.title}}: </p>
+            <i class="fa fa-times close" ng-click="close($index)"></i>
+        </div>
+        <div class="body" ng-bind="msg.content"></div>
+        <div class="foot" ng-if="msg.tools">
+            <a class="btn btn-info" ng-click="msg.ok($index)">接受</a>
+            <a class="btn btn-default" ng-click="msg.cancel($index)">取消</a>
+        </div>
+    </div>
+    {{ok}}
+    {{cancel}}
+</div>
