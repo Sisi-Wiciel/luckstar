@@ -6,11 +6,12 @@ var crypto = require('crypto');
 var UserSchema = new Schema({
     username: String,
     email: {type: String, lowercase: true},
+    avatar: {type: String, lowercase: true},
     create: {type: Date, default: Date.now},
     friends: [{type: Schema.Types.ObjectId, ref: 'User', default: []}],
     hashedPassword: String,
     point: {type: Number, default: 0},
-    salt: String,
+    salt: String
 });
 
 UserSchema

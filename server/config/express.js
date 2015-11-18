@@ -22,10 +22,10 @@ module.exports = function (app) {
         secret: 'LuCk_StAr_SeCrEt',
         resave: true,
         saveUninitialized: true
-    }))
+    }));
     app.use(express.static(path.join(__dirname, '../../client')));
 
     app.use(errorHandler({dumpExceptions: true, showStack: true}));
 
 
-}
+};

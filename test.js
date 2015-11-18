@@ -1,9 +1,9 @@
-var redis = require("redis")
-var rc = redis.createClient()
+var redis = require("redis");
+var rc = redis.createClient();
 var Warlock = require('node-redis-warlock');
 var warlock = Warlock(rc);
 var lock = require("redis-lock")(rc);
-console.info(rc)
+console.info(rc);
 //
 //rc.on('ready', function () {
 //    rc.set("inc",0)
@@ -24,7 +24,7 @@ var ttl = 10000;
 var maxAttempts = 4; // Max number of times to try setting the lock before erroring
 var wait = 1000; // Time to wait before another attempt if lock already in place
 rc.on('ready', function () {
-    rc.set("inc", 0)
+    rc.set("inc", 0);
     for (var i = 1; i <= 3; i++) {
         //warlock.lock(key, ttl, function(err, unlock){
         //    if (err) {
@@ -48,15 +48,15 @@ rc.on('ready', function () {
 
         lock("myLock", function(done) {
             rc.get("inc", function (err, data) {
-                console.info(data)
+                console.info(data);
                 rc.set("inc", ++data, function(){
                     done();
                 });
-                console.info("unlock")
+                console.info("unlock");
                 //done();
 
             });
 
         });
     }
-})
+});

@@ -4,7 +4,7 @@ define([
 ], function (angular, module) {
   "use strict";
 
-  module.controller("topicCtrl", function ($scope, Topic) {
+  module.controller("topicCtrl", function ($scope) {
 
 
   });

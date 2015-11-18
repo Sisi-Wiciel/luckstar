@@ -10,7 +10,7 @@ define([
         $stateProvider.state('home.rooms', {
             url: '/home/rooms',
             templateUrl: '/rooms/room-list.html',
-            controller: 'roomListCtrl',
+            controller: 'roomListCtrl'
         })
         .state('home.room', {
             url: '/home/room/:id',
@@ -24,9 +24,9 @@ define([
                         return "";
                     });
                 }
-            },
+            }
 
-        })
+            })
 
     });
     return compete;

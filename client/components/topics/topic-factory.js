@@ -1,12 +1,12 @@
 define([
   'angular',
   'lodash',
-  'app',
+  'app'
 ], function (angular, _, app) {
   "use strict";
-
-  app.factory('Topic', function (httpq, $q, $resource) {
-    var self = this;
+  //
+  //app.factory('Topic', function (httpq, $q, $resource) {
+  //  var self = this;
 
     //var Topic = $resource('/api/topic/:id/:controller', {
     //  id: '@_id',
@@ -30,23 +30,23 @@ define([
     //    }
     //  }
     //});
-    function Topic(topic){
-        _.assign(this, topic);
-    }
-    Topic.prototype.isTimeout = function () {
-      return this.status == 2;
-    };
-    Topic.prototype.isCorrect = function () {
-      return this.status == 0;
-    };
-    Topic.prototype.isInCorrect = function () {
-      return this.status == 1;
-    };
+    //function Topic(topic){
+    //    _.assign(this, topic);
+    //}
+    //Topic.prototype.isTimeout = function () {
+    //  return this.status == 2;
+    //};
+    //Topic.prototype.isCorrect = function () {
+    //  return this.status == 0;
+    //};
+    //Topic.prototype.isInCorrect = function () {
+    //  return this.status == 1;
+    //};
+    //
+    //Topic.prototype.isActived= function () {
+    //  return this.status >= 0;
+    //};
 
-    Topic.prototype.isActived= function () {
-      return this.status >= 0;
-    };
-
-    return Topic;
-  });
+  //  return Topic;
+  //});
 });

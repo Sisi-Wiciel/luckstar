@@ -1,0 +1,13 @@
+<link rel="stylesheet" href="components/utils/comfirm/comfirm.css"/>
+<div id="dialog-box" ng-show="show">
+    <i class="fa fa-times close" ng-click="dismis()"></i>
+    <div class="dialog-content">
+        <div id="dialog-message" ng-bind="content">
+        </div>
+        <div class="toolbar">
+            <a ng-click="comfirm(); dismis()" class="button ok">确认</a>
+            <a ng-click="dismis()" class="button cancel">取消</a>
+        </div>
+
+    </div>
+</div>

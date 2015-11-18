@@ -1,7 +1,7 @@
 <div class="message-center">
     <div class="message-box" ng-repeat="msg in messages">
         <div class="head">
-            <p>{{msg.title}}: </p>
+            <p><i class="fa " ng-class="msg.icon"></i> {{msg.title}}: </p>
             <i class="fa fa-times close" ng-click="close($index)"></i>
         </div>
         <div class="body" ng-bind="msg.content"></div>

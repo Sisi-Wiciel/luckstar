@@ -6,11 +6,12 @@ define([
 ], function (angular, module, _, moment) {
     "use strict";
 
-    module.controller("roomCtrl", function ($scope, room, $location, socketSrv, authSrv, $timeout) {
-        $scope.room = room;
+    module.controller("roomCtrl", function ($scope, room, $location, socketSrv, authSrv, $timeout, messageCenter, roomSrv) {
+
         $scope.message = "";
+
         if (!room) {
-            $scope.error('房间不存在或已经被关闭.');
+            messageCenter.system('房间不存在或已经关闭.');
             $location.path('/home/rooms');
             return;
         }
@@ -18,27 +19,35 @@ define([
         $scope.text = "";
         $scope.curr = authSrv.getCurrentUser();
 
+        roomSrv.fillRoomUsers(room);
+
+        $scope.room = room;
+
         socketSrv.joinRoom(room.id);
 
-        $scope.setVerdict = function(verdict){
+        $scope.$on('topicVerdict', function (event, verdict) {
             $scope.verdict = verdict;
-        }
-
+        });
         socketSrv.register('closeRoom', function (room) {
-            $scope.error('管理员退出房间', '房间已关闭');
+            messageCenter.system('管理员退出房间, 房间已关闭');
             $scope.leave();
             $scope.$apply();
         });
 
         socketSrv.register('updateRoom', function (room) {
+            if(!room){
+                //room closed;
+                return;
+            }
 
             if (($scope.room.status == 0 || $scope.room.status == 2) && room.status == 1) {
                 socketSrv.startCompete();
-                //$timeout(function () {
-                //    $scope.$broadcast('eleChanged');
-                //});
             }
+
+            roomSrv.fillRoomUsers(room);
+
             $scope.room = room;
+
             $scope.$apply();
         });
 
@@ -54,25 +63,35 @@ define([
             });
         };
 
-        $scope.isAdmin = function (user) {
+        $scope.isRoomAdmin = function (user) {
             if (!$scope.room || !$scope.room.admin) {
                 return false;
             }
             var adminId = $scope.room.admin.id;
-            if (user) {
-                return adminId === user.id;
-            } else {
+            if (user === undefined) {
                 return adminId === $scope.curr._id;
+            } else {
+                if(user){
+                    return adminId === user.id;
+                }else{
+                    return false;
+                }
+
             }
-        }
+        };
         $scope.leave = function () {
             socketSrv.leaveRoom();
             $location.path('/home/rooms');
         };
 
-        $scope.start = function () {
+        $scope.startComplate = function () {
             socketSrv.readyCompete();
         }
+
+        $scope.terminateComplate = function(){
+            socketSrv.terminateCompete();
+        }
+
     });
 
 });

@@ -1,4 +1,4 @@
 define([
   './topic-controller',
-    './topic',
+    './topic'
 ], function(){});

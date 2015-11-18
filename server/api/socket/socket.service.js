@@ -2,10 +2,12 @@ var setting = require('../../config/setting');
 var io = require('socket.io').listen(setting.SOCKET.PORT);
 var userSocket = require('../user/user.socket');
 var roomSocket = require('../room/room.socket');
+var userService = require('../user/user.service');
 var completeSocket = require('../room/compete.socket');
 var db = require('../redis/redis.service');
 var jwt = require('jwt-simple');
 var log = require('../../log');
+var Promise = require('bluebird');
 
 function onConnect (socket) {
     userSocket.register(socket);
@@ -20,6 +22,37 @@ function onDisconnect (socket) {
 }
 
 module.exports = {
+    authCall: function (socket, cb, arg) {
+        return new Promise(function (resolve, reject) {
+            if (socket.uid && socket.auth) {
+                resolve();
+            } else {
+                (function _retry (times) {
+                    log.error("socket check failed, retry: " + times);
+                    setTimeout(function () {
+                        if (socket.uid && socket.auth) {
+                            resolve();
+                        } else {
+                            if (times > 0) {
+                                _retry(--times);
+                            } else {
+                                reject();
+                                log.error("socket check failed");
+                            }
+                        }
+
+                    }, 1000);
+                })(setting.SOCKET.AUTH_MAX_RETRY_TIMES)
+
+            }
+        }).then(function () {
+            userService.list(socket.uid).then(function(user){
+                socket.room = user[0].room;
+                cb(socket, arg);
+            });
+        });
+
+    },
     createIO: function (cb, namespace) {
         if (namespace) {
             io = io.of(namespace);
@@ -40,7 +73,7 @@ module.exports = {
                     cb(socket);
 
                 } catch (err) {
-                    log.error(err.message);
+                    log.error("connect socket error", err.message);
                 }
             });
 
@@ -70,4 +103,4 @@ module.exports = {
         });
 
     }
-}
+};

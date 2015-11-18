@@ -1,7 +1,7 @@
 "use strict";
 
-var service = require('./room.service.js')
-var Room = require('./room.model.js')
+var service = require('./room.service.js');
+var Room = require('./room.model.js');
 var log = require('../../log');
 var _ = require('lodash');
 function newRoom (req, res) {

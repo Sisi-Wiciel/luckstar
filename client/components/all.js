@@ -2,17 +2,17 @@ define([
     './utils/form',
     './utils/focus',
     './utils/fromNow',
-    './utils/comfirm',
-    './utils/position',
+    './utils/comfirm/comfirm',
+    './utils/avatarSelection',
+    './utils/loadingText',
+    './utils/countTo',
     './compete/room-compete-directive',
     './topics/topic-factory',
     './topics/topic-service',
     './topics/topic-panel-directive',
     './topics/topic-commit-directive',
-    './matches/match-stat-directive',
-    './matches/match-stat-factory',
-    './matches/multi/room-creation-directive',
-    './matches/multi/room-service',
+    './room/room-creation-controller',
+    './room/room-service',
     './auth/users-service',
     './auth/auth-service',
     './users/online-list-directive',
@@ -20,6 +20,7 @@ define([
     './navbar/navbar.controller',
     './modal/modal.service',
     './socketio/socket-service',
+    './message/message-center'
 ], function () {
 });
 

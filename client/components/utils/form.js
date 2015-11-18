@@ -76,8 +76,8 @@ define([
           };
         },
         'template': '<div class="form-group has-feedback row" ng-class="{\'has-error\': isError()}">' +
-        '<label class="col-sm-2 control-label"></label>' +
-        '<div class="col-sm-6">' +
+        '<label class="col-sm-3 control-label"></label>' +
+        '<div class="col-sm-8">' +
         '<input class="form-control" >' +
         '<div ng-transclude></div>' +
         '</div>' +
@@ -171,7 +171,7 @@ define([
         'replace': true,
         'scope': {},
         'transclude': true,
-        'template': '<div class="form-group">' +
+        'template': '<div class="form-group toolbar">' +
         '<div class="col-sm-offset-2 col-sm-8">' +
         '<button class="btn btn-success" type="button" ng-click="submit()">提交</button> ' +
         '<button class="btn btn-default" type="button" ng-click="reset()">重置</button>' +
@@ -197,4 +197,4 @@ define([
       };
     });
 
-})
+});

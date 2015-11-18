@@ -1,5 +1,7 @@
 var errorHandler = require('express-error-handler');
 var log = require('../log');
+var path = require('path');
+
 module.exports = function (app) {
 
     app.use('/api/topic', require('../api/topic/'));
@@ -11,12 +13,14 @@ module.exports = function (app) {
         .get(function (req, res) {
             log.error('url %s cannot found, redirect to index.html', req.url);
             //errorHandler(err);
+            //res.sendFile('client/index.html');
         });
 
     // All other routes should redirect to the index.html
     app.route('/*')
         .get(function (req, res) {
-            res.sendfile('client/index.html');
+            log.warn("unexpect url ", req.url);
+            res.sendFile('client/index.html', { root: path.join(__dirname, '../../') })
         });
 
     app.use(function (err, req, res, next) {

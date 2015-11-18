@@ -33,14 +33,14 @@ define([
     };
 
     this.createUser = function(user){
-      return User.save(user,
-        function(data) {
-          store.set('token', data.token);
-          currentUser = User.get();
-        },
-        function(err) {
-          //this.logout();
-        }.bind(this)).$promise;
+      return User.save(user).$promise;
+        //function(data) {
+        //  store.set('token', data.token);
+        //  //currentUser = User.get();
+        //},
+        //function(err) {
+        //  this.logout();
+        //}.bind(this)).$promise;
     };
 
     this.isLoggedIn = function(){
@@ -56,4 +56,4 @@ define([
     };
 
   });
-})
+});

@@ -28,31 +28,27 @@ module.exports = {
 
             Topic.find(function (err, topics) {
                 if (err) {
-                    log.error(err);
+                    log.error("topic find ", err);
                 }
                 _.each(topics, function (topic) {
                     db.sadd("topics", JSON.stringify(topic));
                 });
             });
 
+            var userService = require("../user/user.service");
             User.find(function (err, users) {
                 if (err) {
                     log.error(err);
                 }
 
                 _.each(users, function (user) {
-                    db.hmset("users:" + user._id, {
-                        id: user._id,
-                        status: 0,
-                        username: user.username,
-                        sid: ''
-                    })
+                    userService.add(user);
                 });
             });
         });
 
         db.on('error', function(error){
-            console.error(error);
+            log.error("db problem:", error);
         })
 
     },
@@ -66,6 +62,7 @@ module.exports = {
         return this.db.get(key);
     },
     saveObj: function (key, obj, setFun) {
+
         var _key = key + ":" + obj.id;
         var self = this;
 
@@ -107,7 +104,7 @@ module.exports = {
         return this.db.del(key);
     },
     listObj: function (key, id) {
-        id = id || '*'
+        id = id || '*';
         var _key = key + ":" + id;
         var _db = this.db;
 
@@ -130,7 +127,7 @@ module.exports = {
         if (uid && sid) {
             this.set("users:" + uid, "sid", sid);
         }
-    },
+    }
 
-}
+};
 

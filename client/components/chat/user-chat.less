@@ -1,0 +1,89 @@
+@import "lesshat";
+
+@user-message-color: #A7DBD8;
+@me-message-color: #E0E4CC;
+
+
+div.chat {
+  //height         : 100%;
+  .flex-direction(column);
+  .display(flex);
+
+  overflow-y: auto;
+  > ul {
+
+    .flex(1);
+    overflow-x : hidden;
+
+    > li {
+      .display(flex);
+
+      span.username {
+        padding-top : 5px;
+      }
+      .system {
+        margin-top: 5px;
+      }
+      div.message {
+        .display(flex);
+        .flex(1);
+
+        > p {
+          position              : relative;
+          flex-direction        : row;
+          -moz-border-radius    : 5px;
+          -webkit-border-radius : 5px;
+          border-radius         : 5px;
+          padding               : 8px;
+          margin                : 2px 5px;
+          word-wrap             : break-word;
+          max-width             : 85%;
+
+          &:after {
+            position                : absolute;
+            top                     : 2px;
+            display                 : inline-block;
+            font                    : normal normal normal 14px/1 FontAwesome;
+            font-size               : inherit;
+            text-rendering          : auto;
+            -webkit-font-smoothing  : antialiased;
+            -moz-osx-font-smoothing : grayscale;
+            transform               : translate(0, 0);
+          }
+        }
+      }
+
+      &.user {
+        div.message {
+          > p {
+            background : @user-message-color;
+            &:after {
+              content  : "\f0d9";
+              position : absolute;
+              left     : -4px;
+              width    : 10px;
+              height   : 17px;
+              color    : @user-message-color;
+            }
+          }
+        }
+      }
+      &.me {
+        div.message {
+          .justify-content(flex-end);
+          > p {
+            background : @me-message-color;
+            &:after {
+              right   : -9px;
+              width   : 10px;
+              height  : 17px;
+              content : "\f0da";
+              color   : @me-message-color;
+            }
+          }
+        }
+      }
+
+    }
+  }
+}

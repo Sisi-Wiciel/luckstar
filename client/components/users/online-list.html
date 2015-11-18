@@ -1,44 +1,33 @@
 <div class="online-list">
-    <div class="panel panel-default" ng-show="!chatting">
-        <!-- Default panel contents -->
-        <div class="panel-heading">
-            <div class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                   aria-expanded="false">
-                    <i class="fa" ng-class="status.cls"></i> {{status.display}} <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li ng-repeat="stat in statusList">
-                        <a href ng-click="$parent.status=stat">
-                            <i class="fa" ng-class="stat.cls"></i> {{stat.display}}
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
+    <div class="userlist-box" ng-show="!chatting">
+        <div class="head">
+            <i class="fa fa-user"></i> 用户列表
 
         </div>
 
         <ul class="list-unstyled">
-            <li class="list-group-item" style="border:0"
+            <li
                 ng-repeat="user in userlist"
                 ng-if="user.id != curr._id"
+                ng-class="{'text-success': user.status == 1, 'text-muted': user.status == 0}"
                 ng-show="status.value < 0 || status.value == user.status">
-                <i class="fa fa-circle"
-                   ng-class="{'text-success': user.status == 1, 'text-muted': user.status == 0}"></i>
-                {{user.username}}
-                <a ng-show="user.status == 1" class="pull-right" href ng-click="showChatPanel(user)">
+                <img class="gravatar" ng-src="{{user.avatar}}">
+                <div class="content"  ng-click="showChatPanel(user)">
+                    <span >{{user.username}}</span>
+                    <span class="last-message">{{user.lastMessage}}</span>
+                </div>
+                <a class="tools" ng-show="user.status == 1" class="pull-right" href ng-click="showChatPanel(user)">
                     <i class="fa fa-comments"></i>
                 </a>
 
             </li>
         </ul>
     </div>
-    <div class="panel panel-default" ng-show="chatting">
-        <div class="panel-heading">
-            <i class="fa fa-comments"></i><span class="text-warning"> {{toUser.username}} </span>
+    <div class="chat-box" ng-show="chatting">
+        <div class="head">
+            <i class="fa fa-comments"></i> {{toUser.username}}
             <a href ng-click="hideChatPanel()">
-                <small class="text-muted pull-right"><i class="fa fa-reply"></i>返回</small>
+                <small class="text-muted pull-right"><i class="fa fa-times"></i></small>
             </a>
         </div>
         <user-chat message="message" name="false" sender="sendMsg(msg)"></user-chat>

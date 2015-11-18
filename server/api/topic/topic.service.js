@@ -1,31 +1,27 @@
 var db = require('../redis/redis.service');
 var Topic = require('./topic.model');
 var errorHandler = require('express-error-handler');
-var Promise = require('bluebird');
 
-var getTopic = function(){
-    return db.random('topics', 1).then(JSON.parse);
-}
+var getTopic = function (id) {
+    if (id) {
+        return Topic.findById(id).exec();
+    } else {
+        return db.random('topics', 1).then(JSON.parse);
+    }
 
-var isCorrect = function(id, answer){
-    return new Promise(function(resolve, reject) {
-        Topic.findById(id, function (err, topic) {
-            if(err){
-                errorHandler(err);
-            }else{
-                if(topic.corrector.toString() == answer.toString()){
-                    resolve(topic.point);
-                }else{
-                    reject(topic.point);
-                }
-
-            }
-        })
-    });
 };
 
+var isCorrect = function (id, answer) {
+    return Topic.findById(id).exec().then(function (topic) {
+        var ret = {
+            point: topic.point
+        }
+        topic.corrector.toString() == answer.toString() ? ret.verdict = 1 : ret.verdict = 0;
+        return ret;
+    })
+};
 
-var saveTopic = function(topic){
+var saveTopic = function (topic) {
     Topic.create(topic, function (err, topic) {
         if (err) {
             return errorHandler(res, err);
@@ -33,7 +29,6 @@ var saveTopic = function(topic){
         return db.addTopic(topic);
     });
 };
-
 
 exports.get = getTopic;
 exports.save = saveTopic;

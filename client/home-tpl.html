@@ -1,11 +1,11 @@
-<header ng-include src="'/components/navbar/navbar.html'"></header>
 <div class="container-fluid" id="home">
+    <div class="head" ng-include="'/components/navbar/navbar.html'" ></div>
     <div id="alert"></div>
-    <div class="row">
-        <div class="col-md-10">
+    <div class="row ">
+        <div class="col-md-10 content">
             <div ui-view></div>
         </div>
-        <div class="col-md-2 hidden-xs no-pad">
+        <div class="col-md-2 hidden-xs no-padl sidebar">
             <online-list></online-list>
         </div>
     </div>

@@ -6,23 +6,23 @@ define([
   function (angular, _, app) {
     'use strict';
 
-    app.directive('topicCommit', function (Topic) {
+    app.directive('topicCommit', function () {
 
       return {
         templateUrl: " components/topics/topic-commit.html",
-        controller: function ($scope, Topic) {
+        controller: function ($scope) {
           $scope.removeOpt = function(opt){
             _.remove($scope.topic.opts, opt);
 
             _.each($scope.topic.opts, function(opt, index){
               opt.title = String.fromCharCode(index + 65);
             })
-          }
+          };
           $scope.addOpt = function () {
             var _opt = {
               title: '',
               value: ''
-            }
+            };
 
             var lastTitle = _.last($scope.topic.opts).title;
 
@@ -35,11 +35,11 @@ define([
             $scope.topic = {
               opts: [
                 {title: 'A', value: ''},
-                {title: 'B', value: ''},
+                {title: 'B', value: ''}
               ],
-              corrector: 5,
+              corrector: 5
             };
-          }
+          };
           $scope.submit = function () {
             var t = $scope.topic;
 
@@ -54,10 +54,10 @@ define([
               alert("请填写至少2个选项");
               return ;
             };
-            new Topic(t).$save(function(){
-              alert("题目提交成功");
-              $scope.reset();
-            });
+            //ne(t).$save(function(){
+            //  alert("题目提交成功");
+            //  $scope.reset();
+            //});
 
           };
 

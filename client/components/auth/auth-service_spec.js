@@ -16,7 +16,7 @@ define([
 
     var mock = {
       username: 'system',
-      password: 'System123',
+      password: 'System123'
     };
 
     beforeEach(inject(function ($injector) {

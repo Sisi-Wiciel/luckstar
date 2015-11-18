@@ -9,7 +9,7 @@ var StatisticSchema = Schema({
     timeoutNum: {type: Number, default: 0},
     point: {type: Number, default: 0},
     date: {type: Date, default: Date.now},
-    user: {type: String},
+    user: {type: String}
 });
 
 module.exports = mongoose.model('Statistic', StatisticSchema);

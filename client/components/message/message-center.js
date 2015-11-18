@@ -27,8 +27,10 @@ define([
         }
 
         init();
-
-        this.push = function (title, content) {
+        this.system = function(content){
+          this.push("系统信息", content, "fa-envelope");
+        };
+        this.push = function (title, content, icon) {
             if (!_messages.hasOwnProperty(title)) {
                 _messages[title] = [];
             }
@@ -38,16 +40,19 @@ define([
                 title: title,
                 content: content,
                 tools: false,
+                icon: icon
             });
         };
 
 
-        this.confirm = function(title, content){
+        this.confirm = function(title, content, icon){
             var defer = $q.defer();
+            console.info(icon);
             _show({
                 title: title,
                 content: content,
                 tools: true,
+                icon: icon,
                 ok: function(index){
                     _scope.close(index)
                     defer.resolve(this);
@@ -62,6 +67,11 @@ define([
 
         var _show = function (data) {
             //_messages[data.title]
+
+            if(!data.icon){
+                data.icon = "fa-envelope";
+            }
+            console.info(data);
             var shown = _.find(_scope.messages, "title", data.title);
             if(shown){
                 _.assign(shown, data);

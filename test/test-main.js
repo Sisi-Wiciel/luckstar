@@ -35,7 +35,7 @@ require.config({
     'angular-bootstrap': {exports: 'angular-bootstrap'},
     'angular-animate': {exports: 'angular-animate'},
     'angular-resource': {exports: 'angular-resource'},
-    'angular-sanitize': {exports: 'angular-sanitize'},
+    'angular-sanitize': {exports: 'angular-sanitize'}
   },
 
   //dynamically load all test files

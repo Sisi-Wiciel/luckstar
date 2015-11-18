@@ -1,3 +1,5 @@
 define([
-  './home-contoller'
-], function(){});
+    './home-controller',
+    './index-controller'
+], function () {
+});

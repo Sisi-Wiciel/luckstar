@@ -1,0 +1,83 @@
+@import "common";
+
+div#complete {
+  .display(flex);
+  .justify-content(center);
+  padding : 10px;
+
+  div.complete-topic {
+    .flex(1);
+    margin-right : 40px;
+  }
+  div.statistic {
+    .bg-frame1;
+    height: 300px;
+    padding: 20px;
+    width : 600px;
+    .title {
+      span {
+        text-align  : center;
+        font-weight : bold;
+        font-size   : 20px;
+
+      }
+      small {
+        cursor: pointer;
+        display : inline;
+      }
+    }
+
+    .statistic-bar {
+      .user {
+        position    : relative;
+        padding     : 10px;
+        line-height : 30px;
+
+        .display(flex);
+        .username {
+          flex : 0 0 10em;
+        }
+        .score {
+          .shadow;
+          flex          : 1;
+          background    : #ebebeb;
+          border-radius : 10px;
+          .bar {
+            .transition(2s ease-out);
+            position      : relative;
+            float         : left;
+            width         : 0px;
+            height        : 30px;
+            border        : 1px solid #bfbfbf;
+            padding-right : 5px;
+            .border-radius(10);
+            .background-image(linear-gradient(bottom, #b7dc8e 0%, #99ce5f 70%, #85c440 100%));
+            &:after {
+              content       : "";
+              position      : absolute;
+              left          : 0;
+              right         : 0;
+              top           : 0;
+              bottom        : 0;
+              z-index       : 1;
+              background    : url(../../libs/images/progress.png);
+              border-radius : 10px;
+            }
+          }
+          .point {
+            position : absolute;
+            right    : 20px;
+          }
+        }
+
+      }
+
+    }
+    &.ng-enter {
+      .animated;
+      .fadeIn;
+    }
+  }
+
+}
+

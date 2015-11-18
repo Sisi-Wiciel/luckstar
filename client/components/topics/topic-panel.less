@@ -1,0 +1,126 @@
+@import "common";
+@correct-panel-bg-color: #B1DE06;
+@incorrect-panel-bg-color: #f88d00;
+@timeout-panel-bg-color: #999;
+@head-user-boder-color: #f88d00;
+
+.topic-panel {
+
+  height     : 300px;
+
+  .bg-frame1;
+
+  position   : relative;
+
+  .flex(1);
+
+  .head {
+    padding       : 30px 0 10px;
+    border-bottom : 1px solid @head-user-boder-color;
+    margin        : 0 20px;
+  }
+  .body {
+    padding : 20px;
+
+    ul.options {
+
+      padding-left : 20px;
+      li{
+        a {
+          text-decoration : none;
+          line-height     : 30px;
+          .border-radius(5);
+
+          &:hover {
+            background : #777;
+            color      : #fff;
+            padding    : 5px 20px;
+          }
+
+          &.actived {
+            background : #0775e3;
+            color      : #fff;
+            padding    : 5px 20px;
+
+            &.passive{
+              border: 1px solid #0775e3;
+              color:  #0775e3;
+              background-color: #fff;
+            }
+          }
+        }
+
+        span.ng-enter {
+          .animated;
+          .bounceInRight;
+        }
+      }
+
+    }
+  }
+
+  .panel-cover {
+    font-size     : 20px;
+    font-weight   : bold;
+    position      : absolute;
+    width         : 250px;
+    height        : 50px;
+    opacity       : 0;
+    top           : 10px;
+    right         : 10px;
+
+    .border-radius(10px);
+    .box-shadow(1px 10px 10px);
+  }
+
+  &.incorrect {
+    .animated;
+    .shake;
+    .panel-cover {
+      .flex-center;
+      opacity          : 0.8;
+      .animated;
+      .fadeInDown;
+      background-color : @incorrect-panel-bg-color;
+      i:after{
+        content: "回答错误."
+      }
+    }
+  }
+  &.timeout {
+    .panel-cover {
+      .flex-center;
+      opacity          : 0.8;
+      .animated;
+      .fadeInDown;
+      background-color : @timeout-panel-bg-color;
+      i:after{
+        content: "回答超时."
+      }
+    }
+  }
+  &.passive {
+    .panel-cover {
+      .flex-center;
+      opacity          : 0.8;
+      .animated;
+      .fadeInDown;
+      background-color : @timeout-panel-bg-color;
+      i:after{
+        content: "已被抢答."
+      }
+    }
+  }
+  &.correct {
+    .panel-cover {
+      .flex-center;
+      opacity          : 0.8;
+      .animated;
+      .fadeInDown;
+      background-color : @correct-panel-bg-color;
+      i:after{
+        content: "回答正确."
+      }
+    }
+  }
+}

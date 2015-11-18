@@ -1,0 +1,76 @@
+@import "common";
+
+@room-header-user-color: #999;
+@room-header-admin-color:  #F38630;
+div.room-header {
+  padding-top                : 10px;
+  display                    : flex;
+
+  .user-list {
+    margin-top : 0;
+    span.user {
+      width  : 110px;
+      height : 100px;
+    }
+    display     : flex;
+
+    align-items : center;
+
+    flex        : 1;
+    span.user {
+
+      text-align : center;
+      position   : relative;
+      margin     : 0 5px;
+
+      border     : 1px solid @room-header-user-color;
+      color      : @room-header-user-color;
+      .box-shadow(inset 0 0 10px @room-header-user-color);
+      .border-radius(15px);
+      .display(flex);
+      .flex-direction(column);
+
+      &.admin{
+        border     : 1px solid @room-header-admin-color;
+        color      : @room-header-admin-color;
+        .box-shadow(inset 0 0 10px @room-header-admin-color);
+      }
+
+      .head {
+        flex : 0 0 1em;
+        .badge {
+          position: absolute;
+          top: -10px;
+          right: -10px;
+        }
+      }
+      .body {
+        flex : 1;
+        .flex-center;
+
+        img {
+          max-width  : 90%;
+          max-height : 100%;
+        }
+      }
+      .status {
+        line-height      : 40px;
+        background-color : #efefef;
+        position         : absolute;
+        bottom           : 5px;
+        right            : 10px;
+        left             : 10px;
+        .border-radius(10px);
+        opacity          : 0.8;
+        color            : #000;
+
+      }
+
+    }
+  }
+  span.ctrlbtn {
+    .display(flex);
+    align-items: flex-end;
+  }
+
+}

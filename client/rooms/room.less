@@ -1,0 +1,45 @@
+@import "common";
+
+div.room {
+  //background : #f2e3d0;
+  .border-radius(10);
+  padding    : 10px;
+  height     : 100%;
+  .display(flex);
+  .flex-direction(column);
+  > .head{
+    padding    : 10px;
+    border-bottom: 1px solid #fff;
+    .fa-power-off {
+        &:hover{
+          background-color: #f38630;
+          color:#fff;
+          border-radius: 30px;
+          padding: 2px;
+        }
+    }
+    .title{
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+  > .body {
+    .flex(1);
+    div.room-complete {
+      .border-radius(10);
+      flex   : 1
+    }
+  }
+  > .foot {
+
+    padding         : 10px;
+    .background-image(linear-gradient(top, #fff 20%, #eee 58%));
+    .border-radius(10);
+    .flex(0 0 14em);
+    .display(flex);
+    justify-content : space-between;
+    .chat {
+      width : 100%;
+    }
+  }
+}

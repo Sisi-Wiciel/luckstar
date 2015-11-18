@@ -1,0 +1,43 @@
+<div class="room-header">
+    <div class="user-list" >
+        <span ng-repeat="user in room.users track by $index" class="user animated"
+              ng-class="{bounce: verdict && user.id !== curr._id && verdict.user.id == user.id, admin: isRoomAdmin(user)}">
+            <div class="head" ng-if="user" >
+                <i ng-if="isRoomAdmin(user)" class="fa fa-star"></i> {{user.username}} <span class="badge">{{user.point}}</span>
+            </div>
+
+            <div class="body" ng-if="user">
+                <img ng-src="{{user.avatar}}"/>
+            </div>
+
+            <div class="status" ng-if="room.status==1 && user" >
+                <div ng-if="!verdict || (verdict.user && verdict.user.id != user.id)">选择中...</div>
+
+                <div ng-if="verdict && verdict.user.id == user.id">
+                    <div ng-if="verdict.verdict == 1">
+                        <i class="fa fa-smile-o"></i> 回答正确
+                    </div>
+                    <div ng-if="verdict.verdict == 0">
+                        <i class="fa fa-frown-o"></i> 回答错误
+                    </div>
+                </div>
+                <div ng-if="verdict && !verdict.user && verdict.verdict == -1" class="bg-info">
+                    <i class="fa fa-frown-o"></i> 回答超时
+                </div>
+            </div>
+
+            <div class="body" ng-if="!user">
+                等待加入
+            </div>
+        </span>
+    </div>
+
+    <span class="ctrlbtn" >
+        <button class="btn btn-success" ng-click="start()" loading-text="处理中..."
+                ng-if="isRoomAdmin() && room.status == 0 || room.status == 2">
+            开始答题
+        </button>
+
+        <button class="btn btn-info" ng-click="terminate()" loading-text="处理中..." ng-if="isRoomAdmin() && room.status == 1">答题终止</button>
+    </span>
+</div>

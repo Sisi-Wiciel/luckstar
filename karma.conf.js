@@ -29,7 +29,7 @@ module.exports = function(config) {
       {pattern: 'client/users/**/*.js', included: false},
       {pattern: 'client/matches/**/*.js', included: false},
       {pattern: 'client/topics/**/*.js', included: false},
-      {pattern: 'client/common/**/*.js', included: false},
+      {pattern: 'client/common/**/*.js', included: false}
     ],
 
     // list of files to exclude
@@ -78,4 +78,4 @@ module.exports = function(config) {
     singleRun: false
   });
 
-}
+};

@@ -8,18 +8,19 @@ var Promise = require('bluebird');
 var moment = require('moment');
 var Statistic = require('./statistic.model');
 var errorHandler = require('express-error-handler');
+var settings = require('../../config/setting');
 
 var assemble = function (room) {
 
     if (room.readyUsers) {
-        if(_.isString(room.readyUsers)){
+        if (_.isString(room.readyUsers)) {
             room.readyUsers = room.readyUsers.split(',');
         }
     } else {
         room.readyUsers = [];
     }
 
-    if(room.users && _.isString(room.users)){
+    if (room.users && _.isString(room.users)) {
         room.users = room.users.split(',');
     }
     return userService.list(room.users).then(function (users) {
@@ -27,10 +28,10 @@ var assemble = function (room) {
         room.admin = users[0];
         return room;
     })
-}
+};
 exports.list = function (id) {
     return db.listObj("rooms", id).map(assemble);
-}
+};
 
 exports.save = function (room, setFun) {
 
@@ -45,7 +46,7 @@ exports.save = function (room, setFun) {
             _room.admin = _room.admin.id;
         }
         return _room;
-    }
+    };
 
     var promise;
     if (setFun && _.isFunction(setFun)) {
@@ -62,67 +63,69 @@ exports.save = function (room, setFun) {
 
     return promise;
 
-}
+};
 
 exports.remove = function (room) {
     return db.delete("rooms:" + room.id);
-}
-exports.listRoomStat = function(id){
-    return db.list("roomstats:"+id);
-}
+};
+exports.listRoomStat = function (id) {
+    return db.list("roomstats:" + id).then(function(state){
+        return JSON.parse(state);
+    });
+};
 exports.updateRoomStat = function (room, verdictObj) {
-    return this.listRoomStat(room.id).then(function(state){
-        if(state){
-            var userstats = JSON.parse(state);
-            if(verdictObj.user){
+    return this.listRoomStat(room.id).then(function (userstats) {
+        if (userstats) {
+            if (verdictObj.user) {
                 var currentUserStat = _.find(userstats.users, "userid", verdictObj.user.id);
-                switch (verdictObj.verdict){
+                switch (verdictObj.verdict) {
                     case 1:
                         currentUserStat.point += verdictObj.point;
-                        currentUserStat.correctNum ++;
+                        currentUserStat.correctNum++;
                         break;
                     case 0:
                         currentUserStat.point -= verdictObj.point;
-                        if(currentUserStat.point < 0){
+                        if(currentUserStat.point < 0 ){
                             currentUserStat.point = 0;
                         }
-                        currentUserStat.incorrectNum ++;
+                        currentUserStat.incorrectNum++;
                         break;
                 }
-            }else{
-                if(verdictObj.verdict == -1){
-                    _.each(userstats.users, function(user){
-                        user.timeoutNum ++;
+            } else {
+                if (verdictObj.verdict == -1) {
+                    _.each(userstats.users, function (user) {
+                        user.timeoutNum++;
                     });
                 }
             }
 
-            userstats.currNum ++;
+            userstats.currNum++;
 
-            return db.save("roomstats:"+room.id, JSON.stringify(userstats)).then(function(){
+            return db.save("roomstats:" + room.id, JSON.stringify(userstats)).then(function () {
                 return userstats;
             });
-        }else{
-            console.error("cannot found room statistics " + room.id);
+        } else {
+            log.error("cannot found room statistics " + room.id);
         }
     });
 };
 
-exports.finishCompete= function (room, statist) {
+exports.finishCompete = function (room, statist) {
 
-    _.each(statist.users, function(user){
+    _.each(statist.users, function (user) {
         Statistic.create({
             correctNum: user.correctNum,
             incorrectNum: user.incorrectNum,
             timeoutNum: user.timeoutNum,
-            point: user.point,
+            point: user.point || 0,
             user: user.userid
         }, function (err) {
             if (err) {
-                return errorHandler(res, err);
+                log.error("finish compete error ", err);
+                return errorHandler(err);
             }
         })
-    })
+    });
 
     db.delete("roomstats:" + room.id);
 
@@ -130,36 +133,49 @@ exports.finishCompete= function (room, statist) {
     room.readyUsers = [];
     room.topic = "";
     return this.save(room);
-}
-exports.startCompete= function (room) {
-    room.status = 1;
-    return db.set("rooms:" + room.id, "status", room.status);
-}
-exports.createRoomStateList = function (roomValue) {
-    if(_.isString(_.first(roomValue.users))){
-        roomValue = assemble(roomValue);
-    }
-    return Promise.resolve(roomValue).then(function(room){
-        var roomstate = {
-            users: [],
-            maxNum: 10,
-            currNum: 1,
-            start: moment()
-        }
-        roomstate.users = _.map(room.users, function (user) {
-            var _state = {
-                userid: user.id,
-                username: user.username,
-                correctNum: 0,
-                incorrectNum: 0,
-                timeoutNum: 0,
-                point:0
-            }
-            return _state;
-        });
+};
+exports.terminateCompete= function (room) {
 
-        db.save("roomstats:"+room.id,  JSON.stringify(roomstate));
-        return roomstate;
+    return this.save(room, function (locked) {
+        locked.readyUsers = [];
+        locked.status = 0;
+        locked.topic = "";
+    }).then(function(){
+        return db.delete("roomstats:" + room.id);
     })
 
+};
+
+exports.startCompete = function (room) {
+    room.status = 1;
+    return db.set("rooms:" + room.id, "status", room.status);
+};
+
+exports.removeCompeteState = function (room) {
+    return db.delete("roomstats:" + room.id);
+}
+exports.createCompeteState = function (roomValue) {
+    if (_.isString(_.first(roomValue.users))) {
+        roomValue = assemble(roomValue);
+    }
+    return Promise.resolve(roomValue).then(function (room) {
+        var roomstate = {
+            users: _.map(room.users, function (user) {
+                return {
+                    userid: user.id,
+                    username: user.username,
+                    correctNum: 0,
+                    incorrectNum: 0,
+                    timeoutNum: 0,
+                    point: 0
+                };
+            }),
+            maxNum: settings.ROOM.COMPETE_MAX_TOPICS,
+            currNum: 0,
+            start: moment()
+        };
+
+        db.save("roomstats:" + room.id, JSON.stringify(roomstate));
+        return roomstate;
+    })
 };

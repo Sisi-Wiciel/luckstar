@@ -13,7 +13,7 @@ define([
     $stateProvider.state('home.topic', {
       url: '/home/topic',
       templateUrl: '/topics/topic.html',
-      controller: 'topicCtrl',
+      controller: 'topicCtrl'
     });
   });
   return topics;

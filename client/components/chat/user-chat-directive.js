@@ -12,7 +12,7 @@ define([
             scope: {
                 message: "=",
                 name: "@",
-                sender: "&",
+                sender: "&"
             },
             controller: function ($scope, $timeout, authSrv) {
                 $scope.showName = eval($scope.name);
@@ -32,7 +32,7 @@ define([
                         time: new Date(),
                         system: false,
                         from: $scope.curr
-                    })
+                    });
                     $scope.messageInput = "";
 
                 }
@@ -47,7 +47,7 @@ define([
                         scrollTop: dom[0].scrollHeight
                     }, 100);
 
-                }
+                };
 
                 scope.$watch('message', function (newValue, oldValue) {
                     if(newValue){
@@ -59,7 +59,7 @@ define([
                 scope.send = function(){
                     scope.sendMsg();
                     scrollBottom();
-                }
+                };
 
                 $elem.find("input").on('keydown', function (event) {
                     if (event.keyCode == 13) {

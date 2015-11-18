@@ -1,10 +1,10 @@
 define([
     'angular',
-    './room',
+    './room'
 ], function (angular, app) {
     "use strict";
 
-    app.controller('roomListCtrl', function ($scope, socketSrv, roomSrv, $location, authSrv, $rootScope) {
+    app.controller('roomListCtrl', function ($scope, socketSrv, roomSrv, $location, authSrv, messageCenter) {
         $scope.rooms = [];
         $scope.curr = authSrv.getCurrentUser();
         $scope.popover = {
@@ -12,9 +12,10 @@ define([
             "content": " "
         };
         socketSrv.register('updateRooms', function (rooms) {
+            _.map(rooms, roomSrv.fillRoomUsers);
             $scope.rooms = rooms;
             $scope.$apply();
-        })
+        });
 
         socketSrv.updateRooms();
 
@@ -22,12 +23,12 @@ define([
             $location.path('/home/room/'+roomId);
         };
 
-        $scope.create = function (newroom) {
-            var _clone = _.clone(newroom);
-            roomSrv.save(_clone).then(function (room) {
-                $location.path('/home/room/'+room.id);
-            })
+        $scope.leave = function () {
+            socketSrv.leaveRoom();
+            //$location.path('/home/rooms');
         };
+
+
     });
-})
+});
 

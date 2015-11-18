@@ -11,8 +11,7 @@
             </div>
             <!--<span class="time">{{::msg.time|date: 'hh:MM'}}</span>-->
 
-            <div ng-if="msg.system" class="text-center">
-                <span class="help-block">{{::msg.content}}</span>
+            <div ng-if="msg.system" class="system " ng-bind="::msg.content">
             </div>
         </li>
     </ul>

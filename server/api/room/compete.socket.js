@@ -1,43 +1,56 @@
 var userService = require('../user/user.service');
 var topicService = require('../topic/topic.service');
 var roomService = require('./room.service');
-var roomScoket = require('./room.socket');
+var roomSocket = require('./room.socket');
 var log = require('../../log');
 var _ = require('lodash');
 var moment = require('moment');
 var Promise = require('bluebird');
+var settings = require('../../config/setting');
 
-var TOPIC_COUNT_DOWN = 15;
-
-var nodifyRoom = function(socket, key, obj){
+var nodifyRoom = function (socket, key, obj) {
+    log.info("NodifyRoom", key);
     socket.io.sockets.in(socket.room).emit(key, obj);
-}
-var nodifyVerdict = function(socket, room, verdictObj){
+};
+
+var nodifyVerdict = function (socket, room, verdictObj) {
     log.info("NodifyVerdict");
 
     nodifyRoom(socket, 'topicVerdict', verdictObj);
 
-    roomService.updateRoomStat(room, verdictObj).then(function(roomStat){
-        if(roomStat.currNum > roomStat.maxNum){
-            roomService.finishCompete(room, roomStat).then(function(){
-                nodifyRoom(socket, 'updateRoomStat', roomStat);
-                roomScoket.updateRooms(socket);
-            })
-        }else{
-            nodifyRoom(socket, 'updateRoomStat', roomStat);
-            nextTopic(socket);
+    roomService.updateRoomStat(room, verdictObj).then(function (competeStat) {
+        if (verdictObj.verdict == 0) {
+            roomSocket.sendRoomSystemMessage(socket, "第" + competeStat.currNum + "题: 用户" + verdictObj.user.username + "回答错误");
+        } else if (verdictObj.verdict == 1) {
+            roomSocket.sendRoomSystemMessage(socket, "第" + competeStat.currNum + "题: 用户" + verdictObj.user.username + "回答正确");
+        } else if (verdictObj.verdict == -1) {
+            roomSocket.sendRoomSystemMessage(socket, "第" + competeStat.currNum + "题: 答题超时");
         }
+        nodifyRoom(socket, 'updateRoomStat', competeStat);
+
+        setTimeout(function(){
+            if (competeStat.currNum >= competeStat.maxNum) {
+
+                roomService.finishCompete(room, competeStat).then(function () {
+                    roomSocket.updateRooms(socket);
+
+                    _.each(competeStat.users, function (user) {
+                        userService.updatePoint(user.userid, user.point);
+                    })
+                })
+            } else {
+                nextTopic(socket);
+            }
+            //nodifyRoom(socket, 'updateRoomStat', competeStat);
+        }, 2000);
 
     })
-}
+};
 var topicCountDown = function (socket, topic) {
     log.info("TopicCountDown");
-    var number = TOPIC_COUNT_DOWN;
+    var number = settings.ROOM.COMPETE_TOPIC_COUNTDOWN;
     (function countdown () {
         setTimeout(function () {
-            // topic 绑定到一个room上面
-            // 每秒钟都去redis查room的topic 有没有被改变.
-            // 其实room绑定到socket最好, 就不用去redis 拿room信息了, 要每一个client的socket都绑定topic. 这样会存在问题 比如 刷新浏览器socket信息就没了
 
             if (socket.room) {
                 roomService.list(socket.room).then(function (rooms) {
@@ -47,7 +60,7 @@ var topicCountDown = function (socket, topic) {
                             nodifyRoom(socket, 'updateTopicCountdown', --number);
                             countdown();
                         } else {
-                            nodifyVerdict(socket, room,{
+                            nodifyVerdict(socket, room, {
                                 verdict: -1
                             });
                         }
@@ -94,30 +107,37 @@ function checkTopic (socket, answer) {
         var user = results.users[0];
         var room = results.rooms[0];
 
-        var verdictObj = {
-            user: user,
-        }
-        topicService.isCorrect(room.topic, answer).then(function (point) {
-            verdictObj.point = point;
-            return 1;
-        }, function (point) {
-            verdictObj.point = point;
-            return 0;
-        }).then(function (verdict) {
-            verdictObj.verdict = verdict;
+        topicService.isCorrect(room.topic, answer).then(function (verdictObj) {
+            verdictObj.user = user;
+            verdictObj.opt = answer;
             nodifyVerdict(socket, room, verdictObj);
-        })
+        });
     });
 };
+
+var getTopic = function (socket) {
+    roomService.list(socket.room).then(function (rooms) {
+        var room = rooms[0];
+        if (room && room.topic) {
+            topicService.get(room.topic).then(function (topic) {
+                delete topic.correct;
+                socket.emit('topicUpdate', topic);
+            });
+        } else {
+            log.warn("no current topic in this competition");
+        }
+
+    })
+}
 
 exports.checkTopic = checkTopic;
 
 exports.nextTopic = nextTopic;
 
 exports.register = function (socket) {
-    var self = this;
-    socket.on('complete next topic', function () {
-        nextTopic(socket);
+
+    socket.on('complete get topic', function () {
+        getTopic(socket);
     });
 
     socket.on('complete check topic', function (answer) {

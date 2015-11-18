@@ -12,14 +12,13 @@ define([
         'angular-sanitize',
         'angular-resource',
         'angular-strap',
-        'angular-strap-tpl',
+        'angular-strap-tpl'
     ],
     function (angular, $, moment) {
         "use strict";
 
         var componentRequires = [
             'common/all',
-            'matches/all',
             'rooms/all',
             'topics/all',
             'users/all',
@@ -30,9 +29,8 @@ define([
         var apps_deps = [
             'luckStar',
             'luckStar.rooms',
-            'luckStar.matches',
             'luckStar.topics',
-            'luckStar.users',
+            'luckStar.users'
         ];
 
         moment.locale('zh-cn');
@@ -40,10 +38,14 @@ define([
         var app = angular.module('luckStar', ['ui.router', 'ngAnimate', 'ngResource', 'ngSanitize', 'mgcrea.ngStrap']);
 
         app.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
-            $urlRouterProvider.otherwise("/login");
+            $urlRouterProvider.otherwise("/");
             $stateProvider
-                .state('index', {
+                .state('unauth', {
                     abstract: true,
+                    templateUrl: "/index.html"
+                })
+                .state('unauth.index', {
+                    url: "/",
                     templateUrl: "/index-tpl.html"
                 })
                 .state('home', {
@@ -57,7 +59,7 @@ define([
                 })
                 .state('home.index', {
                     url: "/home",
-                    templateUrl: 'home.html',
+                    templateUrl: 'home.html'
                 });
 
             $locationProvider.html5Mode(true);
@@ -94,24 +96,7 @@ define([
                         .element(document)
                         .ready(function () {
                             angular.bootstrap(document, apps_deps)
-                                .invoke(['$rootScope', '$location', 'store', '$alert', function ($rootScope, $location, store, $alert) {
-                                    var _alert = function(type){
-                                        return function(content, title){
-                                            $alert({
-                                                title:  title || '',
-                                                content: content,
-                                                placement: 'top',
-                                                animation: "am-fade-and-slide-top",
-                                                type: type,
-                                                container: '#alertContaner',
-                                                duration: '3'
-                                            });
-                                        }
-                                    }
-                                    $rootScope.info = _alert('info');
-                                    $rootScope.warning = _alert('warning');
-                                    $rootScope.error = _alert('danger');
-                                    $rootScope.success = _alert('success');
+                                .invoke(['$rootScope', '$location', 'store', '$alert', '$q', function ($rootScope, $location, store) {
 
                                     $rootScope.$on('$stateChangeSuccess',
                                         function (event, toState, toParams, fromState, fromParams) {

@@ -1,50 +1,69 @@
-<div class="page-header clearfix">
-    <span class="text-warning">当前房间列表</span>
-     <span class="pull-right">
-         <button type="button"
-                 class="btn btn-success btn-sm"
-                 data-placement="bottom"
-                 data-template-url="components/matches/multi/room-creation.html"
-                 data-animation="am-flip-x"
-                 bs-popover="popover">创建房间
-         </button>
-     </span>
-</div>
+<div class="room-main">
 
-<div id="room-list">
-    <div ng-if="rooms.length == 0">
-        <p >
-            暂时没有任何房间
-        </p>
-    </div>
-    <div class="panel panel-default room-list-item" ng-repeat="room in rooms" ng-if="rooms.length > 0">
-        <div class="title">
-            <span ng-show="room.mode == 0" class="label label-success ">合作模式</span>
-            <span ng-show="room.mode == 1" class="label label-default ">竞赛模式</span> |
-            <b><span ng-show="room.status == 0" class="text-muted">准备中</span></b>
-            <b><span ng-show="room.status == 1" class="text-success">正在进行</span></b> |
+    <ul class="room-tools ">
+        <li class="tool" data-placement="right"
+            data-template-url="components/room/room-creation.html"
+            data-animation="am-flip-x"
+            bs-popover="popover">
+            <!--<i class="fa fa-plus-square-o"></i>-->
+            <a href class="new">
+                <span>创建房间</span>
+            </a>
 
-            <span class="text-info">{{::room.title}}</span>
+        </li>
+    </ul>
+    <div class="room-list" ng-if="rooms.length > 0">
+        <div class="head">
+            <p><i class="fa fa-home"></i> 房间列表</p>
 
-            <small class="text-muted pull-right" from-now="{{room.create}}"></small>
-        </div>
-        <div class="content clearfix text-center">
-            <div class="user" ng-repeat="user in room.users">
-                {{user.username}}
-                <h6 class="text-info" ng-show="user.id !== room.admin.id">
-                    用户
-                </h6>
-                <h6 class="text-success" ng-show="user.id === room.admin.id">
-                    管理员
-                </h6>
+            <div class="search">
+                <input type="text" class="search-field" placeholder="查找房间">
+                <button class="search-btn" type="button"><i class="fa fa-search"></i></button>
             </div>
-            <span ng-disabled="room.status == 1">
-                <a ng-click="join(room.id)" class="btn btn-success join-btn pull-right">
-                    加入
-                </a>
-            </span>
-
         </div>
-    </div>
+        <div class="body">
+            <div class="room-list-item" ng-repeat="room in rooms">
 
+                <div class="title">
+                    <!--<span ng-show="room.mode == 0" class="label label-success ">合作模式</span>-->
+                    <!--<span ng-show="room.mode == 1" class="label label-default ">竞赛模式</span> |-->
+                    <i class="fa fa-home"></i>
+                    <span ng-bind="room.title"></span>
+
+                    <!--<small class="text-muted pull-right" from-now="{{room.create}}"></small>-->
+                </div>
+                <div class="main">
+                    <div class="users">
+
+                        <div class="user" ng-repeat="user in room.users track by $index"
+                             ng-class='{admin:user.id === room.admin.id}'>
+                            <div ng-if="user">
+                                <i class="fa fa-star" ng-if="user.id === room.admin.id"></i>{{user.username}}
+                                <span class="badge">{{user.point}}</span>
+
+                                <img ng-src="{{user.avatar}}"/>
+                            </div>
+                            <div ng-if="!user">
+                                空位
+                            </div>
+                        </div>
+                    </div>
+                    <div class="toolbar">
+                        <a ng-click="join(room.id)" class="btn btn-info">
+                            加入
+                        </a>
+                        <span ng-show="room.status == 1" class="text-success">正在进行</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+    <div class="empty-room" ng-if="rooms.length == 0">
+        <h1>还没有人创建房间.</h1>
+    </div>
 </div>

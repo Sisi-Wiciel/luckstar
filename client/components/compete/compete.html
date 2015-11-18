@@ -1,11 +1,11 @@
 <div id="complete">
     <div ng-if="room.status == 1" class="complete-topic">
-        <topic-panel topic="topic" ></topic-panel>
+        <topic-panel topic="topic" verdict="verdict"></topic-panel>
     </div>
 
-    <div class="topic-statistic" ng-if="room.status == 1 && roomStat" >
+    <div class="topic-statistic" ng-if="room.status == 1 && roomStat">
         <div>
-            <span class="pull-left">第{{roomStat.currNum}}题</span>
+            <span class="pull-left">第{{roomStat.currNum + 1}}题</span>
             <span class="pull-right">共{{roomStat.maxNum}}题</span>
         </div>
         <table class="table table-hover">
@@ -18,38 +18,56 @@
             </tr>
             </thead>
             <tbody>
+            <tr ng-repeat="user in roomStat.users">
+                <td ng-bind="user.username"></td>
+                <td ng-bind="user.correctNum"></td>
+                <td ng-bind="user.incorrectNum"></td>
+                <td ng-bind="user.timeoutNum"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="statistic" ng-if="room.status == 0 && roomStat">
+        <div class="title">
+            <span><b>统计结果/</b></span>
+            <small ng-show="!statTable" class="text-primary" ng-click="switchStatTable()">详细</small>
+            <small ng-show="statTable" class="text-primary" ng-click="switchStatTable()">返回</small>
+        </div>
+        <div class="statistic-bar" ng-if="!statTable">
+            <div class="user" ng-repeat="user in roomStat.users ">
+                <span class="username "><b>{{user.username}}</b></span>
+
+                <div class="score">
+                    <span class="bar"></span>
+                    <span class="point" count-to="{{user.point}}">{{user.point}}分</span>
+                </div>
+            </div>
+        </div>
+        <div class="statistic-table" ng-if="statTable">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <td></td>
+                    <td>正确数量</td>
+                    <td>错误数量</td>
+                    <td>超时数量</td>
+                    <td>获得积分</td>
+                </tr>
+                </thead>
+                <tbody>
                 <tr ng-repeat="user in roomStat.users">
                     <td ng-bind="user.username"></td>
                     <td ng-bind="user.correctNum"></td>
                     <td ng-bind="user.incorrectNum"></td>
                     <td ng-bind="user.timeoutNum"></td>
+                    <td ng-bind="user.point"></td>
                 </tr>
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
 
-    <div class="statistic" ng-repeat="user in roomStat.users "  ng-if="room.status == 0 && roomStat">
-        <table class="table">
-            <tr>
-                <td ng-bind="user.username" colspan="2"></td>
-            </tr>
-            <tr>
-                <td >正确数量</td>
-                <td ng-bind="user.correctNum"></td>
-            </tr>
-            <tr>
-                <td >错误数量</td>
-                <td ng-bind="user.incorrectNum"></td>
-            </tr>
-            <tr>
-                <td >超时数量</td>
-                <td ng-bind="user.timeoutNum"></td>
-            </tr>
-            <tr>
-                <td>获得积分</td>
-                <td ng-bind="user.point"></td>
-            </tr>
-        </table>
+
     </div>
 
 </div>

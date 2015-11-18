@@ -1,7 +1,9 @@
 require.config({
     paths: {
         settings: 'common/setting',
+        TweenMax: 'libs/TweenMax.min',
         angular: 'bower_components/angular/angular.min',
+        text: 'libs/text',
         socketio: 'libs/socket.io',
         bootstrap: 'bower_components/bootstrap/dist/js/bootstrap.min',
         jquery: 'bower_components/jquery/dist/jquery.min',
@@ -21,6 +23,10 @@ require.config({
 
         app: {
             exports: 'app'
+        },
+        TweenMax: {
+            exports: 'TweenMax',
+            deps: ['jquery']
         },
         angular: {
             deps: ['jquery'],

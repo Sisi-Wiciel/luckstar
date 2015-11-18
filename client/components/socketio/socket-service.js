@@ -2,7 +2,7 @@ define([
     'socketio',
     'lodash',
     'app',
-    'settings',
+    'settings'
 ], function (io, _, app, settings) {
 
     app.factory('socketSrv', function (httpq, store, $q) {
@@ -10,7 +10,7 @@ define([
             var _socket = settings.socket;
             var namespace = namespace || "";
             return io.connect('http://'+_socket.host+':'+_socket.port + namespace);
-        }
+        };
 
         return {
             connect: connect,
@@ -24,6 +24,7 @@ define([
                 });
                 cb();
             },
+            // Support user socket service api
             register: function (eventName, cb) {
                 var _cb = cb || _.noop;
                 this.socket.off(eventName);
@@ -35,6 +36,7 @@ define([
             userOffline: function () {
                 this.socket.emit('user offline');
             },
+            // Support room socket service api
             updateRooms: function () {
                 this.socket.emit('update rooms');
             },
@@ -53,13 +55,22 @@ define([
             readyCompete: function(){
                 this.socket.emit('ready compete');
             },
+            terminateCompete: function(){
+                this.socket.emit('terminate compete');
+            },
             startCompete: function(){
                 this.socket.emit('start compete');
             },
             topicCheckOpt: function(opt){
                 this.socket.emit('complete check topic', opt);
+            },
+            getTopic: function(opt){
+                this.socket.emit('complete get topic');
+            },
+            getRoomStat: function(opt){
+                this.socket.emit('room get stat');
             }
         }
     });
 
-})
+});

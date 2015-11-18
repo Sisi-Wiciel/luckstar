@@ -1,7 +1,7 @@
 define([
     'angular',
     'lodash',
-    'app',
+    'app'
 ], function (angular, _, app) {
     "use strict";
 
@@ -15,5 +15,10 @@ define([
             return httpq.get('/api/room/'+id);
         }
 
+        this.fillRoomUsers = function(room){
+            if(room && room.number > room.users.length){
+                room.users = room.users.concat(_.fill(Array(room.number - room.users.length), null));
+            }
+        }
     });
 });

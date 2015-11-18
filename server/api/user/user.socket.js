@@ -4,17 +4,17 @@ var log = require('../../log');
 var moment = require('moment');
 
 var userOnline = function (socket, id) {
-    log.debug("SOCKET: received user online event", id);
+    log.info("UserOnline: ", id);
     socket.uid = id;
     userService.changeStatus(id, 1).then(function () {
         userService.list().then(function (users) {
             socket.io.emit("updateUser", users);
         });
     });
-}
+};
 
 var userOffline = function (socket) {
-    log.debug('SOCKET: received user offline event');
+    log.info('UserOffLine: ', socket.uid);
     var id = socket.uid;
 
     if (socket.uid) {
@@ -25,7 +25,7 @@ var userOffline = function (socket) {
         })
 
     }
-}
+};
 
 exports.register = function (socket) {
     socket.on('user online', function (id) {
@@ -59,4 +59,4 @@ exports.register = function (socket) {
 
 exports.deregister = function (socket) {
     userOffline(socket);
-}
+};
