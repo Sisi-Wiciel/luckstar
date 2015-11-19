@@ -2967,9 +2967,9 @@ Copyright (c) 2015 Daniel Eden
   padding: 2px;
   -webkit-box-flex: 0;
   -moz-box-flex: 0;
-  -webkit-flex: 0 0 4em;
-  -ms-flex: 0 0 4em;
-  flex: 0 0 4em;
+  -webkit-flex: 0 0 5em;
+  -ms-flex: 0 0 5em;
+  flex: 0 0 5em;
   -webkit-box-direction: normal;
   -moz-box-direction: normal;
   -webkit-box-orient: vertical;
@@ -2981,50 +2981,50 @@ Copyright (c) 2015 Daniel Eden
   border-right: solid 1px #f49448;
 }
 .room-main .room-tools .tool {
+  cursor: pointer;
   list-style: none;
-  height: 39px;
-  padding: 2px;
-  width: 40px;
   color: #F38630;
-}
-.room-main .room-tools .tool a {
-  background: url('/libs/images/tools.png') no-repeat;
-  height: 39px;
-  width: 38px;
-  display: block;
   position: relative;
 }
-.room-main .room-tools .tool a:hover {
-  text-decoration: none;
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+.room-main .room-tools .tool img {
+  border: 1px solid #fff;
+  -webkit-border-radius: 30px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 30px;
+  -moz-background-clip: padding;
+  border-radius: 30px;
+  background-clip: padding-box;
 }
-.room-main .room-tools .tool a:hover span {
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+.room-main .room-tools .tool:hover span {
   width: auto;
-  padding: 0 20px;
   overflow: visible;
+  border: 1px solid #fff;
+  padding: 0 30px;
 }
-.room-main .room-tools .tool a.new span {
-  background-color: #c4e920;
-  color: #fff;
-  text-shadow: 1px 1px 0 #99bf31;
-}
-.room-main .room-tools .tool a span {
+.room-main .room-tools .tool span {
   width: 0;
-  left: 38px;
-  padding: 0;
+  left: 30px;
+  top: 10px;
   position: absolute;
   overflow: hidden;
-  font-size: 18px;
   font-weight: bold;
-  letter-spacing: 0.6px;
+  letter-spacing: 1px;
   white-space: nowrap;
-  line-height: 39px;
+  line-height: 30px;
+  color: #fff;
+  border: 1px solid #F38630;
+  z-index: -1;
+  background-color: #F38630;
+  -webkit-border-radius: 20px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 20px;
+  -moz-background-clip: padding;
+  border-radius: 20px;
+  background-clip: padding-box;
   -webkit-transition: 0.25s;
   -moz-transition: 0.25s;
   -o-transition: 0.25s;
   transition: 0.25s;
-  z-index: 999;
 }
 .room-main .empty-room {
   padding-top: 50px;

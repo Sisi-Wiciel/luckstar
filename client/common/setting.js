@@ -6,7 +6,7 @@ define([
 
         return {
             socket: {
-                'host': 'localhost',
+                'host': '172.16.35.43',
                 'port': '8889'
             }
         };

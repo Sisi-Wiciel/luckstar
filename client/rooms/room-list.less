@@ -12,9 +12,9 @@
     .display(flex);
     justify-content : space-between;
     p {
-      font-weight     : bold;
-      margin-top : 8px;
-      font-size: 16px;
+      font-weight : bold;
+      margin-top  : 8px;
+      font-size   : 16px;
     }
     .search {
       display : inline-block;
@@ -50,61 +50,49 @@
   }
   .room-tools {
     padding      : 2px;
-    .flex(0, 0, 4em);
+    .flex(0, 0, 5em);
     .flex-direction(column);
 
     text-align   : center;
     border-right : solid 1px lighten(@room-tool-color, 5%);
     .tool {
+      cursor: pointer;
       list-style : none;
-      height     : 39px;
-      padding    : 2px;
-      width      : 40px;
-
       color      : @room-tool-color;
-      a {
-        background : url('/libs/images/tools.png') no-repeat;
-        height     : 39px;
-        width      : 38px;
-        display    : block;
-        position   : relative;
-        &:hover {
-          text-decoration : none;
-          box-shadow      : 3px 3px 3px rgba(0, 0, 0, 0.5);
+      position   : relative;
+      img{
+        border: 1px solid #fff;
+        .border-radius(30);
+      }
 
-          span {
-            box-shadow : 3px 3px 3px rgba(0, 0, 0, 0.5);
 
-            width      : auto;
-            padding    : 0 20px;
-            overflow   : visible;
-          }
+      &:hover {
+        span{
+          width    : auto;
+          overflow : visible;
+          border   : 1px solid #fff;
+          padding  : 0 30px;
         }
 
-        &.new {
-          span {
-            background-color : #c4e920;
-            color            : #fff;
-            text-shadow      : 1px 1px 0 #99bf31;
-          }
+      }
+      span {
+        width            : 0;
+        left             : 30px;
+        top              : 10px;
+        position         : absolute;
+        overflow         : hidden;
 
-        }
+        font-weight      : bold;
+        letter-spacing   : 1px;
+        white-space      : nowrap;
+        line-height      : 30px;
+        color            : #fff;
+        border           : 1px solid @room-tool-color;
+        z-index          : -1;
+        background-color : @room-tool-color;
 
-        span {
-          width          : 0;
-          left           : 38px;
-          padding        : 0;
-          position       : absolute;
-          overflow       : hidden;
-
-          font-size      : 18px;
-          font-weight    : bold;
-          letter-spacing : 0.6px;
-          white-space    : nowrap;
-          line-height    : 39px;
-          .transition(0.25);
-          z-index        : 999;
-        }
+        .border-radius(20);
+        .transition(0.25);
       }
 
     }
@@ -175,7 +163,6 @@
           }
 
         }
-
 
       }
     }

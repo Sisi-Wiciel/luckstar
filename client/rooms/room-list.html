@@ -1,15 +1,12 @@
 <div class="room-main">
 
     <ul class="room-tools ">
-        <li class="tool" data-placement="right"
+        <li class="tool new" data-placement="right"
             data-template-url="components/room/room-creation.html"
             data-animation="am-flip-x"
             bs-popover="popover">
-            <!--<i class="fa fa-plus-square-o"></i>-->
-            <a href class="new">
-                <span>创建房间</span>
-            </a>
-
+            <img src="/libs/images/tools-new.png"/>
+            <span>创建房间</span>
         </li>
     </ul>
     <div class="room-list" ng-if="rooms.length > 0">
@@ -64,6 +61,6 @@
 
     </div>
     <div class="empty-room" ng-if="rooms.length == 0">
-        <h1>还没有人创建房间.</h1>
+        <h1>目前没有任何房间.</h1>
     </div>
 </div>
