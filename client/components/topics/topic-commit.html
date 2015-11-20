@@ -7,7 +7,7 @@
                 <textarea class="form-control" ng-model="topic.title" cols="80" rows="4"></textarea>
             </div>
         </div>
-        <div class="form-group" ng-repeat="opt in topic.opts">
+        <div class="form-group" ng-repeat="opt in topic.options">
             <label class="col-sm-3">选项 {{opt.title}}:</label>
 
             <div class="col-sm-7">
@@ -27,13 +27,10 @@
             <label class="col-sm-3">建议分值:</label>
 
             <div class="col-sm-5">
-
-                <select   class="form-control" ng-model="topic.point">
-                    <option ng-selected="true" value="5">5分</option>
-                    <option value="10">10分</option>
-                    <option value="15">15分</option>
-                    <option value="20">20分</option>
+                <select class="form-control" ng-model="topic.point"
+                        ng-options="point.value as point.label  for point in points">
                 </select>
+
             </div>
         </div>
         <div class="form-group">
@@ -41,7 +38,7 @@
 
             <div class="col-sm-5">
                 <select class="form-control" ng-model="topic.corrector">
-                    <option ng-selected="$first" value="{{$index}}" ng-repeat="opt in topic.opts">选项 {{opt.title}}</option>
+                    <option ng-selected="$first" value="{{$index}}" ng-repeat="opt in topic.options">选项 {{opt.title}}</option>
                 </select>
             </div>
         </div>

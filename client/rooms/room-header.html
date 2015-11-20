@@ -38,6 +38,7 @@
             开始答题
         </button>
 
-        <button class="btn btn-info" ng-click="terminate()" loading-text="处理中..." ng-if="isRoomAdmin() && room.status == 1">答题终止</button>
+        <button class="btn btn-info" ng-click="terminate()" comfirm="答题终止将不会得到任何积分, 确认是否要终止."
+                 ng-if="isRoomAdmin() && room.status == 1">答题终止</button>
     </span>
 </div>

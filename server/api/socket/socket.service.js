@@ -3,6 +3,7 @@ var io = require('socket.io').listen(setting.SOCKET.PORT);
 var userSocket = require('../user/user.socket');
 var roomSocket = require('../room/room.socket');
 var userService = require('../user/user.service');
+var topicSocket = require('../topic/topic.socket');
 var completeSocket = require('../room/compete.socket');
 var db = require('../redis/redis.service');
 var jwt = require('jwt-simple');
@@ -13,12 +14,14 @@ function onConnect (socket) {
     userSocket.register(socket);
     roomSocket.register(socket);
     completeSocket.register(socket);
+    topicSocket.register(socket);
 }
 
 function onDisconnect (socket) {
     userSocket.deregister(socket);
     roomSocket.deregister(socket);
     completeSocket.deregister(socket);
+    topicSocket.deregister(socket);
 }
 
 module.exports = {

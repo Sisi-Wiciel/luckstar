@@ -44,10 +44,11 @@ define([
             });
         };
 
+        this.alert = function(title, content){
 
+        }
         this.confirm = function(title, content, icon){
             var defer = $q.defer();
-            console.info(icon);
             _show({
                 title: title,
                 content: content,
@@ -71,7 +72,7 @@ define([
             if(!data.icon){
                 data.icon = "fa-envelope";
             }
-            console.info(data);
+
             var shown = _.find(_scope.messages, "title", data.title);
             if(shown){
                 _.assign(shown, data);

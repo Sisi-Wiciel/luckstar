@@ -21,11 +21,8 @@ var isCorrect = function (id, answer) {
     })
 };
 
-var saveTopic = function (topic) {
-    Topic.create(topic, function (err, topic) {
-        if (err) {
-            return errorHandler(res, err);
-        }
+var saveTopic = function (newtopic) {
+    return Topic.create(newtopic).then(function(topic){
         return db.addTopic(topic);
     });
 };

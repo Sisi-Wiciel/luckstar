@@ -9,6 +9,7 @@ define([
     app.directive('comfirm', function ($compile) {
         return {
             restrict: 'A',
+            priority: 0,
             scope: {
                 ngClick: '&'
             },
@@ -23,6 +24,8 @@ define([
                 $("body").append($compile(tmpl)(scope));
 
                 ele.unbind('click').bind('click', function () {
+                    ele.addClass("disabled").attr("disabled", "disabled").text(attr.loadingText);
+
                     scope.content = attr.comfirm;
                     scope.show = true;
                     scope.comfirm = scope.ngClick;

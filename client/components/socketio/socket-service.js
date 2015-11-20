@@ -8,14 +8,14 @@ define([
     app.factory('socketSrv', function (httpq, store, $q) {
         var connect = function (namespace) {
             var _socket = settings.socket;
-            var namespace = namespace || "";
+            namespace = namespace || "";
             return io.connect('http://'+_socket.host+':'+_socket.port + namespace);
         };
 
         return {
             connect: connect,
             init: function (cb) {
-                var cb = cb || _.noop;
+                cb = cb || _.noop;
                 var self = this;
                 this.socket = connect();
 
@@ -69,6 +69,9 @@ define([
             },
             getRoomStat: function(opt){
                 this.socket.emit('room get stat');
+            },
+            saveTopic: function(topic, cb){
+                this.socket.emit('topic save', topic, cb || _.noop);
             }
         }
     });

@@ -8,6 +8,7 @@ define([
     app.directive('loadingText', function () {
         return {
             restrict: 'A',
+            priority: 0,
             scope: {
                 ngClick: '&'
             },
