@@ -1,4 +1,4 @@
-@import "lesshat";
+@import "common";
 #dialog-box{
 
 
@@ -6,13 +6,13 @@
     .animated;
     .bounceInDown;
   }
-  background: #eee;
   width: 328px;
   position: absolute;
   top: 30%;
   left: 40%;
   z-index: 999;
-  .box-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+  .shadow;
+  .bg-fff;
   .border-radius(5px);
 
   .close{
@@ -40,10 +40,6 @@
         padding: 10px 20px;
         color: #fff;
         font-weight: bold;
-        //.border-radius(5px);
-        //.box-shadow(0 1px 3px rgba(0,0,0,0.5));
-        //text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
-        //border-bottom: 1px solid rgba(0,0,0,0.25);
         cursor: pointer;
 
       }

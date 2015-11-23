@@ -2994,6 +2994,8 @@ Copyright (c) 2015 Daniel Eden
   -moz-background-clip: padding;
   border-radius: 30px;
   background-clip: padding-box;
+  position: relative;
+  z-index: 101;
 }
 .room-main .room-tools .tool:hover span {
   width: auto;
@@ -3013,7 +3015,7 @@ Copyright (c) 2015 Daniel Eden
   line-height: 30px;
   color: #fff;
   border: 1px solid #F38630;
-  z-index: -1;
+  z-index: 100;
   background-color: #F38630;
   -webkit-border-radius: 20px;
   -webkit-background-clip: padding-box;

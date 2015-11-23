@@ -72,7 +72,7 @@ var joinRoom = function (socket, id) {
         if (!_.find(room.users, 'id', user.id)) {
 
             sendRoomSystemMessage(socket, '用户' + user.username + '加入房间');
-            return roomService.save(room, function (locked) {
+            return roomService.update(room, function (locked) {
                 locked.users.push(user);
             });
         }
@@ -91,7 +91,7 @@ var leaveRoom = function (socket) {
             socket.io.sockets.in(socket.room).emit('closeRoom');
         }
         socket.leave(room);
-        _.remove(room.users, 'id', user.id);
+
 
         sendRoomSystemMessage(socket, '用户' + user.username + '离开房间');
 
@@ -99,7 +99,9 @@ var leaveRoom = function (socket) {
         if (_.isEmpty(room.users) || _.isEmpty(room.admin)) {
             return roomService.remove(room);
         } else {
-            return roomService.save(room);
+            return roomService.update(room, function (locked) {
+                _.remove(locked.users, 'id', user.id);
+            });
         }
 
     });
@@ -145,7 +147,7 @@ var startRoomCompete = function (socket) {
             return;
         }
 
-        roomService.save(room, function (locked) {
+        roomService.update(room, function (locked) {
             locked.readyUsers.push(user.id);
             sendRoomSystemMessage(socket, '用户' + user.username + '已准备就绪.');
         }).then(function (room) {
@@ -183,35 +185,38 @@ exports.updateRooms = updateRooms;
 exports.sendRoomSystemMessage = sendRoomSystemMessage;
 
 exports.register = function (socket) {
-    var socketService = require('../socket/socket.service');
+    var ss = require('../socket/socket.service');
 
-    socket.on('update rooms', function () {
-        socketService.authCall(socket, updateRooms);
+    ss.on(socket, 'update rooms', function () {
+        updateRooms(socket);
     });
 
-    socket.on('join room', function (id) {
-        socketService.authCall(socket, joinRoom, id);
+    ss.on(socket, 'join room', function (id) {
+        joinRoom(socket, id);
     });
 
-    socket.on('leave room', function () {
-        socketService.authCall(socket, leaveRoom);
+    ss.on(socket, 'leave room', function () {
+        leaveRoom(socket);
     });
 
-    socket.on('send room message', function (msg) {
-        socketService.authCall(socket, sendChatMessage, msg);
+    ss.on(socket, 'send room message', function (msg) {
+        sendChatMessage(socket, msg);
     });
 
-    socket.on('ready compete', function () {
-        socketService.authCall(socket, readyRoomCompete);
+    ss.on(socket, 'ready compete', function () {
+        readyRoomCompete(socket);
     });
-    socket.on('start compete', function () {
-        socketService.authCall(socket, startRoomCompete);
+    ss.on(socket, 'start compete', function () {
+        startRoomCompete(socket);
     })
-    socket.on('terminate compete', function () {
-        socketService.authCall(socket, terminateRoomCompete);
+    ss.on(socket, 'terminate compete', function () {
+        terminateRoomCompete(socket);
     })
-    socket.on('room get stat', function () {
-        socketService.authCall(socket, getRoomStat);
+    ss.on(socket, 'room get stat', function () {
+        getRoomStat(socket);
+    })
+    ss.on(socket, 'room create', function (room, cb) {
+       roomService.save(room, socket.uid).then(cb);
     })
 };
 

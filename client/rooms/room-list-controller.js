@@ -20,7 +20,7 @@ define([
         socketSrv.updateRooms();
 
         $scope.join = function (roomId) {
-            $location.path('/home/room/'+roomId);
+            $location.path('/home/rooms/'+roomId);
         };
 
         $scope.leave = function () {
@@ -28,7 +28,7 @@ define([
             //$location.path('/home/rooms');
         };
 
-
+        socketSrv.changeUserStatus("ROOMLIST_PAGE");
     });
 });
 

@@ -25,7 +25,7 @@ function onDisconnect (socket) {
 }
 
 module.exports = {
-    authCall: function (socket, cb, arg) {
+    _authCall: function (socket) {
         return new Promise(function (resolve, reject) {
             if (socket.uid && socket.auth) {
                 resolve();
@@ -36,8 +36,8 @@ module.exports = {
                         if (socket.uid && socket.auth) {
                             resolve();
                         } else {
-                            if (times > 0) {
-                                _retry(--times);
+                            if (times < setting.SOCKET.AUTH_MAX_RETRY_TIMES) {
+                                _retry(++times);
                             } else {
                                 reject();
                                 log.error("socket check failed");
@@ -45,15 +45,23 @@ module.exports = {
                         }
 
                     }, 1000);
-                })(setting.SOCKET.AUTH_MAX_RETRY_TIMES)
+                })(0)
 
             }
         }).then(function () {
-            userService.list(socket.uid).then(function(user){
-                socket.room = user[0].room;
-                cb(socket, arg);
+                return userService.list(socket.uid).then(function (user) {
+                    socket.room = user[0].room;
+                });
             });
-        });
+
+    },
+
+    on: function (socket, key, cb) {
+        socket.on(key, function (args, _cb) {
+            this._authCall(socket).then(function () {
+                cb(args, _cb);
+            });
+        }.bind(this));
 
     },
     createIO: function (cb, namespace) {
@@ -70,7 +78,8 @@ module.exports = {
                         log.debug("Authenticated socket with id", socket.id);
                         socket.auth = true;
                         socket.io = io;
-                        db.setUserSid(decoded._id, socket.id);
+                        socket.uid = decoded._id;
+                        db.set("users:" + decoded._id, "sid", socket.id);
                     }
 
                     cb(socket);

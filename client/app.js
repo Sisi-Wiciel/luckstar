@@ -50,7 +50,7 @@ define([
                 })
                 .state('home', {
                     templateUrl: '/home-tpl.html',
-                    controller: 'homeCtrl',
+                    controller: 'mainCtrl',
                     resolve: {
                         user: function (authSrv) {
                             return authSrv.getCurrentUser().$promise;
@@ -96,7 +96,7 @@ define([
                         .element(document)
                         .ready(function () {
                             angular.bootstrap(document, apps_deps)
-                                .invoke(['$rootScope', '$location', 'store', '$alert', '$q', function ($rootScope, $location, store) {
+                                .invoke(['$rootScope', '$location', 'store', function ($rootScope, $location, store) {
 
                                     $rootScope.$on('$stateChangeSuccess',
                                         function (event, toState, toParams, fromState, fromParams) {

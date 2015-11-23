@@ -21,14 +21,19 @@ define([
 
                 this.socket.on('connect', function () {
                     self.socket.emit('authenticate', {token: store.get('token')});
+                    cb();
                 });
-                cb();
+
             },
             // Support user socket service api
+
             register: function (eventName, cb) {
                 var _cb = cb || _.noop;
                 this.socket.off(eventName);
                 this.socket.on(eventName, _cb);
+            },
+            changeUserStatus: function (status) {
+                this.socket.emit('user change status', status);
             },
             userOnline: function (id) {
                 this.socket.emit('user online', id);
@@ -37,6 +42,9 @@ define([
                 this.socket.emit('user offline');
             },
             // Support room socket service api
+            createRoom: function (room, cb) {
+                this.socket.emit('room create', room, cb || _.noop);
+            },
             updateRooms: function () {
                 this.socket.emit('update rooms');
             },

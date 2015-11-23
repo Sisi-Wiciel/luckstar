@@ -2,44 +2,43 @@ var userService = require('./user.service');
 var _ = require('lodash');
 var log = require('../../log');
 var moment = require('moment');
+var settings = require('../../config/setting');
 
-var userOnline = function (socket, id) {
-    log.info("UserOnline: ", id);
-    socket.uid = id;
-    userService.changeStatus(id, 1).then(function () {
-        userService.list().then(function (users) {
-            socket.io.emit("updateUser", users);
-        });
+var updateUsers = function (socket) {
+    userService.list().then(function (users) {
+        socket.io.emit("updateUser", users);
     });
-};
-
-var userOffline = function (socket) {
-    log.info('UserOffLine: ', socket.uid);
-    var id = socket.uid;
-
-    if (socket.uid) {
-        userService.changeStatus(id, 0).then(function () {
-            userService.list().then(function (users) {
-                socket.broadcast.emit("users", users);
-            });
-        })
-
-    }
-};
-
+}
 exports.register = function (socket) {
-    socket.on('user online', function (id) {
-        userOnline(socket, id);
+    var ss = require('../socket/socket.service');
+
+    ss.on(socket, 'user online', function (id) {
+        userService.online(id).then(function () {
+            //socket.uid = id;
+            updateUsers(socket);
+        });
+    })
+
+    ss.on(socket, 'user offline', function () {
+        userService.offline(socket.uid).then(function () {
+            updateUsers(socket);
+        })
     });
 
-    socket.on('user offline', function () {
-        userOffline(socket);
+    ss.on(socket, 'user change status', function (status) {
+        console.info("user change status", status);
+        if (status) {
+            userService.changeStatus(socket.uid, settings.USER.STATUS[status]).then(function () {
+                updateUsers(socket);
+            })
+        }
+
     });
 
-    socket.on('send message', function (message) {
+    ss.on(socket, 'send message', function (message) {
 
-        userService.list([socket.uid, message.to]).then(function(result){
-            var fromUser= result[0];
+        userService.list([socket.uid, message.to]).then(function (result) {
+            var fromUser = result[0];
             var toUser = result[1];
 
             var toSocket = socket.io.sockets.connected[toUser.sid];
@@ -58,5 +57,10 @@ exports.register = function (socket) {
 };
 
 exports.deregister = function (socket) {
-    userOffline(socket);
+    if (socket.uid) {
+        userService.offline(socket.uid).then(function () {
+            updateUsers(socket);
+        })
+    }
+
 };

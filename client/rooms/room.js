@@ -13,7 +13,7 @@ define([
             controller: 'roomListCtrl'
         })
         .state('home.room', {
-            url: '/home/room/:id',
+            url: '/home/rooms/:id',
             templateUrl: '/rooms/room.html',
             controller: 'roomCtrl',
             resolve: {

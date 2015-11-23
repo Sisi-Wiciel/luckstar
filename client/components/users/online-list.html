@@ -8,13 +8,11 @@
         <ul class="list-unstyled">
             <li
                 ng-repeat="user in userlist"
-                ng-if="user.id != curr._id"
-                ng-class="{'text-success': user.status == 1, 'text-muted': user.status == 0}"
-                ng-show="status.value < 0 || status.value == user.status">
+                ng-if="user.id != curr._id">
                 <img class="gravatar" ng-src="{{user.avatar}}">
                 <div class="content"  ng-click="showChatPanel(user)">
                     <span >{{user.username}}</span>
-                    <span class="last-message">{{user.lastMessage}}</span>
+                    <span class="last-message">{{user.status}}</span>
                 </div>
                 <a class="tools" ng-show="user.status == 1" class="pull-right" href ng-click="showChatPanel(user)">
                     <i class="fa fa-comments"></i>

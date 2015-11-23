@@ -1,4 +1,4 @@
-@import "lesshat";
+@import "common";
 
 div.message-center{
   position : fixed;
@@ -11,8 +11,8 @@ div.message-center{
 
   div.message-box {
     .border-radius(5);
-    background-color: #A7DBD8;
-
+    background: lighten(#f88d00, 10%);
+    .shadow;
     padding: 10px;
     margin: 5px 0;
 
@@ -36,9 +36,6 @@ div.message-center{
       .close{
         cursor: pointer;
         .flex(0, 0, 1em);
-        &:hover{
-          color:#F38630;
-        }
       }
 
     }

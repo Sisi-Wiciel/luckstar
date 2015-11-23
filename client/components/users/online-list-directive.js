@@ -59,7 +59,6 @@ define([
                             $scope.showChatPanel(item.from);
                         });
                     }
-                    _.find($scope.userlist, 'id', item.from.id).lastMessage = _.trunc(item.content, 10);
 
                     $scope.message = item;
                     $scope.$apply();

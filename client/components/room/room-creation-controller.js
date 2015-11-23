@@ -3,7 +3,7 @@ define([
 ], function (angular) {
     "use strict";
 
-    angular.module('luckStar').controller('roomCreationCtrl', function ($scope, roomSrv, messageCenter, $location) {
+    angular.module('luckStar').controller('roomCreationCtrl', function ($scope, socketSrv, messageCenter, $location) {
         $scope.numbers = [
             {'value': '2', 'label': '2人对战'},
             {'value': '3', 'label': '3人对战'},
@@ -18,11 +18,14 @@ define([
         }
 
         $scope.create = function (newroom) {
-            var _clone = _.clone(newroom);
-            roomSrv.save(_clone).then(function (room) {
+            //var _clone = ;
+            socketSrv.createRoom(_.clone(newroom), function(room){
                 messageCenter.system('房间'+newroom.title+'创建成功');
-                $location.path('/home/room/'+room.id);
+                $location.path('/home/rooms/'+room.id);
             })
+            //roomSrv.save(_clone).then(function (room) {
+            //
+            //})
         };
     });
 

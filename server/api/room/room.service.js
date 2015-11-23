@@ -9,6 +9,20 @@ var moment = require('moment');
 var Statistic = require('./statistic.model');
 var errorHandler = require('express-error-handler');
 var settings = require('../../config/setting');
+var uuid = require('node-uuid');
+
+var objSaved = function (room) {
+    var _room = _.clone(room);
+
+    _room.users = _.map(_room.users, function (user) {
+        return _.isString(user) ? user : user.id;
+    });
+
+    if (!_.isString(_room.admin) && _room.admin.id) {
+        _room.admin = _room.admin.id;
+    }
+    return _room;
+};
 
 var assemble = function (room) {
 
@@ -33,35 +47,27 @@ exports.list = function (id) {
     return db.listObj("rooms", id).map(assemble);
 };
 
-exports.save = function (room, setFun) {
 
-    var objSaved = function (room) {
-        var _room = _.clone(room);
+exports.update = function (room, setFun) {
 
-        _room.users = _.map(_room.users, function (user) {
-            return _.isString(user) ? user : user.id;
-        });
-
-        if (!_.isString(_room.admin) && _room.admin.id) {
-            _room.admin = _room.admin.id;
-        }
-        return _room;
-    };
-
-    var promise;
-    if (setFun && _.isFunction(setFun)) {
-        var assembledRoom;
-        promise = db.saveObj("rooms", room, function (lockedRoom) {
-            return assemble(lockedRoom).then(function (assembledRoom) {
-                setFun(assembledRoom);
-                return objSaved(assembledRoom);
-            })
+    var assembledRoom;
+    return db.saveObj("rooms", room, function (lockedRoom) {
+        return assemble(lockedRoom).then(function (assembledRoom) {
+            setFun(assembledRoom);
+            return objSaved(assembledRoom);
         })
-    } else {
-        promise = db.saveObj("rooms", objSaved(room));
-    }
+    })
+}
+exports.save = function (room, userid) {
 
-    return promise;
+    room.create = moment().format();
+    room.id = uuid.v1();
+    room.admin = userid;
+    room.status = 0;
+    room.users = [userid];
+    room.readyUsers = [];
+
+    return db.saveObj("rooms", objSaved(room));
 
 };
 
@@ -69,7 +75,7 @@ exports.remove = function (room) {
     return db.delete("rooms:" + room.id);
 };
 exports.listRoomStat = function (id) {
-    return db.list("roomstats:" + id).then(function(state){
+    return db.list("roomstats:" + id).then(function (state) {
         return JSON.parse(state);
     });
 };
@@ -85,7 +91,7 @@ exports.updateRoomStat = function (room, verdictObj) {
                         break;
                     case 0:
                         currentUserStat.point -= verdictObj.point;
-                        if(currentUserStat.point < 0 ){
+                        if (currentUserStat.point < 0) {
                             currentUserStat.point = 0;
                         }
                         currentUserStat.incorrectNum++;
@@ -129,18 +135,20 @@ exports.finishCompete = function (room, statist) {
 
     db.delete("roomstats:" + room.id);
 
-    room.status = 0;
-    room.readyUsers = [];
-    room.topic = "";
-    return this.save(room);
+
+    return this.update(room, function(locked){
+        locked.status = 0;
+        locked.readyUsers = [];
+        locked.topic = "";
+    });
 };
-exports.terminateCompete= function (room) {
+exports.terminateCompete = function (room) {
 
     return this.save(room, function (locked) {
         locked.readyUsers = [];
         locked.status = 0;
         locked.topic = "";
-    }).then(function(){
+    }).then(function () {
         return db.delete("roomstats:" + room.id);
     })
 

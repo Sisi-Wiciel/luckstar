@@ -40,8 +40,14 @@ define([
                 return;
             }
 
-            if (($scope.room.status == 0 || $scope.room.status == 2) && room.status == 1) {
+            if ($scope.room.status == 0 && room.status == 1) {
                 socketSrv.startCompete();
+            }
+
+            if(room.status == 0){
+                socketSrv.changeUserStatus("IN_ROOM");
+            }else if(room.status == 1){
+                socketSrv.changeUserStatus("IN_COMPETING");
             }
 
             roomSrv.fillRoomUsers(room);
@@ -91,6 +97,8 @@ define([
         $scope.terminateComplate = function(){
             socketSrv.terminateCompete();
         }
+
+        socketSrv.changeUserStatus("IN_ROOM");
 
     });
 

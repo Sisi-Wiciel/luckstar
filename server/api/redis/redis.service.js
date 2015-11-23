@@ -122,11 +122,6 @@ module.exports = {
     },
     addTopic: function (topic) {
         return this.db.sadd("topics", JSON.stringify(topic));
-    },
-    setUserSid: function (uid, sid) {
-        if (uid && sid) {
-            this.set("users:" + uid, "sid", sid);
-        }
     }
 
 };

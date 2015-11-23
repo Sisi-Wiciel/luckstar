@@ -9,7 +9,6 @@ var Promise = require('bluebird');
 var settings = require('../../config/setting');
 
 var nodifyRoom = function (socket, key, obj) {
-    log.info("NodifyRoom", key);
     socket.io.sockets.in(socket.room).emit(key, obj);
 };
 
@@ -84,11 +83,11 @@ function nextTopic (socket) {
 
             delete topic.correct;
 
-            room.topic = topic._id;
-
             nodifyRoom(socket, 'topicUpdate', topic);
 
-            roomService.save(room).then(function () {
+            roomService.update(room, function(locked){
+                locked.topic = topic._id;
+            }).then(function () {
                 topicCountDown(socket, topic);
             })
 
@@ -135,12 +134,12 @@ exports.checkTopic = checkTopic;
 exports.nextTopic = nextTopic;
 
 exports.register = function (socket) {
-
-    socket.on('complete get topic', function () {
+    var ss = require('../socket/socket.service');
+    ss.on(socket, 'complete get topic', function () {
         getTopic(socket);
     });
 
-    socket.on('complete check topic', function (answer) {
+    ss.on(socket, 'complete check topic', function (answer) {
         checkTopic(socket, answer);
     });
 };
