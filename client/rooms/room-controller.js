@@ -11,7 +11,7 @@ define([
         $scope.message = "";
 
         if (!room) {
-            messageCenter.system('房间不存在或已经关闭.');
+            messageCenter.notify('房间不存在或已经关闭.');
             $location.path('/home/rooms');
             return;
         }
@@ -29,7 +29,7 @@ define([
             $scope.verdict = verdict;
         });
         socketSrv.register('closeRoom', function (room) {
-            messageCenter.system('管理员退出房间, 房间已关闭');
+            messageCenter.notify('管理员退出房间, 房间已关闭');
             $scope.leave();
             $scope.$apply();
         });

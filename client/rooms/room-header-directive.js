@@ -41,7 +41,7 @@ define([
                     if(joinedUserSize > 1 && joinedUserSize <= $scope.room.number){
                         $scope.startComplate();
                     }else{
-                        messageCenter.system("答题人数不符合要求: 至少要有2个人.");
+                        messageCenter.alert("答题人数不符合要求: 人数"+$scope.room.number+"个人.");
                         return $q.reject();
                     }
                 }

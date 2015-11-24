@@ -26,7 +26,6 @@ exports.register = function (socket) {
     });
 
     ss.on(socket, 'user change status', function (status) {
-        console.info("user change status", status);
         if (status) {
             userService.changeStatus(socket.uid, settings.USER.STATUS[status]).then(function () {
                 updateUsers(socket);

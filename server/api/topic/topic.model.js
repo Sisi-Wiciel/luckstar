@@ -8,7 +8,7 @@ var topic = new Schema({
   options: [String],
   active: Boolean,
   point: {type:Number, default: 10},
-  creator: { type: Schema.Types.ObjectId, ref: 'User'},
+  creator: String,
   corrector: {type: [Number]}
 });
 

@@ -37,9 +37,8 @@ var assemble = function (room) {
     if (room.users && _.isString(room.users)) {
         room.users = room.users.split(',');
     }
-    console.info("in assemble", room.users);
+
     return userService.list(room.users).then(function (users) {
-        console.info("in assemble and users", users);
         room.users = users;
         room.admin = users[0];
         return room;

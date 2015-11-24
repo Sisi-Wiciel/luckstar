@@ -2854,6 +2854,7 @@ Copyright (c) 2015 Daniel Eden
   animation-name: slideOutUp;
 }
 #nav-main {
+  height: 40px;
   background-color: #fff;
   color: #767676;
   display: -webkit-box;
@@ -2871,6 +2872,15 @@ Copyright (c) 2015 Daniel Eden
   border-radius: 5px;
   background-clip: padding-box;
 }
+#nav-main a.logo {
+  display: block;
+  font-size: 24px;
+  color: #f88d00;
+  text-shadow: 0 4px 4px #ffa42c;
+  font-weight: bold;
+  letter-spacing: 4px;
+  padding: 5px 10px;
+}
 #nav-main ul {
   display: -webkit-box;
   display: -moz-box;
@@ -2886,7 +2896,7 @@ Copyright (c) 2015 Daniel Eden
 }
 #nav-main ul li span {
   display: block;
-  padding: 14px 10px;
+  padding: 7px 10px;
 }
 #nav-main ul.menu {
   font-size: 16px;

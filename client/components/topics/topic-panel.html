@@ -4,7 +4,7 @@
     </div>
 
     <div class="head">
-        <b>{{topic.title}}({{topic.point}}分)</b>
+        {{topic.title}}<b class="text-success">({{topic.point}}分)</b>
     </div>
 
     <div class="body">
@@ -15,8 +15,9 @@
 
         <ul class="list-unstyled options">
             <li ng-repeat="opt in topic.options">
+                <i class="fa fa-check" ng-if="topic.corrector == $index"></i>
                 <a href ng-click="check($index)" ng-class="{actived: checkedOpt==$index}">
-                    {{$index+1}}. {{opt}}
+                    {{$index+1}}. {{opt.hasOwnProperty('value')?opt.value:opt}}
                 </a>
 
                  <span class="text-success" ng-if="verdict && verdictCls === 'passive' && verdict.opt == $index">
@@ -24,5 +25,10 @@
                 </span>
             </li>
         </ul>
+
+
+    </div>
+    <div class="foot text-center" ng-if="topic.creator">
+        本题目由用户 <b class="text-success" ng-bind="topic.creator.username"></b> 提供
     </div>
 </section>

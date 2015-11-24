@@ -15,7 +15,8 @@ module.exports = {
             HOME_PAGE: '浏览首页.',
             ROOMLIST_PAGE: '浏览答题页面.',
             IN_ROOM:  '房间中.',
-            IN_COMPETING: '比赛中.'
+            IN_COMPETING: '比赛中.',
+            IN_TOPIC: '浏览题目页面.'
         }
     },
     SECRET_KEY: "LuCk_StAr_SeCrEt"

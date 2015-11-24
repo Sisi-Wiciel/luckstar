@@ -10,7 +10,8 @@ define([
 
             return {
                 templateUrl: " components/topics/topic-commit.html",
-                controller: function ($scope, socketSrv, messageCenter) {
+                controller: function ($scope, socketSrv, messageCenter, authSrv) {
+                    var curr = authSrv.getCurrentUser();
                     $scope.points = [
                         {value: "5", label: "5分"},
                         {value: "10", label: "10分"},
@@ -18,6 +19,10 @@ define([
                         {value: "20", label: "20分"},
                     ]
                     $scope.removeOpt = function (opt) {
+                        if($scope.topic.options.length <= 2){
+                            messageCenter.error("至少要有2个选项");
+                            return;
+                        }
                         _.remove($scope.topic.options, opt);
 
                         _.each($scope.topic.options, function (opt, index) {
@@ -25,6 +30,10 @@ define([
                         })
                     };
                     $scope.addOpt = function () {
+                        if($scope.topic.options.length >= 5){
+                            messageCenter.error("最多要有5个选项");
+                            return;
+                        }
                         var _opt = {
                             title: '',
                             value: ''
@@ -43,6 +52,10 @@ define([
                                 {title: 'A', value: ''},
                                 {title: 'B', value: ''}
                             ],
+                            creator:{
+                                username: curr.username,
+                                id: curr._id,
+                            },
                             point: $scope.points[0].value,
                         };
 
@@ -52,7 +65,7 @@ define([
                         var t = _.clone($scope.topic);
 
                         if (!t.title) {
-                            alert("请填写题目");
+                            messageCenter.error("请填写题目");
                             return;
                         }
 
@@ -61,18 +74,17 @@ define([
                         });
 
                         if (_.compact(t.options).length < 2) {
-                            alert("请填写至少2个选项");
+                            messageCenter.error("请填写至少2个选项");
                             return;
                         }
-
                         socketSrv.saveTopic(t, function () {
-                            messageCenter.system("题目[" + _.trunc(t.title, 10) + "]提交成功");
+                            messageCenter.notify("题目[" + _.trunc(t.title, 10) + "]提交成功");
                             $scope.reset();
                             $scope.$apply();
                         });
 
                     };
-
+                    socketSrv.changeUserStatus("IN_TOPIC");
                     $scope.reset();
                 },
                 link: function (scope, elem, attr) {

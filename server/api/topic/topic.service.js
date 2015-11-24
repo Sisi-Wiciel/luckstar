@@ -21,10 +21,9 @@ var isCorrect = function (id, answer) {
     })
 };
 
-var saveTopic = function (newtopic) {
-    return Topic.create(newtopic).then(function(topic){
-        return db.addTopic(topic);
-    });
+var saveTopic = function (newtopic, creator) {
+    newtopic.creator = creator.id;
+    return Topic.create(newtopic);
 };
 
 exports.get = getTopic;

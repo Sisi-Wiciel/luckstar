@@ -2866,7 +2866,7 @@ Copyright (c) 2015 Daniel Eden
   animation-name: slideInDown;
 }
 #home > .row {
-  height: 700px;
+  height: 730px;
 }
 #home > .row > .sidebar {
   -webkit-animation-duration: 1s;

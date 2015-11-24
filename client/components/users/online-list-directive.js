@@ -54,8 +54,12 @@ define([
 
                     $scope.messages[item.from.id].push(item);
 
-                    if(item.from.id !== $scope.toUser.id){
-                        messageCenter.confirm(item.from.username  + "对你说", item.content, 'fa-comment').then(function(){
+                    if (item.from.id !== $scope.toUser.id) {
+                        messageCenter.confirm({
+                            title: item.from.username + "对你说",
+                            content: item.content,
+                            icon: 'fa-comment'
+                        }, 'right').then(function () {
                             $scope.showChatPanel(item.from);
                         });
                     }
@@ -64,7 +68,7 @@ define([
                     $scope.$apply();
                 });
 
-                $scope.sendMsg = function(msg){
+                $scope.sendMsg = function (msg) {
                     socketSrv.sendMsg({
                         content: msg,
                         to: $scope.toUser.id

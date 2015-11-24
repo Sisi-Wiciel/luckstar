@@ -14,7 +14,7 @@ define([
                 $scope.avatarError = false;
                 target.avatar = $scope.avatar;
                 authSrv.createUser(target).then(function(){
-                    messageCenter.system("用户注册成功");
+                    messageCenter.notify("用户注册成功");
                     $timeout($scope.login)
                 });
             }

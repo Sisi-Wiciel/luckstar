@@ -2,7 +2,6 @@ define([
     './utils/form',
     './utils/focus',
     './utils/fromNow',
-    './utils/comfirm/comfirm',
     './utils/avatarSelection',
     './utils/loadingText',
     './utils/countTo',
@@ -20,7 +19,8 @@ define([
     './navbar/navbar.controller',
     './modal/modal.service',
     './socketio/socket-service',
-    './message/message-center'
+    './utils/message/message-center',
+    './utils/message/comfirm'
 ], function () {
 });
 

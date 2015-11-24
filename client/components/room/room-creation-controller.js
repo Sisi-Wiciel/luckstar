@@ -20,7 +20,7 @@ define([
         $scope.create = function (newroom) {
             //var _clone = ;
             socketSrv.createRoom(_.clone(newroom), function(room){
-                messageCenter.system('房间'+newroom.title+'创建成功');
+                messageCenter.notify('房间'+newroom.title+'创建成功');
                 $location.path('/home/rooms/'+room.id);
             })
             //roomSrv.save(_clone).then(function (room) {

@@ -14,7 +14,7 @@ define([
             'link': '/home/rooms',
             'icon': 'fa-star'
         }, {
-            'title': '贡献题目',
+            'title': '题目',
             'link': '/home/topic',
             'icon': 'fa-book'
         }];

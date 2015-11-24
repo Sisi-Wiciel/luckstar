@@ -1,0 +1,84 @@
+@import "common";
+
+#dialog-box {
+
+  position : fixed;
+
+  &.center {
+    top  : 30%;
+    left : 40%;
+
+    .message-box {
+      &.ng-enter {
+        .animated;
+        .bounceInDown;
+      }
+    }
+  }
+
+  &.right {
+    right : 10px;
+    top   : 50px;
+    .message-box {
+      &.ng-enter {
+        .animated;
+        .bounceInRight
+      }
+      &.ng-leave {
+        .animated;
+        .zoomOutRight;
+      }
+      .foot {
+        padding : 10px;
+      }
+      .content {
+        min-height : auto;
+      }
+    }
+  }
+
+  .message-box {
+    padding : 5px;
+    width   : 328px;
+    z-index : 999;
+    color      : #666;
+    .shadow;
+    .bg-fff;
+    .border-radius(5px);
+    .head {
+      padding  : 5px;
+      position : relative;
+      .close {
+        position : absolute;
+        right    : 10px;
+        top      : 5px;
+      }
+    }
+
+    .content {
+      text-align : left;
+      padding    : 0 10px;
+      min-height : 2em;
+    }
+    .foot {
+      text-align : center;
+      padding    : 20px 0;
+      a.button {
+        margin      : 0 30px;
+
+        padding     : 10px 20px;
+        color       : #fff;
+        font-weight : bold;
+        cursor      : pointer;
+
+      }
+    }
+
+    &.error {
+      color      : #a94442;
+      background : #f2dede;
+      border: 1px solid #ebccd1;
+    }
+  }
+
+}

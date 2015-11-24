@@ -21,7 +21,6 @@ define([
                     var setVerdict = function (verObj) {
                         $scope.verdict = verObj;
                         $scope.$emit('topicVerdict', verObj);
-
                         if (verObj) {
                             if ($scope.verdict.user) {
                                 if ($scope.verdict.user.id === curr._id) {
