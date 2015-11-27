@@ -6,7 +6,7 @@ define([
 ], function (angular, module, _, moment) {
     "use strict";
 
-    module.controller("roomCtrl", function ($scope, room, $location, socketSrv, authSrv, $timeout, messageCenter, roomSrv) {
+    module.controller("roomCtrl", function ($scope, room, $location, socketSrv, authSrv, messageCenter, roomSrv) {
 
         $scope.message = "";
 
@@ -44,10 +44,15 @@ define([
                 socketSrv.startCompete();
             }
 
-            if(room.status == 0){
-                socketSrv.changeUserStatus("IN_ROOM");
-            }else if(room.status == 1){
-                socketSrv.changeUserStatus("IN_COMPETING");
+            if($scope.room){
+                if($scope.room.status != room.status){
+                    room.status == 0  && socketSrv.changeUserStatus("IN_ROOM");
+                    room.status == 1 && socketSrv.changeUserStatus("IN_COMPETING");
+                }
+
+                if(room.status == 0){
+                    $scope.$broadcast('roomInWait');
+                }
             }
 
             roomSrv.fillRoomUsers(room);

@@ -134,9 +134,6 @@ exports.finishCompete = function (room, statist) {
         })
     });
 
-    db.delete("roomstats:" + room.id);
-
-
     return this.update(room, function(locked){
         locked.status = 0;
         locked.readyUsers = [];
@@ -149,8 +146,6 @@ exports.terminateCompete = function (room) {
         locked.readyUsers = [];
         locked.status = 0;
         locked.topic = "";
-    }).then(function () {
-        return db.delete("roomstats:" + room.id);
     })
 
 };
@@ -167,8 +162,10 @@ exports.createCompeteState = function (roomValue) {
     if (_.isString(_.first(roomValue.users))) {
         roomValue = assemble(roomValue);
     }
+
     return Promise.resolve(roomValue).then(function (room) {
         var roomstate = {
+            id: uuid.v1(),
             users: _.map(room.users, function (user) {
                 return {
                     userid: user.id,

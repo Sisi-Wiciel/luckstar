@@ -24,7 +24,7 @@ function isAuthenticated() {
 }
 
 function genToken(user){
-  return jwt.sign({_id: user._id}, SECRET, { expiresInMinutes: 5*60});
+  return jwt.sign({_id: user._id}, SECRET, { expiresInMinutes: 24*60});
 }
 exports.isAuth = isAuthenticated;
 exports.genToken= genToken;

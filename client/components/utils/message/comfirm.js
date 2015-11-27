@@ -25,9 +25,12 @@ define([
                     }, 'center').then(function(){
                         scope.ngClick();
                     }, function(){
-                        setTimeout(function(){
-                            ele.removeClass("disabled").removeAttr("disabled").text(btnText);
-                        }, 1000);
+                        if(!_.isEmpty(_.trim(btnText))){
+                            setTimeout(function(){
+                                ele.removeClass("disabled").removeAttr("disabled").text(btnText);
+                            }, 1000);
+                        }
+
                     })
                     scope.$apply();
                 });

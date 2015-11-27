@@ -17,7 +17,6 @@ module.exports = {
         var userService = require("../user/user.service");
 
         db.on('ready', function () {
-
             db.keys('*').then(function (keys) {
 
                 for (var i = 0, len = keys.length; i < len; i++) {
@@ -49,7 +48,6 @@ module.exports = {
 
 
                             delete _topic.corrector;
-                            console.info(_topic);
                             db.sadd("topics", JSON.stringify(_topic ));
                         });
                     });
@@ -62,6 +60,12 @@ module.exports = {
             log.error("db problem:", error);
         })
 
+    },
+
+    exists: function(key){
+        return db.exists('topics').then(function(result){
+            return result === 0;
+        })
     },
     random: function (key, number) {
         return this.db.srandmember(key, number);

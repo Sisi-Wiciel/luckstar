@@ -4,11 +4,10 @@ var errorHandler = require('express-error-handler');
 
 var getTopic = function (id) {
     if (id) {
-        return Topic.findById(id).exec();
+        return Topic.findById(id, '-corrector').exec();
     } else {
         return db.random('topics', 1).then(JSON.parse);
     }
-
 };
 
 var isCorrect = function (id, answer) {
@@ -16,7 +15,8 @@ var isCorrect = function (id, answer) {
         var ret = {
             point: topic.point
         }
-        topic.corrector.toString() == answer.toString() ? ret.verdict = 1 : ret.verdict = 0;
+        ret.verdict = 1;
+        //topic.corrector.toString() == answer.toString() ? ret.verdict = 1 : ret.verdict = 0;
         return ret;
     })
 };

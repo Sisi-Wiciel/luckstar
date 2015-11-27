@@ -6,16 +6,16 @@ module.exports = {
         AUTH_MAX_RETRY_TIMES: 5
     },
     ROOM: {
-        COMPETE_MAX_TOPICS: 5,
-        COMPETE_TOPIC_COUNTDOWN: 15
+        COMPETE_MAX_TOPICS: 20,
+        COMPETE_TOPIC_COUNTDOWN: 20
     },
     USER: {
         STATUS: {
             OFFLINE: '离线.',
             HOME_PAGE: '浏览首页.',
             ROOMLIST_PAGE: '浏览答题页面.',
-            IN_ROOM:  '房间中.',
-            IN_COMPETING: '比赛中.',
+            IN_ROOM:  '比赛房间,等待中.',
+            IN_COMPETING: '比赛房间,答题中.',
             IN_TOPIC: '浏览题目页面.'
         }
     },

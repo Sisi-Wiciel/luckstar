@@ -13,10 +13,9 @@ define([
                 controller: function ($scope, socketSrv, messageCenter, authSrv) {
                     var curr = authSrv.getCurrentUser();
                     $scope.points = [
+                        {value: "2", label: "2分"},
                         {value: "5", label: "5分"},
-                        {value: "10", label: "10分"},
-                        {value: "15", label: "15分"},
-                        {value: "20", label: "20分"},
+                        {value: "10", label: "10分"}
                     ]
                     $scope.removeOpt = function (opt) {
                         if($scope.topic.options.length <= 2){

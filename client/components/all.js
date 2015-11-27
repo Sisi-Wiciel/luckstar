@@ -6,6 +6,7 @@ define([
     './utils/loadingText',
     './utils/countTo',
     './compete/room-compete-directive',
+    './compete/statistic/statistic-directive',
     './topics/topic-factory',
     './topics/topic-service',
     './topics/topic-panel-directive',

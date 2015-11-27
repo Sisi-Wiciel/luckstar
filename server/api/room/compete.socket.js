@@ -25,9 +25,10 @@ var nodifyVerdict = function (socket, room, verdictObj) {
         } else if (verdictObj.verdict == -1) {
             roomSocket.sendRoomSystemMessage(socket, "第" + competeStat.currNum + "题: 答题超时");
         }
-        nodifyRoom(socket, 'updateRoomStat', competeStat);
 
-        setTimeout(function(){
+
+        setTimeout(function () {
+            nodifyRoom(socket, 'updateRoomStat', competeStat);
             if (competeStat.currNum >= competeStat.maxNum) {
 
                 roomService.finishCompete(room, competeStat).then(function () {
@@ -85,7 +86,7 @@ function nextTopic (socket) {
 
             nodifyRoom(socket, 'topicUpdate', topic);
 
-            roomService.update(room, function(locked){
+            roomService.update(room, function (locked) {
                 locked.topic = topic._id;
             }).then(function () {
                 topicCountDown(socket, topic);

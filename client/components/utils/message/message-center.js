@@ -87,11 +87,13 @@ define([
                 data.icon = "fa-envelope";
             }
 
-            var shown = _.find(_scope.messages, "title", data.title);
+            //var shown = _.find(_scope.messages, "title", data.title);
+            var shown = _.first(_scope.messages);
             if (shown) {
                 _.assign(shown, data);
             } else {
-                _scope.messages.splice(0, 0, data);
+                //_scope.messages.splice(0, 0, data);
+                _scope.messages.push(data);
             }
 
         }

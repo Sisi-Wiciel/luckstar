@@ -1,7 +1,7 @@
 <div class="room-header">
     <div class="user-list" >
         <span ng-repeat="user in room.users track by $index" class="user animated"
-              ng-class="{bounce: verdict && user.id !== curr._id && verdict.user.id == user.id, admin: isRoomAdmin(user)}">
+              ng-class="{bounce: verdict && user.id !== curr._id && verdict.user.id == user.id}">
             <div class="head" ng-if="user" >
                 <i ng-if="isRoomAdmin(user)" class="fa fa-star"></i> {{user.username}} <span class="badge">{{user.point}}</span>
             </div>

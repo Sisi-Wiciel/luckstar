@@ -1,16 +1,17 @@
 @import "common";
-@correct-panel-bg-color: #B1DE06;
-@incorrect-panel-bg-color: #f88d00;
-@timeout-panel-bg-color: #999;
+
+@correct-panel-bg-color: #dff0d8;
+@incorrect-panel-bg-color: #f2dede;
+@timeout-panel-bg-color: #f5f5f5;
 @head-user-boder-color: #f88d00;
 
 .topic-panel {
 
-  height     : 300px;
+  height   : 300px;
 
   .bg-frame1;
 
-  position   : relative;
+  position : relative;
 
   .flex(1);
 
@@ -25,36 +26,30 @@
     ul.options {
 
       padding-left : 20px;
-      li{
-        position: relative;
-        .fa-check{
-          color:green;
-          position: absolute;
-          left: -20px;
-          top: 7px;
+      li {
+        position : relative;
+        .fa-check {
+          color    : green;
+          position : absolute;
+          left     : -20px;
+          top      : 7px;
         }
         a {
           text-decoration : none;
           line-height     : 30px;
           .border-radius(5);
 
-          &:hover {
+          &:hover, &.actived {
             background : #777;
             color      : #fff;
             padding    : 5px 20px;
-          }
-
-          &.actived {
-            background : #0775e3;
-            color      : #fff;
-            padding    : 5px 20px;
-
-            &.passive{
-              border: 1px solid #0775e3;
-              color:  #0775e3;
-              background-color: #fff;
+            &.passive {
+              border           : 1px solid #075e3;
+              color            : #075e3;
+              background-color : #fff;
             }
           }
+
         }
 
         span.ng-enter {
@@ -67,17 +62,17 @@
   }
 
   .panel-cover {
-    font-size     : 20px;
-    font-weight   : bold;
-    position      : absolute;
-    width         : 250px;
-    height        : 50px;
-    opacity       : 0;
-    top           : 10px;
-    right         : 10px;
+    font-size   : 20px;
+    font-weight : bold;
+    position    : absolute;
+    width       : 250px;
+    height      : 50px;
+    opacity     : 0;
+    top         : 20px;
+    right       : 20px;
 
     .border-radius(10px);
-    .box-shadow(1px 10px 10px);
+    .box-shadow(1px 5px 5px);
   }
 
   &.incorrect {
@@ -86,11 +81,13 @@
     .panel-cover {
       .flex-center;
       opacity          : 0.8;
-      .animated;
+      .animation-duration(.5);
       .fadeInDown;
       background-color : @incorrect-panel-bg-color;
-      i:after{
-        content: "回答错误."
+      color            : darken(@incorrect-panel-bg-color, 20%);
+      border           : 1px solid darken(@incorrect-panel-bg-color, 20%);
+      i:after {
+        content : "回答错误."
       }
     }
   }
@@ -98,11 +95,11 @@
     .panel-cover {
       .flex-center;
       opacity          : 0.8;
-      .animated;
+      .animation-duration(.5);
       .fadeInDown;
       background-color : @timeout-panel-bg-color;
-      i:after{
-        content: "回答超时."
+      i:after {
+        content : "回答超时."
       }
     }
   }
@@ -110,11 +107,13 @@
     .panel-cover {
       .flex-center;
       opacity          : 0.8;
-      .animated;
+      .animation-duration(.5);
       .fadeInDown;
       background-color : @timeout-panel-bg-color;
-      i:after{
-        content: "已被抢答."
+      color            : darken(@timeout-panel-bg-color, 50%);
+      border           : 1px solid darken(@timeout-panel-bg-color, 20%);
+      i:after {
+        content : "已被抢答."
       }
     }
   }
@@ -122,11 +121,13 @@
     .panel-cover {
       .flex-center;
       opacity          : 0.8;
-      .animated;
+      .animation-duration(.5);
       .fadeInDown;
       background-color : @correct-panel-bg-color;
-      i:after{
-        content: "回答正确."
+      color            : darken(@correct-panel-bg-color, 50%);
+      border           : 1px solid darken(@correct-panel-bg-color, 20%);
+      i:after {
+        content : "回答正确."
       }
     }
   }
