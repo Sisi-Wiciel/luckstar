@@ -3085,6 +3085,9 @@ Copyright (c) 2015 Daniel Eden
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 .room-main .room-list .body .room-list-item {
   color: #996300 !important;
