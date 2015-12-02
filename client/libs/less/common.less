@@ -1,11 +1,15 @@
 @import "lesshat";
 
 .flex-center {
-  display         : flex;
-  justify-content : center;
-  align-items     : center;
+  .display(flex);
+  .justify-content(center);
+  .align-items(center);
 }
 
+.flex-column{
+  .display(flex);
+  .flex-direction(column);
+}
 //topic frame background
 .bg-frame1 {
   background : url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIElEQVQYV2NkIAK8ffv2PyMR6hhGFeINJXDwgAhiwhIAIyslx2i5iywAAAAASUVORK5CYII=) repeat #fff;

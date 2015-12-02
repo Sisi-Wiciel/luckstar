@@ -56,10 +56,10 @@ exports.register = function (socket) {
 };
 
 exports.deregister = function (socket) {
-    if (socket.uid) {
-        userService.offline(socket.uid).then(function () {
-            updateUsers(socket);
-        })
-    }
+    //if (socket.uid) {
+        //userService.offline(socket.uid).then(function () {
+        //    updateUsers(socket);
+        //})
+    //}
 
 };

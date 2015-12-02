@@ -18,6 +18,11 @@ var objSaved = function (room) {
         return _.isString(user) ? user : user.id;
     });
 
+    //_room.obs = _.map(_roo
+    //m.obs, function (user) {
+    //    return _.isString(user) ? user : user.id;
+    //});
+
     if (!_.isString(_room.admin) && _room.admin.id) {
         _room.admin = _room.admin.id;
     }
@@ -48,15 +53,17 @@ exports.list = function (id) {
     return db.listObj("rooms", id).map(assemble);
 };
 
-
 exports.update = function (room, setFun) {
-
-    var assembledRoom;
+    room = _.isString(room) ? {id: room} : room;
     return db.saveObj("rooms", room, function (lockedRoom) {
         return assemble(lockedRoom).then(function (assembledRoom) {
             setFun(assembledRoom);
             return objSaved(assembledRoom);
+        }, function (error) {
+            log.error("update room error", error);
         })
+    }, function (error) {
+        log.error("save room error", error);
     })
 }
 exports.save = function (room, userid) {
@@ -66,8 +73,8 @@ exports.save = function (room, userid) {
     room.admin = userid;
     room.status = 0;
     room.users = [userid];
-    room.readyUsers = [];
-
+    room.readyUsers = [userid];
+    room.obs = [];
     return db.saveObj("rooms", objSaved(room));
 
 };
@@ -119,35 +126,31 @@ exports.updateRoomStat = function (room, verdictObj) {
 
 exports.finishCompete = function (room, statist) {
 
-    _.each(statist.users, function (user) {
-        Statistic.create({
-            correctNum: user.correctNum,
-            incorrectNum: user.incorrectNum,
-            timeoutNum: user.timeoutNum,
-            point: user.point || 0,
-            user: user.userid
-        }, function (err) {
-            if (err) {
-                log.error("finish compete error ", err);
-                return errorHandler(err);
-            }
-        })
-    });
+    if (statist) {
+        _.each(statist.users, function (user) {
+            Statistic.create({
+                correctNum: user.correctNum,
+                incorrectNum: user.incorrectNum,
+                timeoutNum: user.timeoutNum,
+                point: user.point || 0,
+                user: user.userid
+            }, function (err) {
+                if (err) {
+                    log.error("finish compete error ", err);
+                    return errorHandler(err);
+                }
+            })
+        });
+    }
 
-    return this.update(room, function(locked){
+    return this.update(room, function (locked) {
         locked.status = 0;
-        locked.readyUsers = [];
+        locked.readyUsers = [locked.admin.id];
         locked.topic = "";
     });
 };
 exports.terminateCompete = function (room) {
-
-    return this.update(room, function (locked) {
-        locked.readyUsers = [];
-        locked.status = 0;
-        locked.topic = "";
-    })
-
+    return this.finishCompete(room);
 };
 
 exports.startCompete = function (room) {

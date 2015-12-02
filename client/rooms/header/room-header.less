@@ -2,6 +2,18 @@
 
 @room-header-user-color: #999;
 @room-header-admin-color:  #F38630;
+
+@-webkit-keyframes forwardOut {
+  from {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+}
+
 div.room-header {
   padding-top                : 10px;
   display                    : flex;
@@ -30,11 +42,6 @@ div.room-header {
       .display(flex);
       .flex-direction(column);
 
-      //&.admin{
-      //  border     : 1px solid @room-header-admin-color;
-      //  color      : @room-header-admin-color;
-      //  .box-shadow(inset 0 0 25px @room-header-admin-color);
-      //}
 
       .head {
         flex : 0 0 1em;
@@ -60,12 +67,15 @@ div.room-header {
         bottom           : 5px;
         right            : 10px;
         left             : 10px;
-        .border-radius(10px);
+        .border-radius(5);
         opacity          : 0.8;
         color            : #000;
 
       }
 
+      &.forward{
+        .animation(2s, forwardOut);
+      }
     }
   }
   span.ctrlbtn {

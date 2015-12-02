@@ -23,7 +23,10 @@ define([
                         }
                     });
 
-                    $scope.$on('roomInWait', function (event) {
+                    $scope.$on('roomStatus', function (event) {
+                        if($scope.room.status == 0){
+                            $scope.topic = null;
+                        }
                         $scope.updateRecords();
                     });
 
@@ -32,25 +35,20 @@ define([
                         $scope.$apply();
                     });
 
-                    socketSrv.register('updateRoomStat', function (roomstat) {
-                        $scope.roomstat = roomstat;
-
-                        if (_.isEmpty($scope.records) || roomstat.id !== $scope.roomstat.id) {
+                    $scope.$on('updateRoomStats', function (event) {
+                        if (_.isEmpty($scope.records) || $scope.roomstat.id !== $scope.roomstat.id) {
                             $scope.records = _.fill(Array($scope.roomstat.maxNum), new Object());
                         }
 
                         $scope.records && $scope.updateRecords();
-
-                        $scope.$apply();
                     });
 
-                    //in case of refreshing brower
+                    //Fix F5 issue
                     socketSrv.getTopic();
                     socketSrv.getRoomStat();
                 },
 
                 link: function (scope, ele, attr) {
-
                     scope.updateRecords = function () {
                         $timeout(function () {
                             $(ele).find('.record').removeClass("current").each(function (index) {
@@ -59,7 +57,6 @@ define([
                                     if ($(this).hasClass("passive") || $(this).hasClass("incorrect") || $(this).hasClass("correct")) {
                                         return;
                                     } else {
-
                                         if (!record.verobj) {
                                             scope.room.status == 1  && $(this).addClass("current");
                                         } else {

@@ -17,15 +17,25 @@ define([
                 controller: function ($scope, socketSrv) {
                     $scope.statTable = false;
 
-                    $scope.$on('roomInWait', function (event) {
-                        $scope.roomstat && $scope.setScorebarWidth();
+                    $scope.$on('roomStatus', function (event, room) {
+                        console.info("room status changed", room)
+                        if(room.status == 0){
+                            $scope.roomstat && $scope.setScorebarWidth();
+                        }
                     });
-
 
                     $scope.switchStatTable = function () {
                         $scope.statTable = !$scope.statTable;
                         $scope.statTable || $scope.setScorebarWidth();
                     }
+
+                    var unwatch = $scope.$watch('roomstat', function (newValue, oldValue) {
+                        //Fix F5 issue.
+                        if(newValue){
+                            $scope.room.status == 0 && $scope.setScorebarWidth();
+                            unwatch();
+                        }
+                    });
 
                 },
                 link: function (scope, elem, attr) {
@@ -44,7 +54,8 @@ define([
                             }
                         })
 
-                    }
+                    };
+
                 }
             };
         })

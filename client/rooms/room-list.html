@@ -1,3 +1,5 @@
+
+
 <div class="room-main">
 
     <ul class="room-tools ">
@@ -14,12 +16,12 @@
             <p><i class="fa fa-home"></i> 房间列表</p>
 
             <div class="search">
-                <input type="text" class="search-field" placeholder="查找房间">
+                <input type="text" class="search-field" placeholder="查找.." ng-model="q" >
                 <button class="search-btn" type="button"><i class="fa fa-search"></i></button>
             </div>
         </div>
         <div class="body">
-            <div class="room-list-item" ng-repeat="room in rooms">
+            <div class="room-list-item" ng-repeat="room in rooms | filter:q as results">
 
                 <div class="title">
                     <!--<span ng-show="room.mode == 0" class="label label-success ">合作模式</span>-->

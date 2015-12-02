@@ -2868,6 +2868,9 @@ div.chat {
   display: flex;
   overflow-y: auto;
 }
+div.chat .message-input {
+  width: 100%;
+}
 div.chat > ul {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
@@ -2904,13 +2907,16 @@ div.chat > ul > li div.message {
 div.chat > ul > li div.message > p {
   position: relative;
   flex-direction: row;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  padding: 8px;
+  padding: 4px 10px;
   margin: 2px 5px;
   word-wrap: break-word;
   max-width: 85%;
+  -webkit-border-radius: 5px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 5px;
+  -moz-background-clip: padding;
+  border-radius: 5px;
+  background-clip: padding-box;
 }
 div.chat > ul > li div.message > p:after {
   position: absolute;

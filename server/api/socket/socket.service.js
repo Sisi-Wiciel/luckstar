@@ -49,8 +49,11 @@ module.exports = {
 
             }
         }).then(function () {
-                return userService.list(socket.uid).then(function (user) {
-                    socket.room = user[0].room;
+                return userService.list(socket.uid).get(0).then(function (user) {
+                    if(!socket.room  && user.room){
+                        socket.room = user.room;
+                    }
+
                 });
             });
 

@@ -16,7 +16,10 @@ define([
                 var btnText = ele.text();
                 ele.unbind('click').bind('click', function () {
                     if (!ele.hasClass("disabled")) {
-                        ele.addClass("disabled").attr("disabled", "disabled").text(attr.loadingText);
+                        setTimeout(function(){
+                            ele.addClass("disabled").attr("disabled", "disabled").text(attr.loadingText);
+                        }, 200);
+
                         var promised = scope.ngClick();
                         if (promised){
                             promised.then(function(){}, function(){

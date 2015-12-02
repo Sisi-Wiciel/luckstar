@@ -1,4 +1,4 @@
-<div class="room">
+<div class="room" ng-if="room">
     <div class="head">
         <span class="title text-success" ng-bind="room.title">
        </span>
@@ -10,9 +10,7 @@
 
         <room-header></room-header>
 
-        <div class="room-complete">
-            <room-compete></room-compete>
-        </div>
+        <room-compete></room-compete>
     </div>
 
 

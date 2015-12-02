@@ -1,15 +1,8 @@
 "use strict";
 
 var service = require('./room.service.js');
-var Room = require('./room.model.js');
 var log = require('../../log');
 var _ = require('lodash');
-//function newRoom (req, res) {
-//    var newroom = Room.new(req.body, req.user);
-//    service.save(newroom).then(function () {
-//        return res.status(200).json(newroom);
-//    });
-//}
 
 function getRoom (req, res){
     var id = req.params.id;
@@ -22,5 +15,4 @@ function getRoom (req, res){
         }
     });
 }
-//exports.new = newRoom;
 exports.get = getRoom;

@@ -115,7 +115,7 @@
       .room-list-item {
         color            : hsl(39, 100%, 30%) !important;
         background-color : hsl(39, 100%, 60%);
-        background-image : url(../libs/images/noise.png);
+        background-image : url(../../libs/images/noise.png);
         width            : 47%;
         margin           : 10px;
 
@@ -164,6 +164,23 @@
             flex   : 0 0 5em;
           }
 
+        }
+
+
+        &.ng-move,
+        &.ng-enter,
+        &.ng-leave {
+          .animated;
+        }
+        &.ng-move{
+      .shake;
+        }
+        &.ng-enter {
+          .fadeIn;
+        }
+
+        &.ng-leave{
+          .fadeOut;
         }
 
       }

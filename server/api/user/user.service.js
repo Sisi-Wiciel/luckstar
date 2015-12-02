@@ -51,10 +51,6 @@ exports.add = function (user) {
 
 };
 
-exports.joinRoom = function (user, room) {
-    return db.set("users:" + user.id, "room", room.id);
-};
-
 exports.updatePoint = function (uid, point) {
 
     this.list(uid).then(function (users) {

@@ -63,6 +63,9 @@ define([
             readyCompete: function(){
                 this.socket.emit('ready compete');
             },
+            unreadyComplate: function(){
+                this.socket.emit('unready compete');
+            },
             terminateCompete: function(){
                 this.socket.emit('terminate compete');
             },

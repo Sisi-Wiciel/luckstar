@@ -6,7 +6,7 @@ define([
 ], function (angular, module, _, moment) {
     "use strict";
 
-    module.controller("roomCtrl", function ($scope, room, $location, socketSrv, authSrv, messageCenter, roomSrv) {
+    module.controller("roomCtrl", function ($scope, room, $location, socketSrv, authSrv, messageCenter, roomSrv, $timeout) {
 
         $scope.message = "";
 
@@ -22,8 +22,31 @@ define([
         roomSrv.fillRoomUsers(room);
 
         $scope.room = room;
+        var countdownTimes = 3;
+
 
         socketSrv.joinRoom(room.id);
+
+
+        var waitForTopic = function(){
+            var countdownTimes = 3;
+            (function countdown() {
+                $timeout(function () {
+                    if (countdownTimes > 0) {
+                        messageCenter._show({
+                            content : "<b>"+countdownTimes-- + "</b>秒后开始.",
+                            animation: "competeStartupCountdown"
+                        });
+                        countdown();
+                    } else {
+                        messageCenter._show({
+                            content : '<div class="text-danger">答题开始</div>',
+                            animation: "competeStartupCountdown"
+                        }, 1000);
+                    }
+                }, 1000);
+            })();
+        }
 
         $scope.$on('topicVerdict', function (event, verdict) {
             $scope.verdict = verdict;
@@ -35,30 +58,38 @@ define([
         });
 
         socketSrv.register('updateRoom', function (room) {
-            if(!room){
+            if (!room) {
                 //room closed;
                 return;
             }
 
-            if ($scope.room.status == 0 && room.status == 1) {
-                socketSrv.startCompete();
-            }
+            if ($scope.room) {
+                if ($scope.room.status != room.status) {
+                    $scope.$broadcast('roomStatus', room);
 
-            if($scope.room){
-                if($scope.room.status != room.status){
-                    room.status == 0  && socketSrv.changeUserStatus("IN_ROOM");
-                    room.status == 1 && socketSrv.changeUserStatus("IN_COMPETING");
-                }
+                    if (room.status == 0) {
+                        socketSrv.changeUserStatus("IN_ROOM");
+                    }
 
-                if(room.status == 0){
-                    $scope.$broadcast('roomInWait');
+                    if (room.status == 1) {
+                        $scope.roomstat = null;
+                        waitForTopic();
+                        socketSrv.changeUserStatus("IN_COMPETING");
+                    }
                 }
             }
 
             roomSrv.fillRoomUsers(room);
 
             $scope.room = room;
+            $scope.$apply();
+        });
 
+        socketSrv.register('updateRoomStat', function (roomstat) {
+            if (roomstat) {
+                $scope.roomstat = roomstat;
+                $scope.$broadcast('updateRoomStats', roomstat);
+            }
             $scope.$apply();
         });
 
@@ -82,9 +113,9 @@ define([
             if (user === undefined) {
                 return adminId === $scope.curr._id;
             } else {
-                if(user){
+                if (user) {
                     return adminId === user.id;
-                }else{
+                } else {
                     return false;
                 }
 
@@ -94,14 +125,6 @@ define([
             socketSrv.leaveRoom();
             $location.path('/home/rooms');
         };
-
-        $scope.startComplate = function () {
-            socketSrv.readyCompete();
-        }
-
-        $scope.terminateComplate = function(){
-            socketSrv.terminateCompete();
-        }
 
         socketSrv.changeUserStatus("IN_ROOM");
 

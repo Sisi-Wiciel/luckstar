@@ -15,87 +15,96 @@ define([
         var init = function () {
             _messages = {};
             _scope = $rootScope.$new();
-            _scope.messages = [];
-            _scope.dismis = function (index) {
-                _.remove(_scope.messages, function (v, n) {
-                    return n === index;
-                });
+            _scope.dismis = function () {
+                _scope.message = null;
+                _scope.animation = 'center';
             };
-
+            _scope.dismis();
             $("#dialog-box").remove();
             $($window.document.body).append($compile(messagetpl)(_scope));
         }
 
         init();
         this.notify = function (content) {
-            this.push("系统信息", content, "fa-envelope");
+            this.push("系统信息", content, "fa-exclamation-circle");
         };
         this.push = function (title, content, icon) {
-            if (!_messages.hasOwnProperty(title)) {
-                _messages[title] = [];
-            }
-            _messages[title].push(content);
-
-            _show({
+            this._show({
+                position: 'right',
                 title: title,
                 content: content,
                 icon: icon,
-            }, 'right');
+            });
         };
 
         this.error = function (content) {
-            _show({
+            _scope.animation = 'center';
+
+            var _close = this._show({
                 title: "错误",
                 content: content,
-                position: 'center',
-                ok: function (index) {
-                    _scope.dismis(index);
+                ok: function () {
+                    _close();
                 },
                 icon: 'fa-exclamation-triangle',
-                cls: 'error'
+                position: 'right'
             });
         }
-        this.alert = function (content) {
-            _show({
+        this.alert = function (content, closeTimeout) {
+            var _close = this._show({
                 title: "系统提示",
                 content: content,
                 position: 'center',
-                ok: function (index) {
-                    _scope.dismis(index);
+                icon: 'fa-bullhorn',
+                ok: function () {
+                    _close();
                 },
-            });
+            }, closeTimeout);
         }
-        this.confirm = function (data, position) {
+        this.confirm = function (data, position, closeTimeout) {
             var defer = $q.defer();
-            _show(_.assign(data, {
-                ok: function (index) {
-                    _scope.dismis(index);
+            var _close = this._show(_.assign(data, {
+                position: position,
+                ok: function () {
+                    _close();
                     defer.resolve(this);
                 },
-                cancel: function (index) {
-                    _scope.dismis(index);
+                cancel: function () {
+                    _close();
                     defer.reject(this);
                 },
-            }), position);
+            }), closeTimeout);
             return defer.promise;
         };
 
-        var _show = function (data, position) {
-            //_messages[data.title]
-            _scope.position = position || 'center';
-            if (!data.icon) {
-                data.icon = "fa-envelope";
+        this._show = function (data, autoCloseTimeout) {
+
+            autoCloseTimeout = autoCloseTimeout || 5000;
+
+            _.defaults(data, {
+                //icon: "fa-envelope",
+                okText : "确定",
+                cancelText : "取消",
+                position: "center",
+                animation: "bounceIn"
+            });
+
+            _scope.message = null;
+
+            $timeout(function(){
+                _scope.message = data;
+            })
+
+            if(this.closePromise){
+                $timeout.cancel(this.closePromise);
             }
 
-            //var shown = _.find(_scope.messages, "title", data.title);
-            var shown = _.first(_scope.messages);
-            if (shown) {
-                _.assign(shown, data);
-            } else {
-                //_scope.messages.splice(0, 0, data);
-                _scope.messages.push(data);
-            }
+            this.closePromise = $timeout(function(){
+                _scope.message = null;
+            }, autoCloseTimeout);
 
+            //_scope.$apply();
+            return _scope.dismis;
         }
     });
 });

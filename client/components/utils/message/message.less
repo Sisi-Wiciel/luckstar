@@ -1,17 +1,26 @@
 @import "common";
 
+.competeStartup {
+
+}
+
 #dialog-box {
 
   position : fixed;
 
   &.center {
     top  : 30%;
-    left : 40%;
-
-    .message-box {
+    left : 30%;
+    &.bounceIn.ng-enter {
+      .animated;
+      .bounceInDown;
+    }
+    &.competeStartupCountdown {
+      font-size: 3em;
+      line-height: 2em;
       &.ng-enter {
         .animated;
-        .bounceInDown;
+        .zoomIn;
       }
     }
   }
@@ -19,15 +28,15 @@
   &.right {
     right : 10px;
     top   : 50px;
+    &.bounceIn.ng-enter {
+      .animated;
+      .bounceInRight
+    }
+    &.bounceIn.ng-leave {
+      .animated;
+      .zoomOutRight;
+    }
     .message-box {
-      &.ng-enter {
-        .animated;
-        .bounceInRight
-      }
-      &.ng-leave {
-        .animated;
-        .zoomOutRight;
-      }
       .foot {
         padding : 10px;
       }
@@ -41,7 +50,7 @@
     padding : 5px;
     width   : 328px;
     z-index : 999;
-    color      : #666;
+    //color   : #666;
     .shadow;
     .bg-fff;
     .border-radius(5px);
@@ -56,16 +65,18 @@
     }
 
     .content {
-      text-align : left;
+      text-align : center;
       padding    : 0 10px;
       min-height : 2em;
+      p{
+        .display(inline-flex);
+      }
     }
     .foot {
       text-align : center;
       padding    : 20px 0;
       a.button {
         margin      : 0 30px;
-
         padding     : 10px 20px;
         color       : #fff;
         font-weight : bold;
@@ -77,7 +88,7 @@
     &.error {
       color      : #a94442;
       background : #f2dede;
-      border: 1px solid #ebccd1;
+      border     : 1px solid #ebccd1;
     }
   }
 
