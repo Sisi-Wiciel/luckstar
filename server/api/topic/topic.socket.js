@@ -12,9 +12,11 @@ exports.register = function (socket) {
         userService.list(socket.uid).then(function(users){
             saveTopic(newtopic, _.first(users)).then(cb);
         })
-
     });
 
+    socket.on('topic total size', function(cb){
+        topicService.getTotalSize().then(cb);
+    })
 };
 
 exports.deregister = function (socket) {

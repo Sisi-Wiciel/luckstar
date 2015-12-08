@@ -23,9 +23,16 @@ define([
                         }
                     });
 
-                    $scope.$on('roomStatus', function (event) {
-                        if($scope.room.status == 0){
+                    $scope.$on('roomStatus', function (event, room) {
+                        //Cleaning resource when room closed.
+                        if (room.status == 0) {
                             $scope.topic = null;
+                        }
+
+                        if (room.status == 1) {
+                            console.info("room.status", 1);
+                            //Reset records on new competition started
+                            $scope.records = [];
                         }
                         $scope.updateRecords();
                     });
@@ -35,8 +42,9 @@ define([
                         $scope.$apply();
                     });
 
-                    $scope.$on('updateRoomStats', function (event) {
-                        if (_.isEmpty($scope.records) || $scope.roomstat.id !== $scope.roomstat.id) {
+                    $scope.$on('updateRoomStats', function (event, roomstat) {
+                        if (_.isEmpty($scope.records)) {
+                            //Fix F5 issue
                             $scope.records = _.fill(Array($scope.roomstat.maxNum), new Object());
                         }
 
@@ -49,6 +57,7 @@ define([
                 },
 
                 link: function (scope, ele, attr) {
+
                     scope.updateRecords = function () {
                         $timeout(function () {
                             $(ele).find('.record').removeClass("current").each(function (index) {
@@ -58,7 +67,7 @@ define([
                                         return;
                                     } else {
                                         if (!record.verobj) {
-                                            scope.room.status == 1  && $(this).addClass("current");
+                                            scope.room.status == 1 && $(this).addClass("current");
                                         } else {
                                             if (record.verobj.user && scope.curr._id == record.verobj.user.id) {
                                                 record.verobj.verdict == 1 && $(this).addClass("correct");

@@ -48,7 +48,7 @@ module.exports = {
 
 
                             delete _topic.corrector;
-                            db.sadd("topics", JSON.stringify(_topic ));
+                            db.sadd("topics", JSON.stringify(_topic));
                         });
                     });
                 })
@@ -66,9 +66,12 @@ module.exports = {
     },
 
     exists: function(key){
-        return db.exists('topics').then(function(result){
+        return this.db.exists('topics').then(function(result){
             return result === 0;
         })
+    },
+    size: function(key){
+        return this.db.scard(key);
     },
     random: function (key, number) {
         return this.db.srandmember(key, number);

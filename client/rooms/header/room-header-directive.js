@@ -19,16 +19,11 @@ define([
 
                             var newIndex = _.findIndex(orderedUserList, 'id', $user.data("userid"));
                             var newLeft = (newIndex > -1 ? newIndex : index) * 120;
-                            console.info(index, newIndex, newLeft, $user.data("userid"));
                             if (newLeft != parseInt($user.css('left'))) {
 
                                 $user.css({
                                     'left': newLeft
                                 })
-                                //.one('webkitTransitionEnd', function (evt) {
-                                //    $(evt.target).removeClass('moving');
-                                //})
-                                //.addClass('moving');
                             }
 
                         });
@@ -49,7 +44,6 @@ define([
                     }
                 })
                 $scope.$on('updateRoomStats', function (event) {
-                    console.info("room status updated");
                     if ($scope.roomstat.users) {
 
                         if ($scope.verdict && $scope.verdict.user) {

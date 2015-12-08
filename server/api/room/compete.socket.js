@@ -50,7 +50,7 @@ var topicCountDown = function (socket, topic) {
     log.info("TopicCountDown");
     var number = settings.ROOM.COMPETE_TOPIC_COUNTDOWN;
     (function countdown () {
-        setTimeout(function () {
+       setTimeout(function () {
 
             if (socket.room) {
                 roomService.list(socket.room).then(function (rooms) {
@@ -72,6 +72,7 @@ var topicCountDown = function (socket, topic) {
         }, 1000);
 
     }).call(this);
+
 };
 
 function nextTopic (socket) {

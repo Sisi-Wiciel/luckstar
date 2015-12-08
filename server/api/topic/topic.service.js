@@ -26,6 +26,10 @@ var saveTopic = function (newtopic, creator) {
     return Topic.create(newtopic);
 };
 
+var getTotalSize = function(){
+    return db.size("topics");
+}
 exports.get = getTopic;
 exports.save = saveTopic;
 exports.isCorrect = isCorrect;
+exports.getTotalSize = getTotalSize;

@@ -78,6 +78,13 @@ define([
             getTopic: function(opt){
                 this.socket.emit('complete get topic');
             },
+            getTopicSize: function(){
+                return $q(function(resolve, reject) {
+                    this.socket.emit('topic total size', function(size){
+                        resolve(size);
+                    });
+                }.bind(this));
+            },
             getRoomStat: function(opt){
                 this.socket.emit('room get stat');
             },
