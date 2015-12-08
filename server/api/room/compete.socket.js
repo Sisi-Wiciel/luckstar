@@ -19,11 +19,11 @@ var nodifyVerdict = function (socket, room, verdictObj) {
 
     roomService.updateRoomStat(room, verdictObj).then(function (competeStat) {
         if (verdictObj.verdict == 0) {
-            roomSocket.sendRoomSystemMessage(socket, "第" + competeStat.currNum + "题: 用户" + verdictObj.user.username + "回答错误");
+            roomSocket.sendRoomMessage(socket, "第" + competeStat.currNum + "题: 用户" + verdictObj.user.username + "回答错误", true);
         } else if (verdictObj.verdict == 1) {
-            roomSocket.sendRoomSystemMessage(socket, "第" + competeStat.currNum + "题: 用户" + verdictObj.user.username + "回答正确");
+            roomSocket.sendRoomMessage(socket, "第" + competeStat.currNum + "题: 用户" + verdictObj.user.username + "回答正确", true);
         } else if (verdictObj.verdict == -1) {
-            roomSocket.sendRoomSystemMessage(socket, "第" + competeStat.currNum + "题: 答题超时");
+            roomSocket.sendRoomMessage(socket, "第" + competeStat.currNum + "题: 答题超时", true);
         }
 
 

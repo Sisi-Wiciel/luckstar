@@ -1,0 +1,26 @@
+<div id="room-message">
+    <ul class="list-unstyled">
+        <li ng-repeat="msg in messages">
+            <div class="message">
+                <div class="text-danger" ng-if="msg.system">
+                    <span class="role">[系统]</span>
+                    <span>
+                        {{::msg.message}}
+                    </span>
+                </div>
+                <div ng-if="!msg.system">
+                    <span class="role">[用户]</span>
+                    <span class="username">{{::msg.message.from}}: </span>
+                    <span>
+                        {{::msg.message.content}}
+                    </span>
+                </div>
+                <!--<span class="time" from-now="{{msg.time}}"></span>-->
+
+            </div>
+        </li>
+    </ul>
+    <div class="message-input">
+        <input type="text" class="form-control" ng-model="messageInput" placeholder="输入内容...">
+    </div>
+</div>

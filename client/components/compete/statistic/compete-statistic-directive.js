@@ -18,7 +18,6 @@ define([
                     $scope.statTable = false;
 
                     $scope.$on('roomStatus', function (event, room) {
-                        console.info("room status changed", room)
                         if(room.status == 0){
                             $scope.roomstat && $scope.setScorebarWidth();
                         }

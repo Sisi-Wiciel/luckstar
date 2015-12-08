@@ -22,10 +22,12 @@ var updateRooms = function (socket, roomid) {
     });
 };
 
-var sendRoomSystemMessage = function (socket, content) {
+var sendRoomMessage = function (socket, message, isSystem) {
+    log.info("SendRoomMessage");
+
     socket.io.sockets.in(socket.room).emit('updateRoomMessage', {
-        content: content,
-        system: true,
+        message: message,
+        system: isSystem,
         time: moment().format()
     });
 };
@@ -74,7 +76,7 @@ var joinRoom = function (socket, id) {
                 if (locked.users.length < locked.number) {
                     locked.users.push(user);
 
-                    sendRoomSystemMessage(socket, '用户' + user.username + '加入房间');
+                    sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
                 } else {
                     locked.obs.push(user);
                 }
@@ -93,11 +95,11 @@ var leaveRoom = function (socket) {
 
         if (user.id === room.admin.id) {
             room.admin = null;
-            socket.io.sockets.in(socket.room).emit('closeRoom');
+            socket.io.sockets.in(socket.room).emit('cd');
         }
         socket.leave(room);
 
-        sendRoomSystemMessage(socket, '用户' + user.username + '离开房间');
+        sendRoomMessage(socket, '用户' + user.username + '离开房间', true);
 
         socket.room = null;
         if (_.isEmpty(room.users) || _.isEmpty(room.admin)) {
@@ -111,11 +113,7 @@ var leaveRoom = function (socket) {
     });
 };
 
-var sendChatMessage = function (socket, msg) {
-    msg.system = false;
-    msg.time = moment().format();
-    socket.broadcast.to(socket.room).emit('updateRoomMessage', msg);
-};
+
 
 var startRoomCompete = function (socket) {
     log.info("StartRoomCompete");
@@ -151,7 +149,7 @@ var unreadyRoomCompete = function (socket) {
 
             if (userIndex > -1) {
                 _.pullAt(locked.readyUsers, userIndex);
-                sendRoomSystemMessage(socket, '用户' + user.username + '取消准备.');
+                sendRoomMessage(socket, '用户' + user.username + '取消准备.', true);
 
                 socket.io.sockets.in(socket.room).emit('updateRoom', locked);
             } else {
@@ -170,7 +168,7 @@ var readyRoomCompete = function (socket) {
             if (locked.readyUsers.indexOf(user.id) == -1) {
                 locked.readyUsers.push(user.id)
 
-                sendRoomSystemMessage(socket, '用户' + user.username + '准备就绪.');
+                sendRoomMessage(socket, '用户' + user.username + '准备就绪.', true);
                 socket.io.sockets.in(socket.room).emit('updateRoom', locked);
             } else {
                 log.warn("User %s was in ready status ", user.id);
@@ -185,7 +183,7 @@ var terminateRoomCompete = function (socket) {
 
     getAndUpdateRoom(socket, socket.room, function (room, user) {
         return roomService.terminateCompete(room).then(function () {
-            sendRoomSystemMessage(socket, '管理员已终止答题');
+            sendRoomMessage(socket, '管理员已终止答题', true);
         });
     });
 };
@@ -201,7 +199,7 @@ var getRoomStat = function (socket) {
 };
 
 exports.updateRooms = updateRooms;
-exports.sendRoomSystemMessage = sendRoomSystemMessage;
+exports.sendRoomMessage = sendRoomMessage;
 
 exports.register = function (socket) {
     var socketSrv = require('../socket/socket.service');
@@ -219,7 +217,7 @@ exports.register = function (socket) {
     });
 
     socketSrv.on(socket, 'send room message', function (msg) {
-        sendChatMessage(socket, msg);
+        sendRoomMessage(socket, msg, false);
     });
 
     socketSrv.on(socket, 'ready compete', function () {

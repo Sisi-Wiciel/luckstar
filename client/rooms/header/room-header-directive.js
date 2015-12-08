@@ -4,48 +4,62 @@ define([
 ], function (angular, room) {
     "use strict";
 
-    room.directive('roomHeader', function () {
+    room.directive('roomHeader', function ($timeout, $interval) {
 
         return {
             replace: true,
             templateUrl: '/rooms/header/room-header.html',
             link: function (scope, ele) {
-            },
-            controller: function ($scope, $timeout, $q, messageCenter, authSrv, socketSrv) {
-                $scope.curr = authSrv.getCurrentUser();
-                $scope.reorder = false;
-                var reorderUser = function () {
-                    var preOrderList = $scope.room.users;
-                    var postOrderList = _.sortByOrder($scope.room.users, 'gpoint', false);
-                    if (preOrderList == postOrderList) {
-                        console.info("equal");
-                    } else {
-                        console.info("not equal");
-                    }
+                scope.reorder = function () {
+                    $timeout(function () {
+                        var orderedUserList = _.sortByOrder(scope.room.users, 'gpoint', false);
+                        var $el = $(ele);
+                        $el.find('.user').each(function (index, user) {
+                            var $user = $(user);
 
-                    //$scope.room.users = _.sortByOrder(, 'gpoint', false);
+                            var newIndex = _.findIndex(orderedUserList, 'id', $user.data("userid"));
+                            var newLeft = (newIndex > -1 ? newIndex : index) * 120;
+                            console.info(index, newIndex, newLeft, $user.data("userid"));
+                            if (newLeft != parseInt($user.css('left'))) {
+
+                                $user.css({
+                                    'left': newLeft
+                                })
+                                //.one('webkitTransitionEnd', function (evt) {
+                                //    $(evt.target).removeClass('moving');
+                                //})
+                                //.addClass('moving');
+                            }
+
+                        });
+                    });
                 }
+                scope.reorder();
+            },
+            controller: function ($scope, $q, messageCenter, authSrv, socketSrv) {
+                $scope.curr = authSrv.getCurrentUser();
 
                 $scope.$on("roomStatus", function (event) {
-                    console.info("roomStatus")
+
                     if ($scope.room.status == 1) {
+
                         _.each($scope.room.users, function (user) {
                             user.gpoint = 0;
                         });
                     }
                 })
                 $scope.$on('updateRoomStats', function (event) {
-
+                    console.info("room status updated");
                     if ($scope.roomstat.users) {
 
                         if ($scope.verdict && $scope.verdict.user) {
                             var verdictUserId = $scope.verdict.user.id;
 
                             var statUser = _.find($scope.roomstat.users, 'userid', verdictUserId);
+                            var roomUser = _.find($scope.room.users, 'id', verdictUserId);
 
-                            _.find($scope.room.users, 'id', verdictUserId).gpoint = statUser.point;
-
-                        }else{
+                            roomUser.gpoint = statUser.point;
+                        } else {
                             _.each($scope.room.users, function (user) {
                                 if (user) {
                                     if ($scope.roomstat && $scope.roomstat.users) {
@@ -54,6 +68,7 @@ define([
                                 }
                             });
                         }
+                        $scope.reorder();
 
                     }
                 });

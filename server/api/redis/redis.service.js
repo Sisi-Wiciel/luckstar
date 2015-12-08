@@ -16,7 +16,7 @@ module.exports = {
         this.LOCK_KEY = "luckstart_lock";
         var userService = require("../user/user.service");
 
-        db.on('ready', function () {
+        var cleanAndInit = function(){
             db.keys('*').then(function (keys) {
 
                 for (var i = 0, len = keys.length; i < len; i++) {
@@ -53,7 +53,10 @@ module.exports = {
                     });
                 })
 
+        }
 
+        db.on('ready', function () {
+            cleanAndInit();
         });
 
         db.on('error', function (error) {

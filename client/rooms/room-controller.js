@@ -27,20 +27,19 @@ define([
 
         socketSrv.joinRoom(room.id);
 
-
         var waitForTopic = function(){
             var countdownTimes = 3;
             (function countdown() {
                 $timeout(function () {
                     if (countdownTimes > 0) {
                         messageCenter._show({
-                            content : "<b>"+countdownTimes-- + "</b>秒后开始.",
+                            content : '<div class="text-danger">'+countdownTimes--+'</div>',
                             animation: "competeStartupCountdown"
                         });
                         countdown();
                     } else {
                         messageCenter._show({
-                            content : '<div class="text-danger">答题开始</div>',
+                            content : '<div class="text-danger">GO</div>',
                             animation: "competeStartupCountdown"
                         }, 1000);
                     }
@@ -66,7 +65,7 @@ define([
             if ($scope.room) {
                 if ($scope.room.status != room.status) {
                     $scope.$broadcast('roomStatus', room);
-
+                    $scope.verdict = null;
                     if (room.status == 0) {
                         socketSrv.changeUserStatus("IN_ROOM");
                     }
@@ -80,7 +79,6 @@ define([
             }
 
             roomSrv.fillRoomUsers(room);
-
             $scope.room = room;
             $scope.$apply();
         });
@@ -92,18 +90,6 @@ define([
             }
             $scope.$apply();
         });
-
-        socketSrv.register('updateRoomMessage', function (msg) {
-            $scope.message = msg;
-            $scope.$apply();
-        });
-
-        $scope.sendRoomMsg = function (content) {
-            socketSrv.sendRoomMsg({
-                from: $scope.curr,
-                content: content
-            });
-        };
 
         $scope.isRoomAdmin = function (user) {
             if (!$scope.room || !$scope.room.admin) {

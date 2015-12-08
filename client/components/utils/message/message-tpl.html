@@ -7,7 +7,7 @@
         </div>
 
         <div class="content"  >
-            <i class="fa " ng-class="message.icon"></i>
+            <i class="fa " ng-class="message.icon" ng-if="message.icon"></i>
             <p ng-bind-html="::message.content"></p>
         </div>
         <div class="foot" ng-if="message.ok || message.cancel">
