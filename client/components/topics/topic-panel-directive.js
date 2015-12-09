@@ -12,15 +12,6 @@ define([
                     'topic': '='
                 },
                 link: function(scope, elem){
-                    scope.animatedTopic = function(){
-                        var $elem = $(elem).find(".topic-panel");
-                        $elem.addClass("fadeIn");
-                        $timeout(function(){
-                            $elem.removeClass("fadeIn");
-                        }, 1000);
-                    }
-
-
                 },
                 controller: function ($scope, $timeout, socketSrv, authSrv, $interpolate) {
                     $scope.checkedOpt = -1;
@@ -79,7 +70,6 @@ define([
                     $scope.$watch('topic', function (newValue, oldValue) {
                         if (newValue && newValue._id) {
                             setVerdict(null);
-                            $scope.animatedTopic();
                             ignoreCountDown = false;
                             $scope.checkedOpt = -1;
                         }

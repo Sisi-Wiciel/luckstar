@@ -6,7 +6,6 @@ define([
         socketSrv.changeUserStatus("HOME_PAGE");
         $scope.totalSize = 0;
         socketSrv.getTopicSize().then(function(size){
-            console.info(size);
             $scope.totalSize = size;
         })
     })

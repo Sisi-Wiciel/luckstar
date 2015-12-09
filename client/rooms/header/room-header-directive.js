@@ -82,7 +82,7 @@ define([
                     });
 
                     if (!_.isEmpty(notReadyUsers)) {
-                        messageCenter.alert("用户[" + _.map(notReadyUsers, 'username').join(",") + "], 尚未准备.");
+                        messageCenter.alert("用户 " + _.map(notReadyUsers, 'username').join(",") + " 未准备.");
                         return $q.reject();
                     }
 

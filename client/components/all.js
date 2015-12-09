@@ -5,6 +5,7 @@ define([
     './utils/avatarSelection',
     './utils/loadingText',
     './utils/countTo',
+    './utils/typing',
     './compete/room-compete-directive',
     './compete/statistic/compete-statistic-directive',
     './topics/topic-factory',

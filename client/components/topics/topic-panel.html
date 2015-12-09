@@ -1,10 +1,10 @@
-<section class="topic-panel animated"  ng-if="topic" ng-cloak ng-class="verdictCls">
+<section class="topic-panel animated fadeIn"  ng-if="topic" ng-cloak ng-class="verdictCls">
     <div class="panel-cover" ng-if="verdict">
         <i class="fa {{verdictIcon}}" ></i>
     </div>
 
     <div class="head">
-        {{topic.title}}<b class="text-success">({{topic.point}}分)</b>
+        <span typing>{{topic.title}}</span><b class="text-success">({{topic.point}}分)</b>
     </div>
 
     <div class="body">
@@ -16,7 +16,8 @@
         <ul class="list-unstyled options">
             <li ng-repeat="opt in topic.options">
                 <i class="fa fa-check" ng-if="topic.corrector == $index"></i>
-                <a href ng-click="check($index)" ng-class="{actived: checkedOpt==$index}">
+                <a href ng-click="check($index)" ng-class="{actived: checkedOpt==$index}"
+                   typing duration="1000" delay="{{1000*$index+1000}}">
                     {{$index+1}}. {{opt.hasOwnProperty('value')?opt.value:opt}}
                 </a>
 

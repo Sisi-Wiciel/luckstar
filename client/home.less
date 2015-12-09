@@ -38,6 +38,18 @@
     &.ng-leave {
       .fadeOut;
     }
+
+    &:before{
+      background-image    : url("libs/images/bg.gif");
+      -webkit-filter: blur(2px);
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left:0;
+      right: 0;
+      z-index: -1;
+    }
   }
 
 

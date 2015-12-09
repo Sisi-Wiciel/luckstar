@@ -30,7 +30,6 @@ define([
                         }
 
                         if (room.status == 1) {
-                            console.info("room.status", 1);
                             //Reset records on new competition started
                             $scope.records = [];
                         }
@@ -38,7 +37,10 @@ define([
                     });
 
                     socketSrv.register('topicUpdate', function (topic) {
-                        $scope.topic = topic;
+                        $scope.topic = null;
+                        $timeout(function(){
+                            $scope.topic = topic;
+                        })
                         $scope.$apply();
                     });
 
