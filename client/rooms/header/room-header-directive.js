@@ -34,6 +34,7 @@ define([
             controller: function ($scope, $q, messageCenter, authSrv, socketSrv) {
                 $scope.curr = authSrv.getCurrentUser();
 
+
                 $scope.$on("roomStatus", function (event) {
 
                     if ($scope.room.status == 1) {

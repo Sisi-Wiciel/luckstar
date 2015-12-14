@@ -3,14 +3,14 @@
         <li ng-repeat="msg in messages">
             <div class="message">
                 <div class="text-danger" ng-if="msg.system">
-                    <span class="role">[系统]</span>
+                    <span class="role" ng-bind="msg.role"></span>
                     <span>
                         {{::msg.message}}
                     </span>
                 </div>
                 <div ng-if="!msg.system">
-                    <span class="role">[用户]</span>
-                    <span class="username">{{::msg.message.from}}: </span>
+                    <span class="role" ng-bind="msg.role"></span>
+                    <span class="username">{{::msg.message.username}}: </span>
                     <span>
                         {{::msg.message.content}}
                     </span>

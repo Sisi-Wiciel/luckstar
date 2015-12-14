@@ -1,5 +1,6 @@
 <div id="complete">
-    <topic-panel ng-if="topic && room.status == 1" class="complete-topic" topic="topic"></topic-panel>
+    <topic-panel ng-show="topic && room.status == 1"
+                 class="complete-topic" topic="topic"></topic-panel>
     <compete-statistic room="room" roomstat="roomstat"></compete-statistic>
     <div class="compete-record" >
         <span class="record" ng-repeat="record in records track by $index">

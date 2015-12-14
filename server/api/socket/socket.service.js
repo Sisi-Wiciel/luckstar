@@ -61,6 +61,7 @@ module.exports = {
 
     on: function (socket, key, cb) {
         socket.on(key, function (args, _cb) {
+            log.info("Socket on event,", key, args);
             this._authCall(socket).then(function () {
                 cb(args, _cb);
             });

@@ -1,18 +1,18 @@
 define([
-  'angular',
-  '../users'
+    'angular',
+    '../users'
 ], function (angular, module) {
-  "use strict";
+    "use strict";
 
-  module.controller('loginCtrl', function ($scope, $location, authSrv, $window) {
+    module.controller('loginCtrl', function ($scope, $location, authSrv, $window) {
 
-    $scope.login = function(user){
+        $scope.login = function (user) {
 
-      authSrv.login(user).then(function(){
-        $location.path('/home');
-      }, function(err){
-        $window.alert(err.message);
-      });
-    }
-  });
+            authSrv.login(user).then(function () {
+                $location.path('/home');
+            }, function (err) {
+                $window.alert(err.message);
+            });
+        }
+    });
 });

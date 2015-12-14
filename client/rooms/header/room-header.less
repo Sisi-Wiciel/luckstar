@@ -1,11 +1,11 @@
 @import "common";
 
 @room-header-user-color: #999;
-@room-header-active-color:  #F38630;
+@room-header-active-color: #F38630;
 
 .user-color(@color) {
-  border     : 1px solid @color;
-  color      : @color;
+  border : 1px solid @color;
+  color  : @color;
   .box-shadow(inset 0 0 25px @color);
 }
 
@@ -15,37 +15,31 @@ div.room-header {
 
   .user-list {
     height : 100px;
-
-    span.user {
-      width  : 110px;
-      height : 100px;
-      &.empty{
-        .flex-center;
-      }
-    }
+    padding-top: 10px;
     .flex(1);
 
     span.user {
-      transform: scale(.9);
-      .user-color(@room-header-user-color);
+      width      : 90px;
+      height     : 80px;
       text-align : center;
       position   : absolute;
       margin     : 0 5px;
-      left: 0;
+      left       : 0;
 
+      .user-color(@room-header-user-color);
       .border-radius(15px);
 
       .head {
         .badge {
-          position: absolute;
-          top: -10px;
-          right: -10px;
+          position : absolute;
+          top      : -10px;
+          right    : -10px;
         }
       }
       .body {
         img {
-          width  : 70px;
-          height : 70px;
+          width  : 50px;
+          height : 50px;
         }
       }
       .status {
@@ -64,11 +58,13 @@ div.room-header {
       .transition(.5s);
       .transition-delay(0);
 
-      &.target{
+      &.empty {
+        .flex-center;
+      }
 
-        z-index: 10;
+      &.target {
+        z-index : 10;
         .user-color(@room-header-active-color);
-        transform: scale(1);
       }
     }
   }

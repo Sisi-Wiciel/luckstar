@@ -1,35 +1,41 @@
-<section class="topic-panel animated fadeIn"  ng-if="topic" ng-cloak ng-class="verdictCls">
-    <div class="panel-cover" ng-if="verdict">
-        <i class="fa {{verdictIcon}}" ></i>
-    </div>
+<!--<section class="topic-panel correct" ng-cloak>-->
+<!--<div class="panel-cover">-->
+<!--</div>-->
+<!--</section>-->
+<div id="topic-panel">
 
-    <div class="head">
-        <span typing>{{topic.title}}</span><b class="text-success">({{topic.point}}分)</b>
-    </div>
+    <section ng-if="topic" ng-cloak ng-class="verdictCls">
+        <div class="panel-cover" ng-if="verdict"></div>
 
-    <div class="body">
+        <div class="head">
+            <span typing>{{topic.title}}</span><b class="text-success">({{topic.point}}分)</b>
+        </div>
 
-        <p ng-show="countdown">
-            请在 <b class="text-warning">{{countdown}}</b> 秒之内做出选择
-        </p>
+        <div class="body">
 
-        <ul class="list-unstyled options">
-            <li ng-repeat="opt in topic.options">
-                <i class="fa fa-check" ng-if="topic.corrector == $index"></i>
-                <a href ng-click="check($index)" ng-class="{actived: checkedOpt==$index}"
-                   typing duration="1000" delay="{{1000*$index+1000}}">
-                    {{$index+1}}. {{opt.hasOwnProperty('value')?opt.value:opt}}
-                </a>
+            <p ng-show="countdown">
+                请在 <b class="text-warning">{{countdown}}</b> 秒之内做出选择
+            </p>
 
-                 <span class="text-success" ng-if="verdict && verdictCls === 'passive' && verdict.opt == $index">
+            <ul class="list-unstyled options">
+                <li ng-repeat="opt in topic.options">
+                    <i class="fa fa-check" ng-if="topic.corrector == $index"></i>
+                    <a href ng-click="check($index)" ng-class="{actived: checkedOpt==$index}"
+                       typing duration="1000" delay="{{1000*$index+1000}}">
+                        {{$index+1}}. {{opt.hasOwnProperty('value')?opt.value:opt}}
+                    </a>
+                    <span class="text-success"
+                          ng-if="verdict  && verdict.opt == $index">
                     <i class="fa fa-hand-o-left"></i> 用户 {{verdict.user.username}}选择.
-                </span>
-            </li>
-        </ul>
+                    </span>
+                </li>
+            </ul>
 
 
-    </div>
-    <div class="foot text-center" ng-if="topic.creator">
-        本题目由用户 <b class="text-success" ng-bind="topic.creator.username"></b> 提供
-    </div>
-</section>
+        </div>
+        <div class="foot text-center" ng-if="topic.creator">
+            本题目由用户 <b class="text-success" ng-bind="topic.creator.username"></b> 提供
+        </div>
+    </section>
+
+</div>

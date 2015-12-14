@@ -2930,18 +2930,38 @@ div.room {
   height: 100%;
 }
 div.room > .head {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
   padding: 10px;
   border-bottom: 1px solid #fff;
+  font-size: 20px;
+  font-weight: bold;
 }
-div.room > .head .fa-power-off:hover {
+div.room > .head a {
+  -webkit-box-flex: 0;
+  -moz-box-flex: 0;
+  -webkit-flex: 0 0 1em;
+  -ms-flex: 0 0 1em;
+  flex: 0 0 1em;
+}
+div.room > .head a .fa-power-off:hover {
   background-color: #f38630;
   color: #fff;
   border-radius: 30px;
   padding: 2px;
-}
-div.room > .head .title {
-  font-size: 20px;
-  font-weight: bold;
 }
 div.room > .body {
   -webkit-box-direction: normal;

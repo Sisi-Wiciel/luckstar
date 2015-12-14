@@ -41,7 +41,6 @@ var nodifyVerdict = function (socket, room, verdictObj) {
             } else {
                 nextTopic(socket);
             }
-            //nodifyRoom(socket, 'updateRoomStat', competeStat);
         }, 2000);
 
     })
@@ -78,22 +77,23 @@ var topicCountDown = function (socket, topic) {
 function nextTopic (socket) {
     log.info("NextTopic");
     var self = this;
-    roomService.list(socket.room).then(function (rooms) {
-        var room = rooms[0];
+    roomService.list(socket.room).get(0).then(function (room) {
+        if(room){
+            topicService.get().then(function (topic) {
 
-        topicService.get().then(function (topic) {
+                delete topic.correct;
 
-            delete topic.correct;
+                nodifyRoom(socket, 'topicUpdate', topic);
 
-            nodifyRoom(socket, 'topicUpdate', topic);
+                roomService.update(room, function (locked) {
+                    locked.topic = topic._id;
+                }).then(function () {
+                    topicCountDown(socket, topic);
+                })
 
-            roomService.update(room, function (locked) {
-                locked.topic = topic._id;
-            }).then(function () {
-                topicCountDown(socket, topic);
-            })
+            });
+        }
 
-        });
     })
 };
 
@@ -107,12 +107,16 @@ function checkTopic (socket, answer) {
     }).then(function (results) {
         var user = results.users[0];
         var room = results.rooms[0];
+        if(_.find(room.users, "id", socket.uid)){
+            topicService.isCorrect(room.topic, answer).then(function (verdictObj) {
+                verdictObj.user = user;
+                verdictObj.opt = answer;
+                nodifyVerdict(socket, room, verdictObj);
+            });
+        }else{
+            log.warn("User as observer can't able to answer topic ", socket.uid);
+        }
 
-        topicService.isCorrect(room.topic, answer).then(function (verdictObj) {
-            verdictObj.user = user;
-            verdictObj.opt = answer;
-            nodifyVerdict(socket, room, verdictObj);
-        });
     });
 };
 

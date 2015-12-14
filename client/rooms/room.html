@@ -2,6 +2,7 @@
     <div class="head">
         <span class="title text-success" ng-bind="room.title">
        </span>
+        <span class="text-danger" ng-bind="getRole()"></span>
         <a href ng-click="leave(room.id)" comfirm="是否要退出房间, 管理员退出房间将会被关闭.">
             <span class="text-muted pull-right"><i class="fa fa-power-off"></i></span>
         </a>

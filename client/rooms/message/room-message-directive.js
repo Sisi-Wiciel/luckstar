@@ -1,7 +1,8 @@
 define([
     'angular',
+    'lodash',
     'app'
-], function (angular, app) {
+], function (angular, _, app) {
     "use strict";
 
     app.directive('roomMessage', function () {
@@ -10,18 +11,35 @@ define([
             templateUrl: 'rooms/message/room-message.html',
             controller: function ($scope, $timeout, socketSrv, authSrv) {
                 $scope.messages = [];
+                var curr = authSrv.getCurrentUser();
 
                 socketSrv.register('updateRoomMessage', function (msg) {
-                    $scope.messages.push(msg);
-                    $scope.scrollBottom();
-                    $scope.$apply();
+                    if(msg){
+                        if(msg.system){
+                            msg.role = "[系统信息]";
+                        }else{
+                            if(_.find($scope.room.users, 'id', msg.message.userid)){
+                                msg.role = "[参赛者]";
+                            }
+                            else if($scope.room.obs.indexOf(msg.message.userid) != -1){
+                                msg.role = "[观众]";
+                            }
+                        }
+                    }
+                    if(msg.role){
+                        $scope.messages.push(msg);
+                        $scope.scrollBottom();
+                        $scope.$apply();
+                    }
+
                 });
 
 
-                var curr = authSrv.getCurrentUser();
+
                 $scope.sendMessage = function(content){
                     socketSrv.sendRoomMsg({
-                        from: curr.username,
+                        username: curr.username,
+                        userid: curr._id,
                         content: content
                     });
                 }

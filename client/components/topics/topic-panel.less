@@ -5,130 +5,131 @@
 @timeout-panel-bg-color: #f5f5f5;
 @head-user-boder-color: #f88d00;
 
-.topic-panel {
-
-  height   : 300px;
-
-  .bg-frame1;
-
-  position : relative;
-
-  .flex(1);
-
-  .head {
-    padding       : 30px 0 10px;
-    border-bottom : 1px solid @head-user-boder-color;
-    margin        : 0 20px;
+@keyframes slideInY {
+  from {
+    .translate3d(0, 0, 1200px);
   }
-  .body {
-    padding : 10px 20px 0;
+  to {
+    .translate3d(0);
+  }
+}
 
-    ul.options {
 
-      padding-left : 20px;
-      li {
-        position : relative;
-        .fa-check {
-          color    : green;
-          position : absolute;
-          left     : -20px;
-          top      : 7px;
-        }
-        a {
-          text-decoration : none;
-          line-height     : 30px;
-          .border-radius(5);
+#topic-panel{
 
-          &:hover, &.actived {
-            background : #777;
-            color      : #fff;
-            padding    : 5px 20px;
-            &.passive {
-              border           : 1px solid #075e3;
-              color            : #075e3;
-              background-color : #fff;
+  section {
+    position : relative;
+    height   : 300px;
+
+    .bg-frame1;
+    .flex(1);
+
+    .perspective(20em);
+
+    &.ng-enter{
+      .animated;
+      .slideInDown;
+    }
+
+    .head {
+      padding       : 30px 0 10px;
+      border-bottom : 1px solid @head-user-boder-color;
+      margin        : 0 20px;
+    }
+    .body {
+      padding : 10px 20px 0;
+
+      ul.options {
+
+        padding-left : 20px;
+        li {
+          position : relative;
+          .fa-check {
+            color    : green;
+            position : absolute;
+            left     : -20px;
+            top      : 7px;
+          }
+          a {
+            text-decoration : none;
+            line-height     : 30px;
+            .border-radius(5);
+
+            &:hover, &.actived {
+              background : #777;
+              color      : #fff;
+              padding    : 5px 20px;
+              &.passive {
+                border           : 1px solid #075e3;
+                color            : #075e3;
+                background-color : #fff;
+              }
             }
+
           }
 
+          span.ng-enter {
+            .animated;
+            .bounceInRight;
+          }
         }
 
-        span.ng-enter {
-          .animated;
-          .bounceInRight;
+      }
+    }
+
+
+    .panel-cover {
+
+      .animation(slideInY cubic-bezier(.02,1,1,1) .5s forwards);
+      .transform(rotate(40deg));
+      font-size   : 20px;
+      font-weight : bold;
+      position    : absolute;
+      width       : 150px;
+      height      : 50px;
+      top         : 50px;
+      right       : 10px;
+
+      .border-radius(10px);
+      .box-shadow(1px 5px 5px);
+    }
+
+    &.incorrect {
+      .animated;
+      .shake;
+      .panel-cover {
+        .flex-center;
+        background-color : @incorrect-panel-bg-color;
+        color            : darken(@incorrect-panel-bg-color, 20%);
+        border           : 1px solid darken(@incorrect-panel-bg-color, 20%);
+        &:after {
+          content : "回答错误."
         }
       }
-
     }
-  }
+    &.timeout {
+      .panel-cover {
+        .flex-center;
+        background-color : @timeout-panel-bg-color;
+        color            : darken(@timeout-panel-bg-color, 50%);
+        border           : 1px solid darken(@timeout-panel-bg-color, 20%);
+        &:after {
+          content : "回答超时."
+        }
+      }
+    }
 
-  .panel-cover {
-    font-size   : 20px;
-    font-weight : bold;
-    position    : absolute;
-    width       : 250px;
-    height      : 50px;
-    opacity     : 0;
-    top         : 20px;
-    right       : 20px;
-
-    .border-radius(10px);
-    .box-shadow(1px 5px 5px);
-  }
-
-  &.incorrect {
-    .animated;
-    .shake;
-    .panel-cover {
-      .flex-center;
-      opacity          : 0.8;
-      .animation-duration(.5);
-      .fadeInDown;
-      background-color : @incorrect-panel-bg-color;
-      color            : darken(@incorrect-panel-bg-color, 20%);
-      border           : 1px solid darken(@incorrect-panel-bg-color, 20%);
-      i:after {
-        content : "回答错误."
+    &.correct {
+      .panel-cover {
+        .flex-center;
+        background-color : @correct-panel-bg-color;
+        color            : darken(@correct-panel-bg-color, 50%);
+        border           : 1px solid darken(@correct-panel-bg-color, 20%);
+        &:after {
+          content : "回答正确."
+        }
       }
     }
   }
-  &.timeout {
-    .panel-cover {
-      .flex-center;
-      opacity          : 0.8;
-      .animation-duration(.5);
-      .fadeInDown;
-      background-color : @timeout-panel-bg-color;
-      i:after {
-        content : "回答超时."
-      }
-    }
-  }
-  &.passive {
-    .panel-cover {
-      .flex-center;
-      opacity          : 0.8;
-      .animation-duration(.5);
-      .fadeInDown;
-      background-color : @timeout-panel-bg-color;
-      color            : darken(@timeout-panel-bg-color, 50%);
-      border           : 1px solid darken(@timeout-panel-bg-color, 20%);
-      i:after {
-        content : "已被抢答."
-      }
-    }
-  }
-  &.correct {
-    .panel-cover {
-      .flex-center;
-      opacity          : 0.8;
-      .animation-duration(.5);
-      .fadeInDown;
-      background-color : @correct-panel-bg-color;
-      color            : darken(@correct-panel-bg-color, 50%);
-      border           : 1px solid darken(@correct-panel-bg-color, 20%);
-      i:after {
-        content : "回答正确."
-      }
-    }
-  }
+
 }

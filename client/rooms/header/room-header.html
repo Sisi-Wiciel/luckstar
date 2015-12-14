@@ -3,7 +3,7 @@
         <span ng-repeat="user in room.users track by $index" class="user"
               ng-class="{target: verdict && verdict.user.id == user.id, empty: !user}" data-userid="{{user.id}}">
             <div class="head" ng-if="user">
-                <i ng-if="isRoomAdmin(user)" class="fa fa-star"></i> {{user.username}}
+                <i ng-if="room.admin.id ==user.id" class="fa fa-star"></i> {{user.username}}
                 <span class="badge" ng-bind="user.point"></span>
             </div>
 
@@ -39,7 +39,7 @@
     </div>
 
     <span class="ctrlbtn">
-        <div ng-if="isRoomAdmin()">
+        <div ng-if="room.admin.id == curr._id">
             <button class="btn btn-success" ng-if="room.status == 0" ng-click="start()" loading-text="处理中">
                 开始答题
             </button>
@@ -48,7 +48,7 @@
                 答题终止
             </button>
         </div>
-        <div ng-if="room.status == 0 && !isRoomAdmin()">
+        <div ng-if="room.admin.id != curr._id && room.status == 0 && isUser()">
             <button class="btn btn-success" ng-click="ready()" loading-text="处理中"
                     ng-if="!isReady()">
                 准备就绪

@@ -25,6 +25,24 @@ define([
         }
 
         init();
+        this.countdown = function(messages){
+            var self = this;
+            if(_.isEmpty(messages)){
+                return;
+            }
+            var index = 0;
+            (function countdown () {
+                $timeout(function () {
+                    if(index < messages.length){
+                        self._show({
+                            content: '<div class="text-danger">' + messages[index++] + '</div>',
+                            animation: "countdown"
+                        }, 1000);
+                        countdown();
+                    }
+                }, 1000);
+            })();
+        }
         this.notify = function (content) {
             this.push("系统信息", content, "fa-exclamation-circle");
         };

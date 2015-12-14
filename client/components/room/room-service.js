@@ -16,8 +16,13 @@ define([
         }
 
         this.fillRoomUsers = function(room){
-            if(room && room.number > room.users.length){
-                room.users = room.users.concat(_.fill(Array(room.number - room.users.length), null));
+            if(room){
+                if(room.number > room.users.length){
+                    room.users = room.users.concat(_.fill(Array(room.number - room.users.length), null));
+                    room.full = false;
+                }else{
+                    room.full = true;
+                }
             }
         }
     });

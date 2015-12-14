@@ -11,6 +11,7 @@ var errorHandler = require('express-error-handler');
 var settings = require('../../config/setting');
 var uuid = require('node-uuid');
 
+//obj => redis
 var objSaved = function (room) {
     var _room = _.clone(room);
 
@@ -18,10 +19,9 @@ var objSaved = function (room) {
         return _.isString(user) ? user : user.id;
     });
 
-    //_room.obs = _.map(_roo
-    //m.obs, function (user) {
-    //    return _.isString(user) ? user : user.id;
-    //});
+    _room.obs = _.map(_room.obs, function (user) {
+        return _.isString(user) ? user : user.id;
+    });
 
     if (!_.isString(_room.admin) && _room.admin.id) {
         _room.admin = _room.admin.id;
@@ -29,15 +29,21 @@ var objSaved = function (room) {
     return _room;
 };
 
+//redis => obj
 var assemble = function (room) {
 
-    if (room.readyUsers) {
-        if (_.isString(room.readyUsers)) {
-            room.readyUsers = room.readyUsers.split(',');
+    var parseArrIds = function(key){
+        if (room.hasOwnProperty(key) && !_.isEmpty(room[key])) {
+            if (_.isString(room[key])) {
+                room[key] = room[key].split(',');
+            }
+        } else {
+            room[key] = [];
         }
-    } else {
-        room.readyUsers = [];
     }
+
+    parseArrIds("readyUsers");
+    parseArrIds("obs");
 
     if (room.users && _.isString(room.users)) {
         room.users = room.users.split(',');
@@ -80,7 +86,9 @@ exports.save = function (room, userid) {
 };
 
 exports.remove = function (room) {
-    return db.delete("rooms:" + room.id);
+    return this.removeCompeteState(room).then(function(){
+        return db.delete("rooms:" + room.id);
+    })
 };
 exports.listRoomStat = function (id) {
     return db.list("roomstats:" + id).then(function (state) {

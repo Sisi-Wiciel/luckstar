@@ -1,4 +1,23 @@
 @import "common";
+@keyframes message-receive {
+
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(500px, 0, 0);
+    transform: translate3d(500px, 0, 0);
+  }
+
+
+  90% {
+    -webkit-transform: translate3d(-5px, 0, 0);
+    transform: translate3d(-5px, 0, 0);
+  }
+
+  to {
+    -webkit-transform: none;
+    transform: none;
+  }
+}
 
 div#room-message {
   .flex-direction(column);
@@ -8,5 +27,10 @@ div#room-message {
   > ul {
     height     : 120px;
     overflow-x : hidden;
+    li{
+      &.ng-enter{
+        .animation(.8s message-receive);
+      }
+    }
   }
 }

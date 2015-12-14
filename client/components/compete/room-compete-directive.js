@@ -33,14 +33,19 @@ define([
                             //Reset records on new competition started
                             $scope.records = [];
                         }
+
                         $scope.updateRecords();
                     });
 
                     socketSrv.register('topicUpdate', function (topic) {
+                        //just for animation
                         $scope.topic = null;
                         $timeout(function(){
                             $scope.topic = topic;
-                        })
+                            $scope.$broadcast('checkable', !!_.find($scope.room.users, 'id', $scope.curr._id));
+                        });
+
+
                         $scope.$apply();
                     });
 

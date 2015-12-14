@@ -48,8 +48,8 @@
                         </div>
                     </div>
                     <div class="toolbar">
-                        <a ng-click="join(room.id)" class="btn btn-info">
-                            加入
+                        <a ng-click="join(room.id)"  class="btn btn-info">
+                           {{room.full ?'观看': '加入'}}
                         </a>
                         <span ng-show="room.status == 1" class="text-success">正在进行</span>
                     </div>

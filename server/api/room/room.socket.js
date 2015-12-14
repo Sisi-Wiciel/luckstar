@@ -9,11 +9,11 @@ var Promise = require('bluebird');
 var setting = require('../../config/setting');
 
 var updateRooms = function (socket, roomid) {
-    log.info("UpdateRooms");
+    log.info("UpdateRooms", roomid);
 
     roomService.list().then(function (rooms) {
-        var roomid = roomid || socket.room;
-        if (!_.isEmpty(rooms) && roomid) {
+        roomid = roomid || socket.room;
+        if (roomid) {
             var currRoom = _.find(rooms, "id", roomid);
             socket.io.sockets.in(roomid).emit('updateRoom', currRoom);
         }
@@ -74,11 +74,15 @@ var joinRoom = function (socket, id) {
 
             return roomService.update(room, function (locked) {
                 if (locked.users.length < locked.number) {
-                    locked.users.push(user);
-
-                    sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
+                    if(!_.find(locked.users, "id", user.id)){
+                        locked.users.push(user);
+                        sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
+                    }
                 } else {
-                    locked.obs.push(user);
+                    if(locked.obs.indexOf(user.id) == -1) {
+                        locked.obs.push(user);
+                        sendRoomMessage(socket, '用户' + user.username + '正在观看比赛, 观众' + locked.obs.length + '人', true);
+                    }
                 }
 
             });
@@ -102,7 +106,7 @@ var leaveRoom = function (socket) {
         sendRoomMessage(socket, '用户' + user.username + '离开房间', true);
 
         socket.room = null;
-        if (_.isEmpty(room.users) || _.isEmpty(room.admin)) {
+        if (_.isEmpty(room.admin)) {
             return roomService.remove(room);
         } else {
             return roomService.update(room, function (locked) {
@@ -133,7 +137,7 @@ var startRoomCompete = function (socket) {
 
             return roomService.startCompete(room);
         } else {
-            socket.io.sockets.in(socket.room).emit('RoomAlert', '需要全部用户进入等待状态后才可以开始');
+            socket.io.sockets.in(socket.room).emit('RoomAlert', '需要全部用户准备就绪后才可开始');
         }
 
     });
