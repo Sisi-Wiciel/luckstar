@@ -27,30 +27,16 @@
   .background-image(linear-gradient(top, #fff 20%, #eee 58%));
 }
 
-//
-//@keyframes blink {
-//  0% { opacity: 1; }
-//  50% { opacity: 0; }
-//  100% { opacity: 1; }
-//}
-//
-//@-webkit-keyframes blink {
-//  0% { opacity: 1; }
-//  50% { opacity: 0; }
-//  100% { opacity: 1; }
-//}
-//
-//.typing-cursor, .typing-cursor-black, .typing-cursor-white {
-//  opacity: 1;
-//  font-weight: bold;
-//  -webkit-animation: blink 0.7s infinite;
-//  animation: blink 0.7s infinite;
-//}
-//
-//.typing-cursor, .typing-cursor-black {
-//  color: #000;
-//}
-//
-//.typing-cursor-white {
-//  color: #fff;
-//}
+@keyframes loading {
+  from{
+    .transform(rotate(0deg));
+  }
+
+  to {
+    .transform(rotate(360deg));
+  }
+}
+
+.loading{
+  .animation(.8s loading linear  infinite);
+}

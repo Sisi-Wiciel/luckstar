@@ -14,8 +14,7 @@
   }
 }
 
-
-#topic-panel{
+#topic-panel {
 
   section {
     position : relative;
@@ -26,11 +25,15 @@
 
     .perspective(20em);
 
-    &.ng-enter{
+    &.ng-enter {
       .animated;
       .slideInDown;
     }
 
+    &.ng-leave {
+      position : absolute;
+      opacity  : 0;
+    }
     .head {
       padding       : 30px 0 10px;
       border-bottom : 1px solid @head-user-boder-color;
@@ -67,20 +70,22 @@
             }
 
           }
-
-          span.ng-enter {
-            .animated;
-            .bounceInRight;
+          span {
+            margin-left : 20px;
+            &.ng-enter {
+              .animated;
+              .bounceInRight;
+            }
           }
+
         }
 
       }
     }
 
-
     .panel-cover {
 
-      .animation(slideInY cubic-bezier(.02,1,1,1) .5s forwards);
+      .animation(slideInY cubic-bezier(.02, 1, 1, 1) .5s forwards);
       .transform(rotate(40deg));
       font-size   : 20px;
       font-weight : bold;
@@ -95,8 +100,9 @@
     }
 
     &.incorrect {
-      .animated;
-      .shake;
+      .byUser {
+        color            : darken(@incorrect-panel-bg-color, 20%);
+      }
       .panel-cover {
         .flex-center;
         background-color : @incorrect-panel-bg-color;
@@ -120,6 +126,9 @@
     }
 
     &.correct {
+      .byUser {
+        color            : darken(@correct-panel-bg-color, 50%);
+      }
       .panel-cover {
         .flex-center;
         background-color : @correct-panel-bg-color;

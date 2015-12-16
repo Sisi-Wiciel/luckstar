@@ -24,9 +24,8 @@
                        typing duration="1000" delay="{{1000*$index+1000}}">
                         {{$index+1}}. {{opt.hasOwnProperty('value')?opt.value:opt}}
                     </a>
-                    <span class="text-success"
-                          ng-if="verdict  && verdict.opt == $index">
-                    <i class="fa fa-hand-o-left"></i> 用户 {{verdict.user.username}}选择.
+                    <span class="byUser" ng-if="verdict  && verdict.opt == $index">
+                        <i class="fa fa-hand-o-left"></i> 用户 {{verdict.user.username}}选择.
                     </span>
                 </li>
             </ul>

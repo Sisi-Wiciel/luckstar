@@ -39,7 +39,7 @@ var nodifyVerdict = function (socket, room, verdictObj) {
                     })
                 })
             } else {
-                nextTopic(socket);
+                //nextTopic(socket);
             }
         }, 2000);
 

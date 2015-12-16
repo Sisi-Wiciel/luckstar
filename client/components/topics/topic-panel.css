@@ -776,8 +776,8 @@ Copyright (c) 2015 Daniel Eden
   }
   from {
     opacity: 0;
-    -webkit-transform: translate3d(100px, 0, 0);
-    transform: translate3d(100px, 0, 0);
+    -webkit-transform: translate3d(3000px, 0, 0);
+    transform: translate3d(3000px, 0, 0);
   }
   60% {
     opacity: 1;
@@ -2954,6 +2954,10 @@ Copyright (c) 2015 Daniel Eden
   -webkit-animation-name: slideInDown;
   animation-name: slideInDown;
 }
+#topic-panel section.ng-leave {
+  position: absolute;
+  opacity: 0;
+}
 #topic-panel section .head {
   padding: 30px 0 10px;
   border-bottom: 1px solid #f88d00;
@@ -2996,6 +3000,9 @@ Copyright (c) 2015 Daniel Eden
   color: #075e3;
   background-color: #fff;
 }
+#topic-panel section .body ul.options li span {
+  margin-left: 20px;
+}
 #topic-panel section .body ul.options li span.ng-enter {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
@@ -3031,13 +3038,8 @@ Copyright (c) 2015 Daniel Eden
   -moz-box-shadow: 1px 5px 5px;
   box-shadow: 1px 5px 5px;
 }
-#topic-panel section.incorrect {
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-  -webkit-animation-name: shake;
-  animation-name: shake;
+#topic-panel section.incorrect .byUser {
+  color: #d59595;
 }
 #topic-panel section.incorrect .panel-cover {
   display: -webkit-box;
@@ -3084,6 +3086,9 @@ Copyright (c) 2015 Daniel Eden
 }
 #topic-panel section.timeout .panel-cover:after {
   content: "回答超时.";
+}
+#topic-panel section.correct .byUser {
+  color: #529138;
 }
 #topic-panel section.correct .panel-cover {
   display: -webkit-box;

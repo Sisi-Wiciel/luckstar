@@ -79,8 +79,8 @@ define([
                         console.info("response error", response.status);
                         if (response.status === 401) {
                             store.delete('token');
-                            $window.location = '/';
-                            //$location.path('/'); sometime browser cannot jump to path '/'.
+                            //$window.location = '/';
+                            $location.path('/'); //sometime browser cannot jump to path '/'.
                             return $q.reject(response);
                         }
                         else {
@@ -102,6 +102,7 @@ define([
                                         function (event, toState, toParams, fromState, fromParams) {
                                             if (_.startsWith(toState.url, '/home') && !store.get('token')) {
                                                 //event.preventDefault();
+                                                console && console.hasOwnProperty("info") && console.info("no token, redirect to /");
                                                 $location.path('/');
                                             }
                                         })

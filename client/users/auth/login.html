@@ -1,7 +1,7 @@
 
-<section ng-controller="loginCtrl">
+<section>
         <div class="page-header text-center">
-            <h1>用户登录</h1>/<small><a href ng-click="register()">注册新用户</a></small>
+            <h1>用户登录</h1>/<small><a href ng-click="toSignup()">注册新用户</a></small>
         </div>
 
         <ngbs-form name="loginForm" on-submit="login(target)">
@@ -16,8 +16,11 @@
                 <invaild-message type="max">密码长度最多10个字符</invaild-message>
                 <invaild-message type="required">密码为必填项</invaild-message>
             </ngbs-fieldset>
-
+            <div class="text-center text-danger" ng-show="err">
+                <b>{{err}}</b>
+            </div>
             <ngbs-controller></ngbs-controller>
+
         </ngbs-form>
     
 </section>

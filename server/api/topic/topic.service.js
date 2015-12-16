@@ -15,8 +15,8 @@ var isCorrect = function (id, answer) {
         var ret = {
             point: topic.point
         }
-        ret.verdict = 1;
-        //topic.corrector.toString() == answer.toString() ? ret.verdict = 1 : ret.verdict = 0;
+        //ret.verdict = 1;
+        topic.corrector.toString() == answer.toString() ? ret.verdict = 1 : ret.verdict = 0;
         return ret;
     })
 };
