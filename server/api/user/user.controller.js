@@ -16,11 +16,10 @@ function save (req, res) {
 };
 
 function get (req, res) {
-    User.findById(req.user._id, '-salt -hashedPassword').populate('stats').exec(function (err, user) {
-        var userJson = req.user.toJSON();
-        userJson.point = req.user.point;
-        return res.status(200).json(userJson);
-    });
+    userService.list(req.user._id.toString()).get(0).then(function(user){
+        return res.status(200).json(user);
+    })
+
 };
 
 exports.get = get;

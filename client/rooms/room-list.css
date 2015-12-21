@@ -2908,6 +2908,28 @@ Copyright (c) 2015 Daniel Eden
   background-image: -o-linear-gradient(top, #fff 20%, #eee 58%);
   background-image: linear-gradient(to bottom, #fff 20%, #eee 58%);
 }
+@keyframes loading {
+  from {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.loading {
+  -webkit-animation: 0.8s loading linear infinite;
+  -moz-animation: 0.8s loading linear infinite;
+  -o-animation: 0.8s loading linear infinite;
+  animation: 0.8s loading linear infinite;
+}
 .room-main {
   height: 100%;
   -webkit-border-radius: 5px;
@@ -3048,7 +3070,6 @@ Copyright (c) 2015 Daniel Eden
   line-height: 30px;
   color: #fff;
   border: 1px solid #F38630;
-  z-index: 100;
   background-color: #F38630;
   -webkit-border-radius: 20px;
   -webkit-background-clip: padding-box;
@@ -3095,11 +3116,11 @@ Copyright (c) 2015 Daniel Eden
   background-image: url(../../libs/images/noise.png);
   width: 47%;
   margin: 10px;
-  -webkit-border-radius: 20px;
+  -webkit-border-radius: 10px;
   -webkit-background-clip: padding-box;
-  -moz-border-radius: 20px;
+  -moz-border-radius: 10px;
   -moz-background-clip: padding;
-  border-radius: 20px;
+  border-radius: 10px;
   background-clip: padding-box;
   -webkit-box-shadow: inset rgba(255, 254, 255, 0.6) 0 0.3em 0.3em, inset rgba(0, 0, 0, 0.15) 0 -0.1em 0.3em, #cc8500 0 0.1em 3px, #996300 0 0.3em 1px, rgba(0, 0, 0, 0.2) 0 0.5em 5px;
   -moz-box-shadow: inset rgba(255, 254, 255, 0.6) 0 0.3em 0.3em, inset rgba(0, 0, 0, 0.15) 0 -0.1em 0.3em, #cc8500 0 0.1em 3px, #996300 0 0.3em 1px, rgba(0, 0, 0, 0.2) 0 0.5em 5px;
@@ -3111,7 +3132,7 @@ Copyright (c) 2015 Daniel Eden
 }
 .room-main .room-list .body .room-list-item .title {
   line-height: 30px;
-  padding-left: 15px;
+  padding: 0 15px;
 }
 .room-main .room-list .body .room-list-item .main {
   display: -webkit-box;

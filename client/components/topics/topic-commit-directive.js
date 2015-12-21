@@ -53,7 +53,7 @@ define([
                             ],
                             creator:{
                                 username: curr.username,
-                                id: curr._id,
+                                id: curr.id,
                             },
                             point: $scope.points[0].value,
                         };

@@ -1,0 +1,14 @@
+<div id="user-profile" class="fa">
+
+    <div class="body">
+        <div class="user-avatar">
+            <img ng-src="{{user.avatar}}"/>
+        </div>
+        <div class="info">
+            <div>我的积分 {{user.point}}</div>
+        </div>
+    </div>
+    <div class="foot">
+        <span href ng-click="logout()"><i class="fa fa-sign-out"></i> 注销</span>
+    </div>
+</div>

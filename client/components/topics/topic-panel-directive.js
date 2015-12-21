@@ -27,7 +27,7 @@ define([
                         $scope.verdictCls=""
                         if (verObj) {
                             if ($scope.verdict.user) {
-                                //if ($scope.verdict.user.id === curr._id) {
+                                //if ($scope.verdict.user.id === curr.id) {
                                     //active mode
                                     if ($scope.verdict.verdict) {
                                         //topic correct

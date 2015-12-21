@@ -24,12 +24,10 @@
             <div class="room-list-item" ng-repeat="room in rooms | filter:q as results">
 
                 <div class="title">
-                    <!--<span ng-show="room.mode == 0" class="label label-success ">合作模式</span>-->
-                    <!--<span ng-show="room.mode == 1" class="label label-default ">竞赛模式</span> |-->
                     <i class="fa fa-home"></i>
                     <span ng-bind="room.title"></span>
 
-                    <!--<small class="text-muted pull-right" from-now="{{room.create}}"></small>-->
+                    <small class="text-muted pull-right" from-now="{{room.create}}"></small>
                 </div>
                 <div class="main">
                     <div class="users">

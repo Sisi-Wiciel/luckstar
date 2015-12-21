@@ -38,15 +38,12 @@ define([
         var app = angular.module('luckStar', ['ui.router', 'ngAnimate', 'ngResource', 'ngSanitize', 'mgcrea.ngStrap']);
 
         app.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
+
             $urlRouterProvider.otherwise("/");
             $stateProvider
-                .state('unauth', {
-                    abstract: true,
-                    templateUrl: "/index.html"
-                })
-                .state('unauth.index', {
+                .state('index', {
                     url: "/",
-                    templateUrl: "/index-tpl.html"
+                    templateUrl: "index-tpl.html"
                 })
                 .state('home', {
                     templateUrl: '/home-tpl.html',
@@ -65,7 +62,7 @@ define([
             $locationProvider.html5Mode(true);
             $httpProvider.interceptors.push('authInterceptor');
         })
-            .factory('authInterceptor', function ($rootScope, $q, store, $window) {
+            .factory('authInterceptor', function ($rootScope, $q, store, $window, $location) {
                 return {
                     request: function (config) {
                         config.headers = config.headers || {};
@@ -90,6 +87,7 @@ define([
                 };
             })
             .boot = function (cb) {
+
             require(componentRequires, function () {
                 (cb || function () {
                     angular
@@ -100,6 +98,7 @@ define([
 
                                     $rootScope.$on('$stateChangeSuccess',
                                         function (event, toState, toParams, fromState, fromParams) {
+
                                             if (_.startsWith(toState.url, '/home') && !store.get('token')) {
                                                 //event.preventDefault();
                                                 console && console.hasOwnProperty("info") && console.info("no token, redirect to /");

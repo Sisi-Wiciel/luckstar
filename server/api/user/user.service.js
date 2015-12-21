@@ -11,7 +11,8 @@ exports.online = function (id) {
     if (id) {
         return db.set("users:" + id, "state", 1);
     } else {
-        log.error("changeState: invalid id", id, state);
+        log.error("online: invalid id", id);
+        return Promise.resolve();
     }
 
 };
@@ -27,7 +28,7 @@ exports.offline = function (id) {
             this.changeStatus(id, setting.USER.STATUS.OFFLINE);
         }.bind(this));
     } else {
-        log.error("changeState: invalid id", id);
+        log.error("offline: invalid id", id);
     }
 
 };
@@ -53,9 +54,8 @@ exports.add = function (user) {
 
 exports.updatePoint = function (uid, point) {
 
-    this.list(uid).then(function (users) {
-        var user = _.first(users);
-        db.set("users:" + uid, "point", parseInt(user.point) + parseInt(point));
+    return this.list(uid).get(0).then(function (user) {
+        return db.set("users:" + uid, "point", parseInt(user.point) + parseInt(point));
     });
 }
 

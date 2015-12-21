@@ -34,7 +34,6 @@ define([
 
         this.createUser = function (user) {
             return User.save(user).$promise;
-
         };
 
         this.usernameIsExisted = function (name) {
@@ -45,13 +44,10 @@ define([
             return currentUser.hasOwnProperty('_id');
         };
 
-        this.reloadUser = function () {
-            currentUser = User.get();
-        };
-
         this.getCurrentUser = function () {
             return currentUser;
         };
+
 
     });
 });

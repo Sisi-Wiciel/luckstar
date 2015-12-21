@@ -27,69 +27,75 @@ define([
             },
             // Support user socket service api
 
+            getSocket: function(){
+                return this.socket;
+            },
             register: function (eventName, cb) {
                 var _cb = cb || _.noop;
-                this.socket.off(eventName);
-                this.socket.on(eventName, _cb);
+                this.getSocket().off(eventName);
+                this.getSocket().on(eventName, _cb);
             },
             changeUserStatus: function (status) {
-                this.socket.emit('user change status', status);
+                this.getSocket().emit('user change status', status);
             },
             userOnline: function (id) {
-                this.socket.emit('user online', id);
+                this.getSocket().emit('user online', id);
             },
             userOffline: function () {
-                this.socket.emit('user offline');
+                this.getSocket().emit('user offline');
+            },
+            updateUser: function(){
+                this.getSocket().emit('user update');
             },
             // Support room socket service api
             createRoom: function (room, cb) {
-                this.socket.emit('room create', room, cb || _.noop);
+                this.getSocket().emit('room create', room, cb || _.noop);
             },
             updateRooms: function () {
-                this.socket.emit('update rooms');
+                this.getSocket().emit('update rooms');
             },
             joinRoom: function(id){
-                this.socket.emit('join room', id);
+                this.getSocket().emit('join room', id);
             },
             leaveRoom: function(){
-                this.socket.emit('leave room');
+                this.getSocket().emit('leave room');
             },
             sendMsg: function (msg) {
-                this.socket.emit('send message', msg);
+                this.getSocket().emit('send message', msg);
             },
             sendRoomMsg: function (msg) {
-                this.socket.emit('send room message', msg);
+                this.getSocket().emit('send room message', msg);
             },
             readyCompete: function(){
-                this.socket.emit('ready compete');
+                this.getSocket().emit('ready compete');
             },
             unreadyComplate: function(){
-                this.socket.emit('unready compete');
+                this.getSocket().emit('unready compete');
             },
             terminateCompete: function(){
-                this.socket.emit('terminate compete');
+                this.getSocket().emit('terminate compete');
             },
             startCompete: function(){
-                this.socket.emit('start compete');
+                this.getSocket().emit('start compete');
             },
             topicCheckOpt: function(opt){
-                this.socket.emit('complete check topic', opt);
+                this.getSocket().emit('complete check topic', opt);
             },
             getTopic: function(opt){
-                this.socket.emit('complete get topic');
+                this.getSocket().emit('complete get topic');
             },
             getTopicSize: function(){
                 return $q(function(resolve, reject) {
-                    this.socket.emit('topic total size', function(size){
+                    this.getSocket().emit('topic total size', function(size){
                         resolve(size);
                     });
                 }.bind(this));
             },
             getRoomStat: function(opt){
-                this.socket.emit('room get stat');
+                this.getSocket().emit('room get stat');
             },
             saveTopic: function(topic, cb){
-                this.socket.emit('topic save', topic, cb || _.noop);
+                this.getSocket().emit('topic save', topic, cb || _.noop);
             }
         }
     });

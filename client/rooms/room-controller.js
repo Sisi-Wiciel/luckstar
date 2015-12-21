@@ -17,11 +17,11 @@ define([
         $scope.text = "";
         $scope.curr = authSrv.getCurrentUser();
         $scope.isUser = function () {
-            return !!_.find($scope.room.users, 'id', $scope.curr._id);
+            return !!_.find($scope.room.users, 'id', $scope.curr.id);
         }
 
         $scope.getRole = function () {
-            if ($scope.room.admin.id == $scope.curr._id) {
+            if ($scope.room.admin.id == $scope.curr.id) {
                 return '房间管理员';
             } else {
                 return this.isUser() ? '参赛者' : '观众';
@@ -58,6 +58,9 @@ define([
                     $scope.verdict = null;
                     if (room.status == 0) {
                         socketSrv.changeUserStatus("IN_ROOM");
+                        if($scope.roomstat){
+                            socketSrv.updateUser();
+                        }
                     }
 
                     if (room.status == 1) {

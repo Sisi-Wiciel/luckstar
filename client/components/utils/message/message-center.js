@@ -91,7 +91,7 @@ define([
                     _close();
                     defer.reject(this);
                 },
-            }), closeTimeout);
+            }), closeTimeout || 60 * 1000);
             return defer.promise;
         };
 

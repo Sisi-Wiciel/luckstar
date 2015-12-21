@@ -1,20 +1,18 @@
-<div class="online-list">
+<div id="user-list">
     <div class="userlist-box" ng-show="!chatting">
         <div class="head">
             <i class="fa fa-user"></i> 用户列表
-
         </div>
 
         <ul class="list-unstyled">
-            <li
-                ng-repeat="user in userlist"
-                ng-if="user.id != curr._id">
+            <li ng-repeat="user in userlist"
+                ng-if="user.id != curr.id">
                 <img class="gravatar" ng-src="{{user.avatar}}">
                 <div class="content"  ng-click="showChatPanel(user)">
-                    <span >{{user.username}}</span>
+                    <span>{{user.username}}</span>
                     <span class="last-message">{{user.status}}</span>
                 </div>
-                <a class="tools" ng-show="user.status == 1" class="pull-right" href ng-click="showChatPanel(user)">
+                <a href class="tools pull-right" ng-show="user.status == 1" ng-click="showChatPanel(user)">
                     <i class="fa fa-comments"></i>
                 </a>
 

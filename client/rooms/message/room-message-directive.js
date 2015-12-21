@@ -34,12 +34,10 @@ define([
 
                 });
 
-
-
                 $scope.sendMessage = function(content){
                     socketSrv.sendRoomMsg({
                         username: curr.username,
-                        userid: curr._id,
+                        userid: curr.id,
                         content: content
                     });
                 }

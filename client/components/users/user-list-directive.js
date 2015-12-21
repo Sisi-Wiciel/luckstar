@@ -4,12 +4,12 @@ define([
 ], function (angular, app, TweenMax) {
     "use strict";
 
-    app.directive('onlineList', function () {
+    app.directive('userList', function () {
 
         return {
             //replace: true,
-            templateUrl: 'components/users/online-list.html',
-
+            templateUrl: 'components/users/user-list.html',
+            scope:{},
             controller: function ($scope, $timeout, socketSrv, authSrv, messageCenter) {
                 $scope.messages = [];
                 $scope.toUser = {};
@@ -26,7 +26,7 @@ define([
 
                 $scope.curr = authSrv.getCurrentUser();
 
-                socketSrv.register('updateUser', function (users) {
+                socketSrv.register('updateUsers', function (users) {
                     _.assign($scope.userlist, users);
                     $scope.$apply();
                 });
@@ -75,7 +75,7 @@ define([
                     });
                 };
 
-                socketSrv.userOnline($scope.curr._id);
+                socketSrv.userOnline($scope.curr.id);
             }
         }
     })

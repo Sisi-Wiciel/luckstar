@@ -92,7 +92,7 @@ define([
                 }
 
                 $scope.isReady = function (userid) {
-                    return _.includes($scope.room.readyUsers, userid || $scope.curr._id);
+                    return _.includes($scope.room.readyUsers, userid || $scope.curr.id);
                 }
                 $scope.ready = function () {
                     socketSrv.readyCompete();

@@ -4,7 +4,7 @@ define([
 ], function (angular, app) {
     'use strict';
 
-    app.controller('NavbarCtrl', function ($scope, $location, authSrv) {
+    app.controller('NavbarCtrl', function ($scope, $location, socketSrv, authSrv) {
         $scope.menu = [{
             'title': '首页',
             'link': '/home',
@@ -18,10 +18,9 @@ define([
             'link': '/home/topic',
             'icon': 'fa-book'
         }];
+        $scope.user = authSrv.getCurrentUser();
 
         $scope.isCollapsed = true;
-        $scope.isLoggedIn = authSrv.isLoggedIn;
-        $scope.getCurrentUser = authSrv.getCurrentUser;
 
         $scope.logout = function () {
             authSrv.logout();
@@ -35,5 +34,9 @@ define([
         $scope.isActive = function (route) {
             return route === $location.path();
         };
+
+        socketSrv.register("updateUser", function(user){
+            $scope.user = user;
+        })
     });
 });

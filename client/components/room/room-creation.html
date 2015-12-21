@@ -1,4 +1,4 @@
-<div class="popover" tabindex="-1" style="min-width:300px;outline: none" ng-controller="roomCreationCtrl"  ng-controller="roomCreationCtrl">
+<div class="popover" tabindex="-1" style="min-width:300px;outline: none" ng-controller="roomCreationCtrl">
     <div class="arrow"></div>
     <h3 class="popover-title" ng-bind-html="title" ng-show="title"></h3>
     <div class="popover-content">
@@ -27,14 +27,14 @@
                 <label class="col-md-3" for="title">人数:</label>
                 <div class="col-md-9">
                     <select class="form-control" ng-model="newroom.number"
-                            ng-options="number.value as number.label  for number in numbers">
+                            ng-options="number.value as number.label for number in numbers">
 
                     </select>
                 </div>
             </div>
             <div class="form-actions">
                 <button type="button" class="btn btn-default" ng-click="$hide()">取消</button>
-                <button type="button" class="btn btn-success" ng-click="create(newroom);$hide()">确认</button>
+                <button type="button" class="btn btn-success" ng-click="create();$hide()">确认</button>
             </div>
         </form>
     </div>

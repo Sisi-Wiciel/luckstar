@@ -42,7 +42,7 @@ define([
                         $scope.topic = null;
                         $timeout(function(){
                             $scope.topic = topic;
-                            $scope.$broadcast('checkable', !!_.find($scope.room.users, 'id', $scope.curr._id));
+                            $scope.$broadcast('checkable', !!_.find($scope.room.users, 'id', $scope.curr.id));
                         });
 
 
@@ -76,7 +76,7 @@ define([
                                         if (!record.verobj) {
                                             scope.room.status == 1 && $(this).addClass("current");
                                         } else {
-                                            if (record.verobj.user && scope.curr._id == record.verobj.user.id) {
+                                            if (record.verobj.user && scope.curr.id == record.verobj.user.id) {
                                                 record.verobj.verdict == 1 && $(this).addClass("correct");
                                                 record.verobj.verdict == 0 && $(this).addClass("incorrect");
                                             } else {

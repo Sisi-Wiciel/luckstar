@@ -32,14 +32,16 @@ var nodifyVerdict = function (socket, room, verdictObj) {
             if (competeStat.currNum >= competeStat.maxNum) {
 
                 roomService.finishCompete(room, competeStat).then(function () {
-                    roomSocket.updateRooms(socket);
 
-                    _.each(competeStat.users, function (user) {
-                        userService.updatePoint(user.userid, user.point);
+                    Promise.map(competeStat.users, function(user){
+                        return userService.updatePoint(user.userid, user.point);
+                    }).then(function(){
+                        roomSocket.updateRooms(socket);
                     })
+
                 })
             } else {
-                //nextTopic(socket);
+                nextTopic(socket);
             }
         }, 2000);
 

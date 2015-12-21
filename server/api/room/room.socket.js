@@ -74,12 +74,12 @@ var joinRoom = function (socket, id) {
 
             return roomService.update(room, function (locked) {
                 if (locked.users.length < locked.number) {
-                    if(!_.find(locked.users, "id", user.id)){
+                    if (!_.find(locked.users, "id", user.id)) {
                         locked.users.push(user);
                         sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
                     }
                 } else {
-                    if(locked.obs.indexOf(user.id) == -1) {
+                    if (locked.obs.indexOf(user.id) == -1) {
                         locked.obs.push(user);
                         sendRoomMessage(socket, '用户' + user.username + '正在观看比赛, 观众' + locked.obs.length + '人', true);
                     }
@@ -95,29 +95,45 @@ var leaveRoom = function (socket) {
     log.info("LeaveRoom");
     var room = socket.room;
 
+    var adminLeaver = function (room, user) {
+        sendRoomMessage(socket, '管理员' + user.username + '离开房间', true);
+        return roomService.remove(room);
+    }
+
+    var userLeaver = function (room, user) {
+        sendRoomMessage(socket, '参赛者' + user.username + '离开房间', true);
+        return roomService.update(room, function (locked) {
+            _.remove(locked.users, 'id', user.id);
+        });
+    }
+
+    var obLeaver = function (room, user) {
+        sendRoomMessage(socket, '观众' + user.username + '离开房间, 观众' + room.obs.length - 1 + '人', true);
+        return roomService.update(room, function (locked) {
+            locked.obs.pop(user.id)
+        });
+    }
+
     getAndUpdateRoom(socket, room, function (room, user) {
-
+        var promise = null;
         if (user.id === room.admin.id) {
-            room.admin = null;
-            socket.io.sockets.in(socket.room).emit('cd');
+            promise = adminLeaver(room, user);
+        } else if (_.find(room.users, "id", user.id)) {
+            promise = userLeaver(room, user);
+        } else if (room.obs.indexOf(user.id) >= 0) {
+            promise = obLeaver(room, user);
         }
-        socket.leave(room);
 
-        sendRoomMessage(socket, '用户' + user.username + '离开房间', true);
+        if (promise) {
+            socket.leave(room);
 
-        socket.room = null;
-        if (_.isEmpty(room.admin)) {
-            return roomService.remove(room);
-        } else {
-            return roomService.update(room, function (locked) {
-                _.remove(locked.users, 'id', user.id);
-            });
+            delete socket.room;
+
+            return promise;
         }
 
     });
 };
-
-
 
 var startRoomCompete = function (socket) {
     log.info("StartRoomCompete");
@@ -240,10 +256,18 @@ exports.register = function (socket) {
         getRoomStat(socket);
     })
     socketSrv.on(socket, 'room create', function (room, cb) {
-        roomService.save(room, socket.uid).then(function (room) {
-            updateRooms(socket);
-            return room;
-        }).then(cb);
+        console.info(socket.room);
+        if (socket.room) {
+            cb({
+                error: 'ALREADY_IN_ROOM'
+            });
+        } else {
+            roomService.save(room, socket.uid).then(function (room) {
+                updateRooms(socket);
+                return room;
+            }).then(cb);
+        }
+
     })
 };
 

@@ -4,17 +4,22 @@ var log = require('../../log');
 var moment = require('moment');
 var settings = require('../../config/setting');
 
-var updateUsers = function (socket) {
-    userService.list().then(function (users) {
-        socket.io.emit("updateUser", users);
+var updateUsers = function (socket, id) {
+    userService.list(id).then(function (users) {
+        if(!_.isEmpty(id)){
+            socket.emit("updateUser", _.first(users));
+        }else{
+            socket.io.emit("updateUsers", users);
+        }
+
     });
 }
+
 exports.register = function (socket) {
     var ss = require('../socket/socket.service');
 
-    ss.on(socket, 'user online', function (id) {
-        userService.online(id).then(function () {
-            //socket.uid = id;
+    ss.on(socket, 'user online', function () {
+        userService.online(socket.uid).then(function () {
             updateUsers(socket);
         });
     })
@@ -23,6 +28,10 @@ exports.register = function (socket) {
         userService.offline(socket.uid).then(function () {
             updateUsers(socket);
         })
+    });
+
+    ss.on(socket, 'user update', function () {
+        updateUsers(socket, socket.uid);
     });
 
     ss.on(socket, 'user change status', function (status) {
@@ -54,6 +63,8 @@ exports.register = function (socket) {
 
     });
 };
+
+exports.updateUsers =updateUsers;
 
 exports.deregister = function (socket) {
     //if (socket.uid) {

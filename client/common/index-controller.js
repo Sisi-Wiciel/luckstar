@@ -3,7 +3,7 @@ define([
 ], function (angular) {
     "use strict";
     angular.module('luckStar').controller('indexCtrl', function ($scope, socketSrv) {
-        $scope.status = "signup";
+        $scope.status = "login";
         $scope.toSignup = function () {
             $scope.status = "signup";
         }
