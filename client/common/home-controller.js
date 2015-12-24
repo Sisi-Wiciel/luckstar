@@ -7,6 +7,6 @@ define([
         $scope.totalSize = 0;
         socketSrv.getTopicSize().then(function(size){
             $scope.totalSize = size;
-        })
+        });
     })
 });

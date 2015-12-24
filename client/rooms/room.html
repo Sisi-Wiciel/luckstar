@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="rooms/room.css"/>
 <div class="room" ng-if="room">
     <div class="head">
         <span class="title text-success" ng-bind="room.title">
@@ -8,10 +9,8 @@
         </a>
     </div>
     <div class="body">
-
-        <room-header></room-header>
-
-        <room-compete></room-compete>
+        <div ng-include="'rooms/header/room-header.html'"></div>
+        <div ng-include="'rooms/room-compete.html'"></div>
     </div>
 
 

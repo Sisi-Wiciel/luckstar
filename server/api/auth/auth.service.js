@@ -15,7 +15,7 @@ function isAuthenticated() {
     .use(function(req, res, next) {
       User.findById(req.user._id, '-salt -hashedPassword').exec(function (err, user) {
         if (err) return next(err);
-        if (!user) return res.send(401);
+        if (!user) return res.send(400);
 
         req.user = user;
         next();

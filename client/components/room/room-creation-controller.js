@@ -32,7 +32,7 @@ define([
                             socketSrv.leaveRoom();
                             $timeout(function () {
                                 $scope.create();
-                            }, 100);
+                            }, 1000);
                         });
                     }
 

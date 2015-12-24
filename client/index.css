@@ -2938,7 +2938,7 @@ body {
   user-select: none;
   font-family: '微软雅黑';
   background-image: url("libs/images/bg.gif");
-  overflow: hidden;
+  overflow-x: hidden;
   color: #767676;
 }
 body > [ui-view].ng-enter {

@@ -1,4 +1,4 @@
-@import "lesshat";
+@import "common";
 
 @home-container-height: 730px;
 
@@ -7,8 +7,6 @@
 
   > .head {
     margin-bottom : 10px;
-    //position: relative;
-    //z-index: 100;
     .animated;
     .slideInDown;
   }
@@ -55,4 +53,12 @@
   }
 
 
+  #home-page{
+    .flex-column;
+    .justify-content(space-between);
+    height: 100%;
+    .body{
+      width: 50%;
+    }
+  }
 }

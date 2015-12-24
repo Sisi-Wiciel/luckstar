@@ -1,4 +1,4 @@
-<div class="popover" tabindex="-1" style="min-width:300px;outline: none" ng-controller="roomCreationCtrl">
+<div id="room-creation" class="popover" tabindex="-1" ng-controller="roomCreationCtrl">
     <div class="arrow"></div>
     <h3 class="popover-title" ng-bind-html="title" ng-show="title"></h3>
     <div class="popover-content">
@@ -9,20 +9,20 @@
                     <input focus-me ng-model="newroom.title" class="form-control input-sm" id="title">
                 </div>
             </div>
-            <div class="form-group ">
-                <label class="col-md-3" for="title">模式: </label>
-                <div class="col-md-9">
-                    <div class="btn-group">
-                            <button class="btn btn-default"
-                                    ng-class="{'active': newroom.mode == 0}"
-                                    ng-click="newroom.mode = 0">合作</button>
-                            <button type="button" ng-class="{'active': newroom.mode == 1}"
-                                    class="btn btn-default"
-                                    ng-click="newroom.mode = 1">竞赛</button>
-                    </div>
+            <!--<div class="form-group ">-->
+                <!--<label class="col-md-3" for="title">模式: </label>-->
+                <!--<div class="col-md-9">-->
+                    <!--<div class="btn-group">-->
+                            <!--<button class="btn btn-default"-->
+                                    <!--ng-class="{'active': newroom.mode == 0}"-->
+                                    <!--ng-click="newroom.mode = 0">合作</button>-->
+                            <!--<button type="button" ng-class="{'active': newroom.mode == 1}"-->
+                                    <!--class="btn btn-default"-->
+                                    <!--ng-click="newroom.mode = 1">竞赛</button>-->
+                    <!--</div>-->
 
-                </div>
-            </div>
+                <!--</div>-->
+            <!--</div>-->
             <div class="form-group ">
                 <label class="col-md-3" for="title">人数:</label>
                 <div class="col-md-9">

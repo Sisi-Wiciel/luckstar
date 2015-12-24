@@ -9,8 +9,7 @@ define([
     compete.config(function ($stateProvider) {
         $stateProvider.state('home.rooms', {
             url: '/home/rooms',
-            templateUrl: '/rooms/room-list.html',
-            controller: 'roomListCtrl'
+            templateUrl: '/rooms/room-list.html'
         })
         .state('home.room', {
             url: '/home/rooms/:id',

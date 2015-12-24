@@ -1,6 +1,7 @@
 var topicService = require('../topic/topic.service');
 var userService = require('../user/user.service')
 var _ = require('lodash');
+var setting = require('../../config/setting');
 
 var saveTopic = function(newTopic, user){
     return topicService.save(newTopic, user);
@@ -17,6 +18,7 @@ exports.register = function (socket) {
     socket.on('topic total size', function(cb){
         topicService.getTotalSize().then(cb);
     })
+
 };
 
 exports.deregister = function (socket) {

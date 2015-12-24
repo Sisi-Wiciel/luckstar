@@ -9,11 +9,7 @@ define([
             'title': '首页',
             'link': '/home',
             'icon': 'fa-home'
-        }, {
-            'title': '答题',
-            'link': '/home/rooms',
-            'icon': 'fa-star'
-        }, {
+        },{
             'title': '题目',
             'link': '/home/topic',
             'icon': 'fa-book'

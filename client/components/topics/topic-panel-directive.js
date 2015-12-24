@@ -27,17 +27,15 @@ define([
                         $scope.verdictCls=""
                         if (verObj) {
                             if ($scope.verdict.user) {
-                                //if ($scope.verdict.user.id === curr.id) {
-                                    //active mode
-                                    if ($scope.verdict.verdict) {
-                                        //topic correct
-                                        $scope.verdictCls = 'correct';
+                                //active mode
+                                if ($scope.verdict.verdict) {
+                                    //topic correct
+                                    $scope.verdictCls = 'correct';
 
-                                    } else {
-                                        //topic incorrec
-                                        $scope.verdictCls = 'incorrect';
-                                    }
-                                //}
+                                } else {
+                                    //topic incorrec
+                                    $scope.verdictCls = 'incorrect';
+                                }
                             } else {
                                 //topic timeout
                                 $scope.verdictCls = 'timeout';

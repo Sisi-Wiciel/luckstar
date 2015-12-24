@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="rooms/room-compete.css"/>
+<div id="complete" ng-controller="roomCompeteCtrl">
+    <topic-panel ng-show="topic && room.status == 1"
+                 class="complete-topic" topic="topic"></topic-panel>
+    <compete-statistic room="room" roomstat="roomstat"></compete-statistic>
+    <div class="compete-record" >
+        <span class="record" ng-repeat="record in records track by $index"
+              ng-class="{current: record.verobj != -1 && room.status == 1 && $index+1 === roomstat.currNum+1,
+                        correct: record.verobj &&record.verobj.verdict == 1,
+                        incorrect: record.verobj &&record.verobj.verdict == 0,
+                        passive: record.verobj && record.verobj.verdict == -1
+                        }">
+            {{roomstat.currNum}}-{{$index}}
+            <i class="fa fa-star"></i>
+        </span>
+    </div>
+</div>

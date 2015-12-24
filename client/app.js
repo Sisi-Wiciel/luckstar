@@ -74,10 +74,14 @@ define([
 
                     responseError: function (response) {
                         console.info("response error", response.status);
-                        if (response.status === 401) {
+                        if (response.status === 401) {//auth failed
                             store.delete('token');
-                            //$window.location = '/';
-                            $location.path('/'); //sometime browser cannot jump to path '/'.
+                            $location.path('/');
+                            return $q.reject(response);
+                        }
+                        else if (response.status === 400) {// maybe timeout issue
+                            store.delete('token');
+                            $window.location = '/';
                             return $q.reject(response);
                         }
                         else {

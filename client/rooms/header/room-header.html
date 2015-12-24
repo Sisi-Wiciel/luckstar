@@ -1,4 +1,5 @@
-<div class="room-header">
+<link rel="stylesheet" href="rooms/header/room-header.css"/>
+<div class="room-header" ng-controller="roomHeaderCtrl">
     <div class="user-list">
         <span ng-repeat="user in room.users track by $index" class="user"
               ng-class="{target: verdict && verdict.user.id == user.id, empty: !user}" data-userid="{{user.id}}">

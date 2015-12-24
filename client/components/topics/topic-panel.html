@@ -1,14 +1,10 @@
-<!--<section class="topic-panel correct" ng-cloak>-->
-<!--<div class="panel-cover">-->
-<!--</div>-->
-<!--</section>-->
 <div id="topic-panel">
 
     <section ng-if="topic" ng-cloak ng-class="verdictCls">
         <div class="panel-cover" ng-if="verdict"></div>
 
         <div class="head">
-            <span typing>{{topic.title}}</span><b class="text-success">({{topic.point}}分)</b>
+            <span typing>{{topic.title}}</span><b class="text-success">(分值: {{topic.point}}分)</b>
         </div>
 
         <div class="body">
@@ -18,15 +14,24 @@
             </p>
 
             <ul class="list-unstyled options">
-                <li ng-repeat="opt in topic.options">
-                    <i class="fa fa-check" ng-if="topic.corrector == $index"></i>
-                    <a href ng-click="check($index)" ng-class="{actived: checkedOpt==$index}"
-                       typing duration="1000" delay="{{1000*$index+1000}}">
-                        {{$index+1}}. {{opt.hasOwnProperty('value')?opt.value:opt}}
-                    </a>
-                    <span class="byUser" ng-if="verdict  && verdict.opt == $index">
-                        <i class="fa fa-hand-o-left"></i> 用户 {{verdict.user.username}}选择.
-                    </span>
+                <li ng-repeat="opt in topic.options track by $index">
+
+                    <div ng-if="!topic.hasOwnProperty('corrector')">
+                        <i class="fa fa-check" ng-if="topic.corrector == $index"></i>
+                        <a href ng-click="check($index)" ng-class="{actived: checkedOpt==$index}"
+                           typing duration="1000" delay="{{1000*$index+1000}}">
+                            {{$index+1}}. {{opt}}
+                        </a>
+                        <span class="byUser" ng-if="verdict  && verdict.opt == $index">
+                            <i class="fa fa-hand-o-left"></i> 用户 {{verdict.user.username}}选择.
+                        </span>
+                    </div>
+                    <div ng-if="topic.hasOwnProperty('corrector')">
+                        <i class="fa fa-check" ng-if="topic.corrector == $index"></i>
+                        <a href ng-click="check($index)" ng-class="{actived: checkedOpt==$index}">
+                            {{$index+1}}. {{opt.value}}
+                        </a>
+                    </div>
                 </li>
             </ul>
 

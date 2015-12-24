@@ -3114,7 +3114,7 @@ Copyright (c) 2015 Daniel Eden
   color: #996300 !important;
   background-color: #ffb833;
   background-image: url(../../libs/images/noise.png);
-  width: 47%;
+  width: 100%;
   margin: 10px;
   -webkit-border-radius: 10px;
   -webkit-background-clip: padding-box;
@@ -3162,7 +3162,7 @@ Copyright (c) 2015 Daniel Eden
   border-radius: 15px;
   margin: 2px;
   border: 1px solid #F6D5AD;
-  color: #333;
+  color: #996300;
   text-align: center;
   width: 85px;
   position: relative;
@@ -3188,7 +3188,7 @@ Copyright (c) 2015 Daniel Eden
   bottom: 0px;
 }
 .room-main .room-list .body .room-list-item .main .users .user.admin {
-  color: #fff;
+  color: #996300;
 }
 .room-main .room-list .body .room-list-item .main .toolbar {
   margin: auto;

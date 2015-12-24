@@ -2908,68 +2908,66 @@ Copyright (c) 2015 Daniel Eden
   background-image: -o-linear-gradient(top, #fff 20%, #eee 58%);
   background-image: linear-gradient(to bottom, #fff 20%, #eee 58%);
 }
-div#complete {
+@keyframes loading {
+  from {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.loading {
+  -webkit-animation: 0.8s loading linear infinite;
+  -moz-animation: 0.8s loading linear infinite;
+  -o-animation: 0.8s loading linear infinite;
+  animation: 0.8s loading linear infinite;
+}
+@keyframes message-receive {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(500px, 0, 0);
+    transform: translate3d(500px, 0, 0);
+  }
+  90% {
+    -webkit-transform: translate3d(-5px, 0, 0);
+    transform: translate3d(-5px, 0, 0);
+  }
+  to {
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+div#room-message {
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -moz-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
-div#complete > .complete-topic {
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin-right: 40px;
-}
-div#complete > .compete-record {
+  overflow: auto;
   width: 100%;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -moz-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
 }
-div#complete > .compete-record span.record {
-  margin: 5px 5px;
-  font-size: 20px;
-  color: #fff;
+div#room-message > ul {
+  height: 120px;
+  overflow-x: hidden;
 }
-div#complete > .compete-record span.record.correct {
-  color: #68ca12;
-}
-div#complete > .compete-record span.record.incorrect {
-  color: #e73214;
-}
-div#complete > .compete-record span.record.current {
-  -webkit-animation: 2s 1s flash infinite;
-  -moz-animation: 2s 1s flash infinite;
-  -o-animation: 2s 1s flash infinite;
-  animation: 2s 1s flash infinite;
-  color: #faf500;
-}
-div#complete > .compete-record span.record.passive {
-  color: #a6a6a6;
-}
-div#complete > .compete-record span.record:ng-enter {
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-  -webkit-animation-name: fadeIn;
-  animation-name: fadeIn;
+div#room-message > ul li.ng-enter {
+  -webkit-animation: 0.8s message-receive;
+  -moz-animation: 0.8s message-receive;
+  -o-animation: 0.8s message-receive;
+  animation: 0.8s message-receive;
 }

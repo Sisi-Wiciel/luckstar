@@ -2908,6 +2908,28 @@ Copyright (c) 2015 Daniel Eden
   background-image: -o-linear-gradient(top, #fff 20%, #eee 58%);
   background-image: linear-gradient(to bottom, #fff 20%, #eee 58%);
 }
+@keyframes loading {
+  from {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.loading {
+  -webkit-animation: 0.8s loading linear infinite;
+  -moz-animation: 0.8s loading linear infinite;
+  -o-animation: 0.8s loading linear infinite;
+  animation: 0.8s loading linear infinite;
+}
 div.room {
   display: -webkit-box;
   display: -moz-box;
@@ -3000,11 +3022,6 @@ div.room > .foot {
   -moz-background-clip: padding;
   border-radius: 5px;
   background-clip: padding-box;
-  -webkit-box-flex: 0;
-  -moz-box-flex: 0;
-  -webkit-flex: 0 0 14em;
-  -ms-flex: 0 0 14em;
-  flex: 0 0 14em;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;

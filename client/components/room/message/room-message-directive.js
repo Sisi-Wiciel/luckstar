@@ -8,7 +8,7 @@ define([
     app.directive('roomMessage', function () {
 
         return {
-            templateUrl: 'rooms/message/room-message.html',
+            templateUrl: '/components/room/message/room-message.html',
             controller: function ($scope, $timeout, socketSrv, authSrv) {
                 $scope.messages = [];
                 var curr = authSrv.getCurrentUser();
