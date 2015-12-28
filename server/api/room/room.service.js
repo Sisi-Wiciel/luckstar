@@ -166,6 +166,20 @@ exports.startCompete = function (room) {
     return db.set("rooms:" + room.id, "status", room.status);
 };
 
+exports.enableRoomCountDown = function (room) {
+    return this.update(room, function(room){
+        room.countdown = 1;
+        return room;
+    });
+}
+
+exports.disableRoomCountDown = function (room) {
+    return this.update(room, function(room){
+        room.countdown = 0;
+        return room;
+    });
+}
+
 exports.removeCompeteState = function (room) {
     return db.delete("roomstats:" + room.id);
 }

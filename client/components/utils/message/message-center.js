@@ -35,7 +35,7 @@ define([
                 $timeout(function () {
                     if(index < messages.length){
                         self._show({
-                            content: '<div class="text-danger">' + messages[index++] + '</div>',
+                            content: '<span>' + messages[index++] + '</span>',
                             animation: "countdown"
                         }, 1000);
                         countdown();

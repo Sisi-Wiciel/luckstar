@@ -1,22 +1,42 @@
 var db = require('../redis/redis.service');
 var Topic = require('./topic.model');
 var errorHandler = require('express-error-handler');
+var userService = require('../user/user.service');
+var _ = require('lodash');
 
 var getTopic = function (id) {
+
+    var promise ;
     if (id) {
-        return Topic.findById(id, '-corrector').exec();
+        promise = Topic.findById(id).exec().then(function(topic) {
+            return topic.toJSON();
+        });
     } else {
-        return db.random('topics', 1).then(JSON.parse);
+        promise = db.random('topics', 1).then(JSON.parse);
     }
+
+    return promise && promise.then(function(topic){
+        topic.answercount = topic.corrector.length;
+        delete topic.corrector;
+        if(topic.creator){
+            return userService.list(topic.creator).get(0).then(function(creator){
+                topic.creatorUsername = creator.username;
+                return topic;
+            })
+        }
+        return topic;
+    })
 };
 
 var isCorrect = function (id, answer) {
     return Topic.findById(id).exec().then(function (topic) {
+        var _topic = topic.toJSON();
         var ret = {
-            point: topic.point
+            point: _topic.point,
+            verdict: _topic.corrector.join('') == answer.split('').sort().join('') ? 1: 0
+
         }
-        //ret.verdict = 1;
-        topic.corrector.toString() == answer.toString() ? ret.verdict = 1 : ret.verdict = 0;
+
         return ret;
     })
 };

@@ -9,6 +9,27 @@ define([
         app.controller('roomCompeteCtrl', function ($scope, $timeout, socketSrv, authSrv) {
             $scope.curr = authSrv.getCurrentUser();
             $scope.records = [];
+
+            $scope.getRecordCls = function (index) {
+                var record = $scope.records[index];
+                if (record.verobj) {
+                    if (record.verobj.verdict == 1) {
+                        return "correct";
+                    }
+                    if (record.verobj.verdict == 0) {
+                        return "incorrect";
+                    }
+                    if (record.verobj.verdict == -1) {
+                        return "passive";
+                    }
+                } else {
+                    if (index + 1 === $scope.roomstat.currNum + 1) {
+                        return "current";
+                    }
+                }
+                return "";
+            }
+
             $scope.$on('topicVerdict', function (event, verdict) {
                 if ($scope.roomstat.maxNum > $scope.roomstat.currNum) {
                     $scope.records[$scope.roomstat.currNum] = {

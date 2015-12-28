@@ -19,9 +19,10 @@
   section {
     position : relative;
     height   : 300px;
-
+    padding-bottom: 10px;
     .bg-frame1;
     .flex(1);
+    .flex-column;
 
     .perspective(20em);
 
@@ -35,13 +36,14 @@
       opacity  : 0;
     }
     .head {
-      padding       : 30px 0 10px;
+      padding       : 25px 0 10px;
       border-bottom : 1px solid @head-user-boder-color;
       margin        : 0 20px;
     }
     .body {
+      position: relative;
       padding : 10px 20px 0;
-
+      .flex(1);
       ul.options {
 
         padding-left : 20px;
@@ -77,12 +79,34 @@
               .bounceInRight;
             }
           }
-
         }
 
       }
+      .countdown{
+        margin: 0 0 20px;
+      }
+      .tip{
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        z-index: 100;
+        background: #f88d00;
+        color: #fff;
+        padding: 2px 10px;
+        border-radius: 5px;
+        .fa{
+          margin-right: 5px;
+        }
+        &.ng-hide-remove{
+          .animation-duration(.3s);
+          .fadeInLeft;
+        }
+      }
     }
 
+    .foot{
+      padding-right: 15px;
+    }
     .panel-cover {
 
       .animation(slideInY cubic-bezier(.02, 1, 1, 1) .5s forwards);

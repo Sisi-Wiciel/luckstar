@@ -25,33 +25,27 @@ module.exports = {
 
             });
 
-            User.find().exec()
-                .then(function (users) {
-                    _.each(users, function (user) {
-                        userService.add(user);
-                    });
-                    return users;
-                })
-                .then(function(users){
-                    Topic.find().exec().then(function ( topics) {
+            User.find().exec().then(function (users) {
+                _.each(users, function (user) {
+                    userService.add(user);
+                });
+            })
 
-                        _.each(topics, function (topic) {
-                            var _topic = topic.toObject();
+            Topic.find().exec().then(function ( topics) {
 
-                            if (topic.creator) {
-                                var u = _.find(users, 'id', topic.creator);
-                                _topic.creator = {
-                                    id: u.id,
-                                    username: u.username
-                                }
-                            }
+                _.each(topics, function (topic) {
+                    var _topic = topic.toObject();
 
+                    //if(_topic._id == "567b9fed2a4f8a501a3cf074"){//多选题
+                    //    db.sadd("topics", JSON.stringify(_topic));
+                    //}
+                    //if(_topic._id == "567b8f8836b14aa8189819d0"){//单选题
+                    //    db.sadd("topics", JSON.stringify(_topic));
+                    //}
 
-                            delete _topic.corrector;
-                            db.sadd("topics", JSON.stringify(_topic));
-                        });
-                    });
-                })
+                    db.sadd("topics", JSON.stringify(_topic));
+                });
+            });
 
         }
 

@@ -13,7 +13,6 @@ define([
             $location.path('/home/rooms');
             return;
         }
-
         $scope.text = "";
         $scope.curr = authSrv.getCurrentUser();
         $scope.isUser = function () {

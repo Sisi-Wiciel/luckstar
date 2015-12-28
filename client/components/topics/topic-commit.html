@@ -30,7 +30,7 @@
 
                 <div class="col-sm-5">
                     <select class="form-control" ng-model="topic.point"
-                            ng-options="point.value as point.label  for point in points">
+                            ng-options="point.value as point.label for point in points">
                     </select>
 
                 </div>
@@ -39,8 +39,8 @@
                 <label class="col-sm-3">正确答案:</label>
 
                 <div class="col-sm-5">
-                    <select class="form-control" ng-model="topic.corrector">
-                        <option ng-selected="$first" value="{{$index}}" ng-repeat="opt in topic.options">选项 {{opt.title}}</option>
+                    <select class="form-control" multiple ng-model="topic.corrector">
+                        <option value="{{$index}}" ng-repeat="opt in topic.options">选项 {{opt.title}}</option>
                     </select>
                 </div>
             </div>
@@ -52,7 +52,6 @@
     </div>
     <div class="col-sm-6 preview" >
         <h4 class="text-center">预览效果</h4>
-
         <topic-panel topic="topic"></topic-panel>
     </div>
 

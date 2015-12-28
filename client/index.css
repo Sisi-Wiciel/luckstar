@@ -2936,7 +2936,6 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  font-family: '微软雅黑';
   background-image: url("libs/images/bg.gif");
   overflow-x: hidden;
   color: #767676;
@@ -2996,6 +2995,7 @@ a {
 }
 a:focus,
 a:hover {
+  color: #000;
   text-decoration: none;
 }
 ol,

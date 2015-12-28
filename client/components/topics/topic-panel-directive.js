@@ -11,20 +11,19 @@ define([
                 scope: {
                     'topic': '=',
                 },
-                link: function(scope, elem){
+                link: function (scope, elem) {
                 },
                 controller: function ($scope, $timeout, socketSrv, authSrv, messageCenter) {
-                    $scope.checkedOpt = -1;
+                    $scope.checkedOpt = [];
                     $scope.countdown = 15;
 
-                    var ignoreCountDown = false;
                     var curr = authSrv.getCurrentUser();
 
                     var setVerdict = function (verObj) {
                         $scope.verdict = verObj;
                         $scope.$emit('topicVerdict', verObj);
 
-                        $scope.verdictCls=""
+                        $scope.verdictCls = ""
                         if (verObj) {
                             if ($scope.verdict.user) {
                                 //active mode
@@ -44,44 +43,49 @@ define([
                         }
                     }
 
-
-
-
                     socketSrv.register('topicVerdict', function (obj) {
                         setVerdict(obj);
                         $scope.$apply();
                     });
 
                     socketSrv.register('updateTopicCountdown', function (number) {
-                        if (!ignoreCountDown) {
                             $scope.countdown = number;
                             $scope.$apply();
-                        }
 
                     });
 
                     $scope.$watch('topic', function (newValue, oldValue) {
                         if (newValue && newValue._id) {
                             setVerdict(null);
-                            ignoreCountDown = false;
-                            $scope.checkedOpt = -1;
+                            $scope.checkedOpt = [];
                         }
                     });
 
                     $scope.check = function (opt) {
-
                         if (!$scope.verdict) {
-                            ignoreCountDown = true;
-                            $scope.checkedOpt = opt;
+
                             if($scope.auth){
-                                socketSrv.topicCheckOpt(opt);
+                                if ($scope.checkedOpt.indexOf(opt) > -1) {
+                                    $scope.checkedOpt = _.without($scope.checkedOpt, opt);
+                                }else{
+                                    $scope.checkedOpt.push(parseInt(opt));
+                                }
+
+                                if($scope.topic.answercount == $scope.checkedOpt.length){
+                                    socketSrv.topicCheckOpt($scope.checkedOpt.join(""));
+                                }
+
                             }else{
                                 messageCenter.alert("没有权限回答此问题");
                             }
-
-
                         }
                     };
+
+                    $scope.showTip = function () {
+                        var _topic = $scope.topic;
+                        return !_topic.hasOwnProperty('corrector') && !_.isEmpty($scope.checkedOpt) &&
+                            _topic.answercount && _topic.answercount - $scope.checkedOpt.length > 0;
+                    }
 
                     $scope.$on('checkable', function (event, auth) {
                         $scope.auth = auth;

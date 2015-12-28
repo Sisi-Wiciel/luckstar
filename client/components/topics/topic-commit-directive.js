@@ -51,14 +51,12 @@ define([
                                 {title: 'A', value: ''},
                                 {title: 'B', value: ''}
                             ],
-                            creator:{
-                                username: curr.username,
-                                id: curr.id,
-                            },
+                            creator:curr.id,
+                            creatorUsername: curr.username,
+                            corrector: "",
+                            answercount: 1,
                             point: $scope.points[0].value,
                         };
-
-                        $scope.topic.corrector = 0;
                     };
                     $scope.submit = function () {
                         var t = _.clone($scope.topic);
@@ -68,6 +66,7 @@ define([
                             return;
                         }
 
+
                         t.options = _.map(t.options, function (opt) {
                             return opt.value;
                         });
@@ -76,6 +75,12 @@ define([
                             messageCenter.error("请填写至少2个选项");
                             return;
                         }
+
+                        if (_.isEmpty(t.corrector)) {
+                            messageCenter.error("请选择题目的正确答案");
+                            return;
+                        }
+
                         socketSrv.saveTopic(t, function () {
                             messageCenter.notify("题目[" + _.trunc(t.title, 10) + "]提交成功");
                             $scope.reset();
@@ -83,6 +88,12 @@ define([
                         });
 
                     };
+                    $scope.$watch('topic.corrector', function (newValue, oldValue) {
+                        if(newValue && !_.isEmpty(newValue)){
+                            $scope.topic.answercount = $scope.topic.corrector.length;
+                        }
+                    });
+
                     socketSrv.changeUserStatus("IN_TOPIC");
                     $scope.reset();
                 },

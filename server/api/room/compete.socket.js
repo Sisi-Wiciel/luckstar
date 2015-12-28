@@ -50,29 +50,36 @@ var nodifyVerdict = function (socket, room, verdictObj) {
 var topicCountDown = function (socket, topic) {
     log.info("TopicCountDown");
     var number = settings.ROOM.COMPETE_TOPIC_COUNTDOWN;
+
+    roomService.enableRoomCountDown(socket.room);
+
     (function countdown () {
        setTimeout(function () {
 
             if (socket.room) {
-                roomService.list(socket.room).then(function (rooms) {
-                    var room = rooms[0];
-                    if (room && room.topic && room.topic === topic._id && room.status == 1) {
-                        if (number > 0) {
-                            nodifyRoom(socket, 'updateTopicCountdown', --number);
-                            countdown();
-                        } else {
-                            nodifyVerdict(socket, room, {
-                                verdict: -1
-                            });
+                roomService.list(socket.room).get(0).then(function (room) {
+                    if(room.status == 1){
+                        if(!!parseInt(room.countdown)){
+                            if (number > 0) {
+                                nodifyRoom(socket, 'updateTopicCountdown', --number);
+                                countdown();
+                            } else {
+                                roomService.disableRoomCountDown(room).then(function(){
+                                    nodifyVerdict(socket, room, {
+                                        verdict: -1
+                                    });
+                                })
+                            }
                         }
                     }
+
 
                 });
             }
 
         }, 1000);
 
-    }).call(this);
+    })();
 
 };
 
@@ -82,7 +89,6 @@ function nextTopic (socket) {
     roomService.list(socket.room).get(0).then(function (room) {
         if(room){
             topicService.get().then(function (topic) {
-
                 delete topic.correct;
 
                 nodifyRoom(socket, 'topicUpdate', topic);
@@ -90,13 +96,15 @@ function nextTopic (socket) {
                 roomService.update(room, function (locked) {
                     locked.topic = topic._id;
                 }).then(function () {
-                    topicCountDown(socket, topic);
+                    roomService.disableRoomCountDown(room).then(function(){
+                        topicCountDown(socket, topic);
+                    })
                 })
 
             });
         }
 
-    })
+    });
 };
 
 function checkTopic (socket, answer) {
@@ -109,12 +117,17 @@ function checkTopic (socket, answer) {
     }).then(function (results) {
         var user = results.users[0];
         var room = results.rooms[0];
+
         if(_.find(room.users, "id", socket.uid)){
-            topicService.isCorrect(room.topic, answer).then(function (verdictObj) {
-                verdictObj.user = user;
-                verdictObj.opt = answer;
-                nodifyVerdict(socket, room, verdictObj);
-            });
+            roomService.update(room, function(locked){
+                locked.countdown = 0;
+            }).then(function(){
+                topicService.isCorrect(room.topic, answer).then(function (verdictObj) {
+                    verdictObj.user = user;
+                    verdictObj.opt = answer;
+                    nodifyVerdict(socket, room, verdictObj);
+                });
+            })
         }else{
             log.warn("User as observer can't able to answer topic ", socket.uid);
         }
@@ -127,7 +140,6 @@ var getTopic = function (socket) {
         var room = rooms[0];
         if (room && room.topic) {
             topicService.get(room.topic).then(function (topic) {
-                delete topic.correct;
                 socket.emit('topicUpdate', topic);
             });
         } else {
