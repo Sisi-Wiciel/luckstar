@@ -41,6 +41,13 @@
                 <i class="fa fa-lightbulb-o"></i>请再选择<b>{{topic.answercount - checkedOpt.length}}</b>个.
             </div>
 
+            <div class="score correct" ng-show="verdict && verdict.verdict == 1">
+                + {{verdict.point}}
+            </div>
+            <div class="score incorrect" ng-show="verdict && verdict.verdict == 0">
+                - {{verdict.point}}
+            </div>
+
         </div>
         <div class="foot text-right" ng-if="topic.creator">
             <small>本题目由用户</small> <b class="text-success" ng-bind="topic.creatorUsername"></b> <small>提供</small>

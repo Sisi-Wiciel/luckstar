@@ -3076,6 +3076,35 @@ Copyright (c) 2015 Daniel Eden
   -webkit-animation-name: fadeInLeft;
   animation-name: fadeInLeft;
 }
+#topic-panel section .body .score {
+  font-size: 30px;
+  position: absolute;
+  top: 40%;
+  left: 48%;
+  z-index: 100;
+}
+#topic-panel section .body .score.correct {
+  color: #67b646;
+}
+#topic-panel section .body .score.correct.ng-hide-remove {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: slideInUp;
+  animation-name: slideInUp;
+}
+#topic-panel section .body .score.incorrect {
+  color: #b84c4c;
+}
+#topic-panel section .body .score.incorrect.ng-hide-remove {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: slideInDown;
+  animation-name: slideInDown;
+}
 #topic-panel section .foot {
   padding-right: 15px;
 }
