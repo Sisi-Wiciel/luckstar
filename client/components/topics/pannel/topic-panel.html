@@ -37,6 +37,9 @@
                     </div>
                 </li>
             </ul>
+            <div class="image-container" ng-if="topic.image">
+                <img ng-src="{{uploadPath + topic.image}}"/>
+            </div>
             <div class="tip" ng-show="showTip()">
                 <i class="fa fa-lightbulb-o"></i>请再选择<b>{{topic.answercount - checkedOpt.length}}</b>个.
             </div>

@@ -44,19 +44,15 @@ define([
             })();
         }
         this.notify = function (content) {
-            this.push("系统信息", content, "fa-exclamation-circle");
-        };
-        this.push = function (title, content, icon) {
             this._show({
                 position: 'right',
-                title: title,
+                title: '系统信息',
                 content: content,
-                icon: icon,
-            });
+            }, 100000);
         };
 
         this.error = function (content) {
-            _scope.animation = 'center';
+            //_scope.animation = 'center';
 
             var _close = this._show({
                 title: "错误",
@@ -65,7 +61,7 @@ define([
                     _close();
                 },
                 icon: 'fa-exclamation-triangle',
-                position: 'right'
+                position: 'center'
             });
         }
         this.alert = function (content, closeTimeout) {

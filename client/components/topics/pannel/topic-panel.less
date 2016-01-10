@@ -18,7 +18,7 @@
 
   section {
     position       : relative;
-    height         : 300px;
+    height         : 350px;
     padding-bottom : 10px;
     .bg-frame1;
     .flex(1);
@@ -39,6 +39,7 @@
       padding       : 25px 0 10px;
       border-bottom : 1px solid @head-user-boder-color;
       margin        : 0 20px;
+      word-break    : break-all;
     }
     .body {
       position : relative;
@@ -73,7 +74,6 @@
 
           }
           span {
-            margin-left : 20px;
             &.ng-enter {
               .animated;
               .bounceInRight;
@@ -105,10 +105,10 @@
       .score {
         font-size : 30px;
         position  : absolute;
-        top       : 40%;
+        top       : 20%;
         left      : 48%;
         z-index   : 100;
-
+        font-size: 6em;
         &.correct {
           color : darken(@correct-panel-bg-color, 40%);
           &.ng-hide-remove {
@@ -123,6 +123,25 @@
             .animated;
             .slideInDown;
           }
+        }
+      }
+
+      .image-container {
+        width      : 270px;
+        height     : 250px;
+        font-size  : 15px;
+        text-align : center;
+        position   : absolute;
+        right      : 20px;
+        top        : 10px;
+        z-index    : 99;
+        img {
+          max-height : 90%;
+          max-width  : 90%;
+        }
+
+        &.focus {
+          border-color : #f88d00;
         }
       }
     }
@@ -141,7 +160,7 @@
       height      : 50px;
       top         : 50px;
       right       : 10px;
-
+      z-index     : 101;
       .border-radius(10px);
       .box-shadow(1px 5px 5px);
     }

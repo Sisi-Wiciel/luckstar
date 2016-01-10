@@ -27,6 +27,7 @@ define([
             }
         }
 
+
         roomSrv.fillRoomUsers(room);
 
         $scope.room = room;

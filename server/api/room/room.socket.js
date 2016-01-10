@@ -217,6 +217,19 @@ var getRoomStat = function (socket) {
 
     });
 };
+var createRoom = function (socket, room, cb) {
+    log.info("CreateRoom, " + socket.uid);
+    if (socket.room) {
+        cb({
+            error: 'ALREADY_IN_ROOM'
+        });
+    } else {
+        roomService.save(room, socket.uid).then(function (room) {
+            updateRooms(socket);
+            return room;
+        }).then(cb);
+    }
+};
 
 exports.updateRooms = updateRooms;
 exports.sendRoomMessage = sendRoomMessage;
@@ -256,18 +269,7 @@ exports.register = function (socket) {
         getRoomStat(socket);
     })
     socketSrv.on(socket, 'room create', function (room, cb) {
-        console.info(socket.room);
-        if (socket.room) {
-            cb({
-                error: 'ALREADY_IN_ROOM'
-            });
-        } else {
-            roomService.save(room, socket.uid).then(function (room) {
-                updateRooms(socket);
-                return room;
-            }).then(cb);
-        }
-
+        createRoom(socket, room, cb);
     })
 };
 

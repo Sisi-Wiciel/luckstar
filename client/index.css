@@ -2951,7 +2951,7 @@ body > [ui-view].ng-enter {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
 }
-.unauth {
+body .unauth {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -2964,11 +2964,11 @@ body > [ui-view].ng-enter {
   justify-content: center;
   padding-top: 100px;
 }
-.unauth .page-header h1 {
+body .unauth .page-header h1 {
   display: inline;
 }
-.unauth .login,
-.unauth .signup {
+body .unauth .login,
+body .unauth .signup {
   -webkit-border-radius: 5px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 5px;
@@ -3001,4 +3001,7 @@ a:hover {
 ol,
 ul {
   margin: 0;
+}
+.pointer {
+  cursor: pointer;
 }

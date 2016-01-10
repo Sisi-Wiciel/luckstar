@@ -33,8 +33,12 @@ function uniqueName (req, res, next) {
 function login (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         var error = err || info;
-        if (error) return res.status(401).json({message: error});
-        if (!user) return res.status(404).json({message: '出错啦,请稍后登录.'});
+        if (error) {
+            return res.status(401).json({message: error});
+        }
+        if (!user) {
+            return res.status(401).json({message: '用户不存在'});
+        }
 
         res.json({token: auth.genToken(user)});
 

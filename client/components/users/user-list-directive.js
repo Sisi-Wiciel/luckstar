@@ -59,7 +59,7 @@ define([
                             title: item.from.username + "对你说",
                             content: item.content,
                             icon: 'fa-comment'
-                        }, 'right').then(function () {
+                        }).then(function () {
                             $scope.showChatPanel(item.from);
                         });
                     }

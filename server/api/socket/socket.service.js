@@ -77,17 +77,20 @@ module.exports = {
             socket.auth = false;
             socket.on('authenticate', function (data) {
                 try {
-                    var decoded = jwt.decode(data.token, setting.SECRET_KEY);
-                    if (decoded && decoded._id) {
-                        log.debug("Authenticated socket with id", socket.id);
-                        socket.auth = true;
-                        socket.io = io;
-                        socket.uid = decoded._id;
-                        db.set("users:" + decoded._id, "sid", socket.id);
+                    if(data && data.token){
+                        var decoded = jwt.decode(data.token, setting.SECRET_KEY);
+                        if (decoded && decoded._id) {
+                            log.debug("Authenticated socket with id", socket.id);
+                            socket.auth = true;
+                            socket.io = io;
+                            socket.uid = decoded._id;
+                            db.set("users:" + decoded._id, "sid", socket.id);
+                        }
+
+                        cb(socket);
+                    }else{
+                        log.error("no data or data token");
                     }
-
-                    cb(socket);
-
                 } catch (err) {
                     log.error("connect socket error", err.message);
                 }

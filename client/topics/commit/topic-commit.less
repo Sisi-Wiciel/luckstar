@@ -1,0 +1,103 @@
+@import "common";
+
+@image-container-border-color: #e3e3e3;
+
+#topic-commit{
+  position: relative;
+  form, .topic-commit-status{
+    margin: 10px 0 10px 10px;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  form {
+    .bg-fff;
+    .shadow;
+  }
+  .topic-commit-status{
+
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    padding: 20px;
+    transition:all ease-in .5s;
+    overflow-y: hidden;
+    .flex-column;
+    .bg-frame1;
+
+    ol{
+      .flex(1);
+      li{
+        margin: 20px;
+        font-size: 16px;
+        justify-content: space-between;
+        .display(flex);
+        .title{
+          .flex(0 0 10em);
+        }
+        .status{
+          .flex(1);
+          .success{
+            color: green;
+          }
+          .failed{
+            color: #f88d00;
+          }
+          .progress-bar{
+            .transform(3s linear);
+            min-width:2em;
+          }
+        }
+      }
+    }
+
+    .foot h1{
+      color: green;
+    }
+
+    &.ng-enter,
+    &.ng-leave.ng-leave-active {
+      bottom: 100%;
+    }
+
+    &.ng-leave,
+    &.ng-enter.ng-enter-active {
+      bottom: 0;
+    }
+  }
+  #topic-preview{
+    position: relative;
+    .image-container{
+
+      cursor: pointer;
+      display: block;
+      width: 270px;
+      height: 250px;
+      line-height: 250px;
+      font-size: 15px;
+      text-align: center;
+      border-style: dashed;
+      position: absolute;
+      right: 20px;
+      top: 100px;
+      border-color: @image-container-border-color;
+
+      .animated;
+      animation-delay: 1s;
+      .flash;
+
+      img{
+        max-height: 90%;
+        max-width: 90%;
+      }
+
+      &.focus{
+        border-color: #f88d00;
+      }
+    }
+  }
+
+}

@@ -4,6 +4,9 @@ var errorHandler = require('express-error-handler');
 var userService = require('../user/user.service');
 var _ = require('lodash');
 
+var updateTopic = function(id, data){
+    return Topic.update({_id: id}, data).exec();
+}
 var getTopic = function (id) {
 
     var promise ;
@@ -34,7 +37,6 @@ var isCorrect = function (id, answer) {
         var ret = {
             point: _topic.point,
             verdict: _topic.corrector.join('') == answer.split('').sort().join('') ? 1: 0
-
         }
 
         return ret;
@@ -51,5 +53,6 @@ var getTotalSize = function(){
 }
 exports.get = getTopic;
 exports.save = saveTopic;
+exports.update = updateTopic;
 exports.isCorrect = isCorrect;
 exports.getTotalSize = getTotalSize;

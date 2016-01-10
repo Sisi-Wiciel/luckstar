@@ -3,6 +3,7 @@ var User = require('../user/user.model');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var SECRET = "LuCk_StAr_SeCrEt";
+var setting = require('../../config/setting');
 
 function isAuthenticated() {
   return compose()
@@ -11,6 +12,7 @@ function isAuthenticated() {
         req.headers.authorization = 'Bearer ' + req.query.access_token;
       }
       expressJwt({ secret: SECRET })(req, res, next);
+
     })
     .use(function(req, res, next) {
       User.findById(req.user._id, '-salt -hashedPassword').exec(function (err, user) {
@@ -24,7 +26,7 @@ function isAuthenticated() {
 }
 
 function genToken(user){
-  return jwt.sign({_id: user._id}, SECRET, { expiresInMinutes: 24*60});
+  return jwt.sign({_id: user._id}, SECRET, { expiresInMinutes: setting.USER.AUTH_EXPRIES_IN_MINUTES});
 }
 exports.isAuth = isAuthenticated;
 exports.genToken= genToken;

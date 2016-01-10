@@ -1,22 +1,25 @@
 define([
     'angular',
-    'app'
-], function (angular, app) {
+    'app',
+    'settings',
+], function (angular, app, settings) {
     "use strict";
 
     app.directive('topicPanel', function ($timeout) {
 
             return {
-                templateUrl: 'components/topics/topic-panel.html',
+                templateUrl: '/components/topics/pannel/topic-panel.html',
                 scope: {
                     'topic': '=',
                 },
                 link: function (scope, elem) {
+
                 },
-                controller: function ($scope, $timeout, socketSrv, authSrv, messageCenter) {
+                controller: function ($scope, $rootScope, $timeout, socketSrv, authSrv, messageCenter) {
+                    $scope.imageEnabled = false;
                     $scope.checkedOpt = [];
                     $scope.countdown = 15;
-
+                    $scope.uploadPath = settings.upload.path;
                     var curr = authSrv.getCurrentUser();
 
                     var setVerdict = function (verObj) {

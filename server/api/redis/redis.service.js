@@ -42,6 +42,9 @@ module.exports = {
                     //if(_topic._id == "567b8f8836b14aa8189819d0"){//单选题
                     //    db.sadd("topics", JSON.stringify(_topic));
                     //}
+                    //if(_topic._id == "568f6c501b9a0d902b007877"){//图片题
+                    //    db.sadd("topics", JSON.stringify(_topic));
+                    //}
 
                     db.sadd("topics", JSON.stringify(_topic));
                 });

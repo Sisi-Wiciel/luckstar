@@ -41,7 +41,7 @@ var nodifyVerdict = function (socket, room, verdictObj) {
 
                 })
             } else {
-                nextTopic(socket);
+                //nextTopic(socket);
             }
         }, 2000);
 
@@ -119,9 +119,7 @@ function checkTopic (socket, answer) {
         var room = results.rooms[0];
 
         if(_.find(room.users, "id", socket.uid)){
-            roomService.update(room, function(locked){
-                locked.countdown = 0;
-            }).then(function(){
+            roomService.disableRoomCountDown(room).then(function(){
                 topicService.isCorrect(room.topic, answer).then(function (verdictObj) {
                     verdictObj.user = user;
                     verdictObj.opt = answer;

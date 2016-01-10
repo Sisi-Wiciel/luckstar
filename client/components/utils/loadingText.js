@@ -21,13 +21,13 @@ define([
                         }, 200);
 
                         var promised = scope.ngClick();
+                        var revert = function(){
+                            setTimeout(function(){
+                                ele.removeClass("disabled").removeAttr("disabled").text(btnText);
+                            }, 1000);
+                        }
                         if (promised){
-                            promised.then(function(){}, function(){
-                                setTimeout(function(){
-                                    ele.removeClass("disabled").removeAttr("disabled").text(btnText);
-                                }, 1000);
-
-                            })
+                            promised.then(revert, revert);
                         }
                     }
                 });

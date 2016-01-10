@@ -1,0 +1,110 @@
+<link rel="stylesheet" href="/topics/commit/topic-commit.css"/>
+<div id="topic-commit" class="row" ng-controller="topicCommitCtrl">
+    <div class="col-sm-5 no-pad">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-3">题目:</label>
+
+                <div class="col-sm-8">
+                    <textarea class="form-control" ng-model="topic.title" text-limit="80"
+                              cols="80" rows="2"></textarea>
+                    <div class="tip">
+                        <i class="fa fa-info-circle"></i> 剩余<b>{{80-topic.title.length >0? 80 - topic.title.length : 0}}</b>个字符
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-repeat="opt in topic.options">
+                <label class="col-sm-3">选项 {{opt.title}}:</label>
+
+                <div class="col-sm-6">
+                    <input class="form-control"  text-limit="40" ng-model="opt.value" />
+                    <div class="tip" ng-if="$last">
+                        <i class="fa fa-info-circle"></i> 不要超过40个字符.
+                    </div>
+                </div>
+                <div class="col-sm-3 no-padl">
+
+                    <button class="btn btn-default" ng-click="removeOpt(opt)" ng-if="topic.options.length > 2">
+                        <i class="fa fa-minus text-muted"></i>
+                    </button>
+                    <button class="btn btn-default" ng-if="$last && topic.options.length < 5" ng-click="addOpt()">
+                        <i class="fa fa-plus text-success"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3">图片题:</label>
+
+                <div class="col-sm-5">
+                    <label class="pointer">
+                        <input type="checkbox" ng-model="imageEnabled" ng-click="addImage()"> 加入图片
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3">建议分值:</label>
+                <div class="col-sm-8">
+                    <select class="form-control" ng-model="topic.point"
+                            ng-options="point.value as point.label for point in points">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3" title="多选, Windows按Ctrl键, Mac按Command键">
+                    <i class="fa fa-info-circle" ></i>正确答案:</label>
+
+                <div class="col-sm-8">
+                    <select class="form-control" multiple ng-model="topic.corrector">
+                        <option value="{{$index}}" ng-repeat="opt in topic.options">选项 {{opt.title}}</option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <button class="btn btn-success" ng-click="submit()">提交</button>
+                <button class="btn btn-default" ng-click="reset()">重置</button>
+            </div>
+
+
+            <div class="topic-commit-status" ng-if='showStatus' >
+                <h1>提交题目</h1>
+                <ol>
+                    <li ng-repeat="step in steps">
+                        <div class="title">{{step.title}}</div>
+
+                        <div class="status" ng-if="!step.result.hasOwnProperty('index')">
+                            <span ng-if="step.result.status == 0">处理中...</span>
+                            <span class="success" ng-if="step.result.status == 1"><i class="fa fa-check"></i> 成功</span>
+                            <span class="failed" ng-if="step.result.status == 2">失败</span>
+                        </div>
+
+                        <div class="status" ng-if="step.result.hasOwnProperty('index')">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="(step.result.index+1)*10"
+                                     aria-valuemin="0" aria-valuemax="100" style="width: {{(step.result.index+1)*10}}%">
+                                    {{(step.result.index+1)*10}}%
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </li>
+                </ol>
+                <div class="foot" ng-show="isAllFinished()">
+                    <h1 class="text-center"><i class="fa fa-smile-o"></i> 提交成功.</h1>
+                    <span class="btn btn-success btn-block"  ng-click="initForm()">返回</span>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+    <div class="col-sm-7 preview">
+        <topic-preview image="imageEnabled" topic="topic"></topic-preview>
+    </div>
+
+</div>

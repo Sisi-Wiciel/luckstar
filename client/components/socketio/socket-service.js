@@ -94,8 +94,27 @@ define([
             getRoomStat: function(opt){
                 this.getSocket().emit('room get stat');
             },
-            saveTopic: function(topic, cb){
-                this.getSocket().emit('topic save', topic, cb || _.noop);
+            saveTopic: function(topic){
+                return $q(function(resolve, reject) {
+                    this.getSocket().emit('topic save', topic, function(result){
+                        resolve(result);
+                    });
+                }.bind(this));
+
+            },
+            getUploadPolicy: function(){
+                return $q(function(resolve, reject) {
+                    this.getSocket().emit('topic get upload policy', function(policy){
+                        resolve(policy);
+                    });
+                }.bind(this));
+            },
+            uploadFile: function(data){
+                return $q(function(resolve, reject) {
+                    this.getSocket().emit('topic upload file', data, function(result){
+                        resolve(result);
+                    });
+                }.bind(this));
             }
         }
     });

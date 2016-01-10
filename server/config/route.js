@@ -25,6 +25,10 @@ module.exports = function (app) {
 
     app.use(function (err, req, res, next) {
         if (err) {
+            if(err.name == "UnauthorizedError"){
+                err.status = 400;
+                err.message = "timeout";
+            }
             res.status(err.status || 500);
             errorHandler(err);
             return res.status(err.status).json({

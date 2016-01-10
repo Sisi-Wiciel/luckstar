@@ -1,5 +1,6 @@
 define([
         'angular',
+        'settings',
         'jquery',
         'moment',
         'moment-zh',
@@ -14,7 +15,7 @@ define([
         'angular-strap',
         'angular-strap-tpl'
     ],
-    function (angular, $, moment) {
+    function (angular, settings, $, moment) {
         "use strict";
 
         var componentRequires = [
@@ -99,7 +100,6 @@ define([
                         .ready(function () {
                             angular.bootstrap(document, apps_deps)
                                 .invoke(['$rootScope', '$location', 'store', function ($rootScope, $location, store) {
-
                                     $rootScope.$on('$stateChangeSuccess',
                                         function (event, toState, toParams, fromState, fromParams) {
 
