@@ -1,26 +1,26 @@
+<section id="login-page" ng-controller="userLoginCtrl">
+  <div class="page-header text-center">
+    <h1>用户登录</h1>/
+    <small><a href ng-click="toSignup()">注册新用户</a></small>
+  </div>
 
-<section id="login-page">
-        <div class="page-header text-center">
-            <h1>用户登录</h1>/<small><a href ng-click="toSignup()">注册新用户</a></small>
-        </div>
+  <ngbs-form name="loginForm" on-submit="login(target)">
+    <ngbs-fieldset name="username" label="用户名" min="5" max="10" required="true">
+      <invaild-message type="min">用户名长度至少5个字符</invaild-message>
+      <invaild-message type="max">用户名长度最多10个字符</invaild-message>
+      <invaild-message type="required">用户名为必填项</invaild-message>
+    </ngbs-fieldset>
 
-        <ngbs-form name="loginForm" on-submit="login(target)">
-            <ngbs-fieldset name="username" label="用户名" min="5" max="10" required="true">
-                <invaild-message type="min">用户名长度至少5个字符</invaild-message>
-                <invaild-message type="max">用户名长度最多10个字符</invaild-message>
-                <invaild-message type="required">用户名为必填项</invaild-message>
-            </ngbs-fieldset>
+    <ngbs-fieldset type="password" name="password" label="密码" required="true" min="3" max="10">
+      <invaild-message type="min">密码长度至少3个字符</invaild-message>
+      <invaild-message type="max">密码长度最多10个字符</invaild-message>
+      <invaild-message type="required">密码为必填项</invaild-message>
+    </ngbs-fieldset>
+    <div class="text-center text-danger" ng-show="err">
+      <b>{{err}}</b>
+    </div>
+    <ngbs-controller></ngbs-controller>
 
-            <ngbs-fieldset type="password" name="password" label="密码" required="true" min="3" max="10">
-                <invaild-message type="min">密码长度至少3个字符</invaild-message>
-                <invaild-message type="max">密码长度最多10个字符</invaild-message>
-                <invaild-message type="required">密码为必填项</invaild-message>
-            </ngbs-fieldset>
-            <div class="text-center text-danger" ng-show="err">
-                <b>{{err}}</b>
-            </div>
-            <ngbs-controller></ngbs-controller>
+  </ngbs-form>
 
-        </ngbs-form>
-    
 </section>

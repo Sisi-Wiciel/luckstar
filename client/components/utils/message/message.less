@@ -1,13 +1,13 @@
-@import "common";
+@import (reference) "common";
 
 #dialog-box {
 
-  position : fixed;
-  width   : 328px;
+  position: fixed;
+  width: 328px;
 
   &.center {
-    top  : 40%;
-    left : 40%;
+    top: 20%;
+    left: 40%;
     &.bounceIn.ng-enter {
       .animated;
       .bounceInDown;
@@ -16,16 +16,16 @@
     &.countdown {
       width: auto;
       font-size: 3em;
-      .message-box{
+      .message-box {
         .border-radius(50%);
-        background:#f88d00;
+        background: #f88d00;
         color: #fff;
         font-weight: bold;
-        .content{
+        .content {
 
           width: 80px;
           height: 80px;
-          p{
+          p {
             margin-top: 16px;
             padding: 0;
           }
@@ -40,8 +40,8 @@
   }
 
   &.right {
-    right : 10px;
-    top   : 50px;
+    right: 10px;
+    top: 50px;
     &.bounceIn.ng-enter {
       .animated;
       .bounceInRight
@@ -52,54 +52,51 @@
     }
     .message-box {
       .foot {
-        padding : 10px;
+        padding: 10px;
       }
       .content {
-        min-height : auto;
+        min-height: auto;
       }
     }
   }
 
   .message-box {
-    padding : 5px;
+    padding: 5px;
 
-    z-index : 999;
+    z-index: 999;
     .shadow;
     .bg-fff;
     .border-radius(5px);
     .head {
-      padding  : 5px;
-      position : relative;
+      padding: 5px;
+      position: relative;
       .close {
-        position : absolute;
-        right    : 10px;
-        top      : 5px;
+        position: absolute;
+        right: 10px;
+        top: 5px;
       }
     }
 
     .content {
-      text-align : center;
-      padding    : 0 10px;
-      p{
-        .display(inline-flex);
-      }
+      text-align: center;
+      padding: 0 10px;
     }
     .foot {
-      text-align : center;
-      padding    : 20px 0;
+      text-align: center;
+      padding: 20px 0;
       a.button {
-        margin      : 0 30px;
-        padding     : 10px 20px;
-        color       : #fff;
-        font-weight : bold;
-        cursor      : pointer;
+        margin: 0 30px;
+        padding: 10px 20px;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
       }
     }
 
     &.error {
-      color      : #a94442;
-      background : #f2dede;
-      border     : 1px solid #ebccd1;
+      color: #a94442;
+      background: #f2dede;
+      border: 1px solid #ebccd1;
     }
   }
 

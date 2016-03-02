@@ -1,4 +1,5 @@
-@import "common";
+@import (reference) "common";
+
 @keyframes message-receive {
 
   from {
@@ -6,7 +7,6 @@
     -webkit-transform: translate3d(500px, 0, 0);
     transform: translate3d(500px, 0, 0);
   }
-
 
   90% {
     -webkit-transform: translate3d(-5px, 0, 0);
@@ -22,13 +22,13 @@
 div#room-message {
   .flex-direction(column);
   .display(flex);
-  overflow  : auto;
-  width     : 100%;
+  overflow: auto;
+  width: 100%;
   > ul {
-    height     : 120px;
-    overflow-x : hidden;
-    li{
-      &.ng-enter{
+    height: 120px;
+    overflow-x: hidden;
+    li {
+      &.ng-enter {
         .animation(.8s message-receive);
       }
     }

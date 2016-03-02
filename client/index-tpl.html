@@ -1,4 +1,4 @@
 <div class="unauth text-center" ng-controller="indexCtrl">
-    <user-login class="login" ng-show="status === 'login'"></user-login>
-    <user-signup class="signup" ng-show="status === 'signup'"></user-signup>
+  <div ng-include="'/users/auth/login.html'" class="login" ng-show="status === 'login'"></div>
+  <div ng-include="'/users/auth/signup.html'" class="signup" ng-show="status === 'signup'"></div>
 </div>

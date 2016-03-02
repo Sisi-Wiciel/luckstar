@@ -1,29 +1,28 @@
 <link rel="stylesheet" href="components/navbar/navbar.css"/>
 <div id="nav-main" ng-controller="NavbarCtrl">
-    <a href="/home" class="logo">
-        LuckyStar
-    </a>
+  <a href="/home" class="logo">
+    LuckyStar
+  </a>
 
 
-    <ul class="menu">
-        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-            <span ng-click="goto(item)">
-                <!--<i class="fa" ng-class="item.icon"></i><br/>-->
-                {{item.title}}
-            </span>
-        </li>
-    </ul>
+  <ul class="menu">
+    <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
+      <span ng-click="goto(item)">
+          {{item.title}}
+      </span>
+    </li>
+  </ul>
 
-    <ul class="user-info">
-        <li>
-            <span href class="dropdown-toggle" data-toggle="dropdown" ng-if="user.username">
-                <i class="fa fa-user"></i> {{ user.username }}({{ user.point }})
-            </span>
-        </li>
-        <li>
-            <span href ng-click="logout()"><i class="fa fa-sign-out"></i> 注销</span>
-        </li>
+  <ul class="user-info">
+    <li>
+        <span href class="dropdown-toggle" data-toggle="dropdown" ng-if="user.username">
+            <i class="fa fa-user"></i> {{ user.username }}({{ user.point }})
+        </span>
+    </li>
+    <li>
+      <span href ng-click="logout()"><i class="fa fa-sign-out"></i> 注销</span>
+    </li>
 
-    </ul>
+  </ul>
 </div>
 

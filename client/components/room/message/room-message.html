@@ -1,26 +1,26 @@
 <div id="room-message">
-    <ul class="list-unstyled">
-        <li ng-repeat="msg in messages">
-            <div class="message">
-                <div class="text-danger" ng-if="msg.system">
-                    <span class="role" ng-bind="msg.role"></span>
+  <ul class="list-unstyled">
+    <li ng-repeat="msg in messages">
+      <div class="message">
+        <div class="text-danger" ng-if="msg.system">
+          <span class="role" ng-bind="msg.role"></span>
                     <span>
                         {{::msg.message}}
                     </span>
-                </div>
-                <div ng-if="!msg.system">
-                    <span class="role" ng-bind="msg.role"></span>
-                    <span class="username">{{::msg.message.username}}: </span>
+        </div>
+        <div ng-if="!msg.system">
+          <span class="role" ng-bind="msg.role"></span>
+          <span class="username">{{::msg.message.username}}: </span>
                     <span>
                         {{::msg.message.content}}
                     </span>
-                </div>
-                <!--<span class="time" from-now="{{msg.time}}"></span>-->
+        </div>
+        <!--<span class="time" from-now="{{msg.time}}"></span>-->
 
-            </div>
-        </li>
-    </ul>
-    <div class="message-input">
-        <input type="text" class="form-control" ng-model="messageInput" placeholder="输入内容...">
-    </div>
+      </div>
+    </li>
+  </ul>
+  <div class="message-input">
+    <input type="text" class="form-control" ng-model="messageInput" placeholder="输入内容...">
+  </div>
 </div>

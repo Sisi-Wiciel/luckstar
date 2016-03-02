@@ -1,8 +1,7 @@
-@import "lesshat";
+@import (reference) "common";
 
 @user-message-color: #A7DBD8;
 @me-message-color: #E0E4CC;
-
 
 div.chat {
   //height         : 100%;
@@ -11,19 +10,19 @@ div.chat {
 
   overflow-y: auto;
 
-  .message-input{
+  .message-input {
     width: 100%;
   }
   > ul {
 
     .flex(1);
-    overflow-x : hidden;
+    overflow-x: hidden;
 
     > li {
       .display(flex);
 
       span.username {
-        padding-top : 5px;
+        padding-top: 5px;
       }
       .system {
         margin-top: 5px;
@@ -33,25 +32,25 @@ div.chat {
         .flex(1);
 
         > p {
-          position              : relative;
-          flex-direction        : row;
-          padding               : 4px 10px;
-          margin                : 2px 5px;
-          word-wrap             : break-word;
-          max-width             : 85%;
+          position: relative;
+          flex-direction: row;
+          padding: 4px 10px;
+          margin: 2px 5px;
+          word-wrap: break-word;
+          max-width: 85%;
 
           .border-radius(5);
 
           &:after {
-            position                : absolute;
-            top                     : 2px;
-            display                 : inline-block;
-            font                    : normal normal normal 14px/1 FontAwesome;
-            font-size               : inherit;
-            text-rendering          : auto;
-            -webkit-font-smoothing  : antialiased;
-            -moz-osx-font-smoothing : grayscale;
-            transform               : translate(0, 0);
+            position: absolute;
+            top: 2px;
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transform: translate(0, 0);
           }
         }
       }
@@ -59,14 +58,14 @@ div.chat {
       &.user {
         div.message {
           > p {
-            background : @user-message-color;
+            background: @user-message-color;
             &:after {
-              content  : "\f0d9";
-              position : absolute;
-              left     : -4px;
-              width    : 10px;
-              height   : 17px;
-              color    : @user-message-color;
+              content: "\f0d9";
+              position: absolute;
+              left: -4px;
+              width: 10px;
+              height: 17px;
+              color: @user-message-color;
             }
           }
         }
@@ -75,13 +74,13 @@ div.chat {
         div.message {
           .justify-content(flex-end);
           > p {
-            background : @me-message-color;
+            background: @me-message-color;
             &:after {
-              right   : -9px;
-              width   : 10px;
-              height  : 17px;
-              content : "\f0da";
-              color   : @me-message-color;
+              right: -9px;
+              width: 10px;
+              height: 17px;
+              content: "\f0da";
+              color: @me-message-color;
             }
           }
         }

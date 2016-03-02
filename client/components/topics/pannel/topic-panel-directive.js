@@ -1,102 +1,101 @@
 define([
-    'angular',
-    'app',
-    'settings',
-], function (angular, app, settings) {
-    "use strict";
+  'angular',
+  'app',
+  'lodash',
+  'settings'
+], function(angular, app, _, settings) {
+  'use strict';
 
-    app.directive('topicPanel', function ($timeout) {
+  app.directive('topicPanel', function($timeout) {
+    return {
+      templateUrl: '/components/topics/pannel/topic-panel.html',
+      scope: {
+        topic: '='
+      },
+      link: function(scope, elem) {
+        scope.countdownPause = function(paused) {
+          $timeout(function() {
+            $(elem).find('.progress-bar').css({'animationPlayState': paused ? 'paused' : 'running'})
+          });
+        };
+      },
+      controller: function($scope, $rootScope, socketSrv, authSrv, messageCenter, roomSrv) {
+        $scope.imageEnabled = false;
+        $scope.checkedOpt = [];
+        $scope.uploadPath = settings.upload.path;
 
-            return {
-                templateUrl: '/components/topics/pannel/topic-panel.html',
-                scope: {
-                    'topic': '=',
-                },
-                link: function (scope, elem) {
+        $scope.setOptBgColorByUser = function(optIndex) {
+          var verdict_ = $scope.verdict;
+          if (!verdict_ || !verdict_.user) {
+            return;
+          }
 
-                },
-                controller: function ($scope, $rootScope, $timeout, socketSrv, authSrv, messageCenter) {
-                    $scope.imageEnabled = false;
-                    $scope.checkedOpt = [];
-                    $scope.countdown = 15;
-                    $scope.uploadPath = settings.upload.path;
-                    var curr = authSrv.getCurrentUser();
+          var curr = authSrv.getCurrentUser();
+          if (verdict_.opt.indexOf(optIndex) > -1 && verdict_.user.id !== curr.id) {
+            return roomSrv.getUserMousePointerColor($scope.verdict.user.id);
+          }
+        };
 
-                    var setVerdict = function (verObj) {
-                        $scope.verdict = verObj;
-                        $scope.$emit('topicVerdict', verObj);
+        var setVerdict = function(verObj) {
+          $scope.verdict = verObj;
+          $scope.$emit('topicVerdict', verObj);
 
-                        $scope.verdictCls = ""
-                        if (verObj) {
-                            if ($scope.verdict.user) {
-                                //active mode
-                                if ($scope.verdict.verdict) {
-                                    //topic correct
-                                    $scope.verdictCls = 'correct';
-
-                                } else {
-                                    //topic incorrec
-                                    $scope.verdictCls = 'incorrect';
-                                }
-                            } else {
-                                //topic timeout
-                                $scope.verdictCls = 'timeout';
-                            }
-
-                        }
-                    }
-
-                    socketSrv.register('topicVerdict', function (obj) {
-                        setVerdict(obj);
-                        $scope.$apply();
-                    });
-
-                    socketSrv.register('updateTopicCountdown', function (number) {
-                            $scope.countdown = number;
-                            $scope.$apply();
-
-                    });
-
-                    $scope.$watch('topic', function (newValue, oldValue) {
-                        if (newValue && newValue._id) {
-                            setVerdict(null);
-                            $scope.checkedOpt = [];
-                        }
-                    });
-
-                    $scope.check = function (opt) {
-                        if (!$scope.verdict) {
-
-                            if($scope.auth){
-                                if ($scope.checkedOpt.indexOf(opt) > -1) {
-                                    $scope.checkedOpt = _.without($scope.checkedOpt, opt);
-                                }else{
-                                    $scope.checkedOpt.push(parseInt(opt));
-                                }
-
-                                if($scope.topic.answercount == $scope.checkedOpt.length){
-                                    socketSrv.topicCheckOpt($scope.checkedOpt.join(""));
-                                }
-
-                            }else{
-                                messageCenter.alert("没有权限回答此问题");
-                            }
-                        }
-                    };
-
-                    $scope.showTip = function () {
-                        var _topic = $scope.topic;
-                        return !_topic.hasOwnProperty('corrector') && !_.isEmpty($scope.checkedOpt) &&
-                            _topic.answercount && _topic.answercount - $scope.checkedOpt.length > 0;
-                    }
-
-                    $scope.$on('checkable', function (event, auth) {
-                        $scope.auth = auth;
-                    });
-
-                }
+          $scope.verdictCls = '';
+          if (verObj) {
+            $scope.countdownPause(true);
+            if ($scope.verdict.user) {
+              // active mode
+              if ($scope.verdict.verdict) {
+                // topic correct
+                $scope.verdictCls = 'correct';
+              } else {
+                // topic incorrec
+                $scope.verdictCls = 'incorrect';
+              }
+            } else {
+              // topic timeout
+              $scope.verdictCls = 'timeout';
             }
-        }
-    )
-    ;
+          }
+        };
+
+        socketSrv.register('topicVerdict', function(obj) {
+          setVerdict(obj);
+          $scope.$apply();
+        });
+
+        $scope.$watch('topic', function(newValue) {
+          if (newValue && newValue._id) {
+            $scope.countdownPause(false);
+            setVerdict(null);
+            $scope.checkedOpt = [];
+          }
+        });
+
+        $scope.check = function(opt) {
+          if (!$scope.verdict) {
+            if ($scope.checkedOpt.indexOf(opt) > -1) {
+              $scope.checkedOpt = _.without($scope.checkedOpt, opt);
+            } else {
+              $scope.checkedOpt.push(parseInt(opt, 10));
+            }
+
+            if ($scope.topic.answercount === $scope.checkedOpt.length) {
+              $scope.countdownPause(true);
+              socketSrv.topicCheckOpt($scope.checkedOpt.join(''));
+            }
+          }
+        };
+
+        $scope.showTip = function() {
+          var _topic = $scope.topic;
+          return !_topic.hasOwnProperty('corrector') && !_.isEmpty($scope.checkedOpt) &&
+          _topic.answercount && _topic.answercount - $scope.checkedOpt.length > 0;
+        };
+
+      }
+    };
+  }
+  )
+  ;
 });

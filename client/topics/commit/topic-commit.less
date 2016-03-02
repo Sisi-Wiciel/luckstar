@@ -1,10 +1,10 @@
-@import "common";
+@import (reference) "common";
 
 @image-container-border-color: #e3e3e3;
 
-#topic-commit{
+#topic-commit {
   position: relative;
-  form, .topic-commit-status{
+  form, .topic-commit-status {
     margin: 10px 0 10px 10px;
     padding: 20px;
     border-radius: 10px;
@@ -14,7 +14,7 @@
     .bg-fff;
     .shadow;
   }
-  .topic-commit-status{
+  .topic-commit-status {
 
     position: absolute;
     right: 0;
@@ -23,38 +23,38 @@
     bottom: 0;
 
     padding: 20px;
-    transition:all ease-in .5s;
+    transition: all ease-in .5s;
     overflow-y: hidden;
     .flex-column;
     .bg-frame1;
 
-    ol{
+    ol {
       .flex(1);
-      li{
+      li {
         margin: 20px;
         font-size: 16px;
         justify-content: space-between;
         .display(flex);
-        .title{
+        .title {
           .flex(0 0 10em);
         }
-        .status{
+        .status {
           .flex(1);
-          .success{
+          .success {
             color: green;
           }
-          .failed{
+          .failed {
             color: #f88d00;
           }
-          .progress-bar{
+          .progress-bar {
             .transform(3s linear);
-            min-width:2em;
+            min-width: 2em;
           }
         }
       }
     }
 
-    .foot h1{
+    .foot h1 {
       color: green;
     }
 
@@ -68,9 +68,9 @@
       bottom: 0;
     }
   }
-  #topic-preview{
+  #topic-preview {
     position: relative;
-    .image-container{
+    .image-container {
 
       cursor: pointer;
       display: block;
@@ -81,20 +81,16 @@
       text-align: center;
       border-style: dashed;
       position: absolute;
-      right: 20px;
+      right: 40px;
       top: 100px;
       border-color: @image-container-border-color;
 
-      .animated;
-      animation-delay: 1s;
-      .flash;
-
-      img{
+      img {
         max-height: 90%;
         max-width: 90%;
       }
 
-      &.focus{
+      &.focus {
         border-color: #f88d00;
       }
     }

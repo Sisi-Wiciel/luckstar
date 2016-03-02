@@ -1,41 +1,41 @@
-@import "common";
+@import (reference) "common";
 
 div#compete-statistic {
-  .statistic{
+  .statistic {
     .bg-frame1;
-    height  : 300px;
-    padding : 20px;
-    width   : 600px;
+    height: 300px;
+    padding: 20px;
+    width: 600px;
     .title {
       span {
-        text-align  : center;
-        font-weight : bold;
-        font-size   : 20px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
 
       }
       small {
-        cursor  : pointer;
-        display : inline;
+        cursor: pointer;
+        display: inline;
       }
     }
 
     .statistic-bar {
       .user {
-        position    : relative;
-        padding     : 10px;
+        position: relative;
+        padding: 10px;
 
         .display(flex);
         .username {
-          flex : 0 0 8em;
+          flex: 0 0 8em;
         }
         .progress {
-          width : 100%;
-          >.progress-bar {
+          width: 100%;
+          > .progress-bar {
             .transition(2s ease-out);
-            min-width : 3em;
+            min-width: 3em;
             > span {
               &:after {
-                content : '分'
+                content: '分'
               }
             }
           }

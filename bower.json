@@ -9,7 +9,6 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "client/bower_components",
     "test",
     "tests"
   ],
@@ -19,9 +18,7 @@
     "jquery": "~2.1.4",
     "angular-bootstrap": "~0.13.0",
     "angular-animate": "~1.4.1",
-    "angular-cookies": "~1.4.1",
     "angular-atomic-notify": "~1.0.1",
-    "angular-resource": "~1.4.1",
     "angular-mocks": "~1.4.2",
     "angular-motion": "~0.4.2",
     "angular-sanitize": "~1.4.3",

@@ -1,36 +1,36 @@
-@import "common";
+@import (reference) "common";
 
-#signup-page{
+#signup-page {
 
-  .loading{
+  .loading {
     position: absolute;
     right: -10px;
     top: 10px;
   }
-  .avatar-selection{
+  .avatar-selection {
 
-    span{
+    span {
       display: inline-block;
       padding: 5px;
-      border: 1px double #f2e3d0;
+      border: 1px dashed #f2e3d0;
 
       cursor: pointer;
       .border-radius(30px);
-      &:hover{
+      &:hover {
         border-color: #0775e3;
       }
-      &.actived{
+      &.actived {
         background: #0775e3;
         border-color: #0775e3;
       }
-      .avatar{
+      .avatar {
         width: 50px;
         height: 50px;
       }
     }
 
   }
-  .error{
+  .error {
     .border-radius(5px);
     border: 1px solid #fa6900;
     color: #fa6900;

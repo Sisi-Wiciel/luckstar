@@ -1,13 +1,12 @@
-<link rel="stylesheet" href="home.css"/>
 <div class="container-fluid" id="home">
-    <div class="head" ng-include="'/components/navbar/navbar.html'" ></div>
-    <div class="row ">
-        <div class="col-md-10 content">
-            <div ui-view></div>
-        </div>
-        <div class="col-md-2 hidden-xs no-padl sidebar">
-            <user-list></user-list>
-        </div>
+  <div class="head" ng-include="'/components/navbar/navbar.html'"></div>
+  <div class="row ">
+    <div class="col-md-10 content">
+      <div ui-view></div>
     </div>
+    <div class="col-md-2 hidden-xs no-padl sidebar">
+      <user-list></user-list>
+    </div>
+  </div>
 
 </div>

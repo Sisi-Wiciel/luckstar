@@ -1,41 +1,44 @@
 <div id="room-creation" class="popover" tabindex="-1" ng-controller="roomCreationCtrl">
-    <div class="arrow"></div>
-    <h3 class="popover-title" ng-bind-html="title" ng-show="title"></h3>
-    <div class="popover-content">
-        <form name="popoverForm" class="form-horizontal" role="form">
-            <div class="form-group ">
-                <label class="col-md-3" for="title">标题: </label>
-                <div class="col-md-7">
-                    <input focus-me ng-model="newroom.title" class="form-control input-sm" id="title">
-                </div>
-            </div>
-            <!--<div class="form-group ">-->
-                <!--<label class="col-md-3" for="title">模式: </label>-->
-                <!--<div class="col-md-9">-->
-                    <!--<div class="btn-group">-->
-                            <!--<button class="btn btn-default"-->
-                                    <!--ng-class="{'active': newroom.mode == 0}"-->
-                                    <!--ng-click="newroom.mode = 0">合作</button>-->
-                            <!--<button type="button" ng-class="{'active': newroom.mode == 1}"-->
-                                    <!--class="btn btn-default"-->
-                                    <!--ng-click="newroom.mode = 1">竞赛</button>-->
-                    <!--</div>-->
+  <div class="arrow"></div>
+  <h3 class="popover-title" ng-bind-html="title" ng-show="title"></h3>
 
-                <!--</div>-->
-            <!--</div>-->
-            <div class="form-group ">
-                <label class="col-md-3" for="title">人数:</label>
-                <div class="col-md-9">
-                    <select class="form-control" ng-model="newroom.number"
-                            ng-options="number.value as number.label for number in numbers">
+  <div class="popover-content">
+    <form name="popoverForm" class="form-horizontal" role="form">
+      <div class="form-group ">
+        <label class="col-md-3" for="title">标题: </label>
 
-                    </select>
-                </div>
-            </div>
-            <div class="form-actions">
-                <button type="button" class="btn btn-default" ng-click="$hide()">取消</button>
-                <button type="button" class="btn btn-success" ng-click="create();$hide()">确认</button>
-            </div>
-        </form>
-    </div>
+        <div class="col-md-7">
+          <input focus-me ng-model="newroom.title" class="form-control input-sm" id="title">
+        </div>
+      </div>
+      <!--<div class="form-group ">-->
+      <!--<label class="col-md-3" for="title">模式: </label>-->
+      <!--<div class="col-md-9">-->
+      <!--<div class="btn-group">-->
+      <!--<button class="btn btn-default"-->
+      <!--ng-class="{'active': newroom.mode == 0}"-->
+      <!--ng-click="newroom.mode = 0">合作</button>-->
+      <!--<button type="button" ng-class="{'active': newroom.mode == 1}"-->
+      <!--class="btn btn-default"-->
+      <!--ng-click="newroom.mode = 1">竞赛</button>-->
+      <!--</div>-->
+
+      <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-group ">-->
+        <!--<label class="col-md-3" for="title">人数:</label>-->
+
+        <!--<div class="col-md-9">-->
+          <!--<select class="form-control" ng-model="newroom.number"-->
+                  <!--ng-options="number.value as number.label for number in numbers">-->
+
+          <!--</select>-->
+        <!--</div>-->
+      <!--</div>-->
+      <div class="form-actions">
+        <button type="button" class="btn btn-default" ng-click="$hide()">取消</button>
+        <button type="button" class="btn btn-success" ng-click="create();$hide()">确认</button>
+      </div>
+    </form>
+  </div>
 </div>

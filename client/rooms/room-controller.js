@@ -1,98 +1,58 @@
 define([
-    'angular',
-    './room',
-    'lodash',
-    'moment'
-], function (angular, module, _, moment) {
-    "use strict";
+  'angular',
+  './room',
+  'lodash'
+], function(angular, module, _){
+  'use strict';
 
-    module.controller("roomCtrl", function ($scope, room, $location, socketSrv, authSrv, messageCenter, roomSrv, $timeout) {
+  module.controller('roomCtrl', function($scope, $location, socketSrv, authSrv, messageCenter, roomSrv, navbarSrv,
+                                         $stateParams){
+    $scope.text = '';
+    $scope.curr = authSrv.getCurrentUser();
+    $scope.room = roomSrv.getCurrentRoom();
 
-        if (!room) {
-            messageCenter.notify('房间不存在或已经关闭.');
-            $location.path('/home/rooms');
-            return;
-        }
-        $scope.text = "";
-        $scope.curr = authSrv.getCurrentUser();
-        $scope.isUser = function () {
-            return !!_.find($scope.room.users, 'id', $scope.curr.id);
-        }
+    $scope.isUser = roomSrv.isUser;
 
-        $scope.getRole = function () {
-            if ($scope.room.admin.id == $scope.curr.id) {
-                return '房间管理员';
-            } else {
-                return this.isUser() ? '参赛者' : '观众';
-            }
-        }
+    $scope.isAdmin = roomSrv.isAdmin;
 
+    $scope.getRoleName = roomSrv.getRoleName;
 
-        roomSrv.fillRoomUsers(room);
+    $scope.leave = function(){
+      navbarSrv.removeItem('我的房间');
+      socketSrv.leaveRoom();
+      $location.path('/home');
+    };
 
-        $scope.room = room;
-
-        socketSrv.joinRoom(room.id);
-
-        $scope.leave = function () {
-            socketSrv.leaveRoom();
-            $location.path('/home/rooms');
-        };
-
-        $scope.$on('topicVerdict', function (event, verdict) {
-            $scope.verdict = verdict;
-        });
-
-        socketSrv.register('updateRoom', function (room) {
-            if (!room) {
-                //room closed;
-                messageCenter.notify('管理员退出房间, 房间已关闭');
-                $scope.leave();
-                $scope.$apply();
-                return;
-            }
-
-            if ($scope.room) {
-                if ($scope.room.status != room.status) {
-                    $scope.$broadcast('roomStatus', room);
-                    $scope.verdict = null;
-                    if (room.status == 0) {
-                        socketSrv.changeUserStatus("IN_ROOM");
-                        if($scope.roomstat){
-                            socketSrv.updateUser();
-                        }
-                    }
-
-                    if (room.status == 1) {
-                        $scope.roomstat = null;
-                        messageCenter.countdown([3, 2, 1, 'GO']);
-
-                        if ($scope.isUser()) {
-                            socketSrv.changeUserStatus("IN_COMPETING");
-                        } else {
-                            socketSrv.changeUserStatus("IN_COMPETING_WATCHING");
-                        }
-
-                    }
-                }
-            }
-
-            roomSrv.fillRoomUsers(room);
-            $scope.room = room;
-
-            $scope.$apply();
-        });
-
-        socketSrv.register('updateRoomStat', function (roomstat) {
-            if (roomstat) {
-                $scope.roomstat = roomstat;
-                $scope.$broadcast('updateRoomStats', roomstat);
-            }
-            $scope.$apply();
-        });
-
-        socketSrv.changeUserStatus("IN_ROOM");
-
+    $scope.$on('topicVerdict', function(event, verdict){
+      $scope.verdict = verdict;
     });
 
+    socketSrv.register('updateRoom', function(room){
+      if (_.isEmpty(room)) {
+        // room closed;
+        if (!$scope.isAdmin()) {
+          messageCenter.error('房间不存在或已经关闭.');
+        }
+        $scope.leave();
+        $scope.$apply();
+        return;
+      }
+
+      roomSrv.updateCurrentRoom(room);
+
+      $scope.$apply();
+    });
+
+    //socketSrv.register('updateRoomStat', function(roomstat) {
+    //  if (roomstat) {
+    //    $scope.roomstat = roomstat;
+    //    $scope.$broadcast('updateRoomStats', roomstat);
+    //  }
+    //  $scope.$apply();
+    //});
+
+    roomSrv.joinRoom($stateParams.id);
+
+    navbarSrv.addItem('我的房间', $location.path());
+  });
 });

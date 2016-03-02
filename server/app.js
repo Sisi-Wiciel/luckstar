@@ -9,7 +9,6 @@ require('./config/route')(app);
 require('./config/socketio')();
 require('./config/redis')();
 
-
 module.exports = app;
 
 

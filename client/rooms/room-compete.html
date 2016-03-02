@@ -1,12 +1,13 @@
-<link rel="stylesheet" href="rooms/room-compete.css"/>
 <div id="complete" ng-controller="roomCompeteCtrl">
-    <topic-panel ng-show="topic && room.status == 1"
-                 class="complete-topic" topic="topic"></topic-panel>
-    <compete-statistic room="room" roomstat="roomstat"></compete-statistic>
-    <div class="compete-record" >
-        <span class="record" ng-repeat="record in records track by $index"
-              ng-class="getRecordCls($index)">
-            <i class="fa fa-star"></i>
-        </span>
-    </div>
+  <room-topicwrapper ng-if="topic && room.status === 1">
+    <topic-panel topic="topic"></topic-panel>
+  </room-topicwrapper>
+
+  <!--<compete-statistic room="room" roomstat="roomstat"></compete-statistic>-->
+  <!--<div class="compete-record" ng-if="room.status === 1">-->
+        <!--<span class="record" ng-repeat="record in records track by $index"-->
+              <!--ng-class="getRecordCls($index)">-->
+            <!--<i class="fa fa-star"></i>-->
+        <!--</span>-->
+  <!--</div>-->
 </div>

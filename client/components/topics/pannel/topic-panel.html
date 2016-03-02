@@ -1,60 +1,54 @@
 <div id="topic-panel">
 
-    <section ng-if="topic" ng-cloak ng-class="verdictCls">
-        <div class="panel-cover" ng-if="verdict"></div>
+  <section ng-if="topic" ng-cloak ng-class="verdictCls">
+    <div class="panel-cover" ng-if="verdict"></div>
 
-        <div class="head">
-            <b><span typing>{{topic.title}}</span></b><span class="text-success">(分值: {{topic.point}}分)</span>
+    <div class="head">
+      <b><span typing>{{topic.title}}</span></b><span class="text-success">({{topic.point}}分){{topic.answercount > 1?'(多选题)': ''}}</span>
+    </div>
+
+    <div class="body">
+
+      <div class="countdown progress">
+        <div class="progress-bar progress-bar-danger">
         </div>
-
-        <div class="body">
-
-            <p ng-show="countdown" class="countdown">
-                请在 <b class="text-warning">{{countdown}}</b> 秒之内做出选择.
-                <small>({{topic.answercount > 1?'多选题': '单选题'}})</small>
-            </p>
-            <ul class="list-unstyled options">
-                <li ng-repeat="opt in topic.options track by $index">
-
-                    <!-- for competetion-->
-                    <div ng-if="!topic.hasOwnProperty('corrector')" >
-                        <i class="fa fa-check" ng-if="topic.corrector == $index"></i>
-                        <a href ng-click="actived=!actived;check($index)" ng-class="{actived: actived}"
-                           typing duration="1000" delay="{{1000*$index+1000}}">
-                            {{$index+1}}. {{opt}} {{actived}}
-                        </a>
-                        <span class="byUser" ng-if="verdict  && verdict.opt.indexOf($index) > -1">
-                            <i class="fa fa-hand-o-left"></i> 用户 {{verdict.user.username}}选择.
-                        </span>
-                    </div>
-
-                    <!-- for preview -->
-                    <div ng-if="topic.hasOwnProperty('corrector')">
-                        <i class="fa fa-check" ng-if="topic.corrector.indexOf($index.toString()) > -1"></i>
-                        <a href ng-click="actived=!actived" ng-class="{actived: actived}">
-                            {{$index+1}}. {{opt.value}}
-                        </a>
-                    </div>
-                </li>
-            </ul>
-            <div class="image-container" ng-if="topic.image">
-                <img ng-src="{{uploadPath + topic.image}}"/>
-            </div>
-            <div class="tip" ng-show="showTip()">
-                <i class="fa fa-lightbulb-o"></i>请再选择<b>{{topic.answercount - checkedOpt.length}}</b>个.
+      </div>
+      <div class="options">
+        <ul class="list-unstyled ">
+          <li ng-repeat="opt in topic.options ">
+            <!-- for competetion-->
+            <div ng-if="!topic.hasOwnProperty('corrector')">
+              <a href ng-click="actived =! actived;check($index)"
+                 ng-style="{background: setOptBgColorByUser($index)}"
+                 ng-class="{actived: actived || (verdict  && verdict.opt.indexOf($index) > -1)}"
+                 typing duration="1000" delay="{{1000 * $index+1000}}">
+                {{$index+1}}. {{opt}}
+              </a>
             </div>
 
-            <div class="score correct" ng-show="verdict && verdict.verdict == 1">
-                + {{verdict.point}}
+            <!-- for preview -->
+            <div ng-if="topic.hasOwnProperty('corrector')">
+              <i class="fa fa-check" ng-if="topic.corrector.indexOf($index.toString()) > -1"></i>
+              <a href ng-click="actived=!actived" ng-class="{actived: actived}">
+                {{$index+1}}. {{opt.value}}
+              </a>
             </div>
-            <div class="score incorrect" ng-show="verdict && verdict.verdict == 0">
-                - {{verdict.point}}
-            </div>
-
+          </li>
+        </ul>
+        <div class="image-container" ng-if="topic.image">
+          <img ng-src="{{uploadPath + topic.image}}"/>
         </div>
-        <div class="foot text-right" ng-if="topic.creator">
-            <small>本题目由用户</small> <b class="text-success" ng-bind="topic.creatorUsername"></b> <small>提供</small>
+        <div class="tip" ng-show="showTip()">
+          <i class="fa fa-lightbulb-o"></i>请再选择<b>{{topic.answercount - checkedOpt.length}}</b>个.
         </div>
-    </section>
+      </div>
+
+    </div>
+    <div class="foot text-right" ng-if="topic.creator">
+      <small>本题目由用户</small>
+      <b class="text-success" ng-bind="topic.creatorUsername"></b>
+      <small>提供</small>
+    </div>
+  </section>
 
 </div>

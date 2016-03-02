@@ -1,13 +1,14 @@
 define([
   'angular',
   'app'
-], function(angular, app){
-  "use strict";
+], function(angular, app) {
+  'use strict';
 
-  app.factory('User', function ($resource) {
-      return $resource('/api/user/:id/:controller', {
-          id: '@_id'
-        });
-    });
-
+  app.factory('User', function(httpq) {
+    return {
+      save: function(newuser) {
+        return httpq.post('/api/user/', newuser);
+      }
+    };
+  });
 });

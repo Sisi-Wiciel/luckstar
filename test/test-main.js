@@ -42,8 +42,8 @@ require.config({
   deps: tests,
 
   // we have to kickoff jasmine, as it is asynchronous
-  callback: function(params){
-    require('app', 'text!/client/components/topics/topic-commit.html').boot(function(){
+  callback: function(params) {
+    require('app', 'text!/client/components/topics/topic-commit.html').boot(function() {
       window.__karma__.start(params)
     });
   }

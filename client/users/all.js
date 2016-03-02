@@ -1,5 +1,6 @@
 define([
   './users',
-  './auth/user-signup-directive',
-  './auth/user-login-directive'
-], function(){});
+  './auth/user-signup-controller',
+  './auth/user-login-controller'
+], function() {
+});

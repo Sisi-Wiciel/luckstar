@@ -1,32 +1,33 @@
 <div id="user-list">
-    <div class="userlist-box" ng-show="!chatting">
-        <div class="head">
-            <i class="fa fa-user"></i> 用户列表
-        </div>
-
-        <ul class="list-unstyled">
-            <li ng-repeat="user in userlist"
-                ng-if="user.id != curr.id">
-                <img class="gravatar" ng-src="{{user.avatar}}">
-                <div class="content"  ng-click="showChatPanel(user)">
-                    <span>{{user.username}}</span>
-                    <span class="last-message">{{user.status}}</span>
-                </div>
-                <a href class="tools pull-right" ng-show="user.status == 1" ng-click="showChatPanel(user)">
-                    <i class="fa fa-comments"></i>
-                </a>
-
-            </li>
-        </ul>
+  <div class="userlist-box" ng-show="!chatting">
+    <div class="head box-title">
+      <i class="fa fa-user"></i> 用户列表
     </div>
-    <div class="chat-box" ng-show="chatting">
-        <div class="head">
-            <i class="fa fa-comments"></i> {{toUser.username}}
-            <a href ng-click="hideChatPanel()">
-                <small class="text-muted pull-right"><i class="fa fa-times"></i></small>
-            </a>
+
+    <ul class="list-unstyled">
+      <li ng-repeat="user in userlist"
+          ng-if="user.id != curr.id">
+        <img class="gravatar" ng-src="{{user.avatar}}">
+
+        <div class="content" ng-click="showChatPanel(user)">
+          <span>{{user.username}}</span>
+          <span class="last-message">{{user.status}}</span>
         </div>
-        <user-chat message="message" name="false" sender="sendMsg(msg)"></user-chat>
+        <a href class="tools pull-right" ng-show="user.status == 1" ng-click="showChatPanel(user)">
+          <i class="fa fa-comments"></i>
+        </a>
+
+      </li>
+    </ul>
+  </div>
+  <div class="chat-box" ng-show="chatting">
+    <div class="head">
+      <i class="fa fa-comments"></i> {{toUser.username}}
+      <a href ng-click="hideChatPanel()">
+        <small class="text-muted pull-right"><i class="fa fa-times"></i></small>
+      </a>
     </div>
+    <user-chat message="message" name="false" sender="sendMsg(msg)"></user-chat>
+  </div>
 
 </div>

@@ -10,6 +10,6 @@ var router = express.Router();
 module.exports = router;
 
 //router.post('/:id/checkup', auth.isAuth(), stat.fetch(), controller.checkTopic);
-router.post('/',controller.addTopic);
+router.post('/', controller.addTopic);
 //router.get('/', auth.isAuth(), stat.fetch(), controller.queryTopics);
 router.get('/totalsize', controller.getTotalSize);

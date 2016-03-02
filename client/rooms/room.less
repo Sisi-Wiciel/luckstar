@@ -1,49 +1,52 @@
-@import "common";
+@import (reference) "common";
 
 div.room {
-  .flex-column;
+  //.flex-column;
 
   .border-radius(10);
-  height : 100%;
 
-  > .head {
-    .display(flex);
-    .align-items(center);
+  > .room-head {
+    .flex-center;
     .justify-content(space-between);
-    padding       : 10px;
-    border-bottom : 1px solid #fff;
-    a{
+    padding: 10px;
+    border-bottom: 1px solid #fff;
+    a {
       .flex(0 0 1em);
       .fa-power-off {
         &:hover {
-          background-color : #f38630;
-          color            : #fff;
-          border-radius    : 30px;
-          padding          : 2px;
+          background-color: #f38630;
+          color: #fff;
+          border-radius: 30px;
+          padding: 2px;
         }
       }
     }
 
-    font-size   : 20px;
-    font-weight : bold;
-
+    font-size: 20px;
+    font-weight: bold;
   }
-  > .body {
-    .flex-column;
+  > .room-body {
+    min-height: 500px;
+    padding: 10px;
     .flex(1);
-    .display(flex);
+    .flex-column;
     .justify-content(space-between);
-  }
-  > .foot {
 
-    padding : 4px;
-    .bg-fff;
+    .room-body-users{
+      .display(flex);
+      .justify-content(space-between);
+    }
+    //.room-body-competition{
+    //  .flex(1);
+    //  .flex-center;
+    //}
+  }
+  > .room-foot {
+    padding: 4px;
+    background: #fff;
     .border-radius(5);
-    //.flex(0 0 14em);
-    .display(flex);
-    .justify-content(space-bettween);
     .chat {
-      width : 100%;
+      width: 100%;
     }
   }
 }

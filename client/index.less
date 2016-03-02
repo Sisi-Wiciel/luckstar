@@ -1,17 +1,16 @@
-@import "common";
-
+@import (reference) "common";
 
 body {
-  font-size           : 11px;
+  font-size: 11px;
   .user-select(none);
   //font-family         : '微软雅黑';
-  background-image    : url("libs/images/bg.gif");
+  background-image: url("libs/images/bg.gif");
 
-  overflow-x            : hidden;
+  overflow-x: hidden;
 
   > [ui-view] {
 
-    &.ng-enter{
+    &.ng-enter {
       .animated;
       position: absolute;
       left: 0px;
@@ -20,55 +19,56 @@ body {
     }
 
   }
-  color: rgb(118, 118, 118);
+  color: #767676;
 
   .unauth {
     .display(flex);
     .justify-content(center);
     padding-top: 100px;
-    .page-header{
-      h1{
+    .page-header {
+      h1 {
         display: inline;
       }
     }
 
     .login,
-    .signup{
+    .signup {
       .border-radius(5);
-      width            : 410px;
-      background-color : #f2e3d0;
+      width: 410px;
+      background-color: #f2e3d0;
     }
 
   }
 
 }
 
-
 .no-pad {
-  padding : 0;
+  padding: 0;
 }
-.no-padr{
+
+.no-padr {
   padding-right: 0;
 }
-.no-padl{
+
+.no-padl {
   padding-left: 0;
 }
 
 .no-margin {
-  margin : 0;
+  margin: 0;
 }
 
 a {
-  color : #000;
+  color: #000;
   &:focus,
   &:hover {
-    color : #000;
-    text-decoration : none;
+    color: #000;
+    text-decoration: none;
   }
 }
 
 ol, ul {
-  margin : 0;
+  margin: 0;
 }
 
 .pointer {

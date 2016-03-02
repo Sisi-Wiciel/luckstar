@@ -1,32 +1,28 @@
-@import "common";
+@import (reference) "common";
 
-@title-color: #f88d00;
+
 #user-list {
   .border-radius(5);
   .shadow;
-  padding          : 10px;
+  padding: 10px;
 
-  height           : 100%;
+  height: 100%;
   .bg-fff;
   .display(flex);
 
   > div {
     .flex-direction(column);
     .display(flex);
-    flex : 1;
-  }
-  .head {
-    color         : @title-color;
-    border-bottom : 1px solid @title-color;
+    flex: 1;
   }
 
   .chat-box {
-    justify-content : space-between;
-    .head{
-      .fa-times{
-        &:hover{
-          background-color: @title-color;
-          color:#fff;
+    justify-content: space-between;
+    .head {
+      .fa-times {
+        &:hover {
+          background-color: #f88d00;
+          color: #fff;
           border-radius: 30px;
           padding: 2px;
         }
@@ -37,9 +33,9 @@
     .animated;
     &.ng-hide-remove,
     &.ng-hide-add {
-      left     : 10px;
-      right    : 25px;
-      position : absolute;
+      left: 10px;
+      right: 25px;
+      position: absolute;
 
     }
     &.ng-hide-remove-active {
@@ -50,39 +46,39 @@
     }
 
     ul {
-      padding-top : 5px;
+      padding-top: 5px;
       li {
-        padding : 5px;
+        padding: 5px;
         .display(flex);
 
         &:hover {
-          background : #0775e3;
-          color      : #fff;
+          background: #0775e3;
+          color: #fff;
           .border-radius(10px);
           .transition(.25s linear color);
         }
         .gravatar {
-          width  : 40px;
-          height : 40px;
+          width: 40px;
+          height: 40px;
         }
         .content {
           padding-left: 5px;
-          justify-content : center;
+          justify-content: center;
           .flex(1);
           .display(flex);
           .flex-direction(column);
-          cursor          : pointer;
+          cursor: pointer;
         }
         .tools {
           .flex(0, 0, 1em);
           i {
             color: #fff;
-            &:hover{
+            &:hover {
               color: darken(#fff, 10%);
             }
           }
-          &:hover{
-            color:#fff;
+          &:hover {
+            color: #fff;
           }
         }
       }

@@ -1,53 +1,48 @@
 define([
-    'angular',
-    'app'
-], function (angular, app) {
-    "use strict";
+  'angular',
+  'lodash',
+  'app'
+], function(angular, _, app) {
+  'use strict';
 
-    app.service('authSrv', function (httpq, store, $q, User, $timeout, socketSrv) {
-        var self = this;
-
-        var currentUser = {};
-
-        if (store.get('token')) {
-            currentUser = User.get();
+  app.service('authSrv', function(httpq, store, $q, User, socketSrv) {
+    var currentUser = {};
+    this.login = function(u) {
+      return httpq.post('/api/auth', u).then(function(result) {
+        if (result.token) {
+          store.set('token', result.token);
+          return result;
         }
+        return result.message;
+      });
+    };
 
-        this.login = function (u) {
+    this.logout = function() {
+      store.delete('token');
+      currentUser = {};
+      socketSrv.close();
+    };
 
-            return httpq.post('/api/auth', u).then(function (result) {
-                if (result.token) {
-                    store.set("token", result.token);
-                    currentUser = User.get();
-                    return currentUser;
-                } else {
-                    return result.message;
-                }
-            });
-        };
+    this.createUser = function(user) {
+      return User.save(user);
+    };
 
-        this.logout = function () {
-            store.delete('token');
-            socketSrv.userOffline();
-            currentUser = {};
-        };
+    this.getCurrentUser = function() {
+      return currentUser;
+    };
 
-        this.createUser = function (user) {
-            return User.save(user).$promise;
-        };
+    this.updateCurrentUser = function(user) {
+      if (_.isEmpty(user)) {
+        socketSrv.getUser().then(function(user) {
+          _.assign(currentUser, user);
+        });
+      } else {
+        _.assign(currentUser, user);
+      }
+    };
 
-        this.usernameIsExisted = function (name) {
-            return httpq.post('/api/auth/name/', {name: name});
-        }
-
-        this.isLoggedIn = function () {
-            return currentUser.hasOwnProperty('_id');
-        };
-
-        this.getCurrentUser = function () {
-            return currentUser;
-        };
-
-
-    });
+    this.usernameIsExisted = function(name) {
+      return httpq.post('/api/auth/name/', {name: name});
+    };
+  });
 });
