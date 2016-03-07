@@ -102,28 +102,28 @@ function(angular, _, app) {
         };
       })($scope.steps);
 
-      $timeout(function() {
-        setStepResult({
-          status: 1
-        });
-
-        (function fake(index) {
-          $timeout(function() {
-            setStepResult({
-              status: 1,
-              index: index
-            });
-
-            if (index < 9) {
-              fake(++index);
-            } else {
-              setStepResult({
-                status: 1
-              });
-            }
-          }, 300);
-        })(0);
-      }, 1000);
+      //$timeout(function() {
+      //  setStepResult({
+      //    status: 1
+      //  });
+      //
+      //  (function fake(index) {
+      //    $timeout(function() {
+      //      setStepResult({
+      //        status: 1,
+      //        index: index
+      //      });
+      //
+      //      if (index < 9) {
+      //        fake(++index);
+      //      } else {
+      //        setStepResult({
+      //          status: 1
+      //        });
+      //      }
+      //    }, 300);
+      //  })(0);
+      //}, 1000);
       if (!t.title) {
         messageCenter.error('请填写题目');
         return;

@@ -1,12 +1,9 @@
 <div id="complete" ng-controller="roomCompeteCtrl">
-  <room-topicwrapper ng-if="topic && room.status === 1">
+  <room-topicwrapper ng-if="room.status === 1">
     <topic-panel topic="topic"></topic-panel>
   </room-topicwrapper>
 
-  <!--<div class="compete-record" ng-if="room.status === 1">-->
-        <!--<span class="record" ng-repeat="record in records track by $index"-->
-              <!--ng-class="getRecordCls($index)">-->
-            <!--<i class="fa fa-star"></i>-->
-        <!--</span>-->
-  <!--</div>-->
+  <div class="compete-record" ng-if="room.status === 0">
+    <compete-statistic room="room"></compete-statistic>
+  </div>
 </div>

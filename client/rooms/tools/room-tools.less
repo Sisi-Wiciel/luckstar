@@ -2,10 +2,8 @@
 
 div#room-tools {
   ul {
-
     li{
       cursor: pointer;
-      //padding: 5px;
       position: relative;
 
       i{
@@ -14,6 +12,11 @@ div#room-tools {
         z-index: 102;
         right: .5em;
         top: .5em;
+        padding: 2px;
+        &:hover{
+          background-color: #f38630;
+          color: #fff;
+        }
       }
       p{
         transition: .4s;
@@ -23,19 +26,19 @@ div#room-tools {
         width: 0;
         height: 0;
         opacity: 0;
-      }
 
-      p.actived{
-        opacity: 1;
-        z-index: 101;
-        width: 400px;
-        height: 260px;
-        background: lighten(#767676, 20%);
-        .border-radius(5);
-        color: #fff;
-        padding: 10px;
-      }
+        &.actived{
+          opacity: 1;
+          z-index: 101;
+          width: 400px;
+          height: 260px;
+          background: lighten(#767676, 20%);
+          color: #fff;
+          padding: 10px;
 
+          .border-radius(5);
+        }
+      }
     }
   }
 }

@@ -122,10 +122,6 @@
   top: 100px;
   border-color: #e3e3e3;
 }
-#topic-commit #topic-preview .image-container img {
-  max-height: 90%;
-  max-width: 90%;
-}
 #topic-commit #topic-preview .image-container.focus {
   border-color: #f88d00;
 }

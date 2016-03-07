@@ -106,7 +106,7 @@ define([
     };
 
     this.getRoomStat = function() {
-      if (_.isEmpty(roomstat) && this.isCompeting()) {
+      if (_.isEmpty(roomstat)) {
         this.updateState();
       }
       return roomstat;

@@ -18,6 +18,9 @@ function(angular, _, app, $) {
       },
       link: function(scope, elem) {
         var $imageContaner = $(elem).find('.image-container');
+        var containerHeight = $imageContaner.height();
+        var containerWidth = $imageContaner.width();
+        var containerRatio = containerWidth / containerHeight;
 
         $(elem).on('dragover drop', function() {
           event.preventDefault();
@@ -27,7 +30,20 @@ function(angular, _, app, $) {
         var previewFile = function(file) {
           if (file && fileSrv.setFile(file)) {
             fileSrv.readFileForPreview().then(function(data) {
-              $imageContaner.find('.image').empty().append('<img src="' + data + '"/>');
+              var $img = $('<img src="' + data + '"/>');
+              $imageContaner.find('.image').empty().append($img);
+
+              var imgWidth = $img.width();
+              var imgHeight = $img.height();
+              var imgRatio = imgWidth / imgHeight;
+
+              if (containerRatio > imgRatio) {
+                var showWidth = containerHeight * imgRatio;
+                $img.width(showWidth * 0.95);
+              } else {
+                var showHeight = containerWidth / imgRatio;
+                $img.height(showHeight * 0.95);
+              }
             });
           }
         };

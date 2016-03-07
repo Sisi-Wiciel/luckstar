@@ -38,10 +38,10 @@ div#compete-statistic .statistic .statistic-bar .user .progress {
   width: 100%;
 }
 div#compete-statistic .statistic .statistic-bar .user .progress > .progress-bar {
-  -webkit-transition: 2s ease-out;
-  -moz-transition: 2s ease-out;
-  -o-transition: 2s ease-out;
-  transition: 2s ease-out;
+  -webkit-transition: 1.5s linear;
+  -moz-transition: 1.5s linear;
+  -o-transition: 1.5s linear;
+  transition: 1.5s linear;
   min-width: 3em;
 }
 div#compete-statistic .statistic .statistic-bar .user .progress > .progress-bar > span:after {

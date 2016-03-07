@@ -23,8 +23,7 @@ define([
           scope.timoutId = null;
           countTo = parseInt(attrs.countTo, 10) || 0;
           scope.value = parseInt(attrs.value, 10) || 0;
-          duration = (parseFloat(attrs.duration) * 1000) || 2000;
-
+          duration = (parseFloat(attrs.duration) * 1000) || 1500;
           steps = Math.ceil(duration / refreshInterval);
           increment = ((countTo - scope.value) / steps);
           num = scope.value;

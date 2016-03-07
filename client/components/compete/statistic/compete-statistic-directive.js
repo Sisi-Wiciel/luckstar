@@ -15,26 +15,19 @@ function(angular, _, app, $) {
       templateUrl: 'components/compete/statistic/statistic.html',
       controller: function($scope, roomSrv) {
         $scope.statTable = false;
-        //
-        //$scope.$on('roomStatus', function(event, room) {
-        //  if (room.status === 0) {
-        //    $scope.roomstat && $scope.setScorebarWidth();
-        //  }
-        //});
+        roomSrv.onEndCompetition($scope.setScorebarWidth);
 
-        //$scope.switchStatTable = function() {
-        //  $scope.statTable = !$scope.statTable;
-        //  $scope.statTable || $scope.setScorebarWidth();
-        //};
+        $scope.switchStatTable = function() {
+          $scope.statTable = !$scope.statTable;
+          $scope.statTable || $scope.setScorebarWidth();
+        };
 
-        //var unwatch = $scope.$watch('roomstat', function(newValue) {
-        //  // Fix F5 issue.
-        //  if (newValue) {
-        //    $scope.room.status === 0 && $scope.setScorebarWidth();
-        //    unwatch();
-        //  }
-        //});
         $scope.roomstat = roomSrv.getRoomStat();
+
+        // Fix F5 issue.
+        $timeout(function() {
+          $scope.setScorebarWidth();
+        }, 500);
       },
       link: function(scope, elem) {
         scope.setScorebarWidth = function() {

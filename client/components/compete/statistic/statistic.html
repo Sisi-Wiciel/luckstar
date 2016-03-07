@@ -1,5 +1,5 @@
 <div id="compete-statistic">
-  <div class="topic-statistic" >
+  <div class="topic-statistic" ng-if="room.status == 1">
 
     <div>
       <span>第{{roomstat.currNum + 1}}题/共{{roomstat.maxNum}}题</span>
@@ -24,49 +24,46 @@
     </table>
   </div>
 
-  <!--<div class="statistic" ng-if="room.status == 0">-->
-    <!--<div class="title">-->
-      <!--<span><b>统计结果/</b></span>-->
-      <!--<small ng-show="!statTable" class="text-primary" ng-click="switchStatTable()">详细</small>-->
-      <!--<small ng-show="statTable" class="text-primary" ng-click="switchStatTable()">返回</small>-->
-    <!--</div>-->
-    <!--<div class="statistic-bar" ng-if="!statTable">-->
+  <div class="statistic" ng-if="room.status == 0">
+    <div class="title">
+      <span><b>统计结果/</b></span>
+      <small ng-show="!statTable" class="text-primary" ng-click="switchStatTable()">详细</small>
+      <small ng-show="statTable" class="text-primary" ng-click="switchStatTable()">返回</small>
+    </div>
+    <div class="statistic-bar" ng-if="!statTable">
+      <div class="user" ng-repeat="user in roomstat.users ">
+        <span class="username "><b>{{user.username}}</b></span>
 
-      <!--<div class="user" ng-repeat="user in roomstat.users ">-->
-        <!--<span class="username "><b>{{user.username}}</b></span>-->
-
-        <!--<div class="progress no-margin">-->
-          <!--<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"-->
-               <!--aria-valuenow="{{user.point}}" aria-valuemin="0"-->
-               <!--aria-valuemax="{{roomstat.maxNum * 10}}">-->
-            <!--<span count-to="{{user.point}}"></span>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<div class="statistic-table" ng-if="statTable">-->
-      <!--<table class="table table-hover">-->
-        <!--<thead>-->
-        <!--<tr>-->
-          <!--<td></td>-->
-          <!--<td>正确数量</td>-->
-          <!--<td>错误数量</td>-->
-          <!--<td>超时数量</td>-->
-          <!--<td>获得积分</td>-->
-        <!--</tr>-->
-        <!--</thead>-->
-        <!--<tbody>-->
-        <!--<tr ng-repeat="user in roomstat.users">-->
-          <!--<td ng-bind="user.username"></td>-->
-          <!--<td ng-bind="user.correctNum"></td>-->
-          <!--<td ng-bind="user.incorrectNum"></td>-->
-          <!--<td ng-bind="user.timeoutNum"></td>-->
-          <!--<td ng-bind="user.point"></td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-      <!--</table>-->
-    <!--</div>-->
-
-
-  <!--</div>-->
+        <div class="progress no-margin">
+          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+               aria-valuenow="{{user.point}}" aria-valuemin="0"
+               aria-valuemax="{{roomstat.maxNum * 10}}">
+            <span count-to="{{user.point}}"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="statistic-table" ng-if="statTable">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <td></td>
+          <td>正确数量</td>
+          <td>错误数量</td>
+          <td>超时数量</td>
+          <td>获得积分</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in roomstat.users">
+          <td ng-bind="user.username"></td>
+          <td ng-bind="user.correctNum"></td>
+          <td ng-bind="user.incorrectNum"></td>
+          <td ng-bind="user.timeoutNum"></td>
+          <td ng-bind="user.point"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

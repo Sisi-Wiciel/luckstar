@@ -9,6 +9,7 @@ function(angular, _, app) {
   app.controller('roomCompeteCtrl', function($scope, $timeout, socketSrv, authSrv, roomSrv) {
     //$scope.curr = authSrv.getCurrentUser();
     $scope.records = [];
+    $scope.roomstat = roomSrv.getRoomStat();
     roomSrv.onEndCompetition(function() {
       $scope.topic = null;
     });
