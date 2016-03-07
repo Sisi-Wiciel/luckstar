@@ -139,15 +139,23 @@
   height: 8px;
 }
 #topic-panel section .body .countdown .progress-bar {
-  -webkit-animation: countdown 19s linear 1s forwards;
-  -moz-animation: countdown 19s linear 1s forwards;
-  -o-animation: countdown 19s linear 1s forwards;
-  animation: countdown 19s linear 1s forwards;
+  -webkit-animation: countdown 19s linear 1s;
+  -moz-animation: countdown 19s linear 1s;
+  -o-animation: countdown 19s linear 1s;
+  animation: countdown 19s linear 1s;
+  width: auto;
+}
+#topic-panel section .body .countdown .progress-bar.paused {
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
   animation-play-state: paused;
-  width: 100%;
+}
+#topic-panel section .body .countdown .progress-bar.running {
+  -webkit-animation-play-state: running;
+  -moz-animation-play-state: running;
+  -o-animation-play-state: running;
+  animation-play-state: running;
 }
 #topic-panel section .body .tip {
   position: absolute;

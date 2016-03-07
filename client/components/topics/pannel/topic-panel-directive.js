@@ -13,9 +13,9 @@ define([
         topic: '='
       },
       link: function(scope, elem) {
-        scope.countdownPause = function(paused) {
+        scope.countdownPause = function() {
           $timeout(function() {
-            $(elem).find('.progress-bar').css({'animationPlayState': paused ? 'paused' : 'running'})
+              $(elem).find('.progress-bar').addClass('paused');
           });
         };
       },
@@ -42,7 +42,7 @@ define([
 
           $scope.verdictCls = '';
           if (verObj) {
-            $scope.countdownPause(true);
+            $scope.countdownPause();
             if ($scope.verdict.user) {
               // active mode
               if ($scope.verdict.verdict) {
@@ -67,7 +67,7 @@ define([
 
         $scope.$watch('topic', function(newValue) {
           if (newValue && newValue._id) {
-            $scope.countdownPause(false);
+            //$scope.countdownPause(false);
             setVerdict(null);
             $scope.checkedOpt = [];
           }
@@ -82,7 +82,7 @@ define([
             }
 
             if ($scope.topic.answercount === $scope.checkedOpt.length) {
-              $scope.countdownPause(true);
+              $scope.countdownPause();
               socketSrv.topicCheckOpt($scope.checkedOpt.join(''));
             }
           }

@@ -58,6 +58,7 @@
       padding: 10px 20px 0;
       .flex(1);
 
+
       div.options {
         position: relative;
         ul {
@@ -103,10 +104,14 @@
         margin-left: 25%;
         height: 8px;
         .progress-bar {
-          .animation(countdown 19s linear 1s forwards);
-          .animation-play-state(paused);
-          width: 100%;
-          //transition: 15s linear;
+          .animation(countdown 19s linear 1s);
+          width: auto;
+          &.paused {
+            .animation-play-state(paused);
+          }
+          &.running {
+            .animation-play-state(running);
+          }
         }
       }
       .tip {
