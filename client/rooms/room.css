@@ -39,11 +39,14 @@ div.room > .room-head a {
   -ms-flex: 0 0 1em;
   flex: 0 0 1em;
 }
+div.room > .room-head a .fa-power-off {
+  font-size: .5em;
+  padding: .5em;
+  border-radius: 50px;
+}
 div.room > .room-head a .fa-power-off:hover {
   background-color: #f38630;
   color: #fff;
-  border-radius: 30px;
-  padding: 2px;
 }
 div.room > .room-body {
   min-height: 500px;

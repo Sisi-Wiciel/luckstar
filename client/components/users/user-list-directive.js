@@ -32,6 +32,9 @@ define([
 
         $scope.showChatPanel = function(to) {
           $scope.toUser = to;
+          if (!$scope.messages[to.id]) {
+            $scope.messages[to.id] = [];
+          }
           $scope.chatting = true;
         };
 
@@ -41,9 +44,6 @@ define([
         };
 
         socketSrv.register('updateMessage', function(item) {
-          if (!$scope.messages[item.from.id]) {
-            $scope.messages[item.from.id] = [];
-          }
 
           $scope.messages[item.from.id].push(item);
 

@@ -21,7 +21,6 @@ define([
         messageCenter.alert('用户准备就绪后,才可以开始');
         return $q.reject();
       }
-      console.info($scope.room.users)
       var notReadyUsers = _.filter($scope.room.users, function(user) {
         return user && !_.includes($scope.room.readyUsers, user.id);
       });

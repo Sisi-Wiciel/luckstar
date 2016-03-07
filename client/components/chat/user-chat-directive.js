@@ -10,12 +10,12 @@ define([
       templateUrl: 'components/chat/user-chat.html',
       replace: true,
       scope: {
-        message: '=',
+        messages: '=',
         sender: '&'
       },
       controller: function($scope, $timeout, authSrv) {
         $scope.curr = authSrv.getCurrentUser();
-        $scope.messages = [];
+
         $scope.sendMsg = function() {
           if (!$scope.messageInput) {
             return;
@@ -43,11 +43,8 @@ define([
           }, 100);
         };
 
-        scope.$watch('message', function(newValue) {
-          if (newValue) {
-            scope.messages.push(newValue);
+        scope.$watch('messages', function(newValue) {
             scrollBottom();
-          }
         });
 
         scope.send = function() {

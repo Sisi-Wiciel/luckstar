@@ -1,30 +1,32 @@
 @import (reference) "common";
 
+@CHAT-HEIGHT: 500px;
 
 #user-list {
-  .border-radius(5);
-  .shadow;
+  min-height: @CHAT-HEIGHT;
+  height: @CHAT-HEIGHT;
   padding: 10px;
 
-  height: 100%;
+  .border-radius(5);
+  .shadow;
   .bg-fff;
   .display(flex);
 
   > div {
     .flex-direction(column);
     .display(flex);
-    flex: 1;
+    .flex(1);
   }
 
   .chat-box {
-    justify-content: space-between;
+    .justify-content(space-between);
     .head {
       .fa-times {
+        padding: .3em;
+        border-radius: 30px;
         &:hover {
           background-color: #f88d00;
           color: #fff;
-          border-radius: 30px;
-          padding: 2px;
         }
       }
     }
@@ -36,7 +38,6 @@
       left: 10px;
       right: 25px;
       position: absolute;
-
     }
     &.ng-hide-remove-active {
       .fadeIn;

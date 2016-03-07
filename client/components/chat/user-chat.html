@@ -1,8 +1,9 @@
 <div class="chat">
+  <!--messages: {{messages}}-->
   <ul class="list-unstyled">
     <li ng-repeat="msg in messages" ng-class="{me: curr.id === msg.from.id, user: curr.id !== msg.from.id}">
       <div ng-if="!msg.system" class="message">
-        <span class="username" ng-if="curr.id !== msg.from.id && showName">{{::msg.from.username}}</span>
+        <!--<span class="username" ng-if="curr.id !== msg.from.id ">{{::msg.from.username}}</span>-->
         <p>
           {{::msg.content}}
         </p>

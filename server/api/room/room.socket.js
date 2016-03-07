@@ -84,7 +84,6 @@ var joinRoom = function(socket, id) {
             sendRoomMessage(socket, '用户' + user.username + '正在观看比赛, 观众' + locked.obs.length + '人', true);
           }
         }
-
       });
     }
 
@@ -144,21 +143,18 @@ var startRoomCompete = function(socket) {
       return;
     }
     if (room.readyUsers.length == room.users.length) {
-
-      (function startCountDown(number) {
-        setTimeout(function() {
-          if (number > 0) {
-            sendRoomMessage(socket, number + '秒后开始...', true);
-            startCountDown(--number);
-          } else {
-            roomService.createCompeteState(room).then(function(roomStat) {
+      roomService.createCompeteState(room).then(function(roomStat) {
+        (function startCountDown(number) {
+          setTimeout(function() {
+            if (number > 0) {
+              sendRoomMessage(socket, number + '秒后开始...', true);
+              startCountDown(--number);
+            } else {
               competeSocket.nextTopic(socket);
-              //socket.io.sockets.in(socket.room).emit('updateRoomStat', roomStat);
-            });
-          }
-
-        }, 1500);
-      })(COUNTDOWN_MAXNUMBER);
+            }
+          }, 1500);
+        })(COUNTDOWN_MAXNUMBER);
+      });
 
       return roomService.startCompete(room);
     } else {
@@ -219,12 +215,7 @@ var terminateRoomCompete = function(socket) {
 
 var getRoomStat = function(socket) {
   log.verbose("GetRoomStat, " + socket.room);
-  roomService.listRoomStat(socket.room).then(function(roomstat) {
-    if (roomstat) {
-      socket.emit("updateRoomStat", roomstat);
-    }
-
-  });
+  return roomService.listRoomStat(socket.room);
 };
 var createRoom = function(socket, room, cb) {
   log.verbose("CreateRoom, " + socket.uid);
@@ -274,8 +265,8 @@ exports.register = function(socket) {
   socketSrv.on(socket, 'terminate compete', function() {
     terminateRoomCompete(socket);
   })
-  socketSrv.on(socket, 'room get stat', function() {
-    getRoomStat(socket);
+  socketSrv.on(socket, 'room get stat', function(cb) {
+    getRoomStat(socket).then(cb);
   })
   socketSrv.on(socket, 'room get', function(id, cb) {
     roomService.list(id).then(function(rooms) {

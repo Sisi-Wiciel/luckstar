@@ -11,10 +11,9 @@ function(angular, _, app, $) {
     return {
       scope: {
         room: '=',
-        roomstat: '='
       },
       templateUrl: 'components/compete/statistic/statistic.html',
-      controller: function($scope) {
+      controller: function($scope, roomSrv) {
         $scope.statTable = false;
         //
         //$scope.$on('roomStatus', function(event, room) {
@@ -23,18 +22,19 @@ function(angular, _, app, $) {
         //  }
         //});
 
-        $scope.switchStatTable = function() {
-          $scope.statTable = !$scope.statTable;
-          $scope.statTable || $scope.setScorebarWidth();
-        };
+        //$scope.switchStatTable = function() {
+        //  $scope.statTable = !$scope.statTable;
+        //  $scope.statTable || $scope.setScorebarWidth();
+        //};
 
-        var unwatch = $scope.$watch('roomstat', function(newValue) {
-          // Fix F5 issue.
-          if (newValue) {
-            $scope.room.status === 0 && $scope.setScorebarWidth();
-            unwatch();
-          }
-        });
+        //var unwatch = $scope.$watch('roomstat', function(newValue) {
+        //  // Fix F5 issue.
+        //  if (newValue) {
+        //    $scope.room.status === 0 && $scope.setScorebarWidth();
+        //    unwatch();
+        //  }
+        //});
+        $scope.roomstat = roomSrv.getRoomStat();
       },
       link: function(scope, elem) {
         scope.setScorebarWidth = function() {

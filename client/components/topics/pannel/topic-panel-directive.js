@@ -19,7 +19,7 @@ define([
           });
         };
       },
-      controller: function($scope, $rootScope, socketSrv, authSrv, messageCenter, roomSrv) {
+      controller: function($scope, socketSrv, authSrv, messageCenter, roomSrv) {
         $scope.imageEnabled = false;
         $scope.checkedOpt = [];
         $scope.uploadPath = settings.upload.path;
@@ -61,6 +61,7 @@ define([
 
         socketSrv.register('topicVerdict', function(obj) {
           setVerdict(obj);
+          roomSrv.updateState();
           $scope.$apply();
         });
 

@@ -7,7 +7,7 @@ module.exports = {
   },
   ROOM: {
     COMPETE_MAX_TOPICS: 15,
-    COMPETE_TOPIC_COUNTDOWN: 20000
+    COMPETE_TOPIC_COUNTDOWN: 20
   },
   USER: {
     STATUS: {

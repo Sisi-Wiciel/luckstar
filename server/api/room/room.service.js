@@ -166,6 +166,7 @@ exports.finishCompete = function(room, statist) {
     locked.topic = "";
   });
 };
+
 exports.terminateCompete = function(room) {
   return this.finishCompete(room);
 };

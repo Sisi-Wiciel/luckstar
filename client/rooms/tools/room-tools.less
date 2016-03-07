@@ -2,14 +2,40 @@
 
 div#room-tools {
   ul {
-    font-size: 1.5em;
+
     li{
       cursor: pointer;
-      padding: 5px;
-      &:hover{
-        color: #fff;
-        background: #767676;;
+      //padding: 5px;
+      position: relative;
+
+      i{
+        position: absolute;
+        font-size: 1.5em;
+        z-index: 102;
+        right: .5em;
+        top: .5em;
       }
+      p{
+        transition: .4s;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+
+      p.actived{
+        opacity: 1;
+        z-index: 101;
+        width: 400px;
+        height: 260px;
+        background: lighten(#767676, 20%);
+        .border-radius(5);
+        color: #fff;
+        padding: 10px;
+      }
+
     }
   }
 }

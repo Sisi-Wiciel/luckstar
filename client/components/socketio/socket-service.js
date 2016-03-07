@@ -143,7 +143,7 @@ define([
         return this.getResult('topic total size');
       },
       getRoomStat: function() {
-        this.emit('room get stat');
+        return this.getResult('room get stat');
       },
       getRoom: function(id) {
         return this.getResult('room get', id);

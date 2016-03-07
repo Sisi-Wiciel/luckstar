@@ -16,7 +16,6 @@
         <a href class="tools pull-right" ng-show="user.status == 1" ng-click="showChatPanel(user)">
           <i class="fa fa-comments"></i>
         </a>
-
       </li>
     </ul>
   </div>
@@ -27,7 +26,6 @@
         <small class="text-muted pull-right"><i class="fa fa-times"></i></small>
       </a>
     </div>
-    <user-chat message="message" name="false" sender="sendMsg(msg)"></user-chat>
+    <user-chat messages="messages[toUser.id]" name="false" sender="sendMsg(msg)"></user-chat>
   </div>
-
 </div>

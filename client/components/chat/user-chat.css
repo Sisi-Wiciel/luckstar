@@ -1,4 +1,5 @@
 div.chat {
+  height: 100%;
   -webkit-box-direction: normal;
   -moz-box-direction: normal;
   -webkit-box-orient: vertical;

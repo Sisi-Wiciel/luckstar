@@ -8,6 +8,7 @@ define([
 
   app.service('roomSrv', function(socketSrv, authSrv) {
     var currentRoom = {};
+    var roomstat = {};
     var currentUser = authSrv.getCurrentUser();
     var roomEndCompetitionCB = $.Callbacks();
     var roomStartCompetitionCB = $.Callbacks();
@@ -60,6 +61,7 @@ define([
           roomEndCompetitionCB.fire(room);
         }
         if (room.status === 1) {
+          this.updateState();
           roomStartCompetitionCB.fire(room);
         }
       }
@@ -102,5 +104,18 @@ define([
         }
       }
     };
+
+    this.getRoomStat = function() {
+      if (_.isEmpty(roomstat) && this.isCompeting()) {
+        this.updateState();
+      }
+      return roomstat;
+    };
+
+    this.updateState = function() {
+      socketSrv.getRoomStat().then(function(result) {
+        _.assign(roomstat, result);
+      });
+    }
   });
 });
