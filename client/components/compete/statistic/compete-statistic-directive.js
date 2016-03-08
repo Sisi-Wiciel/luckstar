@@ -10,7 +10,7 @@ function(angular, _, app, $) {
   app.directive('competeStatistic', function($timeout) {
     return {
       scope: {
-        room: '=',
+        room: '='
       },
       templateUrl: 'components/compete/statistic/statistic.html',
       controller: function($scope, roomSrv) {

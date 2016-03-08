@@ -6,7 +6,6 @@ define([
   'use strict';
 
   app.controller('roomUsersCtrl', function($scope, $q, messageCenter, authSrv, socketSrv, roomSrv) {
-
     $scope.curr = authSrv.getCurrentUser();
 
     var userStatusColors = {
@@ -27,7 +26,7 @@ define([
 
       if (!_.isEmpty(notReadyUsers)) {
         messageCenter.alert('用户准备就绪后,才可以开始.');
-        //messageCenter.alert('用户 ' + _.map(notReadyUsers, 'username').join(',') + ' 未准备.');
+        // messageCenter.alert('用户 ' + _.map(notReadyUsers, 'username').join(',') + ' 未准备.');
         return $q.reject();
       }
 
@@ -35,7 +34,7 @@ define([
     };
 
     $scope.getUserStatusColor = function(user) {
-      if(user.status === "0"){
+      if (user.status === '0') {
         return userStatusColors.OFFLINE;
       }
 
@@ -44,7 +43,6 @@ define([
       }
 
       return userStatusColors.ONLINE;
-
     };
 
     $scope.isReady = function(userid) {
@@ -59,8 +57,6 @@ define([
     $scope.terminate = function() {
       socketSrv.terminateCompete();
     };
-
-
   });
   /* link: function (scope, ele) {
    scope.reorder = function () {

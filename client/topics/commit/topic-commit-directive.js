@@ -102,7 +102,7 @@ function(angular, _, app) {
         };
       })($scope.steps);
 
-      //$timeout(function() {
+      // $timeout(function() {
       //  setStepResult({
       //    status: 1
       //  });
@@ -123,7 +123,7 @@ function(angular, _, app) {
       //      }
       //    }, 300);
       //  })(0);
-      //}, 1000);
+      // }, 1000);
       if (!t.title) {
         messageCenter.error('请填写题目');
         return;

@@ -28,10 +28,10 @@
       <div class="room-list-item" ng-repeat="room in rooms | filter:q as results">
 
         <div class="title">
-          <i class="fa fa-home"></i>
-          <span ng-bind="room.title"></span>
-
-          <small class="text-muted pull-right" from-now="{{room.create}}"></small>
+          <span><i class="fa fa-home"></i>{{room.title}}</span>
+          <span ng-show="room.status == 1" class="text-success">正在进行</span>
+          <span ng-show="room.status == 0" class="text-danger">空闲中</span>
+          <small class="text-muted " from-now="{{room.create}}"></small>
         </div>
         <div class="main">
           <div class="users">
@@ -50,10 +50,12 @@
             </div>
           </div>
           <div class="toolbar">
-            <a ng-click="join(room.id)" class="btn btn-info">
-              进入
+            <a ng-click="join(room.id)" ng-show="room.status == 0 && !room.full" class="btn btn-success">
+              参赛
             </a>
-            <span ng-show="room.status == 1" class="text-success">正在进行</span>
+            <!--<a ng-click="joinAsOb(room.id)" class="btn btn-info">-->
+              <!--观看-->
+            <!--</a>-->
           </div>
 
         </div>

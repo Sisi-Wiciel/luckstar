@@ -1,9 +1,11 @@
+/* eslint consistent-return: 0 */
 define([
   'angular',
   'app',
   'lodash',
-  'settings'
-], function(angular, app, _, settings) {
+  'settings',
+  'jquery'
+], function(angular, app, _, settings, $) {
   'use strict';
 
   app.directive('topicPanel', function($timeout) {
@@ -15,7 +17,7 @@ define([
       link: function(scope, elem) {
         scope.countdownPause = function() {
           $timeout(function() {
-              $(elem).find('.progress-bar').addClass('paused');
+            $(elem).find('.progress-bar').addClass('paused');
           });
         };
       },
@@ -32,8 +34,9 @@ define([
 
           var curr = authSrv.getCurrentUser();
           if (verdict_.opt.indexOf(optIndex) > -1 && verdict_.user.id !== curr.id) {
-            return roomSrv.getUserMousePointerColor($scope.verdict.user.id);
+            return '#' + roomSrv.getUserMousePointerColor($scope.verdict.user.id) || '';
           }
+          return '';
         };
 
         var setVerdict = function(verObj) {
@@ -67,7 +70,6 @@ define([
 
         $scope.$watch('topic', function(newValue) {
           if (newValue && newValue._id) {
-            //$scope.countdownPause(false);
             setVerdict(null);
             $scope.checkedOpt = [];
           }
@@ -93,7 +95,6 @@ define([
           return !_topic.hasOwnProperty('corrector') && !_.isEmpty($scope.checkedOpt) &&
           _topic.answercount && _topic.answercount - $scope.checkedOpt.length > 0;
         };
-
       }
     };
   }

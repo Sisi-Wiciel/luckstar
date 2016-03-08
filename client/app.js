@@ -53,12 +53,11 @@ function(angular, settings, $, _, moment) {
       templateUrl: '/home-tpl.html',
       controller: 'homeCtrl',
       resolve: {
-        user: function(socketSrv, authSrv, $q, $location, $rootScope, $timeout) {
+        user: function(socketSrv, navbarSrv, authSrv, $q, $rootScope, $timeout) {
           return $q(function(resolve, reject) {
             $timeout(function() {
 
               socketSrv.open(function() {
-                console.info("socket opened");
                 authSrv.updateCurrentUser();
                 resolve();
               }, function() {

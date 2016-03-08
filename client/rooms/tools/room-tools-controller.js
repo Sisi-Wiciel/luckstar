@@ -15,5 +15,4 @@ define([
       $scope.roomstatVisiable = !$scope.roomstatVisiable;
     };
   });
-
 });

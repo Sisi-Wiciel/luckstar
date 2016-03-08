@@ -1,3 +1,5 @@
+/* eslint new-cap: [2, {"capIsNewExceptions": ["$.Callbacks"]}] */
+
 define([
   'angular',
   'lodash',
@@ -10,10 +12,10 @@ define([
     var currentRoom = {};
     var roomstat = {};
     var currentUser = authSrv.getCurrentUser();
-    var roomEndCompetitionCB = $.Callbacks();
-    var roomStartCompetitionCB = $.Callbacks();
+    var roomEndCompetitionCb = $.Callbacks();
+    var roomStartCompetitionCb = $.Callbacks();
 
-    var userColors = ['#acdce6', '#fed5aa', '#84dbc8', '#ffa3a4', '#e9cee1'];
+    var userColors = ['acdce6', 'fed5aa', '84dbc8', 'ffa3a4', 'e9cee1'];
 
     this.isUser = function() {
       return Boolean(_.find(currentRoom.users, 'id', currentUser.id));
@@ -39,30 +41,29 @@ define([
     };
 
     this.getUserMousePointerColor = function(id) {
-      if (!id) {
-        return userColors;
-      } else {
+      if (id) {
         var index = _.findIndex(currentRoom.users, 'id', id);
         return userColors[index];
       }
+      return userColors;
     };
 
     this.onStartCompetition = function(cb) {
-      roomStartCompetitionCB.add(cb);
+      roomStartCompetitionCb.add(cb);
     };
 
     this.onEndCompetition = function(cb) {
-      roomEndCompetitionCB.add(cb);
+      roomEndCompetitionCb.add(cb);
     };
 
     this.updateCurrentRoom = function(room) {
       if (!_.isEmpty(currentRoom) && currentRoom.status !== room.status) {
         if (room.status === 0) {
-          roomEndCompetitionCB.fire(room);
+          roomEndCompetitionCb.fire(room);
         }
         if (room.status === 1) {
           this.updateState();
-          roomStartCompetitionCB.fire(room);
+          roomStartCompetitionCb.fire(room);
         }
       }
 
@@ -84,14 +85,13 @@ define([
       this.fillRoomUsers();
     };
 
-
     this.getCurrentRoom = function() {
       return currentRoom;
     };
 
     this.isCompeting = function() {
       return currentRoom.status === 1;
-    }
+    };
 
     this.fillRoomUsers = function(room) {
       var room_ = room || currentRoom;
@@ -116,6 +116,6 @@ define([
       socketSrv.getRoomStat().then(function(result) {
         _.assign(roomstat, result);
       });
-    }
+    };
   });
 });

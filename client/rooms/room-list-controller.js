@@ -24,6 +24,10 @@ define([
       $location.path('/home/rooms/' + roomId);
     };
 
+    // $scope.joinAsOb = function(roomId) {
+    //  $location.path('/home/rooms/' + roomId);
+    // };
+
     socketSrv.changeUserStatus('HOME_PAGE');
   });
 });

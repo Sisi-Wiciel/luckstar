@@ -45,7 +45,6 @@ define([
 
     function close() {
       if (socket) {
-        console.info("socket closed");
         socket.close();
       }
     }
@@ -146,6 +145,7 @@ define([
         return this.getResult('room get stat');
       },
       getRoom: function(id) {
+        id = id || '';
         return this.getResult('room get', id);
       },
       saveTopic: function(topic) {

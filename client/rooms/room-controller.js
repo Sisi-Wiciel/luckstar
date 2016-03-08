@@ -2,11 +2,11 @@ define([
   'angular',
   './room',
   'lodash'
-], function(angular, module, _){
+], function(angular, module, _) {
   'use strict';
 
   module.controller('roomCtrl', function($scope, $location, socketSrv, authSrv, messageCenter, roomSrv, navbarSrv,
-                                         $stateParams){
+                                         $stateParams) {
     $scope.text = '';
     $scope.curr = authSrv.getCurrentUser();
     $scope.room = roomSrv.getCurrentRoom();
@@ -17,17 +17,17 @@ define([
 
     $scope.getRoleName = roomSrv.getRoleName;
 
-    $scope.leave = function(){
+    $scope.leave = function() {
       navbarSrv.removeItem('我的房间');
       socketSrv.leaveRoom();
       $location.path('/home');
     };
 
-    $scope.$on('topicVerdict', function(event, verdict){
+    $scope.$on('topicVerdict', function(event, verdict) {
       $scope.verdict = verdict;
     });
 
-    socketSrv.register('updateRoom', function(room){
+    socketSrv.register('updateRoom', function(room) {
       if (_.isEmpty(room)) {
         // room closed;
         if (!$scope.isAdmin()) {
@@ -42,14 +42,6 @@ define([
 
       $scope.$apply();
     });
-
-    //socketSrv.register('updateRoomStat', function(roomstat) {
-    //  if (roomstat) {
-    //    $scope.roomstat = roomstat;
-    //    $scope.$broadcast('updateRoomStats', roomstat);
-    //  }
-    //  $scope.$apply();
-    //});
 
     roomSrv.joinRoom($stateParams.id);
 

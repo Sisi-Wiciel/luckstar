@@ -269,9 +269,15 @@ exports.register = function(socket) {
     getRoomStat(socket).then(cb);
   })
   socketSrv.on(socket, 'room get', function(id, cb) {
-    roomService.list(id).then(function(rooms) {
-      cb(_.first(rooms));
-    });
+    id = id || socket.room;
+    if(!_.isEmpty(id)){
+      roomService.list(id).then(function(rooms) {
+        cb(_.first(rooms));
+      });
+    }else{
+      cb({});
+    }
+
   })
   socketSrv.on(socket, 'room create', function(room, cb) {
     createRoom(socket, room, cb);

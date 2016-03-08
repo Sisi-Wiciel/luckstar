@@ -145,6 +145,16 @@
 .room-main .room-list .body .room-list-item .title {
   line-height: 30px;
   padding: 0 15px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
 }
 .room-main .room-list .body .room-list-item .main {
   display: -webkit-box;
@@ -205,6 +215,10 @@
 .room-main .room-list .body .room-list-item .main .toolbar {
   margin: auto;
   flex: 0 0 5em;
+}
+.room-main .room-list .body .room-list-item .main .toolbar .btn {
+  padding: 2px 12px;
+  margin: 2px 0;
 }
 .room-main .room-list .body .room-list-item.ng-move,
 .room-main .room-list .body .room-list-item.ng-enter,

@@ -44,7 +44,6 @@ define([
         };
 
         socketSrv.register('updateMessage', function(item) {
-
           $scope.messages[item.from.id].push(item);
 
           if (item.from.id !== $scope.toUser.id) {

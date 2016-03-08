@@ -21,6 +21,5 @@ div#complete div.topic-panel-wrapper {
 }
 div#complete div.topic-panel-wrapper .pointer {
   position: absolute;
-  font-size: 20px;
   z-index: 1001;
 }

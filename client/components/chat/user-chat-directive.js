@@ -43,8 +43,8 @@ define([
           }, 100);
         };
 
-        scope.$watch('messages', function(newValue) {
-            scrollBottom();
+        scope.$watch('messages', function() {
+          scrollBottom();
         });
 
         scope.send = function() {

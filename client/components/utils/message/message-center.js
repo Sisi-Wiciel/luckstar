@@ -21,7 +21,7 @@ define([
       $($window.document.body).append($compile(messagetpl)(_scope));
     };
 
-    //this.countdown = function(messages) {
+    // this.countdown = function(messages) {
     //  var self = this;
     //  if (_.isEmpty(messages)) {
     //    return;
@@ -38,7 +38,7 @@ define([
     //      }
     //    }, 1000);
     //  })();
-    //};
+    // };
 
     this.notify = function(content) {
       this._show({
