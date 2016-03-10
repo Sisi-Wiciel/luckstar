@@ -2,34 +2,35 @@
   <div class="room-users-list">
 
     <div ng-repeat="user in room.users track by $index" class="user"
-         ng-class="{target: verdict && verdict.user.id == user.id, empty: !user}" data-userid="{{user.id}}">
+         ng-class="{empty: !user}">
 
       <div class="user-inner" ng-if="user">
         <img class="avatar" ng-src="{{user.avatar}}"/>
         <i ng-if="room.admin.id == user.id" class="fa fa-star admin-tag"></i>
         <i class="fa fa-circle status" ng-style="{color: getUserStatusColor(user)}"></i>
       </div>
-      <!--<div class="status" ng-if="user">-->
-      <!--<div ng-if="room.status==1">-->
-      <!--<div ng-if="!verdict || (verdict.user && verdict.user.id != user.id)">{{user.gpoint || 0}}分</div>-->
-
-      <!--<div ng-if="verdict && verdict.user.id == user.id">-->
-      <!--<div ng-if="verdict.verdict == 1">-->
-      <!--<i class="fa fa-smile-o"></i> 回答正确-->
-      <!--</div>-->
-      <!--<div ng-if="verdict.verdict == 0">-->
-      <!--<i class="fa fa-frown-o"></i> 回答错误-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--<div ng-if="verdict && !verdict.user && verdict.verdict == -1" class="bg-info">-->
-      <!--<i class="fa fa-frown-o"></i> 回答超时-->
-      <!--</div>-->
-      <!--</div>-->
-
-      <!--<div ng-if="room.status == 0">{{isReady(user.id)?'已准备': '未准备'}}</div>-->
-      <!--</div>-->
-      <div class="user-inner empty" ng-if="!user">
+      <div class="user-inner" ng-if="!user">
         <i class="fa fa-user"></i> 等待加入
+      </div>
+
+      <div class="user-profile popover bottom"  ng-if="user">
+        <div class="arrow"></div>
+        <div class="media popover-content">
+            <div class="media-left">
+                <img class="img-circle media-object" ng-src="{{user.avatar}}"/>
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{user.username}}</h4>
+              <p>
+                <div class="item">
+                  积分: {{user.point}}
+                </div>
+                <div class="item">
+                  角色: {{getRoleName(user)}}
+                </div>
+              </p>
+            </div>
+        </div>
       </div>
     </div>
   </div>

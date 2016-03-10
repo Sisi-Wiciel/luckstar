@@ -17,19 +17,21 @@ define([
 
     var userColors = ['acdce6', 'fed5aa', '84dbc8', 'ffa3a4', 'e9cee1'];
 
-    this.isUser = function() {
-      return Boolean(_.find(currentRoom.users, 'id', currentUser.id));
+    this.isUser = function(user) {
+      user = user || currentUser;
+      return Boolean(_.find(currentRoom.users, 'id', user.id));
     };
 
-    this.isAdmin = function() {
-      return currentRoom.admin.id === currentUser.id;
+    this.isAdmin = function(user) {
+      user = user || currentUser;
+      return currentRoom.admin.id === user.id;
     };
 
-    this.getRoleName = function() {
-      if (this.isAdmin()) {
-        return '房间管理员';
+    this.getRoleName = function(user) {
+      if (this.isAdmin(user)) {
+        return '管理员';
       }
-      return this.isUser() ? '参赛者' : '观众';
+      return this.isUser(user) ? '参赛者' : '观众';
     };
 
     this.joinRoom = function(id) {

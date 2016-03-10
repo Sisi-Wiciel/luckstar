@@ -28,26 +28,27 @@ div#room-users {
 }
 div#room-users div.room-users-list {
   padding: 0 12px;
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 div#room-users div.room-users-list div.user {
-  background: #fff;
+  background: #a9a9a9;
+  margin: 2px;
+  position: relative;
   -webkit-border-radius: 5px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 5px;
   -moz-background-clip: padding;
   border-radius: 5px;
   background-clip: padding-box;
-  margin: 2px;
 }
 div#room-users div.room-users-list div.user div.user-inner {
   padding: 5px;
@@ -68,7 +69,26 @@ div#room-users div.room-users-list div.user div.user-inner i.status {
   bottom: 0;
   left: 24px;
 }
+div#room-users div.room-users-list div.user .user-profile {
+  transition: 4s;
+  width: 240px;
+  height: 0;
+  top: 100%;
+}
+div#room-users div.room-users-list div.user .user-profile .arrow {
+  left: 30px;
+}
+div#room-users div.room-users-list div.user .user-profile img {
+  width: 80px;
+  height: 80px;
+}
+div#room-users div.room-users-list div.user .user-profile .media {
+  margin-top: 0;
+}
+div#room-users div.room-users-list div.user:hover .user-profile {
+  height: 100px;
+  display: block;
+}
 div#room-users div.room-users-list div.user.empty {
-  background: #a9a9a9;
   color: #fff;
 }

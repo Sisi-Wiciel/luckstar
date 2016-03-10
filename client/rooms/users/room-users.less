@@ -12,15 +12,14 @@ div#room-users {
   .flex-center;
   div.room-users-list {
     padding: 0 12px;
-
-    .flex(1);
     .display(flex);
+    .flex(1);
+
     div.user {
-      background: #fff;
-      //line-height: 40px;
-      //font-size: 1.5em;
-      .border-radius(5);
+      background: lighten(#767676, 20%);
       margin: 2px;
+      position: relative;
+      .border-radius(5);
 
       div.user-inner {
         padding: 5px;
@@ -41,13 +40,31 @@ div#room-users {
           bottom: 0;
           left: 24px;
         }
-
-
       }
-
-      &.empty{
-        background: lighten(#767676, 20%);
-        color:#fff;
+      .user-profile {
+        transition: 4s;
+        width: 240px;
+        height: 0;
+        top: 100%;
+        .arrow {
+          left: 30px;
+        }
+        img {
+          width: 80px;
+          height: 80px;
+        }
+        .media {
+          margin-top: 0;
+        }
+      }
+      &:hover {
+        .user-profile {
+          height: 100px;
+          display: block;
+        }
+      }
+      &.empty {
+        color: #fff;
       }
 
       //.status {
