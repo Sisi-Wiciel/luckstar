@@ -9,7 +9,7 @@ var Promise = require('bluebird');
 var setting = require('../../config/setting');
 
 var updateRooms = function(socket, roomid) {
-  log.verbose("UpdateRooms", roomid);
+  log.verbose("room.socket#UpdateRooms", roomid);
 
   roomService.list().then(function(rooms) {
     roomid = roomid || socket.room;
@@ -23,7 +23,7 @@ var updateRooms = function(socket, roomid) {
 };
 
 var sendRoomMessage = function(socket, message, isSystem) {
-  log.verbose("SendRoomMessage");
+  log.verbose("room.socket#SendRoomMessage");
 
   socket.io.sockets.in(socket.room).emit('updateRoomMessage', {
     message: message,
@@ -33,7 +33,7 @@ var sendRoomMessage = function(socket, message, isSystem) {
 };
 
 var getAndUpdateRoom = function(socket, id, cb) {
-  log.verbose("GetAndUpdateRoom");
+  log.verbose("room.socket#GetAndUpdateRoom");
   if (!cb) {
     return;
   }
@@ -43,12 +43,11 @@ var getAndUpdateRoom = function(socket, id, cb) {
       var room = rooms[0];
 
       userService.list(socket.uid).get(0).then(function(user) {
-
-        var promise = cb(room, user);
-        promise && promise.then(function() {
+        var promise_ = cb(room, user);
+        promise_ && promise_.then(function() {
           updateRooms(socket, room.id);
         });
-      })
+      });
 
     } else {
       if (socket.room === id) {
@@ -62,7 +61,7 @@ var getAndUpdateRoom = function(socket, id, cb) {
 };
 
 var joinRoom = function(socket, id) {
-  log.verbose("JoinRoom", id);
+  log.verbose("room.socket#JoinRoom", id);
   socket.room = id;
 
   getAndUpdateRoom(socket, id, function(room, user) {
@@ -71,27 +70,24 @@ var joinRoom = function(socket, id) {
     socket.join(socket.room);
 
     if (!_.find(room.users, 'id', user.id)) {
-
-      return roomService.update(room, function(locked) {
-        if (locked.users.length < locked.number) {
-          if (!_.find(locked.users, "id", user.id)) {
-            locked.users.push(user);
+      return roomService.join(room, user).then(function(room) {
+        return userService.joinRoom(user, room).then(function() {
+          // Check out user role
+          if (_.find(room.users, 'id', user.id)) {
             sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
+          } else {
+            sendRoomMessage(socket, '用户' + user.username + '正在观看比赛, 观众' + room.obs.length + '人', true);
           }
-        } else {
-          if (locked.obs.indexOf(user.id) == -1) {
-            locked.obs.push(user);
-            sendRoomMessage(socket, '用户' + user.username + '正在观看比赛, 观众' + locked.obs.length + '人', true);
-          }
-        }
-      });
+        });
+      })
+    } else {
+      sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
     }
-
   });
 };
 
 var leaveRoom = function(socket) {
-  log.verbose("LeaveRoom");
+  log.verbose("room.socket#LeaveRoom");
   var room = socket.room;
 
   var adminLeaver = function(room, user) {
@@ -125,9 +121,7 @@ var leaveRoom = function(socket) {
 
     if (promise) {
       socket.leave(room);
-
       delete socket.room;
-
       return promise;
     }
 
@@ -135,7 +129,7 @@ var leaveRoom = function(socket) {
 };
 
 var startRoomCompete = function(socket) {
-  log.verbose("StartRoomCompete");
+  log.verbose("room.socket#StartRoomCompete");
   var COUNTDOWN_MAXNUMBER = 3;
   getAndUpdateRoom(socket, socket.room, function(room, user) {
     if (room.admin.id !== user.id) {
@@ -165,7 +159,7 @@ var startRoomCompete = function(socket) {
 };
 
 var unreadyRoomCompete = function(socket) {
-  log.verbose("UnReadyRoomCompete");
+  log.verbose("room.socket#UnReadyRoomCompete");
 
   getAndUpdateRoom(socket, socket.room, function(room, user) {
 
@@ -174,37 +168,35 @@ var unreadyRoomCompete = function(socket) {
 
       if (userIndex > -1) {
         _.pullAt(locked.readyUsers, userIndex);
-        sendRoomMessage(socket, '用户' + user.username + '取消准备.', true);
-
         socket.io.sockets.in(socket.room).emit('updateRoom', locked);
       } else {
         log.warn("User %s was not in ready status yet ", user.id);
       }
-
-    })
+    }).then(function() {
+      sendRoomMessage(socket, '用户' + user.username + '取消准备.', true);
+    });
   });
 };
 var readyRoomCompete = function(socket) {
-  log.verbose("ReadyRoomCompete");
+  log.verbose("room.socket#ReadyRoomCompete");
 
   getAndUpdateRoom(socket, socket.room, function(room, user) {
 
     roomService.update(socket.room, function(locked) {
       if (locked.readyUsers.indexOf(user.id) == -1) {
-        locked.readyUsers.push(user.id)
-
-        sendRoomMessage(socket, '用户' + user.username + '准备就绪.', true);
+        locked.readyUsers.push(user.id);
         socket.io.sockets.in(socket.room).emit('updateRoom', locked);
       } else {
         log.warn("User %s was in ready status ", user.id);
       }
-
+    }).then(function() {
+      sendRoomMessage(socket, '用户' + user.username + '准备就绪.', true);
     })
 
   });
 };
 var terminateRoomCompete = function(socket) {
-  log.verbose("TerminateRoomCompete");
+  log.verbose("room.socket#TerminateRoomCompete");
 
   getAndUpdateRoom(socket, socket.room, function(room, user) {
     return roomService.terminateCompete(room).then(function() {
@@ -214,20 +206,23 @@ var terminateRoomCompete = function(socket) {
 };
 
 var getRoomStat = function(socket) {
-  log.verbose("GetRoomStat, " + socket.room);
+  log.verbose("room.socket#GetRoomStat, " + socket.room);
   return roomService.listRoomStat(socket.room);
 };
+
 var createRoom = function(socket, room, cb) {
-  log.verbose("CreateRoom, " + socket.uid);
+  log.verbose("room.socket#CreateRoom, " + socket.uid);
   if (socket.room) {
     cb({
       error: 'ALREADY_IN_ROOM'
     });
   } else {
     roomService.save(room, socket.uid).then(function(room) {
-      updateRooms(socket);
-      return room;
-    }).then(cb);
+      return  userService.joinRoom(socket.uid, room).then(function() {
+        updateRooms(socket);
+        cb(room);
+      })
+    });
   }
 };
 
@@ -270,11 +265,11 @@ exports.register = function(socket) {
   })
   socketSrv.on(socket, 'room get', function(id, cb) {
     id = id || socket.room;
-    if(!_.isEmpty(id)){
+    if (!_.isEmpty(id)) {
       roomService.list(id).then(function(rooms) {
         cb(_.first(rooms));
       });
-    }else{
+    } else {
       cb({});
     }
 
@@ -285,5 +280,5 @@ exports.register = function(socket) {
 };
 
 exports.deregister = function(socket) {
-  //leaveRoom(socket);
+  leaveRoom(socket);
 };

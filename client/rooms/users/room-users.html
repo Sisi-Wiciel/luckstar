@@ -10,7 +10,7 @@
         <i class="fa fa-circle status" ng-style="{color: getUserStatusColor(user)}"></i>
       </div>
       <div class="user-inner" ng-if="!user">
-        <i class="fa fa-user"></i> 等待加入
+        <i class="fa fa-user"></i>
       </div>
 
       <div class="user-profile popover bottom"  ng-if="user">
@@ -27,6 +27,9 @@
                 </div>
                 <div class="item">
                   角色: {{getRoleName(user)}}
+                </div>
+                <div class="item pointer-color">
+                  颜色: <span ng-style="{background: '#{{userPointerColors[$index]}}'}"></span>
                 </div>
               </p>
             </div>

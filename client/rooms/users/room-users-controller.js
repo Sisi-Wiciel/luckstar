@@ -14,6 +14,8 @@ define([
       UNREADY: '#f88d00',
       READY: '#73e252'
     };
+    $scope.userPointerColors = roomSrv.getUserMousePointerColor();
+
     $scope.start = function() {
       // $q.reject() 用户reload btn loading文字
       if (_.isEmpty($scope.room.readyUsers)) {

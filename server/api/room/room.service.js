@@ -32,7 +32,7 @@ var objSaved = function(room) {
 //redis => obj
 var assemble = function(room) {
 
-  if(!room){
+  if (!room) {
     return room;
   }
 
@@ -79,7 +79,8 @@ exports.update = function(room, setFun) {
   }, function(error) {
     log.error("save room error", error);
   })
-}
+};
+
 exports.save = function(room, userid) {
 
   room.create = moment().format();
@@ -163,7 +164,21 @@ exports.finishCompete = function(room, statist) {
   return this.update(room, function(locked) {
     locked.status = 0;
     locked.readyUsers = [locked.admin.id];
-    locked.topic = "";
+    locked.topic = '';
+  });
+};
+
+exports.join = function(room, user) {
+  return this.update(room, function(locked) {
+    if (locked.users.length < locked.number) {
+      if (!_.find(locked.users, 'id', user.id)) {
+        locked.users.push(user);
+      }
+    } else {
+      if (locked.obs.indexOf(user.id) == -1) {
+        locked.obs.push(user);
+      }
+    }
   });
 };
 

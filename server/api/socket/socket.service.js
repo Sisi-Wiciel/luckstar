@@ -117,15 +117,15 @@ module.exports = {
 
   init: function() {
 
-    setInterval(function() {
-      console.info('connected socket numbers for now, ' + io.sockets.sockets.length);
-    }, 5000);
+    //setInterval(function() {
+    //  console.info('connected socket numbers for now, ' + io.sockets.sockets.length);
+    //}, 5000);
 
     this.createIO(function(socket) {
       socket.connectedAt = new Date();
 
       socket.on('disconnect', function() {
-        onDisconnect(socket);
+        //onDisconnect(socket); f5 bug
         log.info("Disconnecting socket with id", socket.id);
       });
 

@@ -78,37 +78,38 @@ module.exports = {
     return this.db.get(key);
   },
   saveObj: function(key, obj, setFun) {
-    var _key = key + ":" + obj.id;
+    var id_ = _.isString(obj) ? obj : obj.id;
+    var key_ = key + ":" + id_;
     var self = this;
 
     if (setFun && _.isFunction(setFun)) {
-      log.debug("REDIS-CAS-LOCK: [%s] = ", _key, obj);
+      log.debug("REDIS-CAS-LOCK: [%s] = ", key_, id_);
 
       return new Promise(function(resolve, reject) {
         self.lock(self.LOCK_KEY, function(done) {
-          self.listObj(key, obj.id).then(function(Objs) {
+          self.listObj(key, id_).then(function(Objs) {
             var lockedObj = _.first(Objs);
 
             if (lockedObj) {
-              setFun(_.clone(lockedObj)).then(function(_obj) {
-                self.db.hmset(_key, _obj).then(function() {
-                  log.debug("REDIS-CAS-LOCK-UNLOCK: [%s] = ", _key, _obj);
+              Promise.resolve(setFun(_.clone(lockedObj))).then(function(_obj) {
+                self.db.hmset(key_, _obj).then(function() {
+                  log.debug("REDIS-CAS-LOCK-UNLOCK: [%s] = ", key_, _obj);
                   done();
                   resolve(_obj);
                 });
               })
             } else {
               done();
-              log.error("Cannot save object, because it's not existed with key " + _key);
-              reject(lockedObj);
+              log.error("Cannot save object, because it's not existed with key " + id_);
+              reject(obj);
             }
 
           })
         });
       });
     } else {
-      log.debug("REDIS-SAVE: [%s] = ", _key, obj);
-      return this.db.hmset(_key, obj).then(function() {
+      log.debug("REDIS-SAVE: [%s] = ", key_, obj);
+      return this.db.hmset(key_, obj).then(function() {
         return obj;
       });
     }

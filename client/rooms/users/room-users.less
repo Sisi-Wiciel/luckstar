@@ -17,6 +17,7 @@ div#room-users {
 
     div.user {
       background: lighten(#767676, 20%);
+      width: 60px;
       margin: 2px;
       position: relative;
       .border-radius(5);
@@ -42,9 +43,9 @@ div#room-users {
         }
       }
       .user-profile {
-        transition: 4s;
         width: 240px;
-        height: 0;
+        padding: 20px 0;
+        //height: 0;
         top: 100%;
         .arrow {
           left: 30px;
@@ -55,16 +56,28 @@ div#room-users {
         }
         .media {
           margin-top: 0;
+          .pointer-color {
+            span {
+              height: 10px;
+              width: 50px;
+              display: inline-block;
+            }
+          }
         }
       }
       &:hover {
         .user-profile {
-          height: 100px;
+          //height: 100px;
           display: block;
         }
       }
       &.empty {
-        color: #fff;
+        text-align: center;
+        i {
+          font-size: 50px;
+          color: #767676;
+        }
+
       }
 
       //.status {

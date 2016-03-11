@@ -6,7 +6,7 @@ module.exports = {
     AUTH_MAX_RETRY_TIMES: 5
   },
   ROOM: {
-    COMPETE_MAX_TOPICS: 15,
+    COMPETE_MAX_TOPICS: 3,
     COMPETE_TOPIC_COUNTDOWN: 20
   },
   USER: {

@@ -41,6 +41,7 @@ div#room-users div.room-users-list {
 }
 div#room-users div.room-users-list div.user {
   background: #a9a9a9;
+  width: 60px;
   margin: 2px;
   position: relative;
   -webkit-border-radius: 5px;
@@ -70,9 +71,8 @@ div#room-users div.room-users-list div.user div.user-inner i.status {
   left: 24px;
 }
 div#room-users div.room-users-list div.user .user-profile {
-  transition: 4s;
   width: 240px;
-  height: 0;
+  padding: 20px 0;
   top: 100%;
 }
 div#room-users div.room-users-list div.user .user-profile .arrow {
@@ -85,10 +85,18 @@ div#room-users div.room-users-list div.user .user-profile img {
 div#room-users div.room-users-list div.user .user-profile .media {
   margin-top: 0;
 }
+div#room-users div.room-users-list div.user .user-profile .media .pointer-color span {
+  height: 10px;
+  width: 50px;
+  display: inline-block;
+}
 div#room-users div.room-users-list div.user:hover .user-profile {
-  height: 100px;
   display: block;
 }
 div#room-users div.room-users-list div.user.empty {
-  color: #fff;
+  text-align: center;
+}
+div#room-users div.room-users-list div.user.empty i {
+  font-size: 50px;
+  color: #767676;
 }

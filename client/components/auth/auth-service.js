@@ -33,8 +33,8 @@ define([
 
     this.updateCurrentUser = function(user) {
       if (_.isEmpty(user)) {
-        socketSrv.getUser().then(function(user) {
-          _.assign(currentUser, user);
+        socketSrv.getUser().then(function(result) {
+          _.assign(currentUser, result);
         });
       } else {
         _.assign(currentUser, user);

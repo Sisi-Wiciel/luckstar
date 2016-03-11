@@ -61,6 +61,7 @@ define([
     this.updateCurrentRoom = function(room) {
       if (!_.isEmpty(currentRoom) && currentRoom.status !== room.status) {
         if (room.status === 0) {
+          roomstat = {};
           roomEndCompetitionCb.fire(room);
         }
         if (room.status === 1) {

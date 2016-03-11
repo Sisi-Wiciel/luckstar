@@ -7,10 +7,10 @@ function(angular, _, app) {
   'use strict';
 
   app.controller('roomCompeteCtrl', function($scope, $timeout, socketSrv, authSrv, roomSrv) {
-    $scope.records = [];
     $scope.roomstat = roomSrv.getRoomStat();
     roomSrv.onEndCompetition(function() {
       $scope.topic = null;
+      authSrv.updateCurrentUser();
     });
 
     socketSrv.register('topicUpdate', function(topic) {
