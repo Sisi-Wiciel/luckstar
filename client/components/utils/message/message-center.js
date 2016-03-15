@@ -21,25 +21,6 @@ define([
       $($window.document.body).append($compile(messagetpl)(_scope));
     };
 
-    // this.countdown = function(messages) {
-    //  var self = this;
-    //  if (_.isEmpty(messages)) {
-    //    return;
-    //  }
-    //  var index = 0;
-    //  (function countdown() {
-    //    $timeout(function() {
-    //      if (index < messages.length) {
-    //        self._show({
-    //          content: '<span>' + messages[index++] + '</span>',
-    //          animation: 'countdown'
-    //        }, 1000990);
-    //        countdown();
-    //      }
-    //    }, 1000);
-    //  })();
-    // };
-
     this.notify = function(content) {
       this._show({
         position: 'right',

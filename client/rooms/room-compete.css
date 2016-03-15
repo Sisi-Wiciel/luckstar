@@ -18,6 +18,24 @@ div#complete {
 div#complete div.topic-panel-wrapper {
   position: relative;
   cursor: pointer;
+  border: 4px dashed #e3e3e3;
+}
+div#complete div.topic-panel-wrapper .complete-countdown {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  font-size: 200px;
+  text-align: center;
+}
+div#complete div.topic-panel-wrapper .complete-countdown.ng-hide-remove {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: zoomIn;
+  animation-name: zoomIn;
 }
 div#complete div.topic-panel-wrapper .pointer {
   position: absolute;

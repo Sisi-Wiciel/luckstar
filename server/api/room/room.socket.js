@@ -141,6 +141,7 @@ var startRoomCompete = function(socket) {
         (function startCountDown(number) {
           setTimeout(function() {
             if (number > 0) {
+              socket.io.sockets.in(socket.room).emit('StartCompeteCountDown', number);
               sendRoomMessage(socket, number + '秒后开始...', true);
               startCountDown(--number);
             } else {
@@ -210,19 +211,31 @@ var getRoomStat = function(socket) {
   return roomService.listRoomStat(socket.room);
 };
 
-var createRoom = function(socket, room, cb) {
+var createRoom = function(socket, newroom, cb) {
   log.verbose("room.socket#CreateRoom, " + socket.uid);
-  if (socket.room) {
-    cb({
-      error: 'ALREADY_IN_ROOM'
-    });
-  } else {
-    roomService.save(room, socket.uid).then(function(room) {
-      return  userService.joinRoom(socket.uid, room).then(function() {
+
+  function do_save() {
+    roomService.save(newroom, socket.uid).then(function(room) {
+      return userService.joinRoom(socket.uid, room).then(function() {
         updateRooms(socket);
         cb(room);
-      })
+      });
     });
+  }
+
+  if (socket.room) {
+    roomService.list(socket.room).then(function(room) {
+      if (_.isEmpty(room)) {
+        socket.room = null;
+        do_save();
+      } else {
+        cb({
+          error: 'ALREADY_IN_ROOM'
+        });
+      }
+    });
+  } else {
+    do_save();
   }
 };
 

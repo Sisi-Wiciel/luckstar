@@ -10,11 +10,14 @@ define([
   app.directive('roomTopicwrapper', function() {
     return {
       template: '<div class="topic-panel-wrapper" >' +
-      '<img class="pointer" ng-repeat="user in room.users track by $index" ng-show="user && user.id !== curr.id" ng-src="libs/images/icons/pointer-{{userColors[$index]}}.png"></img>' +
+      '<div class="complete-countdown" ng-show="countdown">{{countdown}}</div>' +
+      '<img class="pointer" ng-repeat="user in room.users track by $index" ' +
+      ' ng-show="user && user.id !== curr.id" ' +
+      ' ng-src="libs/images/icons/pointer-{{userColors[$index]}}.png"></img>' +
       '<div ng-transclude></div>' +
       '</div>',
       transclude: true,
-      controller: function($scope, socketSrv, roomSrv) {
+      controller: function($scope, socketSrv, roomSrv, $timeout) {
         var preCoordinate = [0, 0];
         $scope.pixel = [0, 0];
         $scope.userColors = roomSrv.getUserMousePointerColor();
@@ -30,6 +33,19 @@ define([
           if (data.id !== $scope.curr.id) {
             $scope.mounseTracker(data.id, data.pixel);
           }
+        });
+        socketSrv.register('StartCompeteCountDown', function(countdown) {
+          if(countdown === 1){
+            $timeout(function() {
+              $scope.countdown = null;
+            }, 3000);
+          }
+          //for animated;
+          $scope.countdown = null;
+          $timeout(function() {
+            $scope.countdown = countdown;
+          });
+
         });
       },
       link: function(scope, elem) {

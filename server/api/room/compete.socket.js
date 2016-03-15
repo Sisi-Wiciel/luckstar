@@ -31,7 +31,6 @@ var nodifyVerdict = function(socket, room, verdictObj) {
 
 
       setTimeout(function() {
-        //nodifyRoom(socket, 'updateRoomStat', competeStat);
         if (competeStat.currNum >= competeStat.maxNum) {
           roomService.finishCompete(room, competeStat).then(function() {
 
