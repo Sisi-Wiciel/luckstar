@@ -21,6 +21,7 @@ define([
 
     $scope.updateRoomstat = function() {
       socketSrv.getRoomStat().then(function(result) {
+        console.info(result);
         _.assign($scope.roomstat, result);
       });
     }
