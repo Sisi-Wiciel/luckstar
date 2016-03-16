@@ -17,34 +17,45 @@ define([
 
     $scope.getRoleName = roomSrv.getRoleName;
 
-    $scope.leave = function() {
+    $scope.roomstat = {};
+
+    $scope.updateRoomstat = function() {
+      socketSrv.getRoomStat().then(function(result) {
+        _.assign($scope.roomstat, result);
+      });
+    }
+
+    function do_leave(){
       navbarSrv.removeItem('我的房间');
-      socketSrv.leaveRoom();
       $location.path('/home');
+    }
+
+    $scope.leave = function() {
+      socketSrv.leaveRoom();
+      do_leave();
     };
 
     $scope.$on('topicVerdict', function(event, verdict) {
       $scope.verdict = verdict;
+      $scope.updateRoomstat();
     });
 
     socketSrv.register('updateRoom', function(room) {
+      roomSrv.updateCurrentRoom(room);
       if (_.isEmpty(room)) {
-        // room closed;
         if (!$scope.isAdmin()) {
           messageCenter.error('房间不存在或已经关闭.');
         }
-        $scope.leave();
+        do_leave();
         $scope.$apply();
         return;
       }
 
-      roomSrv.updateCurrentRoom(room);
-
+      $scope.updateRoomstat();
       $scope.$apply();
     });
 
     roomSrv.joinRoom($stateParams.id);
-
     navbarSrv.addItem('我的房间', $location.path());
   });
 });

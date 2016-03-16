@@ -56,8 +56,9 @@ function(angular, settings, $, _, moment) {
         user: function(socketSrv, navbarSrv, authSrv, $q, $rootScope, $timeout) {
           return $q(function(resolve, reject) {
             $timeout(function() {
-
+              console.info("open socket");
               socketSrv.open(function() {
+                console.info("get current user");
                 authSrv.updateCurrentUser();
                 resolve();
               }, function() {

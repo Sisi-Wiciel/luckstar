@@ -2,7 +2,7 @@ define([
   'angular'
 ], function(angular) {
   'use strict';
-  angular.module('luckStar').controller('indexCtrl', function($scope, socketSrv, $location, messageCenter) {
+  angular.module('luckStar').controller('indexCtrl', function($scope, socketSrv, $location, messageCenter, store) {
     $scope.status = 'login';
 
     var params = $location.search();
@@ -20,5 +20,7 @@ define([
     $scope.toLogin = function() {
       $scope.status = 'login';
     };
+
+    store.delete('token');
   });
 });

@@ -57,7 +57,7 @@ var topicTimeoutChecker = function(socket, topicId) {
   setTimeout(function() {
     if (socket.room) {
       roomService.list(socket.room).get(0).then(function(room) {
-        if (room.status == 1 && topicId === room.topic) {
+        if (room && room.status == 1 && topicId === room.topic) {
           nodifyVerdict(socket, room, {
             verdict: -1
           });

@@ -64,7 +64,6 @@ define([
 
         socketSrv.register('topicVerdict', function(obj) {
           setVerdict(obj);
-          roomSrv.updateState();
           $scope.$apply();
         });
 

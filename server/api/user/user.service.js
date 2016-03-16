@@ -13,6 +13,10 @@ var update = function(id, setFunc) {
   });
 };
 
+exports.diconnect = function(id) {
+  return db.set("users:" + id, "sid", '');
+};
+
 exports.online = function(id) {
   log.debug("user.service#UserOnline", id);
   return db.set("users:" + id, "state", 1);
@@ -49,11 +53,9 @@ exports.add = function(user) {
 
 };
 
-exports.joinRoom = function(userid, room) {
-  log.debug("user.service#JoinRoom", userid, room.id);
-  return update(userid, function(lockedUser) {
-    lockedUser.room = room.id;
-  });
+exports.setRoom = function(userid, roomid) {
+  log.debug("user.service#JoinRoom", userid, roomid);
+  return db.set("users:" + userid, "room", roomid);
 };
 
 exports.updatePoint = function(uid, point) {
@@ -79,4 +81,9 @@ exports.list = function(ids) {
     return Promise.resolve();
   }
 
+};
+
+
+exports.deregister = function(socket) {
+  this.setRoom(socket.uid, null);
 };

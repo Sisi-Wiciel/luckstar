@@ -3,7 +3,7 @@
       <li ng-click="showRoomStat()">
         <i class="fa" ng-class="{'fa-list-alt': !roomstatVisiable, 'fa-times': roomstatVisiable}"></i>
         <p ng-show="roomstatVisiable" ng-class="{actived: roomstatVisiable}">
-          <compete-statistic room="room"></compete-statistic>
+          <compete-statistic room="room" roomstat="roomstat"></compete-statistic>
         </p>
       </li>
     </ul>

@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var setting = require('../../config/setting');
 var io = require('socket.io').listen(setting.SOCKET.PORT);
 var userSocket = require('../user/user.socket');
@@ -25,7 +26,7 @@ function onDisconnect(socket) {
 }
 
 module.exports = {
-  authCall: function(socket) {
+  auth: function(socket) {
     return new Promise(function(resolve, reject) {
       if (socket.uid && socket.auth) {
         resolve();
@@ -44,7 +45,7 @@ module.exports = {
                   log.error("socket check failed");
                 }
               }
-            }else{
+            } else {
               log.error("Socket was closed");
             }
 
@@ -63,7 +64,7 @@ module.exports = {
 
   on: function(socket, key, cb) {
     socket.on(key, function(args, _cb) {
-      this.authCall(socket).then(function() {
+      this.auth(socket).then(function() {
         socket.timeoutId && clearTimeout(socket.timeoutId);
         socket.timeoutId = setTimeout(function() {
           socket.disconnect();
@@ -125,7 +126,23 @@ module.exports = {
       socket.connectedAt = new Date();
 
       socket.on('disconnect', function() {
-        //onDisconnect(socket); f5 bug
+        var userid = socket.uid;
+        var socketid = socket.id;
+        userService.diconnect(userid).then(function() {
+          // ignore f5
+          setTimeout(function() {
+            userService.list(userid).then(function(users) {
+              if (!_.isEmpty(users) && users.length == 1) {
+                var user = _.first(users);
+                if (_.isEmpty(user.sid)) {
+                  onDisconnect(socket);
+                } else {
+                  log.info("User reconnected immediately", user.id );
+                }
+              }
+            })
+          }, 1000);
+        })
         log.info("Disconnecting socket with id", socket.id);
       });
 

@@ -15,7 +15,7 @@ module.exports = {
       HOME_PAGE: '浏览首页.',
       IN_ROOM: '比赛房间,等待中.',
       IN_COMPETING: '比赛房间,答题中.',
-      IN_COMPETING_WATCHING: '比赛房间,答题中[观看].',
+      IN_COMPETING_WATCHING: '比赛房间,观战.',
       IN_TOPIC: '浏览题目页面.'
     },
     AUTH_EXPRIES_IN_MINUTES: 7 * 24 * 60, // token timeout (min)

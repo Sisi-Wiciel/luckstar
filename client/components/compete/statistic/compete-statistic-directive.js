@@ -10,7 +10,8 @@ function(angular, _, app, $) {
   app.directive('competeStatistic', function($timeout) {
     return {
       scope: {
-        room: '='
+        room: '=',
+        roomstat: '='
       },
       templateUrl: 'components/compete/statistic/statistic.html',
       controller: function($scope, roomSrv) {
@@ -21,8 +22,6 @@ function(angular, _, app, $) {
           $scope.statTable = !$scope.statTable;
           $scope.statTable || $scope.setScorebarWidth();
         };
-
-        $scope.roomstat = roomSrv.getRoomStat();
 
         // Fix F5 issue.
         $timeout(function() {

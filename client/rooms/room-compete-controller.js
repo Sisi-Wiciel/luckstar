@@ -7,7 +7,7 @@ function(angular, _, app) {
   'use strict';
 
   app.controller('roomCompeteCtrl', function($scope, $timeout, socketSrv, authSrv, roomSrv) {
-    $scope.roomstat = roomSrv.getRoomStat();
+
     roomSrv.onEndCompetition(function() {
       $scope.topic = null;
       authSrv.updateCurrentUser();
@@ -24,6 +24,7 @@ function(angular, _, app) {
     });
 
     // Fix F5 issue
+    $scope.updateRoomstat();
     socketSrv.getTopic();
   });
 });

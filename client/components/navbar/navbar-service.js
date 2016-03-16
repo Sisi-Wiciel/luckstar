@@ -19,7 +19,7 @@ define([
     };
 
     this.addItem = function(title, link) {
-      if (!_.find(this.menu, 'link', link)) {
+      if (!_.find(this.menu, 'title', title)) {
         this.menu.push({
           title: title,
           link: link

@@ -5,12 +5,12 @@ define([
 ], function(angular, _, app) {
   'use strict';
 
-  app.controller('roomToolsCtrl', function($scope, roomSrv) {
+  app.controller('roomToolsCtrl', function($scope) {
     $scope.roomstatVisiable = false;
 
     $scope.showRoomStat = function() {
       if ($scope.roomstatVisiable) {
-        roomSrv.updateState();
+        $scope.updateRoomstat();
       }
       $scope.roomstatVisiable = !$scope.roomstatVisiable;
     };

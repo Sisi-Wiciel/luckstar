@@ -10,7 +10,7 @@ define([
 
   app.service('roomSrv', function(socketSrv, authSrv) {
     var currentRoom = {};
-    var roomstat = {};
+
     var currentUser = authSrv.getCurrentUser();
     var roomEndCompetitionCb = $.Callbacks();
     var roomStartCompetitionCb = $.Callbacks();
@@ -18,11 +18,17 @@ define([
     var userColors = ['acdce6', 'fed5aa', '84dbc8', 'ffa3a4', 'e9cee1'];
 
     this.isUser = function(user) {
+      if(_.isEmpty(currentRoom)){
+        return false;
+      }
       user = user || currentUser;
       return Boolean(_.find(currentRoom.users, 'id', user.id));
     };
 
     this.isAdmin = function(user) {
+      if(_.isEmpty(currentRoom)){
+        return false;
+      }
       user = user || currentUser;
       return currentRoom.admin.id === user.id;
     };
@@ -36,7 +42,9 @@ define([
 
     this.joinRoom = function(id) {
       return socketSrv.getRoom(id).then(function(result) {
+        // init room data
         this.updateCurrentRoom(result);
+
         socketSrv.joinRoom(id);
         return currentRoom;
       }.bind(this));
@@ -59,13 +67,12 @@ define([
     };
 
     this.updateCurrentRoom = function(room) {
+      room = room || {};
       if (!_.isEmpty(currentRoom) && currentRoom.status !== room.status) {
         if (room.status === 0) {
-          roomstat = {};
           roomEndCompetitionCb.fire(room);
         }
         if (room.status === 1) {
-          this.updateState();
           roomStartCompetitionCb.fire(room);
         }
       }
@@ -108,17 +115,5 @@ define([
       }
     };
 
-    this.getRoomStat = function() {
-      if (_.isEmpty(roomstat)) {
-        this.updateState();
-      }
-      return roomstat;
-    };
-
-    this.updateState = function() {
-      socketSrv.getRoomStat().then(function(result) {
-        _.assign(roomstat, result);
-      });
-    };
   });
 });
