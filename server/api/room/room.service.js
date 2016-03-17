@@ -92,7 +92,6 @@ exports.save = function(room, userid) {
   room.obs = [];
   room.number = 5;
   return db.saveObj("rooms", objSaved(room));
-
 };
 
 exports.remove = function(room) {

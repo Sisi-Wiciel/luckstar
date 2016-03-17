@@ -45,6 +45,9 @@
   text-align: center;
   border-right: solid 1px #f49448;
 }
+.room-main .room-tools div.popover > div.arrow {
+  border-right-color: #F38630;
+}
 .room-main .room-tools .tool {
   cursor: pointer;
   list-style: none;

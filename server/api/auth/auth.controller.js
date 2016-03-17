@@ -1,7 +1,8 @@
 var router = require("express").Router(),
   User = require("../user/user.model"),
   passport = require('passport'),
-  auth = require('./auth.service.js'),
+  authService = require('./auth.service.js'),
+  userService = require('../user/user.service.js'),
   LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy({
@@ -40,7 +41,13 @@ function login(req, res, next) {
       return res.status(401).json({message: '用户不存在'});
     }
 
-    res.json({token: auth.genToken(user)});
+    userService.isOnline(user.id).then(function(isOnline) {
+      if(isOnline){
+        return res.status(401).json({message: '用户已登录'});
+      }else{
+        res.json({token: authService.genToken(user)});
+      }
+    });
 
   })(req, res, next)
 };

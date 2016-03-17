@@ -83,13 +83,9 @@ exports.register = function(socket) {
 exports.updateUsers = updateUsers;
 
 exports.deregister = function(socket) {
-  setTimeout(function() {
-    if (socket.uid) {
-      userService.offline(socket.uid).then(function() {
-        updateUsers(socket);
-      });
-    }
-  }, 500);
+  userService.offline(socket.uid).then(function() {
+    updateUsers(socket);
+  });
 };
 
 

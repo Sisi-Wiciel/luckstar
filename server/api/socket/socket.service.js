@@ -128,7 +128,7 @@ module.exports = {
       socket.on('disconnect', function() {
         var userid = socket.uid;
         var socketid = socket.id;
-        userService.diconnect(userid).then(function() {
+        userService.disconnect(userid).then(function() {
           // ignore f5
           setTimeout(function() {
             userService.list(userid).then(function(users) {

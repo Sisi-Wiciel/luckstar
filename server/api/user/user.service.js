@@ -13,7 +13,7 @@ var update = function(id, setFunc) {
   });
 };
 
-exports.diconnect = function(id) {
+exports.disconnect = function(id) {
   return db.set("users:" + id, "sid", '');
 };
 
@@ -29,9 +29,23 @@ exports.changeStatus = function(id, status) {
 
 exports.offline = function(id) {
   log.debug("user.service#UserOffline", id);
-  return db.set("users:" + id, "state", 0).then(function() {
+  return this.setRoom(id, null)
+  .then(function() {
+    return db.set("users:" + id, "state", 0)
+  })
+  .then(function() {
     this.changeStatus(id, setting.USER.STATUS.OFFLINE);
   }.bind(this));
+};
+
+exports.isOnline = function(id) {
+  return this.list(id).get(0).then(function(user) {
+    if(user){
+      return 1 === parseInt(user.state, 10);
+    }else{
+      return false;
+    }
+  });
 };
 
 exports.add = function(user) {
@@ -81,9 +95,4 @@ exports.list = function(ids) {
     return Promise.resolve();
   }
 
-};
-
-
-exports.deregister = function(socket) {
-  this.setRoom(socket.uid, null);
 };

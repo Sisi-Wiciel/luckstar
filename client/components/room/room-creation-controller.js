@@ -21,7 +21,13 @@ define([
     };
 
     $scope.create = function() {
+      if (_.isEmpty($scope.newroom.title)) {
+        messageCenter.error("请填写房间名");
+        return;
+      }
+
       socketSrv.createRoom(_.clone($scope.newroom)).then(function(message) {
+
         if (message.id) {
           messageCenter.notify('房间' + $scope.newroom.title + '创建成功');
           $scope.join(message.id);
