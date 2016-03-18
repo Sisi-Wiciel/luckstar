@@ -111,6 +111,9 @@ define([
       leaveRoom: function() {
         this.emit('leave room');
       },
+      kickOff: function(userid) {
+        this.emit('kick off', userid);
+      },
       sendMsg: function(msg) {
         this.emit('send message', msg);
       },

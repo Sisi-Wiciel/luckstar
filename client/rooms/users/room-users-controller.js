@@ -59,6 +59,9 @@ define([
     $scope.terminate = function() {
       socketSrv.terminateCompete();
     };
+    $scope.kickOff = function(userid) {
+      socketSrv.kickOff(userid);
+    };
   });
   /* link: function (scope, ele) {
    scope.reorder = function () {

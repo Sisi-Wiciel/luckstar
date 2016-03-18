@@ -12,27 +12,32 @@
       <div class="user-inner" ng-if="!user">
         <i class="fa fa-user"></i>
       </div>
-
-      <div class="user-profile popover bottom"  ng-if="user">
+      <div class="hover-mask"></div>
+      <div class="user-profile popover bottom" ng-if="user">
         <div class="arrow"></div>
         <div class="media popover-content">
-            <div class="media-left">
-                <img class="img-circle media-object" ng-src="{{user.avatar}}"/>
+          <div class="media-left">
+            <img class="img-circle media-object" ng-src="{{user.avatar}}"/>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">{{user.username}}</h4>
+            <p>
+              <div class="item">
+                积分: {{user.point}}
+              </div>
+              <div class="item">
+                角色: {{getRoleName(user)}}
+              </div>
+              <div class="item pointer-color">
+                颜色: <span ng-style="{background: '#{{userPointerColors[$index]}}'}"></span>
+              </div>
+            </p>
+            <div class="foot">
+                <a href ng-click="kickOff(user.id)" comfirm="是否要移除此用户?" ng-if="isAdmin() && !isAdmin(user)">
+                  <i class="fa fa-sign-out"></i>
+                </a>
             </div>
-            <div class="media-body">
-              <h4 class="media-heading">{{user.username}}</h4>
-              <p>
-                <div class="item">
-                  积分: {{user.point}}
-                </div>
-                <div class="item">
-                  角色: {{getRoleName(user)}}
-                </div>
-                <div class="item pointer-color">
-                  颜色: <span ng-style="{background: '#{{userPointerColors[$index]}}'}"></span>
-                </div>
-              </p>
-            </div>
+          </div>
         </div>
       </div>
     </div>

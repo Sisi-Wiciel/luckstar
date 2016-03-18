@@ -27,7 +27,6 @@ div#room-users {
   align-items: center;
 }
 div#room-users div.room-users-list {
-  padding: 0 12px;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -70,25 +69,42 @@ div#room-users div.room-users-list div.user div.user-inner i.status {
   bottom: 0;
   left: 24px;
 }
-div#room-users div.room-users-list div.user .user-profile {
+div#room-users div.room-users-list div.user div.hover-mask {
+  position: absolute;
+  width: 150%;
+  top: 90%;
+}
+div#room-users div.room-users-list div.user div.user-profile {
   width: 240px;
-  padding: 20px 0;
+  padding: 14px 0;
   top: 100%;
 }
-div#room-users div.room-users-list div.user .user-profile .arrow {
+div#room-users div.room-users-list div.user div.user-profile .arrow {
   left: 30px;
 }
-div#room-users div.room-users-list div.user .user-profile img {
+div#room-users div.room-users-list div.user div.user-profile img {
   width: 80px;
   height: 80px;
 }
-div#room-users div.room-users-list div.user .user-profile .media {
+div#room-users div.room-users-list div.user div.user-profile .media {
   margin-top: 0;
 }
-div#room-users div.room-users-list div.user .user-profile .media .pointer-color span {
+div#room-users div.room-users-list div.user div.user-profile .media .pointer-color span {
   height: 10px;
   width: 50px;
   display: inline-block;
+}
+div#room-users div.room-users-list div.user div.user-profile .foot a i {
+  font-size: .5em;
+  padding: .5em;
+  border-radius: 50px;
+}
+div#room-users div.room-users-list div.user div.user-profile .foot a i:hover {
+  background-color: #f38630;
+  color: #fff;
+}
+div#room-users div.room-users-list div.user:hover div.hover-mask {
+  height: 120px;
 }
 div#room-users div.room-users-list div.user:hover .user-profile {
   display: block;

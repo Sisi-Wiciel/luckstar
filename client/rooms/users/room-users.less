@@ -11,7 +11,6 @@ div#room-users {
   .border-radius(5px);
   .flex-center;
   div.room-users-list {
-    padding: 0 12px;
     .display(flex);
     .flex(1);
 
@@ -42,9 +41,14 @@ div#room-users {
           left: 24px;
         }
       }
-      .user-profile {
+      div.hover-mask{
+        position: absolute;
+        width: 150%;
+        top: 90%;
+      }
+      div.user-profile {
         width: 240px;
-        padding: 20px 0;
+        padding: 14px 0;
         //height: 0;
         top: 100%;
         .arrow {
@@ -64,10 +68,26 @@ div#room-users {
             }
           }
         }
+
+        .foot {
+          a {
+            i{
+              font-size: .5em;
+              padding: .5em;
+              border-radius: 50px;
+              &:hover {
+                background-color: #f38630;
+                color: #fff;
+              }
+            }
+          }
+        }
       }
       &:hover {
+        div.hover-mask {
+          height: 120px;
+        }
         .user-profile {
-          //height: 100px;
           display: block;
         }
       }

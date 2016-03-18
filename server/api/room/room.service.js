@@ -167,6 +167,42 @@ exports.finishCompete = function(room, statist) {
   });
 };
 
+exports.leave = function(room, user) {
+  var self = this, promise;
+
+  function adminPolicy(room, user) {
+    return self.remove(room);
+  }
+
+  function playerPolicy(room, user) {
+    return self.update(room, function(locked) {
+      _.remove(locked.users, 'id', user.id);
+      _.pull(locked.readyUsers, user.id);
+    });
+  }
+
+  function obPolicy(room, user) {
+    return self.update(room, function(locked) {
+      _.pull(locked.obs, user.id);
+    });
+  }
+
+  if (!_.isEmpty(room) && !_.isEmpty(user)) {
+
+    if (user.id === room.admin.id) {
+      promise = adminPolicy(room, user);
+    } else if (_.find(room.users, "id", user.id)) {
+      promise = playerPolicy(room, user);
+    } else if (room.obs.indexOf(user.id) >= 0) {
+      promise = obPolicy(room, user);
+    } else {
+      log.error("Unknown role of user");
+    }
+  }
+
+  return promise;
+};
+
 exports.join = function(room, user) {
   return this.update(room, function(locked) {
     if (locked.users.length < locked.number) {
