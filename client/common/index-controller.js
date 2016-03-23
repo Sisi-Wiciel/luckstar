@@ -2,9 +2,11 @@ define([
   'angular'
 ], function(angular) {
   'use strict';
-  angular.module('luckStar').controller('indexCtrl', function($scope, socketSrv, $location, messageCenter, store) {
+  angular.module('luckStar').controller('indexCtrl', function($scope, socketSrv, $location, messageCenter, store, $timeout) {
     $scope.status = 'login';
-
+    //messageCenter.notify("test,test,test,test111111");
+    //messageCenter.error("error error message");
+    //messageCenter.confirm("1111111");
     var params = $location.search();
 
     if (params.t) {

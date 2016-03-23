@@ -97,7 +97,7 @@ module.exports = {
             cb(socket);
             cbToClient(1); // auth successed and notify to client.
           } else {
-            log.error("error token data");
+            log.error("invalid token data");
             cbToClient(0);
           }
         } catch (err) {

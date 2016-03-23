@@ -2,8 +2,6 @@ require.config({
   paths: {
     'settings': 'settings',
     'angular': '../bower_components/angular/angular.min',
-    'text': 'libs/text.min',
-    'socketio': 'libs/socket.io.min',
     'bootstrap': '../bower_components/bootstrap/dist/js/bootstrap.min',
     'jquery': '../bower_components/jquery/dist/jquery.min',
     'angular-ui-route': '../bower_components/angular-ui-router/release/angular-ui-router.min',
@@ -15,9 +13,21 @@ require.config({
     'angular-sanitize': '../bower_components/angular-sanitize/angular-sanitize.min',
     'angular-strap': '../bower_components/angular-strap/dist/angular-strap.min',
     'angular-strap-tpl': '../bower_components/angular-strap/dist/angular-strap.tpl.min',
+    'text': 'libs/text.min',
+    'socketio': 'libs/socket.io.min',
+    'messenger': 'libs/messenger',
+    'messenger-theme': 'libs/messenger-theme-future',
     'app': 'app'
   },
   shim: {
+    'messenger-theme': {
+      deps: ['messenger'],
+      exports: 'messenger-theme'
+    },
+    'messenger': {
+      //deps: ['messenger-theme'],
+      exports: 'messenger'
+    },
     'angular': {
       deps: ['jquery'],
       exports: 'angular'
@@ -43,6 +53,7 @@ require.config({
     'angular-strap-tpl': ['angular', 'angular-strap'],
 
     'angular-sanitize': ['angular']
+
   }
 });
 

@@ -19,7 +19,7 @@ define([
     $scope.start = function() {
       // $q.reject() 用户reload btn loading文字
       if (_.isEmpty($scope.room.readyUsers)) {
-        messageCenter.alert('用户准备就绪后,才可以开始');
+        messageCenter.error('用户准备就绪后,才可以开始');
         return $q.reject();
       }
       var notReadyUsers = _.filter($scope.room.users, function(user) {
@@ -27,8 +27,8 @@ define([
       });
 
       if (!_.isEmpty(notReadyUsers)) {
-        messageCenter.alert('用户准备就绪后,才可以开始.');
-        // messageCenter.alert('用户 ' + _.map(notReadyUsers, 'username').join(',') + ' 未准备.');
+        messageCenter.error('用户准备就绪后,才可以开始.');
+        // messageCenter.error('用户 ' + _.map(notReadyUsers, 'username').join(',') + ' 未准备.');
         return $q.reject();
       }
 
@@ -45,6 +45,17 @@ define([
       }
 
       return userStatusColors.ONLINE;
+    };
+
+    $scope.getUserStatus = function(user) {
+      if (user.status === '0') {
+        return '离线';
+      }
+      if (!roomSrv.isCompeting()) {
+        return $scope.isReady(user.id) ? '已准备': '为准备';
+      }
+
+      return '在线';
     };
 
     $scope.isReady = function(userid) {

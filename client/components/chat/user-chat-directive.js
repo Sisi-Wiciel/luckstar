@@ -43,7 +43,8 @@ define([
           }, 100);
         };
 
-        scope.$watch('messages', function() {
+        scope.$watchCollection('messages', function() {
+          console.info("sroll to bottom");
           scrollBottom();
         });
 

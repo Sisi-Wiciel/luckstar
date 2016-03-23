@@ -9,13 +9,19 @@
           ng-if="user.id != curr.id">
         <img class="gravatar" ng-src="{{user.avatar}}">
 
-        <div class="content" ng-click="showChatPanel(user)">
+        <div class="content" >
           <span>{{user.username}}</span>
           <span class="last-message">{{user.status}}</span>
         </div>
-        <a href class="tools pull-right" ng-show="user.status == 1" ng-click="showChatPanel(user)">
-          <i class="fa fa-comments"></i>
-        </a>
+        <div class="tools" ng-if="user.state == '1'">
+          <a href ng-click="showChatPanel(user)" title="发起聊天">
+            <i class="fa fa-comments"></i>
+          </a>
+          <a href ng-click="inviteUser(user)" title="邀请对战" ng-if="room.id">
+            <i class="fa fa-gavel"></i>
+          </a>
+        </div>
+
       </li>
     </ul>
   </div>

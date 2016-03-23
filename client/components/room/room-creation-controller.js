@@ -33,10 +33,7 @@ define([
           $scope.join(message.id);
         }
         if (message.error === 'ALREADY_IN_ROOM') {
-          messageCenter.confirm({
-            title: '创建提示',
-            content: '不可以同时进入多个房间中, 是否需要退出之前的房间.'
-          }).then(function() {
+          messageCenter.confirm('不可以同时进入多个房间中, 是否需要退出之前的房间.').then(function() {
             socketSrv.leaveRoom();
             $scope.create();
           });

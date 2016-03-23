@@ -25,10 +25,7 @@ define([
 
           setTimeout(revert, 8000);
 
-          scope.message.confirm({
-            title: '提示',
-            content: attr.comfirm
-          }, 'center', 8000).then(function() {
+          scope.message.confirm(attr.comfirm).then(function() {
             scope.ngClick();
           }, function() {
             if (!_.isEmpty(_.trim(btnText))) {

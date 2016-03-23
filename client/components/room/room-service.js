@@ -9,7 +9,7 @@ define([
   'use strict';
 
   app.service('roomSrv', function(socketSrv, authSrv) {
-    var currentRoom = {};
+    var currentRoom = {id: null};
 
     var currentUser = authSrv.getCurrentUser();
     var roomEndCompetitionCb = $.Callbacks();
@@ -18,7 +18,7 @@ define([
     var userColors = ['acdce6', 'fed5aa', '84dbc8', 'ffa3a4', 'e9cee1'];
 
     this.isUser = function(user) {
-      if(_.isEmpty(currentRoom)){
+      if (!currentRoom.id) {
         return false;
       }
       user = user || currentUser;
@@ -26,7 +26,7 @@ define([
     };
 
     this.isAdmin = function(user) {
-      if(_.isEmpty(currentRoom)){
+      if (!currentRoom.id) {
         return false;
       }
       user = user || currentUser;
@@ -67,8 +67,8 @@ define([
     };
 
     this.updateCurrentRoom = function(room) {
-      room = room || {};
-      if (!_.isEmpty(currentRoom) && currentRoom.status !== room.status) {
+      room = room || {id: null};
+      if (currentRoom.id && currentRoom.status !== room.status) {
         if (room.status === 0) {
           roomEndCompetitionCb.fire(room);
         }
@@ -105,7 +105,7 @@ define([
 
     this.fillRoomUsers = function(room) {
       var room_ = room || currentRoom;
-      if (!_.isEmpty(room_)) {
+      if (room_.id) {
         if (room_.number > room_.users.length) {
           room_.users = room_.users.concat(_.fill(Array(room_.number - room_.users.length), null));
           room_.full = false;

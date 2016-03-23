@@ -199,8 +199,14 @@ exports.leave = function(room, user) {
       log.error("Unknown role of user");
     }
   }
+  if (_.isEmpty(promise)) {
+    return null;
+  }
 
-  return promise;
+  return promise.then(function() {
+    return userService.setRoom(user.id, '');
+  });
+
 };
 
 exports.join = function(room, user) {

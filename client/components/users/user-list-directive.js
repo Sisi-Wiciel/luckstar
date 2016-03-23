@@ -9,9 +9,10 @@ define([
     return {
       templateUrl: 'components/users/user-list.html',
       scope: {},
-      controller: function($scope, $timeout, socketSrv, authSrv, messageCenter) {
+      controller: function($scope, $timeout, socketSrv, authSrv, messageCenter, roomSrv) {
         $scope.messages = [];
         $scope.toUser = {};
+        $scope.room = roomSrv.getCurrentRoom();
 
         $scope.statusList = [
           {display: '全部', value: -1, cls: 'fa-user'},
@@ -42,16 +43,20 @@ define([
           $scope.chatting = false;
           $scope.toUser = {};
         };
+        
+        $scope.inviteUser = function(user) {
+            socketSrv.inviteUser(user.id);
+        };
 
         socketSrv.register('updateMessage', function(item) {
+          if(!$scope.messages[item.from.id]){
+            $scope.messages[item.from.id] = [];
+          }
           $scope.messages[item.from.id].push(item);
 
           if (item.from.id !== $scope.toUser.id) {
-            messageCenter.confirm({
-              title: item.from.username + '对你说',
-              content: item.content,
-              icon: 'fa-comment'
-            }).then(function() {
+            messageCenter.confirm(item.from.username + '对你说: '+item.content, 'Chat-with-'+item.from.username)
+            .then(function() {
               $scope.showChatPanel(item.from);
             });
           }

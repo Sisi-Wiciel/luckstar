@@ -61,26 +61,27 @@ define([
           var callback = function(result) {
             resolve(result);
           };
-          $q.when(getSocket()).then(function(socket) {
-            if (socket) {
-              if (data === undefined) {
-                socket.emit(event, callback);
-              } else {
-                socket.emit(event, data, callback);
-              }
+          var socket = getSocket();
+          if (socket) {
+            if (data === undefined) {
+              socket.emit(event, callback);
+            } else {
+              socket.emit(event, data, callback);
             }
-          });
+          }
         });
       },
 
       // User socket service api
+      unregister: function(name) {
+        getSocket().off(name);
+      },
       register: function(eventName, cb) {
-        $q.when(getSocket()).then(function(socket) {
-          if (socket) {
-            socket.off(eventName);
-            socket.on(eventName, cb || _.noop);
-          }
-        });
+        var socket = getSocket();
+        if (socket) {
+          socket.off(eventName);
+          socket.on(eventName, cb || _.noop);
+        }
       },
       changeUserStatus: function(status) {
         this.emit('user change status', status);
@@ -113,6 +114,9 @@ define([
       },
       kickOff: function(userid) {
         this.emit('kick off', userid);
+      },
+      inviteUser: function(userid) {
+        this.emit('invite user', userid);
       },
       sendMsg: function(msg) {
         this.emit('send message', msg);

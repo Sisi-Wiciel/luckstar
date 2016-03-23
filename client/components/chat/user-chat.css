@@ -18,6 +18,7 @@ div.chat .message-input {
   width: 100%;
 }
 div.chat > ul {
+  padding: 10px 0;
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -webkit-flex: 1;

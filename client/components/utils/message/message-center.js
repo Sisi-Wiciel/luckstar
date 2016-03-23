@@ -3,101 +3,67 @@ define([
   'lodash',
   'app',
   'jquery',
-  'text!components/utils/message/message-tpl.html'
-], function(angular, _, app, $, messagetpl) {
+  'messenger-theme'
+], function(angular, _, app, $, messenger) {
   'use strict';
 
   app.service('messageCenter', function($q, $compile, $rootScope, $window, $timeout) {
     var _scope;
 
-    var init = function() {
-      _scope = $rootScope.$new();
-      _scope.dismis = function() {
-        _scope.message = null;
-        _scope.animation = 'center';
-      };
-      _scope.dismis();
-      $('#dialog-box').remove();
-      $($window.document.body).append($compile(messagetpl)(_scope));
-    };
-
+    Messenger.options = {
+      extraClasses: 'messenger-fixed messenger-on-top',
+      theme: 'future',
+    }
     this.notify = function(content) {
-      this._show({
-        position: 'right',
-        title: '系统信息',
-        content: content
-      }, 1000 * 10);
+      Messenger().post({
+        message: content,
+        showCloseButton: true,
+        hideAfter: 5,
+        singleton: true,
+      });
     };
 
     this.error = function(content) {
-      var _close = this._show({
-        title: '错误',
-        content: content,
-        ok: function() {
-          _close();
-        },
-        icon: 'fa-exclamation-triangle',
-        position: 'center'
-      }, -1);
+      Messenger().post({
+        message: content,
+        type: 'error',
+        showCloseButton: true,
+        singleton: true,
+        hideAfter: 5,
+      });
     };
 
-    this.alert = function(content, closeTimeout) {
-      var _close = this._show({
-        title: '系统提示',
-        content: content,
-        position: 'center',
-        icon: 'fa-bullhorn',
-        ok: function() {
-          _close();
-        }
-      }, closeTimeout);
-    };
+    this.confirm = function(content, id) {
+      return $q(function(resolve, reject) {
+        var msg = Messenger().post({
+          message: content,
+          showCloseButton: true,
+          id: id || 'messenger-confirm',
+          actions: {
+            ok: {
+              label: "确认",
+              action: function() {
+                resolve();
+                msg.hide();
+              }
+            },
 
-    this.confirm = function(data, position, closeTimeout) {
-      var defer = $q.defer();
-      var _close = this._show(_.assign(data, {
-        position: position,
-        ok: function() {
-          _close();
-          defer.resolve(this);
-        },
-        cancel: function() {
-          _close();
-          defer.reject(this);
-        }
-      }), closeTimeout || 60 * 1000);
-      return defer.promise;
+            cancel: {
+              label: "取消",
+              action: function() {
+                reject();
+                msg.hide();
+              }
+            }
+          }
+        });
+      });
+
     };
 
     this._show = function(data, autoCloseTimeout) {
-      autoCloseTimeout = autoCloseTimeout || 8000;
 
-      _.defaults(data, {
-        okText: '确定',
-        cancelText: '取消',
-        position: 'center',
-        animation: 'bounceIn'
-      });
-
-      _scope.message = null;
-
-      $timeout(function() {
-        _scope.message = data;
-      });
-
-      if (this.closePromise) {
-        $timeout.cancel(this.closePromise);
-      }
-
-      if (autoCloseTimeout > 0) {
-        this.closePromise = $timeout(function() {
-          _scope.message = null;
-        }, autoCloseTimeout);
-      }
-
-      return _scope.dismis;
     };
 
-    init();
   });
 });

@@ -53,7 +53,7 @@
         .display(flex);
 
         &:hover {
-          background: #0775e3;
+          background: lighten(#0775e3, 10%);
           color: #fff;
           .border-radius(10px);
           .transition(.25s linear color);
@@ -71,13 +71,19 @@
           cursor: pointer;
         }
         .tools {
-          .flex(0, 0, 1em);
-          i {
-            color: #fff;
-            &:hover {
-              color: darken(#fff, 10%);
+          .flex(0, 0, 3em);
+          a{
+            i {
+              padding: 3px 8px;
+              border-radius: 5px;
+              color: #f88d00;
+              &:hover {
+                color: #f88d00;
+                background: #fff;
+              }
             }
           }
+
           &:hover {
             color: #fff;
           }
