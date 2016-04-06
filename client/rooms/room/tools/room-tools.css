@@ -1,0 +1,51 @@
+div#room-tools ul li {
+  cursor: pointer;
+  position: relative;
+}
+div#room-tools ul li i {
+  position: absolute;
+  font-size: 1.5em;
+  z-index: 102;
+  right: .5em;
+  top: .5em;
+  padding: 4px 6px;
+}
+div#room-tools ul li i:hover {
+  background: #a9a9a9;
+  color: #fff;
+}
+div#room-tools ul li p {
+  transition: .4s;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 260px;
+  -webkit-border-radius: 5px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 5px;
+  -moz-background-clip: padding;
+  border-radius: 5px;
+  background-clip: padding-box;
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+  -webkit-transform-origin: 400px 0;
+  -moz-transform-origin: 400px 0;
+  -ms-transform-origin: 400px 0;
+  -o-transform-origin: 400px 0;
+  transform-origin: 400px 0;
+}
+div#room-tools ul li p.actived {
+  z-index: 101;
+  background: #a9a9a9;
+  color: #fff;
+  padding: 10px;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+}

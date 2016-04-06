@@ -15,7 +15,7 @@ function updateRooms(socket) {
     roomid = socket.room;
     // if currRoom is null, this room is closed.
     if (!_.isEmpty(roomid)) {
-      socket.io.sockets.in(roomid).emit('updateRoom', _.find(rooms, "id", roomid));
+      socket.io.sockets.in(roomid).emit('updateRoom', _.find(rooms, {"id": roomid}));
     }
     socket.io.emit("updateRooms", rooms);
   });
@@ -68,7 +68,7 @@ function joinRoom(socket, id) {
     //管理员默认在room.users里面, 如果这句话放倒if中,管理员将得不到房间的消息通知.
     socket.join(socket.room);
 
-    if (!_.find(room.users, 'id', user.id)) {
+    if (!_.find(room.users, {'id': user.id})) {
       roomService.join(room, user).then(function(room) {
         return userService.setRoom(user.id, room.id).then(function() {
           sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
@@ -77,6 +77,7 @@ function joinRoom(socket, id) {
         updateRooms(socket);
       });
     } else {
+      log.verbose("User already in room ", room.id);
       sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
     }
   });
@@ -102,11 +103,13 @@ function leaveRoom(socket) {
       return;
     }
     promise.then(function() {
+      //Tell to all player.
       sendRoomMessage(socket, user.username + '离开房间', true);
       return updateRooms(socket)
     }).then(function() {
-      socket.leave(room);
+      socket.emit('updateRoom', null);
       socket.room = null;
+      socket.leave(room);
     });
   });
 
@@ -232,7 +235,7 @@ function inviteUser(socket, userid) {
   log.verbose("room.socket#InviteUser");
   getRoom(socket, socket.room, function(room, me) {
     //make sure that i am a player in room
-    if (_.find(room.users, 'id', me.id)) {
+    if (_.find(room.users, {'id': me.id})) {
       userService.list(userid).get(0).then(function(user) {
         var userSocket = socket.io.sockets.connected[user.sid];
         if (userSocket) {

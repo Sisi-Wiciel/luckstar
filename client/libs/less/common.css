@@ -79,3 +79,22 @@
   -o-animation: 0.8s loading linear infinite;
   animation: 0.8s loading linear infinite;
 }
+.no-pad {
+  padding: 0;
+}
+.no-padr {
+  padding-right: 0;
+}
+.no-padl {
+  padding-left: 0;
+}
+.no-margin {
+  margin: 0;
+}
+ol,
+ul {
+  margin: 0;
+}
+.pointer {
+  cursor: pointer;
+}

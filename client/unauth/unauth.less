@@ -1,0 +1,43 @@
+@import (reference) "common";
+
+body {
+  font-size: 11px;
+  .user-select(none);
+
+  //font-family: "Microsoft YaHei", "微软雅黑", helvetica, arial, verdana, tahoma, sans-serif;
+  //background-image: url("libs/images/bg.gif");
+
+  overflow-x: hidden;
+
+  > [ui-view] {
+    &.ng-enter {
+      .animated;
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      .fadeIn;
+    }
+
+  }
+  color: #767676;
+
+  .unauth {
+    .display(flex);
+    .justify-content(center);
+    padding-top: 100px;
+    .page-header {
+      h1 {
+        display: inline;
+      }
+    }
+
+    .login,
+    .signup {
+      .border-radius(5);
+      width: 410px;
+      background-color: #f2e3d0;
+    }
+
+  }
+
+}

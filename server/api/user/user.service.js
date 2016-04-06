@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var db = require('../redis/redis.service');
 
 var Promise = require('bluebird');
@@ -82,7 +82,6 @@ exports.updatePoint = function(uid, point) {
 };
 
 exports.list = function(ids) {
-
   if (ids === undefined) {
     return db.listObj("users", ids);
   } else if (_.isString(ids) && ids !== "") {
@@ -94,5 +93,4 @@ exports.list = function(ids) {
   } else {
     return Promise.resolve();
   }
-
 };

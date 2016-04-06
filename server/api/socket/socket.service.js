@@ -141,9 +141,9 @@ module.exports = {
                 }
               }
             })
-          }, 1000);
+          }, 2000);
         })
-        log.info("Disconnecting socket with id", socket.id);
+        log.info("Disconnecting socket with user", userid);
       });
 
       onConnect(socket);

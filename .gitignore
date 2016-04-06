@@ -1,3 +1,4 @@
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Logs
@@ -21,9 +22,12 @@ build/Release
 
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
+/client/libs/images/upload
 node_modules
 
 .idea
 
 test.js
-client/bower_components
+bower_components
+dist
+.tmp

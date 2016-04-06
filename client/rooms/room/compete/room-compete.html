@@ -1,0 +1,9 @@
+<div id="complete" ng-controller="roomCompeteCtrl">
+  <room-topicwrapper ng-if="room.status === 1">
+    <topic-panel topic="topic"></topic-panel>
+  </room-topicwrapper>
+
+  <div class="compete-record" ng-if="room.status === 0">
+    <room-statistic room="room" roomstat="roomstat"></room-statistic>
+</div>
+</div>

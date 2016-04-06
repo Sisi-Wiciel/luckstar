@@ -1,0 +1,39 @@
+@import (reference) "common";
+
+
+#home {
+  margin-bottom: 20px;
+
+  > .head {
+    margin-bottom: 10px;
+    .animated;
+    .slideInDown;
+  }
+
+  > .row {
+    > .sidebar {
+      .animated;
+      .slideInRight;
+    }
+    > div {
+      height: 100%;
+    }
+  }
+
+  [ui-view] {
+
+    .box-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+    .border-radius(5);
+    padding: 10px;
+    height: 720px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-image: url("/libs/images/bg.gif");
+  }
+
+  #home-page {
+    .flex-column;
+    .justify-content(space-between);
+    height: 100%;
+  }
+}

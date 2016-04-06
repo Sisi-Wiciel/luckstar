@@ -100,7 +100,7 @@ function checkTopic(socket, answer) {
     var user = results.users[0];
     var room = results.rooms[0];
 
-    if (_.find(room.users, "id", socket.uid)) {
+    if (_.find(room.users, {"id": socket.uid})) {
       topicService.isCorrect(room.topic, answer).then(function(verdictObj) {
         verdictObj.user = user;
         verdictObj.opt = answer;

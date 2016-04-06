@@ -1,0 +1,8 @@
+<div class="topic-panel-wrapper">
+
+  <div class="complete-countdown" ng-show="countdown && !topic.title">{{countdown}}</div>
+  <img class="pointer" ng-repeat="user in room.users track by $index"
+       ng-show="user && user.id !== curr.id"
+       ng-src="libs/images/icons/pointer-{{userColors[$index]}}.png"></img>
+  <div ng-transclude></div>
+</div>

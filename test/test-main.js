@@ -20,7 +20,7 @@ require.config({
     'angular-resource': 'bower_components/angular-resource/angular-resource',
     'angular-sanitize': 'bower_components/angular-sanitize/angular-sanitize',
     angularMocks: 'bower_components/angular-mocks/angular-mocks',
-    app: 'app'
+    app: '../client/core/app'
   },
   shim: {
     angular: {exports: 'angular'},
@@ -43,7 +43,7 @@ require.config({
 
   // we have to kickoff jasmine, as it is asynchronous
   callback: function(params) {
-    require('app', 'text!/client/components/topics/topic-commit.html').boot(function() {
+    require('app.js', 'text!/client/components/topics/topic-commit.html').boot(function() {
       window.__karma__.start(params)
     });
   }

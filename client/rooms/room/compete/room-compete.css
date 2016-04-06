@@ -1,0 +1,43 @@
+div#complete {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+div#complete div.topic-panel-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+div#complete div.topic-panel-wrapper .complete-countdown {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  font-size: 200px;
+  z-index: 100;
+  text-align: center;
+}
+div#complete div.topic-panel-wrapper .complete-countdown.ng-hide-remove {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: zoomIn;
+  animation-name: zoomIn;
+}
+div#complete div.topic-panel-wrapper .pointer {
+  position: absolute;
+  z-index: 1001;
+}

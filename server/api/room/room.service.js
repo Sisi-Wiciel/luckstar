@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _ = require('lodash');
 var db = require('../redis/redis.service.js');
@@ -108,7 +108,7 @@ exports.updateRoomStat = function(room, verdictObj) {
   return this.listRoomStat(room.id).then(function(userstats) {
     if (userstats) {
       if (verdictObj.user) {
-        var currentUserStat = _.find(userstats.users, "userid", verdictObj.user.id);
+        var currentUserStat = _.find(userstats.users, {"userid": verdictObj.user.id});
         switch (verdictObj.verdict) {
           case 1:
             currentUserStat.point += verdictObj.point;
@@ -176,7 +176,7 @@ exports.leave = function(room, user) {
 
   function playerPolicy(room, user) {
     return self.update(room, function(locked) {
-      _.remove(locked.users, 'id', user.id);
+      _.remove(locked.users, {'id': user.id});
       _.pull(locked.readyUsers, user.id);
     });
   }
@@ -191,7 +191,7 @@ exports.leave = function(room, user) {
 
     if (user.id === room.admin.id) {
       promise = adminPolicy(room, user);
-    } else if (_.find(room.users, "id", user.id)) {
+    } else if (_.find(room.users, {"id": user.id})) {
       promise = playerPolicy(room, user);
     } else if (room.obs.indexOf(user.id) >= 0) {
       promise = obPolicy(room, user);
@@ -212,7 +212,7 @@ exports.leave = function(room, user) {
 exports.join = function(room, user) {
   return this.update(room, function(locked) {
     if (locked.users.length < locked.number) {
-      if (!_.find(locked.users, 'id', user.id)) {
+      if (!_.find(locked.users, {'id': user.id})) {
         locked.users.push(user);
       }
     } else {
