@@ -24,7 +24,6 @@ module.exports = function makeWebpackConfig() {
 
   new webpack.optimize.DedupePlugin(),
   new webpack.optimize.UglifyJsPlugin({
-    include: /app*.js/,
     compress: {
       warnings: false
     }

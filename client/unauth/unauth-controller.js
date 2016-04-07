@@ -1,5 +1,5 @@
 'use strict';
-module.exports = function($scope, $location, messageCenter, store) {
+module.exports = ['$scope', '$location', 'messageCenter', 'store', function($scope, $location, messageCenter, store) {
   $scope.status = 'login';
   var params = $location.search();
 
@@ -18,5 +18,5 @@ module.exports = function($scope, $location, messageCenter, store) {
   };
 
   store.delete('token');
-};
+}];
 
