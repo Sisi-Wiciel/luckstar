@@ -12,48 +12,66 @@ require('./messenger-theme-future.min.js');
 
 module.exports = ['$q', function($q) {
   Messenger.options = {
-    extraClasses: 'messenger-fixed messenger-on-top',
+    maxMessages: 9,
+    extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
     theme: 'future'
   };
-
+  var notifyMessenger;
+  var errorMessenger;
+  var confirmMessenger;
   this.notify = function(content) {
-    Messenger().post({
-      message: content,
-      showCloseButton: true,
-      hideAfter: 5,
-      singleton: true
-    });
+    if (!notifyMessenger) {
+      notifyMessenger = Messenger().post({
+        message: content,
+        showCloseButton: true,
+        hideAfter: 15
+      });
+    } else {
+      notifyMessenger.update({
+        message: content
+      })
+    }
+
   };
 
   this.error = function(content) {
-    Messenger().post({
-      message: content,
-      type: 'error',
-      showCloseButton: true,
-      singleton: true,
-      hideAfter: 5
-    });
+    if (!notifyMessenger) {
+      errorMessenger = Messenger().post({
+        message: content,
+        showCloseButton: true,
+        type: 'error',
+        hideAfter: 15
+      });
+    } else {
+      errorMessenger.update({
+        message: content
+      })
+    }
   };
 
   this.confirm = function(content, id) {
+    if(confirmMessenger){
+      confirmMessenger = null;
+    }
+
     return $q(function(resolve, reject) {
-      var msg = Messenger().post({
+      var confirmMessenger = Messenger().post({
+        hideAfter: 50,
         message: content,
         showCloseButton: true,
-        id: id || 'messenger-confirm',
         actions: {
           ok: {
             label: '确认',
             action: function() {
               resolve();
-              msg.hide();
+              confirmMessenger.hide();
             }
           },
           cancel: {
             label: '取消',
             action: function() {
               reject();
-              msg.hide();
+              confirmMessenger.hide();
             }
           }
         }

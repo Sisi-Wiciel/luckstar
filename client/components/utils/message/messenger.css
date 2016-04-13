@@ -31,6 +31,10 @@ ul.messenger .messenger-message .messenger-actions {
   float: right;
 }
 /* line 29, ../../src/sass/messenger.sass */
+ul.messenger .messenger-message .messenger-actions span[data-action="ok"] a {
+  background: #5cb85c;
+  color: #fff;
+}
 ul.messenger .messenger-message .messenger-actions a {
   cursor: pointer;
   text-decoration: underline;
@@ -66,7 +70,7 @@ ul.messenger.messenger-fixed.messenger-on-bottom {
 /* line 54, ../../src/sass/messenger.sass */
 ul.messenger.messenger-fixed.messenger-on-top, ul.messenger.messenger-fixed.messenger-on-bottom {
   left: 50%;
-  width: 600px;
+  width: 400px;
   margin-left: -300px;
 }
 @media (max-width: 960px) {
