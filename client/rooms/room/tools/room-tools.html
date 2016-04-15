@@ -1,11 +1,15 @@
 <div id="room-tools" ng-controller="roomToolsCtrl" ng-if="room.status == 1">
     <ul class="list-unstyled" >
+      <li ng-click="topicBug()">
+        <i class="fa fa-bug"></i>
+      </li>
       <li ng-click="showRoomStat()">
         <i class="fa" ng-class="{'fa-list-alt': !roomstatVisiable, 'fa-times': roomstatVisiable}"></i>
         <p ng-show="roomstatVisiable" ng-class="{actived: roomstatVisiable}">
           <room-statistic room="room" roomstat="roomstat"></room-statistic>
         </p>
       </li>
+
     </ul>
 </div>
 

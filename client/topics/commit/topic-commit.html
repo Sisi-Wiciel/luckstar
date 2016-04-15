@@ -1,5 +1,5 @@
 <div id="topic-commit" class="row" ng-controller="topicCommitCtrl">
-  <div class="col-sm-5 no-pad">
+  <div class="col-sm-5">
     <form class="form-horizontal">
       <div class="form-group">
         <label class="col-sm-3">题目:</label>
@@ -22,7 +22,7 @@
             <i class="fa fa-info-circle"></i> 不要超过40个字符.
           </div>
         </div>
-        <div class="col-sm-3 no-padl">
+        <div class="col-sm-3">
 
           <button class="btn btn-default" ng-click="removeOpt(opt)" ng-if="topic.options.length > 2">
             <i class="fa fa-minus text-muted"></i>
@@ -105,7 +105,7 @@
     </form>
 
   </div>
-  <div class="col-sm-7 preview">
+  <div class="col-sm-7">
     <topic-preview image="imageEnabled" topic="topic"></topic-preview>
   </div>
 

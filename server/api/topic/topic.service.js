@@ -1,13 +1,14 @@
 var db = require('../redis/redis.service');
 var Topic = require('./topic.model');
+var TopicBug = require('./bug/topic.bug.model');
 var errorHandler = require('express-error-handler');
 var userService = require('../user/user.service');
 var _ = require('lodash');
 
-var updateTopic = function(id, data) {
+function updateTopic(id, data) {
   return Topic.update({_id: id}, data).exec();
 }
-var getTopic = function(id) {
+function getTopic(id) {
 
   var promise;
   if (id) {
@@ -19,19 +20,19 @@ var getTopic = function(id) {
   }
 
   return promise && promise.then(function(topic) {
-      topic.answercount = topic.corrector.length;
-      delete topic.corrector;
-      if (topic.creator) {
-        return userService.list(topic.creator).then(function(creator) {
-          topic.creatorUsername = creator.username;
-          return topic;
-        })
-      }
-      return topic;
-    })
+    topic.answercount = topic.corrector.length;
+    delete topic.corrector;
+    if (topic.creator) {
+      return userService.list(topic.creator).then(function(creator) {
+        topic.creatorUsername = creator.username;
+        return topic;
+      })
+    }
+    return topic;
+  })
 };
 
-var isCorrect = function(id, answer) {
+function isCorrect(id, answer) {
   return Topic.findById(id).exec().then(function(topic) {
     var _topic = topic.toJSON();
     var ret = {
@@ -43,15 +44,24 @@ var isCorrect = function(id, answer) {
   })
 };
 
-var saveTopic = function(newtopic, creator) {
+function saveTopic(newtopic, creator) {
   newtopic.creator = creator.id;
   return Topic.create(newtopic);
 };
 
-var getTotalSize = function() {
+function getTotalSize() {
   return db.size("topics");
-}
+};
+
+function reportTopicBug(userid, topicid) {
+  return TopicBug.create({
+    user: userid,
+    topic: topicid
+  })
+};
+
 exports.get = getTopic;
+exports.topicBug = reportTopicBug;
 exports.save = saveTopic;
 exports.update = updateTopic;
 exports.isCorrect = isCorrect;

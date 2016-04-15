@@ -5,17 +5,13 @@ div#room-tools {
     li{
       cursor: pointer;
       position: relative;
-
+      display: inline-block;
       i{
-        position: absolute;
         font-size: 1.5em;
         z-index: 102;
-        right: .5em;
-        top: .5em;
-        padding: 4px 6px;
-        &:hover{
-          background: lighten(#767676, 20%);
-          color: #fff;
+       .hover;
+        &.fa-times{
+          position: relative;
         }
       }
       p{
@@ -35,7 +31,6 @@ div#room-tools {
           color: #fff;
           padding: 10px;
           .transform(scale(1));
-
         }
       }
     }

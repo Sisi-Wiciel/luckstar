@@ -4,11 +4,18 @@ var _ = require('lodash');
 var uuid = require('node-uuid');
 
 var topicService = require('../topic/topic.service');
+var roomService = require('../room/room.service');
 var userService = require('../user/user.service')
 var setting = require('../../config/setting');
 
-var saveTopic = function(newTopic, user) {
+function saveTopic(newTopic, user) {
   return topicService.save(newTopic, user);
+}
+
+function reportTopicBug(socket) {
+  roomService.list(socket.room).then(function(room){
+    topicService.topicBug(socket.uid, room.topic);
+  });
 }
 
 exports.register = function(socket) {
@@ -22,6 +29,10 @@ exports.register = function(socket) {
         })
       });
     })
+  });
+
+  socketSrv.on(socket, 'topic bug', function() {
+    reportTopicBug(socket)
   });
 
   socketSrv.on(socket, 'topic total size', function(cb) {
@@ -75,7 +86,6 @@ exports.register = function(socket) {
         pixel: pixel
       });
     }
-
   });
 };
 

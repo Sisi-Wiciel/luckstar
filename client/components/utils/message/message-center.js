@@ -13,7 +13,8 @@ require('./messenger-theme-future.min.js');
 module.exports = ['$q', function($q) {
   Messenger.options = {
     maxMessages: 9,
-    extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
+    //extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
+    extraClasses: 'messenger-fixed messenger-on-top',
     theme: 'future'
   };
   var notifyMessenger;

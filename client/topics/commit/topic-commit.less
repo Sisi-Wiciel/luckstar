@@ -5,9 +5,8 @@
 #topic-commit {
   position: relative;
   form, .topic-commit-status {
-    margin: 10px 0 10px 10px;
+    margin: 10px;
     padding: 20px;
-    border-radius: 10px;
   }
 
   form {
@@ -17,12 +16,12 @@
   .topic-commit-status {
 
     position: absolute;
-    right: 0;
-    left: 0;
+    right: -5px;
+    left: 5px;
     top: -5px;
     bottom: 0;
 
-    padding: 20px;
+    //padding: 20px;
     transition: all ease-in .5s;
     overflow-y: hidden;
     .flex-column;
@@ -31,8 +30,7 @@
     ol {
       .flex(1);
       li {
-        margin: 20px;
-        font-size: 16px;
+        font-size: 1.6em;
         justify-content: space-between;
         .display(flex);
         .title {
@@ -68,7 +66,7 @@
       bottom: 0;
     }
   }
-  #topic-preview {
+  #topic_preview_page {
     position: relative;
     .image-container {
 
@@ -77,11 +75,11 @@
       width: 270px;
       height: 250px;
       line-height: 250px;
-      font-size: 15px;
+      font-size: 1.5em;
       text-align: center;
       border-style: dashed;
       position: absolute;
-      right: 40px;
+      right: 60px;
       top: 100px;
       border-color: @image-container-border-color;
 

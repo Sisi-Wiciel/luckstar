@@ -152,6 +152,9 @@ module.exports = ['store', '$q', function(store, $q) {
     getRoomStat: function() {
       return this.getResult('room get stat');
     },
+    reportTopicBug: function() {
+      this.emit('topic bug');
+    },
     getRoom: function(id) {
       id = id || '';
       return this.getResult('room get', id);

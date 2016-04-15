@@ -198,10 +198,10 @@
   padding-right: 15px;
 }
 #topic-panel section .panel-cover {
-  -webkit-animation: slideInY cubic-bezier(0, 0.99, 0.25, 1) 0.4s forwards;
-  -moz-animation: slideInY cubic-bezier(0, 0.99, 0.25, 1) 0.4s forwards;
-  -o-animation: slideInY cubic-bezier(0, 0.99, 0.25, 1) 0.4s forwards;
-  animation: slideInY cubic-bezier(0, 0.99, 0.25, 1) 0.4s forwards;
+  -webkit-animation: slideInY cubic-bezier(0, 0.99, 0.13, 1) 1s forwards;
+  -moz-animation: slideInY cubic-bezier(0, 0.99, 0.13, 1) 1s forwards;
+  -o-animation: slideInY cubic-bezier(0, 0.99, 0.13, 1) 1s forwards;
+  animation: slideInY cubic-bezier(0, 0.99, 0.13, 1) 1s forwards;
   -webkit-transform: rotate(40deg);
   -moz-transform: rotate(40deg);
   -ms-transform: rotate(40deg);
