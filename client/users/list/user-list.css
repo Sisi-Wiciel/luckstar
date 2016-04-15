@@ -2,12 +2,6 @@
   min-height: 720px;
   height: 720px;
   padding: 10px;
-  -webkit-border-radius: 5px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 5px;
-  -moz-background-clip: padding;
-  border-radius: 5px;
-  background-clip: padding-box;
   -webkit-box-shadow: 0px 0px 10px #7f7f7f;
   -moz-box-shadow: 0px 0px 10px #7f7f7f;
   box-shadow: 0px 0px 10px #7f7f7f;
@@ -42,6 +36,7 @@
   flex: 1;
 }
 #user-list .chat-box {
+  font-size: 1.4em;
   -webkit-box-pack: justify;
   -moz-box-pack: justify;
   -ms-flex-pack: justify;
@@ -49,32 +44,11 @@
   justify-content: space-between;
 }
 #user-list .chat-box .head .fa-times {
-  padding: .3em;
-  border-radius: 30px;
+  padding: 2px 10px;
 }
 #user-list .chat-box .head .fa-times:hover {
   background-color: #f88d00;
   color: #fff;
-}
-#user-list .userlist-box {
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-#user-list .userlist-box.ng-hide-remove,
-#user-list .userlist-box.ng-hide-add {
-  left: 10px;
-  right: 25px;
-  position: absolute;
-}
-#user-list .userlist-box.ng-hide-remove-active {
-  -webkit-animation-name: fadeIn;
-  animation-name: fadeIn;
-}
-#user-list .userlist-box.ng-hide-add-active {
-  -webkit-animation-name: fadeOut;
-  animation-name: fadeOut;
 }
 #user-list .userlist-box ul {
   padding-top: 5px;
@@ -86,20 +60,6 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-#user-list .userlist-box ul li:hover {
-  background: #258ef8;
-  color: #fff;
-  -webkit-border-radius: 10px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 10px;
-  -moz-background-clip: padding;
-  border-radius: 10px;
-  background-clip: padding-box;
-  -webkit-transition: 0.25s linear color;
-  -moz-transition: 0.25s linear color;
-  -o-transition: 0.25s linear color;
-  transition: 0.25s linear color;
 }
 #user-list .userlist-box ul li .gravatar {
   width: 40px;
@@ -125,7 +85,6 @@
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  cursor: pointer;
 }
 #user-list .userlist-box ul li .tools {
   -webkit-box-flex: 0;
@@ -135,13 +94,12 @@
   flex: 0 0 3em;
 }
 #user-list .userlist-box ul li .tools a i {
-  padding: 3px 8px;
-  border-radius: 5px;
+  padding: 2px 10px;
   color: #f88d00;
 }
 #user-list .userlist-box ul li .tools a i:hover {
-  color: #f88d00;
-  background: #fff;
+  color: #fff;
+  background: #f88d00;
 }
 #user-list .userlist-box ul li .tools:hover {
   color: #fff;

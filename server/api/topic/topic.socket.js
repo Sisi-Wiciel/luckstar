@@ -15,8 +15,8 @@ exports.register = function(socket) {
   var socketSrv = require('../socket/socket.service');
 
   socketSrv.on(socket, 'topic save', function(newtopic, cb) {
-    userService.list(socket.uid).then(function(users) {
-      saveTopic(newtopic, _.first(users)).then(function(topic) {
+    userService.list(socket.uid).then(function(user) {
+      saveTopic(newtopic, user).then(function(topic) {
         cb({
           id: topic._id
         })

@@ -40,7 +40,8 @@ module.exports = ['$timeout', function($timeout) {
         $scope.verdict = verObj;
         $scope.$emit('topicVerdict', verObj);
 
-        $scope.verdictCls = '';
+        $scope.verdictCls = null;
+
         if (verObj) {
           $scope.countdownPause();
           if ($scope.verdict.user) {

@@ -3,7 +3,7 @@
 // Modules
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+
 var path = require('path');
 
 module.exports = function makeWebpackConfig() {
@@ -28,9 +28,6 @@ module.exports = function makeWebpackConfig() {
       warnings: false
     }
   })
-  //new CopyWebpackPlugin([{
-    //from: __dirname + '/client/libs/css'
-  //}])
   );
 
   return config;

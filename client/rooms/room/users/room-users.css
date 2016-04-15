@@ -94,10 +94,12 @@ div#room-users div.room-users-list div.user div.user-profile .media .pointer-col
   width: 50px;
   display: inline-block;
 }
+div#room-users div.room-users-list div.user div.user-profile .foot {
+  background: #a9a9a9;
+}
 div#room-users div.room-users-list div.user div.user-profile .foot a i {
   font-size: .5em;
-  padding: .5em;
-  border-radius: 50px;
+  padding: 2px 10px;
 }
 div#room-users div.room-users-list div.user div.user-profile .foot a i:hover {
   background-color: #f88d00;

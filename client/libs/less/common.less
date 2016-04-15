@@ -5,6 +5,14 @@
     border-bottom: 1px solid #f88d00;
 }
 
+.hover{
+  padding: 2px 10px;
+  &:hover {
+    background-color: #f88d00;
+    color: #fff;
+  }
+}
+
 .flex-center {
   .display(flex);
   .justify-content(center);
@@ -46,6 +54,16 @@
   .animation(.8s loading linear infinite);
 }
 
+//
+//a {
+//  color: #000;
+//  &:focus,
+//  &:hover {
+//    color: #000;
+//    text-decoration: none;
+//  }
+//}
+
 
 .no-pad {
   padding: 0;
@@ -62,16 +80,6 @@
 .no-margin {
   margin: 0;
 }
-//
-//a {
-//  color: #000;
-//  &:focus,
-//  &:hover {
-//    color: #000;
-//    text-decoration: none;
-//  }
-//}
-
 ol, ul {
   margin: 0;
 }
@@ -79,3 +87,4 @@ ol, ul {
 .pointer {
   cursor: pointer;
 }
+

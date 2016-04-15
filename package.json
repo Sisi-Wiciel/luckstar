@@ -9,7 +9,7 @@
     "angular-animate": "^1.5.3",
     "angular-aria": "^1.5.3",
     "angular-injector": "^1.0.0",
-    "angular-material": "^1.0.6",
+    "angular-material": "^1.0.7",
     "angular-messages": "^1.5.3",
     "angular-ui-router": "^0.2.18",
     "autoprefixer": "~6.2.0",

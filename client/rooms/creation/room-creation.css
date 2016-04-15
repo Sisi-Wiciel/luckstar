@@ -1,8 +1,22 @@
 #room-creation {
-  min-width: 300px;
+  padding: 10px 20px;
   outline: none;
   border: 1px solid #F38630;
+  font-size: 1.2em;
 }
-#room-creation h3 {
+#room-creation h4 {
   color: #F38630;
+}
+#room-creation div.page-header {
+  margin: 10px 0 20px;
+}
+#room-creation div.form-actions {
+  margin-top: 60px;
+}
+#room-creation div.form-actions button.btn-success {
+  width: 80%;
+}
+#room-creation div.form-actions button.btn-xs {
+  margin-bottom: -9px;
+  padding: 3px 10px;
 }

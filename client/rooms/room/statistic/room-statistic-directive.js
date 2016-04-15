@@ -8,7 +8,7 @@ module.exports = ['$timeout', function($timeout) {
       room: '=',
       roomstat: '='
     },
-    template: require('./room-statistic-directive.html'),
+    template: require('./room-statistic.html'),
     controller: ['$scope', 'roomSrv', function($scope, roomSrv) {
       $scope.statTable = false;
       roomSrv.onEndCompetition($scope.setScorebarWidth);

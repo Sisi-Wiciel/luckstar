@@ -38,16 +38,11 @@ exports.register = function(socket) {
   socketService.on(socket, 'user get', function(cb) {
     if (_.isEmpty(socket.uid)) {
       cb({});
-      return;
+    } else {
+      userService.list(socket.uid).then(function(user) {
+        cb(user || {});
+      });
     }
-    userService.list(socket.uid).then(function(users) {
-      if (!_.isEmpty(users) && users.length === 1) {
-        cb(_.first(users));
-      } else {
-        cb({});
-        log.error("user not existed or duplicated uuid of users ", socket.uid);
-      }
-    });
   });
 
   socketService.on(socket, 'user change status', function(status) {

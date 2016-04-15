@@ -1,6 +1,7 @@
 @import (reference) "common";
 
-div.room {
+div#room_home_page {
+
   height: 100%;
   .border-radius(10);
   .flex-column;
@@ -13,12 +14,7 @@ div.room {
       .flex(0 0 1em);
       .fa-power-off {
         font-size: .5em;
-        padding: .5em;
-        border-radius: 50px;
-        &:hover {
-          background-color: #f88d00;
-          color: #fff;
-        }
+        .hover;
       }
     }
 

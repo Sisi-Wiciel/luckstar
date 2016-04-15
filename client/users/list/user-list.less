@@ -7,7 +7,6 @@
   height: @CHAT-HEIGHT;
   padding: 10px;
 
-  .border-radius(5);
   .shadow;
   .bg-fff;
   .display(flex);
@@ -19,45 +18,21 @@
   }
 
   .chat-box {
+    font-size: 1.4em;
     .justify-content(space-between);
     .head {
       .fa-times {
-        padding: .3em;
-        border-radius: 30px;
-        &:hover {
-          background-color: #f88d00;
-          color: #fff;
-        }
+        .hover;
       }
     }
   }
   .userlist-box {
-    .animated;
-    &.ng-hide-remove,
-    &.ng-hide-add {
-      left: 10px;
-      right: 25px;
-      position: absolute;
-    }
-    &.ng-hide-remove-active {
-      .fadeIn;
-    }
-    &.ng-hide-add-active {
-      .fadeOut;
-    }
-
     ul {
       padding-top: 5px;
       li {
         padding: 5px;
         .display(flex);
 
-        &:hover {
-          background: lighten(#0775e3, 10%);
-          color: #fff;
-          .border-radius(10px);
-          .transition(.25s linear color);
-        }
         .gravatar {
           width: 40px;
           height: 40px;
@@ -68,18 +43,17 @@
           .flex(1);
           .display(flex);
           .flex-direction(column);
-          cursor: pointer;
+          //cursor: pointer;
         }
         .tools {
           .flex(0, 0, 3em);
           a{
             i {
-              padding: 3px 8px;
-              border-radius: 5px;
+              padding: 2px 10px;
               color: #f88d00;
               &:hover {
-                color: #f88d00;
-                background: #fff;
+                color: #fff;
+                background: #f88d00;
               }
             }
           }

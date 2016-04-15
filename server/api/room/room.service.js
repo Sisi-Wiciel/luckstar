@@ -32,7 +32,7 @@ var objSaved = function(room) {
 //redis => obj
 var assemble = function(room) {
 
-  if (!room) {
+  if (_.isEmpty(room)) {
     return room;
   }
 
@@ -58,13 +58,27 @@ var assemble = function(room) {
   }
 
   return userService.list(room.users).then(function(users) {
+    console.info(users);
     room.users = users;
     room.admin = users[0];
     return room;
   })
 };
 exports.list = function(id) {
-  return db.listObj("rooms", id).map(assemble);
+  return db.listObj("rooms", id).then(function(rooms) {
+    if(_.isArray(rooms)){
+      return Promise.map(rooms, assemble);
+    }
+    return assemble(rooms);
+  });
+  //return Promise.map(ret, assemble);
+  //if(id === undefined){
+  //  return db.listObj("rooms").map(assemble);
+  //}else if(_.isEmpty(id)){
+  //  return Promise.resolve(null);
+  //}else if(_.isA){
+  //  return db.listObj("rooms", id).map(assemble);
+  //}
 };
 
 exports.update = function(room, setFun) {

@@ -22,8 +22,8 @@
   }
 
   .room-tools {
-    padding: 2px;
-    .flex(0, 0, 5em);
+    padding: 10px;
+    .flex(0, 0, 6em);
     .flex-direction(column);
 
     text-align: center;
@@ -92,12 +92,10 @@
       .display(flex);
       .flex-wrap(wrap);
       .room-list-item {
-        color: hsl(39, 100%, 30%) !important;
         background-color: hsl(39, 100%, 60%);
-        background-image: url(../../libs/images/noise.png);
-        width: 48%;
-        margin: 10px;
-        .border-radius(10);
+        width: 500px;
+        margin: 5px;
+        //.shadow;
         .box-shadow(inset rgba(255, 254, 255, 0.6) 0 0.3em .3em, inset rgba(0, 0, 0, 0.15) 0 -0.1em .3em, hsl(39, 100%, 40%) 0 .1em 3px, hsl(39, 100%, 30%) 0 .3em 1px, rgba(0, 0, 0, 0.2) 0 .5em 5px);
 
         img {
@@ -112,7 +110,7 @@
         }
 
         .main {
-
+          padding: 5px;
           .display(flex);
           .flex(1);
           .users {
@@ -120,8 +118,6 @@
             .flex(1);
             .display(flex);
             .user {
-              border-radius: 15px;
-              margin: 2px;
               border: 1px solid #F6D5AD;
               color: #996300;
               text-align: center;
@@ -141,10 +137,10 @@
 
           .toolbar {
             margin: auto;
-            flex: 0 0 5em;
+            flex: 0 0 6em;
             .btn {
               padding: 2px 12px;
-              margin: 2px 0;
+              margin: 2px 8px;
             }
           }
 

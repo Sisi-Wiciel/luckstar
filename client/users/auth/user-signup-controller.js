@@ -9,8 +9,8 @@ module.exports = ['$scope', '$timeout', 'authSrv', 'messageCenter', function($sc
       target.avatar = $scope.avatar;
       authSrv.createUser(target).then(function() {
         messageCenter.notify('用户注册成功');
-        $timeout($scope.login);
-      });
+        $timeout($scope.toLogin(), 1000);
+    });
     } else {
       $scope.avatarError = true;
     }

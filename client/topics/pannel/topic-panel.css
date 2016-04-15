@@ -198,10 +198,10 @@
   padding-right: 15px;
 }
 #topic-panel section .panel-cover {
-  -webkit-animation: slideInY cubic-bezier(0.02, 1, 1, 1) 0.5s forwards;
-  -moz-animation: slideInY cubic-bezier(0.02, 1, 1, 1) 0.5s forwards;
-  -o-animation: slideInY cubic-bezier(0.02, 1, 1, 1) 0.5s forwards;
-  animation: slideInY cubic-bezier(0.02, 1, 1, 1) 0.5s forwards;
+  -webkit-animation: slideInY cubic-bezier(0, 0.99, 0.25, 1) 0.4s forwards;
+  -moz-animation: slideInY cubic-bezier(0, 0.99, 0.25, 1) 0.4s forwards;
+  -o-animation: slideInY cubic-bezier(0, 0.99, 0.25, 1) 0.4s forwards;
+  animation: slideInY cubic-bezier(0, 0.99, 0.25, 1) 0.4s forwards;
   -webkit-transform: rotate(40deg);
   -moz-transform: rotate(40deg);
   -ms-transform: rotate(40deg);
@@ -215,15 +215,6 @@
   top: 50px;
   right: 10px;
   z-index: 101;
-  -webkit-border-radius: 10px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 10px;
-  -moz-background-clip: padding;
-  border-radius: 10px;
-  background-clip: padding-box;
-  -webkit-box-shadow: 1px 5px 5px;
-  -moz-box-shadow: 1px 5px 5px;
-  box-shadow: 1px 5px 5px;
 }
 #topic-panel section.incorrect .byUser {
   color: #d59595;

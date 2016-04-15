@@ -35,6 +35,7 @@ div#room-statistic .statistic .statistic-bar .user .username {
   flex: 0 0 8em;
 }
 div#room-statistic .statistic .statistic-bar .user .progress {
+  margin: 0;
   width: 100%;
 }
 div#room-statistic .statistic .statistic-bar .user .progress > .progress-bar {

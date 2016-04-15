@@ -51,7 +51,7 @@ module.exports = ['$scope', '$q', 'messageCenter', 'authSrv', 'socketSrv', 'room
       return '离线';
     }
     if (!roomSrv.isCompeting()) {
-      return $scope.isReady(user.id) ? '已准备' : '为准备';
+      return $scope.isReady(user.id) ? '已准备' : '未准备';
     }
 
     return '在线';

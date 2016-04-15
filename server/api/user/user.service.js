@@ -39,7 +39,7 @@ exports.offline = function(id) {
 };
 
 exports.isOnline = function(id) {
-  return this.list(id).get(0).then(function(user) {
+  return this.list(id).then(function(user) {
     if(user){
       return 1 === parseInt(user.state, 10);
     }else{
@@ -74,7 +74,7 @@ exports.setRoom = function(userid, roomid) {
 
 exports.updatePoint = function(uid, point) {
   log.debug("user.service#UpdatePoint", uid, point);
-  return this.list(uid).get(0).then(function(user) {
+  return this.list(uid).then(function(user) {
     return update(user.id, function(lockedUser) {
       lockedUser.point = parseInt(user.point) + parseInt(point);
     });
@@ -82,15 +82,5 @@ exports.updatePoint = function(uid, point) {
 };
 
 exports.list = function(ids) {
-  if (ids === undefined) {
-    return db.listObj("users", ids);
-  } else if (_.isString(ids) && ids !== "") {
-    return db.listObj("users", ids);
-  } else if (_.isArray(ids)) {
-    return Promise.all(_.map(ids, function(id) {
-      return db.listObj("users", id)
-    })).then(_.flatten);
-  } else {
-    return Promise.resolve();
-  }
+  return db.listObj("users", ids);
 };

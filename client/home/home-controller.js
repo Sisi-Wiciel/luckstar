@@ -8,6 +8,9 @@ module.exports = ['$scope', 'socketSrv', 'authSrv', 'messageCenter', '$location'
   socketSrv.register('inviteUser', function(result) {
     messageCenter.confirm('用户' + result.user + '向你发出答题邀请.').then(function() {
       $location.path('/home/rooms/' + result.room);
+      socketSrv.inviteUserResponse(result.userid, 1);
+    }, function() {
+      socketSrv.inviteUserResponse(result.userid, 0);
     });
   });
 

@@ -1,12 +1,14 @@
 var roomService = require('./room.service');
 var userService = require('../user/user.service');
 var topicService = require('../topic/topic.service');
+
 var competeSocket = require('./compete.socket');
 var log = require('../../log');
 var _ = require('lodash');
 var moment = require('moment');
 var Promise = require('bluebird');
 var setting = require('../../config/setting');
+var socketSrv;
 
 function updateRooms(socket) {
   log.verbose("room.socket#UpdateRooms", socket.room);
@@ -34,23 +36,15 @@ function sendRoomMessage(socket, message, isSystem) {
 function getRoom(socket, id, cb) {
   log.verbose("room.socket#GetRoom", id);
 
-  roomService.list(id).then(function(rooms) {
-    if (rooms && rooms.length == 1) {
-      var room = rooms[0];
-
-      userService.list(socket.uid).get(0).then(function(user) {
+  roomService.list(id).then(function(room) {
+    if (room) {
+      userService.list(socket.uid).then(function(user) {
         cb(room, user);
       });
-
     } else {
       cb(null, null);
-      //if (socket.room === id) {
-      //  socket.leave(id);
-      //  socket.room = null
-      //}
       log.warn("GetRoom: not found room ", id);
     }
-
   });
 };
 
@@ -230,18 +224,18 @@ function createRoom(socket, newroom, cb) {
     do_save();
   }
 };
-
 function inviteUser(socket, userid) {
   log.verbose("room.socket#InviteUser");
   getRoom(socket, socket.room, function(room, me) {
     //make sure that i am a player in room
     if (_.find(room.users, {'id': me.id})) {
-      userService.list(userid).get(0).then(function(user) {
-        var userSocket = socket.io.sockets.connected[user.sid];
+      userService.list(userid).then(function(user) {
+        var userSocket = socketSrv.getSocketByUser(user);
         if (userSocket) {
           userSocket.emit('inviteUser', {
             'room': socket.room,
-            'user': me.username
+            'user': me.username,
+            'userid': me.id
           });
         }
       });
@@ -249,11 +243,21 @@ function inviteUser(socket, userid) {
   });
 }
 
+function inviteUserResponse(socket, userid, response) {
+  userService.list(userid).then(function(user) {
+    var userSocket = socketSrv.getSocketByUser(user);
+    userSocket.emit('inviteUserResponse', {
+      response: response,
+      username : user.username
+    });
+  });
+};
+
 function kickOff(socket, userid) {
   log.verbose("room.socket#KickOff");
   getRoom(socket, socket.room, function(room, me) {
     if (room.admin.id === me.id) {
-      userService.list(userid).get(0).then(function(user) {
+      userService.list(userid).then(function(user) {
         roomService.leave(room, user).then(function() {
           var userSocket = socket.io.sockets.connected[user.sid];
 
@@ -273,8 +277,9 @@ function kickOff(socket, userid) {
 exports.updateRooms = updateRooms;
 exports.sendRoomMessage = sendRoomMessage;
 
+
 exports.register = function(socket) {
-  var socketSrv = require('../socket/socket.service');
+  socketSrv = require('../socket/socket.service');
 
   socketSrv.on(socket, 'update rooms', function() {
     updateRooms(socket);
@@ -315,9 +320,7 @@ exports.register = function(socket) {
   socketSrv.on(socket, 'room get', function(id, cb) {
     id = id || socket.room;
     if (!_.isEmpty(id)) {
-      roomService.list(id).then(function(rooms) {
-        cb(_.first(rooms));
-      });
+      roomService.list(id).then(cb);
     } else {
       cb({});
     }
@@ -332,6 +335,10 @@ exports.register = function(socket) {
   });
   socketSrv.on(socket, 'invite user', function(userid) {
     inviteUser(socket, userid);
+  });
+
+  socketSrv.on(socket, 'invite user response', function(data) {
+    inviteUserResponse(socket, data.id, data.response);
   });
 };
 

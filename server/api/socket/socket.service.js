@@ -26,6 +26,9 @@ function onDisconnect(socket) {
 }
 
 module.exports = {
+  getSocketByUser: function(user) {
+    return io.sockets.connected[user.sid];
+  },
   auth: function(socket) {
     return new Promise(function(resolve, reject) {
       if (socket.uid && socket.auth) {
@@ -54,7 +57,7 @@ module.exports = {
 
       }
     }).then(function() {
-      return userService.list(socket.uid).get(0).then(function(user) {
+      return userService.list(socket.uid).then(function(user) {
         if (!socket.room && user.room) {
           socket.room = user.room;
         }

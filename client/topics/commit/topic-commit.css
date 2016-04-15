@@ -21,7 +21,7 @@
   position: absolute;
   right: 0;
   left: 0;
-  top: 0;
+  top: -5px;
   bottom: 0;
   padding: 20px;
   transition: all ease-in 0.5s;

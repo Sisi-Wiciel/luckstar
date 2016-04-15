@@ -13,7 +13,7 @@ var nodifyRoom = function(socket, key, obj) {
 };
 
 var nodifyVerdict = function(socket, room, verdictObj) {
-  log.verbose("NodifyVerdict", verdictObj);
+  log.verbose("compete.socket#NodifyVerdict", verdictObj);
 
   nodifyRoom(socket, 'topicVerdict', verdictObj);
 
@@ -28,7 +28,6 @@ var nodifyVerdict = function(socket, room, verdictObj) {
       } else if (verdictObj.verdict == -1) {
         roomSocket.sendRoomMessage(socket, "第" + competeStat.currNum + "题: 答题超时", true);
       }
-
 
       setTimeout(function() {
         if (competeStat.currNum >= competeStat.maxNum) {
@@ -52,11 +51,11 @@ var nodifyVerdict = function(socket, room, verdictObj) {
 };
 
 var topicTimeoutChecker = function(socket, topicId) {
-  log.verbose("TopicTimeoutChecker", topicId);
+  log.verbose("compete.socket#TopicTimeoutChecker", topicId);
 
   setTimeout(function() {
     if (socket.room) {
-      roomService.list(socket.room).get(0).then(function(room) {
+      roomService.list(socket.room).then(function(room) {
         if (room && room.status == 1 && topicId === room.topic) {
           nodifyVerdict(socket, room, {
             verdict: -1
@@ -68,9 +67,9 @@ var topicTimeoutChecker = function(socket, topicId) {
 };
 
 function nextTopic(socket) {
-  log.verbose("NextTopic");
+  log.verbose("compete.socket#NextTopic");
   var self = this;
-  roomService.list(socket.room).get(0).then(function(room) {
+  roomService.list(socket.room).then(function(room) {
     if (room) {
       topicService.get().then(function(topic) {
         delete topic.correct;
@@ -90,15 +89,15 @@ function nextTopic(socket) {
 };
 
 function checkTopic(socket, answer) {
-  log.verbose("CheckTopic");
+  log.verbose("compete.socket#CheckTopic");
   var self = this;
 
   Promise.props({
-    'users': userService.list(socket.uid),
-    'rooms': roomService.list(socket.room)
+    'user': userService.list(socket.uid),
+    'room': roomService.list(socket.room)
   }).then(function(results) {
-    var user = results.users[0];
-    var room = results.rooms[0];
+    var user = results.user;
+    var room = results.room;
 
     if (_.find(room.users, {"id": socket.uid})) {
       topicService.isCorrect(room.topic, answer).then(function(verdictObj) {
@@ -114,8 +113,7 @@ function checkTopic(socket, answer) {
 };
 
 var getTopic = function(socket) {
-  roomService.list(socket.room).then(function(rooms) {
-    var room = rooms[0];
+  roomService.list(socket.room).then(function(room) {
     if (room && room.topic) {
       topicService.get(room.topic).then(function(topic) {
         socket.emit('topicUpdate', topic);

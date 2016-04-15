@@ -1,4 +1,4 @@
-div.room {
+div#room_home_page {
   height: 100%;
   -webkit-border-radius: 10px;
   -webkit-background-clip: padding-box;
@@ -19,7 +19,7 @@ div.room {
   -ms-flex-direction: column;
   flex-direction: column;
 }
-div.room > .room-head {
+div#room_home_page > .room-head {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -45,23 +45,22 @@ div.room > .room-head {
   font-size: 20px;
   font-weight: bold;
 }
-div.room > .room-head a {
+div#room_home_page > .room-head a {
   -webkit-box-flex: 0;
   -moz-box-flex: 0;
   -webkit-flex: 0 0 1em;
   -ms-flex: 0 0 1em;
   flex: 0 0 1em;
 }
-div.room > .room-head a .fa-power-off {
+div#room_home_page > .room-head a .fa-power-off {
   font-size: .5em;
-  padding: .5em;
-  border-radius: 50px;
+  padding: 2px 10px;
 }
-div.room > .room-head a .fa-power-off:hover {
+div#room_home_page > .room-head a .fa-power-off:hover {
   background-color: #f88d00;
   color: #fff;
 }
-div.room > .room-body {
+div#room_home_page > .room-body {
   min-height: 450px;
   padding: 10px;
   -webkit-box-flex: 1;
@@ -87,7 +86,7 @@ div.room > .room-body {
   -webkit-justify-content: space-between;
   justify-content: space-between;
 }
-div.room > .room-body .room-body-users {
+div#room_home_page > .room-body .room-body-users {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -99,11 +98,11 @@ div.room > .room-body .room-body-users {
   -webkit-justify-content: space-between;
   justify-content: space-between;
 }
-div.room > .room-body .room-body-complete {
+div#room_home_page > .room-body .room-body-complete {
   flex: 1;
   padding: 10px;
 }
-div.room > .room-foot {
+div#room_home_page > .room-foot {
   padding: 4px;
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48bGluZWFyR3JhZGllbnQgaWQ9Imxlc3NoYXQtZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMjAlIiBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9IjEiLz48c3RvcCBvZmZzZXQ9IjU4JSIgc3RvcC1jb2xvcj0iI2VlZSIgc3RvcC1vcGFjaXR5PSIxIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2xlc3NoYXQtZ2VuZXJhdGVkKSIgLz48L3N2Zz4=);
   background-image: -webkit-linear-gradient(top, #fff 20%, #eee 58%);
@@ -117,6 +116,6 @@ div.room > .room-foot {
   border-radius: 5px;
   background-clip: padding-box;
 }
-div.room > .room-foot .chat {
+div#room_home_page > .room-foot .chat {
   width: 100%;
 }

@@ -42,11 +42,18 @@ function login(req, res, next) {
     }
 
     userService.isOnline(user.id).then(function(isOnline) {
-      if(isOnline){
-        return res.status(401).json({message: '用户已登录'});
-      }else{
+      var socketService = require('../socket/socket.service');
+
+      userService.list(user.id).then(function(redisUser) {
+        var socket = socketService.getSocketByUser(redisUser);
+        socket.disconnect('multi-login');
+      });
+
+      //if(isOnline){
+      //  return res.status(401).json({message: '用户已登录'});
+      //}else{
         res.json({token: authService.genToken(user)});
-      }
+      //}
     });
 
   })(req, res, next)

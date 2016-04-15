@@ -1,19 +1,21 @@
 @import (reference) "common";
 
-
-#home {
+div#home {
   margin-bottom: 20px;
-
+  font-size: 10px;
   > .head {
-    margin-bottom: 10px;
     .animated;
     .slideInDown;
   }
 
   > .row {
+    > .content{
+      padding-right: 0;
+    }
     > .sidebar {
       .animated;
       .slideInRight;
+      padding-left: 5px;
     }
     > div {
       height: 100%;
@@ -23,8 +25,6 @@
   [ui-view] {
 
     .box-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
-    .border-radius(5);
-    padding: 10px;
     height: 720px;
     overflow-y: auto;
     overflow-x: hidden;

@@ -22,7 +22,7 @@ var getTopic = function(id) {
       topic.answercount = topic.corrector.length;
       delete topic.corrector;
       if (topic.creator) {
-        return userService.list(topic.creator).get(0).then(function(creator) {
+        return userService.list(topic.creator).then(function(creator) {
           topic.creatorUsername = creator.username;
           return topic;
         })

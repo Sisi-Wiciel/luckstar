@@ -29,12 +29,12 @@
   width: 200px;
 }
 .room-main .room-tools {
-  padding: 2px;
+  padding: 10px;
   -webkit-box-flex: 0;
   -moz-box-flex: 0;
-  -webkit-flex: 0 0 5em;
-  -ms-flex: 0 0 5em;
-  flex: 0 0 5em;
+  -webkit-flex: 0 0 6em;
+  -ms-flex: 0 0 6em;
+  flex: 0 0 6em;
   -webkit-box-direction: normal;
   -moz-box-direction: normal;
   -webkit-box-orient: vertical;
@@ -126,17 +126,9 @@
   flex-wrap: wrap;
 }
 .room-main .room-list .body .room-list-item {
-  color: #996300 !important;
   background-color: #ffb833;
-  background-image: url(../../libs/images/noise.png);
-  width: 48%;
-  margin: 10px;
-  -webkit-border-radius: 10px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 10px;
-  -moz-background-clip: padding;
-  border-radius: 10px;
-  background-clip: padding-box;
+  width: 500px;
+  margin: 5px;
   -webkit-box-shadow: inset rgba(255, 254, 255, 0.6) 0 0.3em 0.3em, inset rgba(0, 0, 0, 0.15) 0 -0.1em 0.3em, #cc8500 0 0.1em 3px, #996300 0 0.3em 1px, rgba(0, 0, 0, 0.2) 0 0.5em 5px;
   -moz-box-shadow: inset rgba(255, 254, 255, 0.6) 0 0.3em 0.3em, inset rgba(0, 0, 0, 0.15) 0 -0.1em 0.3em, #cc8500 0 0.1em 3px, #996300 0 0.3em 1px, rgba(0, 0, 0, 0.2) 0 0.5em 5px;
   box-shadow: inset rgba(255, 254, 255, 0.6) 0 0.3em 0.3em, inset rgba(0, 0, 0, 0.15) 0 -0.1em 0.3em, #cc8500 0 0.1em 3px, #996300 0 0.3em 1px, rgba(0, 0, 0, 0.2) 0 0.5em 5px;
@@ -160,6 +152,7 @@
   justify-content: space-between;
 }
 .room-main .room-list .body .room-list-item .main {
+  padding: 5px;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -184,8 +177,6 @@
   display: flex;
 }
 .room-main .room-list .body .room-list-item .main .users .user {
-  border-radius: 15px;
-  margin: 2px;
   border: 1px solid #F6D5AD;
   color: #996300;
   text-align: center;
@@ -217,11 +208,11 @@
 }
 .room-main .room-list .body .room-list-item .main .toolbar {
   margin: auto;
-  flex: 0 0 5em;
+  flex: 0 0 6em;
 }
 .room-main .room-list .body .room-list-item .main .toolbar .btn {
   padding: 2px 12px;
-  margin: 2px 0;
+  margin: 2px 8px;
 }
 .room-main .room-list .body .room-list-item.ng-move,
 .room-main .room-list .body .room-list-item.ng-enter,

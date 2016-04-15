@@ -16,7 +16,7 @@ function save(req, res) {
 };
 
 function get(req, res) {
-  userService.list(req.user._id.toString()).get(0).then(function(user) {
+  userService.list(req.user._id.toString()).then(function(user) {
     return res.status(200).json(user);
   })
 

@@ -113,6 +113,12 @@ module.exports = ['store', '$q', function(store, $q) {
     inviteUser: function(userid) {
       this.emit('invite user', userid);
     },
+    inviteUserResponse: function(fromid, response) {
+      this.emit('invite user response', {
+        id: fromid,
+        response: response
+      });
+    },
     sendMsg: function(msg) {
       this.emit('send message', msg);
     },

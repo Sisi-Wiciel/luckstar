@@ -1,13 +1,13 @@
 <div id="topic-panel">
 
-  <section ng-cloak ng-class="verdictCls">
-    <div class="panel-cover" ng-if="topic && verdict" ></div>
+  <section ng-class="verdictCls">
+    <div class="panel-cover" ng-if="verdict && verdictCls"></div>
 
-    <div class="head" ng-if="topic" >
+    <div class="head" ng-if="topic">
       <b><span typing>{{topic.title}}</span></b><span class="text-success">({{topic.point}}分){{topic.answercount > 1?'(多选题)': ''}}</span>
     </div>
 
-    <div class="body" ng-if="topic" >
+    <div class="body" ng-if="topic">
 
       <div class="countdown progress">
         <div class="progress-bar progress-bar-danger">

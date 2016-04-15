@@ -87,9 +87,7 @@ module.exports = {
 
       return new Promise(function(resolve, reject) {
         self.lock(self.LOCK_KEY, function(done) {
-          self.listObj(key, id_).then(function(Objs) {
-            var lockedObj = _.first(Objs);
-
+          self.listObj(key, id_).then(function(lockedObj) {
             if (lockedObj) {
               Promise.resolve(setFun(_.clone(lockedObj))).then(function(_obj) {
                 self.db.hmset(key_, _obj).then(function() {
@@ -118,23 +116,52 @@ module.exports = {
     log.debug("REDIS-DELETE: [%s]", key);
     return this.db.del(key);
   },
+  /**
+   * list all redis data by key
+   * @param key
+   * @param id
+   *  null or '': return list null
+   *  undifined: return all data
+   *  type of array: return list of data
+   *  type of string: return only one data
+   */
   listObj: function(key, id) {
-    id = id || '*';
-    var _key = key + ":" + id;
     var _db = this.db;
 
-    return _db.keys(_key).then(function(keys) {
-      log.debug("REDIS-LIST-OBJ: [%s] = ", _key, keys);
+    function do_query_db(key) {
+      return _db.hgetall(key);
+    }
 
-      return Promise.map(keys, function(key) {
-        return _db.hgetall(key);
+    if (_.isEmpty(key)) {
+      return Promise.resolve(null);
+    }
+
+    if (id === undefined) {
+      return _db.keys(key + ":*").then(function(keys) {
+        log.debug("REDIS-LIST-OBJ: [%s] = ", key, keys);
+        return Promise.map(keys, function(fullKeyValue) {
+          return do_query_db(fullKeyValue);
+        });
       });
-    });
-
+    }
+    else if (_.isEmpty(id)) {
+      return Promise.resolve(null);
+    }
+    else if (_.isString(id)) {
+      return do_query_db(key + ":" + id);
+    }
+    else if (_.isArray(id)) {
+      return Promise.map(id, function(idValue) {
+        return do_query_db(key + ":" + idValue)
+      });
+    }
+    else {
+      return Promise.resolve(null);
+    }
   },
   set: function(key, name, value) {
     return this.db.hset(key, name, value);
-  },
+  }
 
 };
 
