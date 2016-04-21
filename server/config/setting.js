@@ -6,8 +6,8 @@ module.exports = {
     AUTH_MAX_RETRY_TIMES: 5
   },
   ROOM: {
-    COMPETE_MAX_TOPICS: 3,
-    COMPETE_TOPIC_COUNTDOWN: 400
+    COMPETE_MAX_TOPICS: 20,
+    COMPETE_TOPIC_COUNTDOWN: 20
   },
   USER: {
     STATUS: {
@@ -18,8 +18,8 @@ module.exports = {
       IN_COMPETING_WATCHING: '比赛房间,观战.',
       IN_TOPIC: '浏览题目页面.'
     },
-    AUTH_EXPRIES_IN_MINUTES: 7 * 24 * 60, // token timeout (min)
-    INACTIVE_IN_SECOND: 24 * 60 * 60 * 1000 // user inactive timeout
+    AUTH_EXPRIES_IN_MINUTES: 24 * 60, // token timeout (min)
+    INACTIVE_IN_SECOND: 5 * 60 * 1000 // user inactive timeout (5min)
   },
   FILE: {
     UPLOAD_POLICY: {
@@ -30,3 +30,4 @@ module.exports = {
   },
   SECRET_KEY: "LuCk_StAr_SeCrEt"
 };
+

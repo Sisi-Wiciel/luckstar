@@ -1,8 +1,8 @@
 'use strict';
 var settings = require('../settings');
-var io = require('socket.io-client');
+var io = require('io');
 
-module.exports = ['store', '$q', function(store, $q) {
+module.exports = ['store', '$q', '$location', function(store, $q, $location) {
   var socket = null;
   var onAuthSuccess = _.noop;
   var onAuthFailed = _.noop;
@@ -18,7 +18,7 @@ module.exports = ['store', '$q', function(store, $q) {
     if (socket && socket.disconnected) {
       socket.connect();
     } else {
-      socket = io.connect('http://' + socketConfig.host + ':' + socketConfig.port, {
+      socket = io.connect('http://' + $location.host() + ':' + socketConfig.port, {
         reconnection: false
       });
       socket.on('connect', function() {

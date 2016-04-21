@@ -46,7 +46,9 @@ function login(req, res, next) {
 
       userService.list(user.id).then(function(redisUser) {
         var socket = socketService.getSocketByUser(redisUser);
-        socket.disconnect('multi-login');
+        if(socket){
+          socket.disconnect('multi-login');
+        }
       });
 
       //if(isOnline){

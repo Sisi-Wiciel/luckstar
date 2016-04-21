@@ -1,8 +1,10 @@
 @import (reference) "common";
-
+body{
+  font-size: 10px;
+}
 div#home {
   margin-bottom: 20px;
-  font-size: 10px;
+  font-size: 1.2em;
   > .head {
     .animated;
     .slideInDown;
@@ -23,12 +25,10 @@ div#home {
   }
 
   [ui-view] {
-
-    .box-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+    //.box-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
     height: 720px;
     overflow-y: auto;
     overflow-x: hidden;
-    background-image: url("/libs/images/bg.gif");
   }
 
   #home-page {

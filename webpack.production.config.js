@@ -12,15 +12,15 @@ module.exports = function makeWebpackConfig() {
   config.output = {
     path: __dirname + '/dist',
     publicPath: '/',
-    filename: '[name].[hash].js',
-    chunkFilename: '[name].[hash].js'
+    filename: '[name].[hash:8].js',
+    chunkFilename: '[name].[hash:8].js'
   };
 
   config.devtool = 'source-map';
 
   config.plugins.push(
 
-  new ExtractTextPlugin('[name].[hash].css'),
+  new ExtractTextPlugin('[name].[hash:8].css'),
 
   new webpack.optimize.DedupePlugin(),
   new webpack.optimize.UglifyJsPlugin({

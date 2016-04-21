@@ -1,4 +1,3 @@
-var session = require('express-session');
 var errorHandler = require('express-error-handler');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -18,11 +17,6 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: false}));
   app.use(cookieParser());
-  app.use(session({
-    secret: 'LuCk_StAr_SeCrEt',
-    resave: true,
-    saveUninitialized: true
-  }));
   //app.use('/static', express.static(path.join(__dirname, '../../client')));
 
   app.use(errorHandler({dumpExceptions: true, showStack: true}));

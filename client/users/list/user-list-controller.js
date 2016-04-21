@@ -2,7 +2,8 @@
 
 require('./user-list.css');
 require('./user-list.html');
-module.exports = ['$scope', 'socketSrv', 'authSrv', 'messageCenter', 'roomSrv', function($scope, socketSrv, authSrv, messageCenter, roomSrv) {
+module.exports = ['$scope', 'socketSrv', 'authSrv', 'messageCenter', 'roomSrv', function($scope, socketSrv, authSrv,
+                                                                                         messageCenter, roomSrv) {
   $scope.messages = [];
   $scope.toUser = {};
   $scope.room = roomSrv.getCurrentRoom();
@@ -38,14 +39,14 @@ module.exports = ['$scope', 'socketSrv', 'authSrv', 'messageCenter', 'roomSrv', 
   };
 
   $scope.inviteUser = function(user) {
-    if(_.find($scope.room.users, {'id': user.id})){
+    if (_.find($scope.room.users, {id: user.id})) {
       messageCenter.error('用户已经进入房间中');
-    }else{
+    } else {
       socketSrv.inviteUser(user.id);
-      messageCenter.notify('已发送对用户<b>'+user.username+'</b>邀请');
-      socketSrv.register('inviteUserResponse', function(result){
-        if(result.response === 0){
-          messageCenter.notify('用户<b>'+result.username+'</b>拒绝您的邀请');
+      messageCenter.notify('已发送对用户<b>' + user.username + '</b>邀请');
+      socketSrv.register('inviteUserResponse', function(result) {
+        if (result.response === 0) {
+          messageCenter.notify('用户<b>' + result.username + '</b>拒绝您的邀请');
         }
       });
     }

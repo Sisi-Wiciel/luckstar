@@ -7,15 +7,16 @@ runSequence = require('run-sequence'),
 WebpackDevServer = require("webpack-dev-server");
 $ = require('gulp-load-plugins')();
 
-gulp.task('default', function() {
-
-});
+var gulpSSH = new $.ssh({
+  ignoreErrors: false,
+  sshConfig: require('./config/config.json')
+})
 
 gulp.task("webpack-dev-server", function(callback) {
   var config = require('./webpack.develop.config');
   new WebpackDevServer(webpack(config), {
     // webpack-dev-server options
-    stats: { colors: true },
+    stats: {colors: true},
     historyApiFallback: true,
     contentBase: __dirname + "/client/",
     hot: true,
@@ -38,21 +39,52 @@ gulp.task('eslint', function() {
 
 // clean build
 gulp.task('clean', function(cb) {
-  return del(['dist/*'], cb);
+  return del(['dist/server/**/*', 'dist/web/**/*'], cb);
 });
 
 gulp.task('copy', function() {
-  gulp.src([
+  return gulp.src([
     'client/**/*.html',
     'client/**/*.png',
-    'client/**/*.gif',
-  ]).pipe(gulp.dest('dist'))
+    'client/**/*.gif'
+  ])
+  .pipe($.if(['**/*.html', '!index.html'], $.htmlmin({
+    removeComments: true,
+    collapseWhitespace: true,
+    collapseBooleanAttributes: true,
+    removeAttributeQuotes: true,
+    removeRedundantAttributes: true,
+    removeEmptyAttributes: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    removeOptionalTags: true
+  })))
+  .pipe(gulp.dest('dist/web'))
   .pipe($.size({title: 'copy'}));
 });
 
-gulp.task('build', ['clean', 'eslint', 'copy'], function() {
-  gulp.src('client/app.js')
+gulp.task('buildWeb', ['eslint', 'copy'], function() {
+  return gulp.src('client/index.js')
   .pipe($.webpack(require('./webpack.production.config.js')))
-  .pipe(gulp.dest('dist/'))
+  .pipe(gulp.dest('dist/web'))
 });
 
+gulp.task('buildServer', function() {
+  return gulp.src('server/**/*')
+  .pipe(gulp.dest('dist/server'))
+});
+
+gulp.task('build', function(cb) {
+   runSequence('clean', ['buildWeb', 'buildServer'], cb);
+});
+
+gulp.task('release', ['build'], function() {
+
+  var archiveName = 'archive-lastest.zip';
+  return gulp.src('dist/**/*')
+  .pipe($.zip(archiveName))
+  .pipe(gulp.dest('dist/'))
+  .pipe(gulpSSH.dest('/root/'))
+  .pipe(gulpSSH.shell(['sh /root/install.sh'], {filePath: 'server.log'}))
+  .pipe(gulp.dest('logs'))
+})

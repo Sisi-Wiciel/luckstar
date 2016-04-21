@@ -10,7 +10,7 @@ module.exports = ['$scope', '$timeout', 'authSrv', 'messageCenter', function($sc
       authSrv.createUser(target).then(function() {
         messageCenter.notify('用户注册成功');
         $timeout($scope.toLogin(), 1000);
-    });
+      });
     } else {
       $scope.avatarError = true;
     }

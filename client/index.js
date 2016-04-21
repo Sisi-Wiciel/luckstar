@@ -10,15 +10,6 @@ var appDeps = [
   require('./topics')
 ];
 
- require('bootstrap/less/bootstrap.less');
-//require('angular-material/../angular-material.min.css');
-require('font-awesome/less/font-awesome.less');
-require('normalize.css/normalize.css');
-require('./libs/less/animate.less');
-require('./libs/less/lesshat.less');
-require('./components/utils/message/messenger.css');
-require('./components/utils/message/messenger-theme-future.css');
-
 angular.element(document).ready(function() {
   angular.bootstrap(document, appDeps).invoke([
     '$rootScope',

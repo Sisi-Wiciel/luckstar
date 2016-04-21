@@ -43,15 +43,15 @@
   -ms-flex-direction: column;
   flex-direction: column;
   text-align: center;
-  border-right: solid 1px #f49448;
+  border-right: solid 1px #ff9913;
 }
 .room-main .room-tools div.popover > div.arrow {
-  border-right-color: #F38630;
+  border-right-color: #f88d00;
 }
 .room-main .room-tools .tool {
   cursor: pointer;
   list-style: none;
-  color: #F38630;
+  color: #f88d00;
   position: relative;
 }
 .room-main .room-tools .tool img {
@@ -83,8 +83,8 @@
   white-space: nowrap;
   line-height: 30px;
   color: #fff;
-  border: 1px solid #F38630;
-  background-color: #F38630;
+  border: 1px solid #f88d00;
+  background-color: #f88d00;
   -webkit-border-radius: 20px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 20px;

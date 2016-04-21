@@ -6,10 +6,7 @@ module.exports = ['$scope', 'socketSrv', 'roomSrv', '$location', 'authSrv', func
                                                                                      $location, authSrv) {
   $scope.rooms = [];
   $scope.curr = authSrv.getCurrentUser();
-  $scope.popover = {
-    title: '创建房间',
-    content: ' '
-  };
+
   socketSrv.register('updateRooms', function(rooms) {
     _.map(rooms, roomSrv.fillRoomUsers);
     $scope.rooms = rooms;

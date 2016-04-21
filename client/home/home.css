@@ -1,6 +1,9 @@
+body {
+  font-size: 10px;
+}
 div#home {
   margin-bottom: 20px;
-  font-size: 10px;
+  font-size: 1.2em;
 }
 div#home > .head {
   -webkit-animation-duration: 1s;
@@ -26,13 +29,9 @@ div#home > .row > div {
   height: 100%;
 }
 div#home [ui-view] {
-  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   height: 720px;
   overflow-y: auto;
   overflow-x: hidden;
-  background-image: url("/libs/images/bg.gif");
 }
 div#home #home-page {
   display: -webkit-box;

@@ -16,6 +16,5 @@ module.exports = ['$scope', 'socketSrv', 'messageCenter', function($scope, socke
       socketSrv.reportTopicBug();
       messageCenter.notify('我们已经收到您的举报.');
     });
-
   };
 }];

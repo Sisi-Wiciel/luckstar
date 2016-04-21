@@ -14,9 +14,8 @@
   margin-top: 60px;
 }
 #room-creation div.form-actions button.btn-success {
-  width: 80%;
+  width: 60%;
 }
-#room-creation div.form-actions button.btn-xs {
-  margin-bottom: -9px;
-  padding: 3px 10px;
+#room-creation div.form-actions button.btn-default {
+  padding: 4px 30px;
 }

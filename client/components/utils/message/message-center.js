@@ -13,45 +13,40 @@ require('./messenger-theme-future.min.js');
 module.exports = ['$q', function($q) {
   Messenger.options = {
     maxMessages: 9,
-    //extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
+    // extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
     extraClasses: 'messenger-fixed messenger-on-top',
     theme: 'future'
   };
-  var notifyMessenger;
-  var errorMessenger;
+  var messenger;
   var confirmMessenger;
-  this.notify = function(content) {
-    if (!notifyMessenger) {
-      notifyMessenger = Messenger().post({
-        message: content,
-        showCloseButton: true,
-        hideAfter: 15
-      });
-    } else {
-      notifyMessenger.update({
-        message: content
-      })
-    }
 
+  function _updateMessage(messageObj) {
+    if (messenger) {
+      messenger.update(messageObj);
+    } else {
+      messenger = Messenger().post(_.assign({
+        showCloseButton: true,
+        hideAfter: 5
+      }, messageObj));
+    }
+  }
+
+  this.notify = function(content) {
+    _updateMessage({
+      message: content,
+      type: 'success'
+    });
   };
 
   this.error = function(content) {
-    if (!notifyMessenger) {
-      errorMessenger = Messenger().post({
-        message: content,
-        showCloseButton: true,
-        type: 'error',
-        hideAfter: 15
-      });
-    } else {
-      errorMessenger.update({
-        message: content
-      })
-    }
+    _updateMessage({
+      message: content,
+      type: 'error'
+    });
   };
 
-  this.confirm = function(content, id) {
-    if(confirmMessenger){
+  this.confirm = function(content) {
+    if (confirmMessenger) {
       confirmMessenger = null;
     }
 
