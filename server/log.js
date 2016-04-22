@@ -10,13 +10,13 @@ var logger = new (winston.Logger)({
       timestamp: true,
       prettyPrint: true,
       json: false
+    }),
+    new (winston.transports.File)({
+      filename: 'luckstar.log',
+      maxsize: 40000,
+      maxFiles: 10,
+      json: false
     })
-    //new (winston.transports.File)({
-    //  filename: 'luckstar.log',
-    //  maxsize: 40000,
-    //  maxFiles: 10,
-    //  json: true
-    //})
   ]
 });
 

@@ -39,7 +39,7 @@ gulp.task('eslint', function() {
 
 // clean build
 gulp.task('clean', function(cb) {
-  return del(['dist/server/**/*', 'dist/web/**/*'], cb);
+  return del(['dist/*.zip', 'dist/server/**/*', 'dist/web/**/*'], cb);
 });
 
 gulp.task('copy', function() {
@@ -75,16 +75,19 @@ gulp.task('buildServer', function() {
 });
 
 gulp.task('build', function(cb) {
-   runSequence('clean', ['buildWeb', 'buildServer'], cb);
+  runSequence('clean', ['buildWeb', 'buildServer'], cb);
 });
 
-gulp.task('release', ['build'], function() {
+var archiveName = 'archive-lastest.zip';
 
-  var archiveName = 'archive-lastest.zip';
+gulp.task('release', ['build'], function() {
   return gulp.src('dist/**/*')
   .pipe($.zip(archiveName))
-  .pipe(gulp.dest('dist/'))
-  .pipe(gulpSSH.dest('/root/'))
-  .pipe(gulpSSH.shell(['sh /root/install.sh'], {filePath: 'server.log'}))
-  .pipe(gulp.dest('logs'))
+  .pipe(gulp.dest('dist/'));
 })
+
+gulp.task('deploy', ['release'], function() {
+  return gulp.src('dist/' + archiveName)
+  .pipe(gulpSSH.dest('/root/'));
+    //gulpSSH.shell(['sh /root/install.sh'], {filePath: 'server.log'});
+});
