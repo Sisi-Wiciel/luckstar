@@ -58,7 +58,6 @@ var assemble = function(room) {
   }
 
   return userService.list(room.users).then(function(users) {
-    console.info(users);
     room.users = users;
     room.admin = users[0];
     return room;
@@ -96,7 +95,6 @@ exports.update = function(room, setFun) {
 };
 
 exports.save = function(room, userid) {
-
   room.create = moment().format();
   room.id = uuid.v1();
   room.admin = userid;
@@ -105,6 +103,7 @@ exports.save = function(room, userid) {
   room.readyUsers = [userid];
   room.obs = [];
   room.number = 5;
+  room.mode = 0;
   return db.saveObj("rooms", objSaved(room));
 };
 
@@ -224,6 +223,7 @@ exports.leave = function(room, user) {
 };
 
 exports.join = function(room, user) {
+  log.verbose("room.service#Join", room, user);
   return this.update(room, function(locked) {
     if (locked.users.length < locked.number) {
       if (!_.find(locked.users, {'id': user.id})) {

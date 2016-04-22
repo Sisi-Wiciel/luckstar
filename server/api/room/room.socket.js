@@ -56,15 +56,15 @@ function joinRoom(socket, id) {
   getRoom(socket, id, function(room, user) {
 
     if (_.isEmpty(room)) {
+      log.verbose("Room is empty for now");
       socket.emit('updateRoom', null);
       return;
     }
     //管理员默认在room.users里面, 如果这句话放倒if中,管理员将得不到房间的消息通知.
     socket.join(socket.room);
-
-    if (!_.find(room.users, {'id': user.id})) {
+    if (!_.find(room.users, {'id': socket.uid})) {
       roomService.join(room, user).then(function(room) {
-        return userService.setRoom(user.id, room.id).then(function() {
+        return userService.setRoom(socket.uid, room.id).then(function() {
           sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
         });
       }).then(function() {
@@ -102,7 +102,7 @@ function leaveRoom(socket) {
       return updateRooms(socket)
     }).then(function() {
       socket.emit('updateRoom', null);
-      socket.room = null;
+      socket.room = '';
       socket.leave(room);
     });
   });

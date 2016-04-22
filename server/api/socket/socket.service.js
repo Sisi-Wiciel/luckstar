@@ -66,11 +66,13 @@ module.exports = {
   },
 
   on: function(socket, key, cb) {
+    var self = this;
     socket.on(key, function(args, _cb) {
       this.auth(socket).then(function() {
         socket.timeoutId && clearTimeout(socket.timeoutId);
         socket.timeoutId = setTimeout(function() {
-          socket.disconnect();
+          log.info('User inavtived', socket.uid);
+          self.disconnect(socket, 'unauthorized');
         }, setting.USER.INACTIVE_IN_SECOND);
 
         cb(args, _cb);
@@ -79,6 +81,7 @@ module.exports = {
 
   },
   createIO: function(cb, namespace) {
+    var self = this;
     if (namespace) {
       io = io.of(namespace);
     }
@@ -111,7 +114,7 @@ module.exports = {
       setTimeout(function() {
         if (!socket.auth) {
           log.info("Disconnecting unauthorized socket with id", socket.id);
-          socket.disconnect('unauthorized');
+          self.disconnect('unauthorized');
         }
       }, setting.SOCKET.AUTH_TIME_OUT);
 
@@ -124,35 +127,36 @@ module.exports = {
     //setInterval(function() {
     //  console.info('connected socket numbers for now, ' + io.sockets.sockets.length);
     //}, 5000);
-
+    var self = this;
     this.createIO(function(socket) {
       socket.connectedAt = new Date();
 
       socket.on('disconnect', function() {
         var userid = socket.uid;
-        var socketid = socket.id;
+        // ignore f5
         userService.disconnect(userid).then(function() {
-          // ignore f5
           setTimeout(function() {
-            userService.list(userid).then(function(users) {
-              if (!_.isEmpty(users) && users.length == 1) {
-                var user = _.first(users);
-                if (_.isEmpty(user.sid)) {
-                  onDisconnect(socket);
-                } else {
-                  log.info("User reconnected immediately", user.id );
-                }
+            userService.list(userid).then(function(user) {
+              if (_.isEmpty(user.sid)) {
+                self.disconnect(socket);
+              } else {
+                log.info("User reconnected immediately", user.id);
               }
-            })
-          }, 2000);
-        })
-        log.info("Disconnecting socket with user", userid);
+            });
+          }, 1500);
+        });
       });
-
       onConnect(socket);
       log.info('Socket connected with id', socket.id);
-
     });
-
+  },
+  disconnect: function(socket, reason) {
+    userService.disconnect(socket.uid).then(function() {
+      onDisconnect(socket);
+      socket.disconnect(reason);
+    });
+    log.info("Disconnecting socket with user", socket.uid);
   }
+
 };
+

@@ -17,7 +17,7 @@ module.exports = function() {
           } else if ($scope.room.obs.indexOf(msg.message.userid) > -1) {
             msg.role = '[观众]';
           } else {
-            msg.role = '[未知]';
+            msg.role = '[观众]';
           }
         }
 

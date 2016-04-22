@@ -8,8 +8,8 @@ var _ = require('lodash');
 function updateTopic(id, data) {
   return Topic.update({_id: id}, data).exec();
 }
-function getTopic(id) {
 
+function getTopic(id) {
   var promise;
   if (id) {
     promise = Topic.findById(id).exec().then(function(topic) {

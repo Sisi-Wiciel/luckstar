@@ -75,7 +75,6 @@ function nextTopic(socket) {
         delete topic.correct;
 
         nodifyRoom(socket, 'topicUpdate', topic);
-
         roomService.update(room, function(locked) {
           locked.topic = topic._id;
         }).then(function() {

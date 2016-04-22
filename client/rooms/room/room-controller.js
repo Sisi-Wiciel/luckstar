@@ -37,6 +37,7 @@ module.exports = ['$scope', '$rootScope', '$location', 'socketSrv', 'authSrv', '
         if (!$scope.isAdmin()) {
           messageCenter.notify('房间已退出.');
         }
+
         navbarSrv.removeItem('我的房间');
         $rootScope.goto('/home');
         socketSrv.unregister('updateRoom');
