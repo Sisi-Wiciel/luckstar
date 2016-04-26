@@ -2,8 +2,8 @@
 
 require('./room-list.css');
 
-module.exports = ['$scope', 'socketSrv', 'roomSrv', '$location', 'authSrv', function($scope, socketSrv, roomSrv,
-                                                                                     $location, authSrv) {
+module.exports = ['$scope', 'socketSrv', 'roomSrv', '$rootScope', 'authSrv', function($scope, socketSrv, roomSrv,
+                                                                                     $rootScope, authSrv) {
   $scope.rooms = [];
   $scope.curr = authSrv.getCurrentUser();
 
@@ -16,11 +16,11 @@ module.exports = ['$scope', 'socketSrv', 'roomSrv', '$location', 'authSrv', func
   socketSrv.updateRooms();
 
   $scope.join = function(roomId) {
-    $location.path('/home/rooms/' + roomId);
+    $rootScope.goto('/home/rooms/' + roomId);
   };
 
   // $scope.joinAsOb = function(roomId) {
-  //  $location.path('/home/rooms/' + roomId);
+  //  $rootScope.path('/home/rooms/' + roomId);
   // };
 
   socketSrv.changeUserStatus('HOME_PAGE');

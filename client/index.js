@@ -22,7 +22,7 @@ angular.element(document).ready(function() {
         $location.path(path);
         $timeout(function() {
           if ($window.location.pathname !== path) {
-            $window.location = '/?t=inactive';
+            $window.location = '/';
           }
         }, 500);
       };

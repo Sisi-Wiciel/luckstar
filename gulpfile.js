@@ -1,4 +1,6 @@
 var gulp = require('gulp'),
+fs = require('fs'),
+os = require('os'),
 path = require('path'),
 webpack = require('webpack'),
 del = require('del'),
@@ -9,7 +11,12 @@ $ = require('gulp-load-plugins')();
 
 var gulpSSH = new $.ssh({
   ignoreErrors: false,
-  sshConfig: require('./config/config.json')
+  sshConfig: {
+    host: '139.129.60.92',
+    port: 22,
+    username: 'root',
+    privateKey: fs.readFileSync(path.join(os.homedir(), '.ssh/id_rsa'))
+  }
 })
 
 gulp.task("webpack-dev-server", function(callback) {
@@ -83,11 +90,12 @@ var archiveName = 'archive-lastest.zip';
 gulp.task('release', ['build'], function() {
   return gulp.src('dist/**/*')
   .pipe($.zip(archiveName))
-  .pipe(gulp.dest('dist/'));
+  .pipe(gulp.dest('dist/'))
+  .pipe(gulpSSH.dest('/root/'));
 })
 
-gulp.task('deploy', ['release'], function() {
-  return gulp.src('dist/' + archiveName)
-  .pipe(gulpSSH.dest('/root/'));
-    //gulpSSH.shell(['sh /root/install.sh'], {filePath: 'server.log'});
+gulp.task('server', ['release'], function() {
+  return gulpSSH
+  .shell(['sh server.sh'], {filePath: 'shell.log'})
+  .pipe(gulp.dest('logs'))
 });
