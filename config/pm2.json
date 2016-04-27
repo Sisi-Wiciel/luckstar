@@ -3,7 +3,6 @@
     "name": "luckstar.0",
     "max_memory_restart": "256M",
     "log_date_format": "YYYY-MM-DD HH:mm:ss SSS",
-    "watch": true,
     "script": "/root/lastest/server/app.js",
     "out_file": "/var/log/luckstar/app.log",
     "error_file": "/var/log/luckstar/err.log",
@@ -13,7 +12,7 @@
       "ROOT_URL": "http://",
       "NODE_ENV": "production",
       "REDIS_PASSWORD": "redisPass",
-      "PORT": "4000",
+      "PORT": "3000",
     }
   }
 ]
