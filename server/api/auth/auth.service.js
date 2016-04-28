@@ -25,7 +25,7 @@ function isAuthenticated() {
 }
 
 function genToken(user) {
-  return jwt.sign({id: user.id}, setting.SECRET_KEY, {expiresInMinutes: setting.USER.AUTH_EXPRIES_IN_MINUTES});
+  return jwt.sign({id: user.id}, setting.SECRET_KEY, {expiresIn: setting.USER.AUTH_EXPRIES_IN});
 }
 exports.isAuth = isAuthenticated;
 exports.genToken = genToken;

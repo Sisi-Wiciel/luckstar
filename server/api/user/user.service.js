@@ -1,6 +1,6 @@
 'use strict';
 var db = require('../redis/redis.service');
-
+var User = require("./user.model");
 var Promise = require('bluebird');
 var _ = require('lodash');
 var log = require('../../log');
@@ -13,6 +13,9 @@ var update = function(id, setFunc) {
   });
 };
 
+exports.isUniqueName = function(username) {
+  return User.findOne({username: username}).exec();
+};
 exports.disconnect = function(id) {
   return db.set("users:" + id, "sid", '');
 };

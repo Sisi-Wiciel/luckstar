@@ -18,7 +18,7 @@ module.exports = {
       IN_COMPETING_WATCHING: '比赛房间,观战.',
       IN_TOPIC: '浏览题目页面.'
     },
-    AUTH_EXPRIES_IN_MINUTES: 24 * 60, // token timeout (24h)
+    AUTH_EXPRIES_IN_MINUTES: '10h' , // token timeout (10h)
     INACTIVE_IN_SECOND: 5 * 60 * 1000 // user inactive timeout (5min)
   },
   FILE: {

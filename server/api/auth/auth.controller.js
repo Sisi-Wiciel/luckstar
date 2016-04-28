@@ -27,8 +27,8 @@ passport.use(new LocalStrategy({
 ));
 
 function uniqueName(req, res, next) {
-  User.findOne({username: req.body.name}, function(err, user) {
-    return res.status(200).json(!!user);
+  userService.isUniqueName(req.body.name).then(function(user) {
+      res.status(200).json(!!user);
   });
 }
 function login(req, res, next) {

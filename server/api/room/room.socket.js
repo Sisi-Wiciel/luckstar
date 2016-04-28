@@ -212,7 +212,7 @@ function createRoom(socket, newroom, cb) {
   if (socket.room) {
     roomService.list(socket.room).then(function(room) {
       if (_.isEmpty(room)) {
-        socket.room = null;
+        socket.room = '';
         do_save();
       } else {
         cb({
