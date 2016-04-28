@@ -21,6 +21,7 @@ var port = process.env.PORT || '3000';
 
 server.listen(port);
 log.info('Luckystart server startup success.');
+
 module.exports = app;
 
 

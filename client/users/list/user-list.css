@@ -37,7 +37,7 @@
   flex: 1;
 }
 #user-list .chat-box {
-  font-size: 1.4em;
+  font-size: 1.2em;
   -webkit-box-pack: justify;
   -moz-box-pack: justify;
   -ms-flex-pack: justify;

@@ -19,7 +19,7 @@ module.exports = {
       IN_TOPIC: '浏览题目页面.'
     },
     AUTH_EXPRIES_IN_MINUTES: '10h' , // token timeout (10h)
-    INACTIVE_IN_SECOND: 5 * 60 * 1000 // user inactive timeout (5min)
+    INACTIVE_IN_SECOND: 30 * 60 * 1000 // user inactive timeout (30min)
   },
   FILE: {
     UPLOAD_POLICY: {
