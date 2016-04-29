@@ -8,34 +8,34 @@ var faker = require('faker');
 
 describe('api/user/user.service', function() {
   var users = [];
-  before(function(done) {
-    Promise.map(utils.newUsers(5), function(user) {
+  before(function() {
+    return Promise.map(utils.newUsers(5), function(user) {
       return User.create(user);
     }).then(function(dbusers) {
       users = dbusers;
-      done();
+      return dbusers;
     });
   });
 
-  after(function(done) {
-    Promise.map(users, function(user) {
+  after(function() {
+    return Promise.map(users, function(user) {
       return User.remove({'_id': user._id});
-    }).then(function() {
-      done();
     });
   });
 
   describe('#isUniqueName', function() {
-    it('should return true when username is unique', function(done) {
-      userService.isUniqueName(faker.internet.userName()).then(function(isUnique) {
+    it('should return true when username is unique', function() {
+      return userService.isUniqueName(faker.internet.userName()).then(function(isUnique) {
         isUnique.should.to.be.true;
-      }).then(done, done);
+        return isUnique;
+      });
     });
 
-    it('should return false when username is not unique', function(done) {
-      userService.isUniqueName(users[0].username).then(function(isUnique) {
+    it('should return false when username is not unique', function() {
+      return userService.isUniqueName(users[0].username).then(function(isUnique) {
         isUnique.should.to.be.false;
-      }).then(done, done);
+        return isUnique;
+      });
     });
   })
 

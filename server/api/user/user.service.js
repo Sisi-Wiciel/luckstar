@@ -18,6 +18,7 @@ exports.isUniqueName = function(username) {
     return user == null;
   });
 };
+
 exports.disconnect = function(id) {
   return db.set("users:" + id, "sid", '');
 };

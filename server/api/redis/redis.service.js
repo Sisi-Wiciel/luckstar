@@ -34,16 +34,6 @@ module.exports = {
         _.each(topics, function(topic) {
           var _topic = topic.toObject();
 
-          //if(_topic._id == "567b9fed2a4f8a501a3cf074"){//多选题
-          //    db.sadd("topics", JSON.stringify(_topic));
-          //}
-          //if(_topic._id == "567b8f8836b14aa8189819d0"){//单选题
-          //    db.sadd("topics", JSON.stringify(_topic));
-          //}
-          //if(_topic._id == "568f6c501b9a0d902b007877"){//图片题
-          //    db.sadd("topics", JSON.stringify(_topic));
-          //}
-
           db.sadd("topics", JSON.stringify(_topic));
         });
       });
