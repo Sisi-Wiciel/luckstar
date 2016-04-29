@@ -14,7 +14,9 @@ var update = function(id, setFunc) {
 };
 
 exports.isUniqueName = function(username) {
-  return User.findOne({username: username}).exec();
+  return User.findOne({username: username}).exec().then(function(user) {
+    return user == null;
+  });
 };
 exports.disconnect = function(id) {
   return db.set("users:" + id, "sid", '');

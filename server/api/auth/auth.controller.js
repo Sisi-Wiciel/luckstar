@@ -27,8 +27,8 @@ passport.use(new LocalStrategy({
 ));
 
 function uniqueName(req, res, next) {
-  userService.isUniqueName(req.body.name).then(function(user) {
-      res.status(200).json(!!user);
+  userService.isUniqueName(req.body.name).then(function(result) {
+      res.status(200).json(result);
   });
 }
 function login(req, res, next) {
