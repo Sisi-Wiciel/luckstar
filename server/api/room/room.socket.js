@@ -10,31 +10,10 @@ var Promise = require('bluebird');
 var setting = require('../../config/setting');
 var socketSrv;
 
-function updateRooms(socket) {
-  log.verbose("room.socket#UpdateRooms", socket.room);
-
-  return roomService.list().then(function(rooms) {
-    roomid = socket.room;
-    // if currRoom is null, this room is closed.
-    if (!_.isEmpty(roomid)) {
-      socket.io.sockets.in(roomid).emit('updateRoom', _.find(rooms, {"id": roomid}));
-    }
-    socket.io.emit("updateRooms", rooms);
-  });
-};
-
-function sendRoomMessage(socket, message, isSystem) {
-  log.verbose("room.socket#SendRoomMessage", socket.room);
-
-  socket.io.sockets.in(socket.room).emit('updateRoomMessage', {
-    message: message,
-    system: isSystem,
-    time: moment().format()
-  });
-};
+exports.events = {};
 
 function getRoom(socket, id, cb) {
-  log.verbose("room.socket#GetRoom", id);
+  log.verbose("room.socket#getRoom", id);
 
   roomService.list(id).then(function(room) {
     if (room) {
@@ -46,39 +25,33 @@ function getRoom(socket, id, cb) {
       log.warn("GetRoom: not found room ", id);
     }
   });
-};
+}
 
-// Only join room as player.
-function joinRoom(socket, id) {
-  log.verbose("room.socket#JoinRoom", id);
-  socket.room = id;
+function updateRooms(socket) {
+  log.verbose("room.socket#updateRooms", socket.room);
 
-  getRoom(socket, id, function(room, user) {
-
-    if (_.isEmpty(room)) {
-      log.verbose("Room is empty for now");
-      socket.emit('updateRoom', null);
-      return;
+  return roomService.list().then(function(rooms) {
+    roomid = socket.room;
+    // if currRoom is null, this room is closed.
+    if (!_.isEmpty(roomid)) {
+      socket.io.sockets.in(roomid).emit('updateRoom', _.find(rooms, {"id": roomid}));
     }
-    //管理员默认在room.users里面, 如果这句话放倒if中,管理员将得不到房间的消息通知.
-    socket.join(socket.room);
-    if (!_.find(room.users, {'id': socket.uid})) {
-      roomService.join(room, user).then(function(room) {
-        return userService.setRoom(socket.uid, room.id).then(function() {
-          sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
-        });
-      }).then(function() {
-        updateRooms(socket);
-      });
-    } else {
-      log.verbose("User already in room ", room.id);
-      sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
-    }
+    socket.io.emit("updateRooms", rooms);
   });
 };
 
-function leaveRoom(socket) {
-  log.verbose("room.socket#LeaveRoom", socket.room);
+function roomSendMessage(socket, message, isSystem) {
+  log.verbose("room.socket#RoomSendMessage", socket.room);
+
+  socket.io.sockets.in(socket.room).emit('updateRoomMessage', {
+    message: message,
+    system: isSystem,
+    time: moment().format()
+  });
+};
+
+function roomLeave(socket) {
+  log.verbose("room.socket#roomLeave", socket.room);
   var roomid = socket.room;
   if (_.isEmpty(socket.room)) {
     return;
@@ -109,8 +82,44 @@ function leaveRoom(socket) {
 
 };
 
-function startRoomCompete(socket) {
-  log.verbose("room.socket#StartRoomCompete");
+exports.events.roomUpdate = updateRooms;
+
+exports.events.roomSendMessage = roomSendMessage;
+
+exports.events.roomGet = getRoom;
+// Only join room as player.
+exports.events.roomJoin = function(socket, id) {
+  log.verbose("room.socket#roomJoin", id);
+  socket.room = id;
+
+  getRoom(socket, id, function(room, user) {
+
+    if (_.isEmpty(room)) {
+      log.verbose("Room is empty for now");
+      socket.emit('updateRoom', null);
+      return;
+    }
+    //管理员默认在room.users里面, 如果这句话放倒if中,管理员将得不到房间的消息通知.
+    socket.join(socket.room);
+    if (!_.find(room.users, {'id': socket.uid})) {
+      roomService.join(room, user).then(function(room) {
+        return userService.setRoom(socket.uid, room.id).then(function() {
+          sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
+        });
+      }).then(function() {
+        updateRooms(socket);
+      });
+    } else {
+      log.verbose("User already in room ", room.id);
+      sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
+    }
+  });
+};
+
+exports.events.roomLeave = roomLeave;
+
+exports.events.roomStartCompete = function(socket) {
+  log.verbose("room.socket#roomStartCompete");
   var COUNTDOWN_MAXNUMBER = 3;
   getRoom(socket, socket.room, function(room, user) {
     if (room.admin.id !== user.id) {
@@ -142,7 +151,7 @@ function startRoomCompete(socket) {
   });
 };
 
-function unreadyRoomCompete(socket) {
+exports.events.roomUnreadyCompete = function(socket) {
   log.verbose("room.socket#UnReadyRoomCompete");
 
   getRoom(socket, socket.room, function(room, user) {
@@ -161,8 +170,9 @@ function unreadyRoomCompete(socket) {
     });
   });
 };
-var readyRoomCompete = function(socket) {
-  log.verbose("room.socket#ReadyRoomCompete");
+
+exports.events.roomReadyCompete = function(socket) {
+  log.verbose("room.socket#roomReadyCompete");
 
   getRoom(socket, socket.room, function(room, user) {
 
@@ -180,8 +190,8 @@ var readyRoomCompete = function(socket) {
   });
 };
 
-function terminateRoomCompete(socket) {
-  log.verbose("room.socket#TerminateRoomCompete");
+exports.events.roomTerminateCompete = function(socket) {
+  log.verbose("room.socket#RoomTerminateCompete");
 
   getRoom(socket, socket.room, function(room, user) {
     roomService.terminateCompete(room).then(function() {
@@ -192,13 +202,13 @@ function terminateRoomCompete(socket) {
   });
 };
 
-function getRoomStat(socket) {
-  log.verbose("room.socket#GetRoomStat, " + socket.room);
+exports.events.roomGetStat = function(socket) {
+  log.verbose("room.socket#roomGetStat, " + socket.room);
   return roomService.listRoomStat(socket.room);
 };
 
-function createRoom(socket, newroom, cb) {
-  log.verbose("room.socket#CreateRoom ", socket.uid, socket.room);
+exports.events.roomCreate = function(socket, newroom, cb) {
+  log.verbose("room.socket#roomCreate ", socket.uid, socket.room);
 
   function do_save() {
     roomService.save(newroom, socket.uid).then(function(room) {
@@ -224,8 +234,8 @@ function createRoom(socket, newroom, cb) {
     do_save();
   }
 };
-function inviteUser(socket, userid) {
-  log.verbose("room.socket#InviteUser");
+exports.events.roomInviteUser = function(socket, userid) {
+  log.verbose("room.socket#roomInviteUser");
   getRoom(socket, socket.room, function(room, me) {
     //make sure that i am a player in room
     if (_.find(room.users, {'id': me.id})) {
@@ -243,18 +253,19 @@ function inviteUser(socket, userid) {
   });
 }
 
-function inviteUserResponse(socket, userid, response) {
+exports.events.roomInviteUserResponse = function(socket, userid, response) {
+  log.verbose("room.socket#roomInviteUserResponse");
   userService.list(userid).then(function(user) {
     var userSocket = socketSrv.getSocketByUser(user);
     userSocket.emit('inviteUserResponse', {
       response: response,
-      username : user.username
+      username: user.username
     });
   });
 };
 
-function kickOff(socket, userid) {
-  log.verbose("room.socket#KickOff");
+exports.events.roomKickUserOff = function(socket, userid) {
+  log.verbose("room.socket#roomKickUserOff");
   getRoom(socket, socket.room, function(room, me) {
     if (room.admin.id === me.id) {
       userService.list(userid).then(function(user) {
@@ -275,73 +286,7 @@ function kickOff(socket, userid) {
 }
 
 exports.updateRooms = updateRooms;
-exports.sendRoomMessage = sendRoomMessage;
-
-
-exports.register = function(socket) {
-  socketSrv = require('../socket/socket.service');
-
-  socketSrv.on(socket, 'update rooms', function() {
-    updateRooms(socket);
-  });
-
-  socketSrv.on(socket, 'join room', function(id) {
-    joinRoom(socket, id);
-  });
-
-  socketSrv.on(socket, 'leave room', function() {
-    leaveRoom(socket);
-  });
-
-  socketSrv.on(socket, 'send room message', function(msg) {
-    sendRoomMessage(socket, msg, false);
-  });
-
-  socketSrv.on(socket, 'ready compete', function() {
-    readyRoomCompete(socket);
-  });
-
-  socketSrv.on(socket, 'unready compete', function() {
-    unreadyRoomCompete(socket);
-  });
-
-  socketSrv.on(socket, 'start compete', function() {
-    startRoomCompete(socket);
-  });
-
-  socketSrv.on(socket, 'terminate compete', function() {
-    terminateRoomCompete(socket);
-  });
-
-  socketSrv.on(socket, 'room get stat', function(cb) {
-    getRoomStat(socket).then(cb);
-  });
-
-  socketSrv.on(socket, 'room get', function(id, cb) {
-    id = id || socket.room;
-    if (!_.isEmpty(id)) {
-      roomService.list(id).then(cb);
-    } else {
-      cb({});
-    }
-  });
-
-  socketSrv.on(socket, 'room create', function(room, cb) {
-    createRoom(socket, room, cb);
-  });
-
-  socketSrv.on(socket, 'kick off', function(userid) {
-    kickOff(socket, userid);
-  });
-  socketSrv.on(socket, 'invite user', function(userid) {
-    inviteUser(socket, userid);
-  });
-
-  socketSrv.on(socket, 'invite user response', function(data) {
-    inviteUserResponse(socket, data.id, data.response);
-  });
-};
-
+exports.sendRoomMessage = roomSendMessage;
 exports.deregister = function(socket) {
-  leaveRoom(socket);
+  roomLeave(socket);
 };

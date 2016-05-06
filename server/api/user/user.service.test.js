@@ -18,9 +18,7 @@ describe('api/user/user.service', function() {
   });
 
   after(function() {
-    return Promise.map(users, function(user) {
-      return User.remove({'_id': user._id});
-    });
+    return utils.removeUsers(users);
   });
 
   describe('#isUniqueName', function() {
@@ -36,7 +34,7 @@ describe('api/user/user.service', function() {
         isUnique.should.to.be.false;
         return isUnique;
       });
-    });
+     });
   })
 
 });

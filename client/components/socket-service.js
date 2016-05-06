@@ -99,43 +99,43 @@ module.exports = ['store', '$q', '$location', function(store, $q, $location) {
       return this.getResult('room create', room);
     },
     updateRooms: function() {
-      this.emit('update rooms');
+      this.emit('room update');
     },
     joinRoom: function(id) {
-      this.emit('join room', id);
+      this.emit('room join', id);
     },
     leaveRoom: function() {
-      this.emit('leave room');
+      this.emit('room leave');
     },
     kickOff: function(userid) {
-      this.emit('kick off', userid);
+      this.emit('room kick user off', userid);
     },
     inviteUser: function(userid) {
-      this.emit('invite user', userid);
+      this.emit('room invite user', userid);
     },
     inviteUserResponse: function(fromid, response) {
-      this.emit('invite user response', {
+      this.emit('room invite user response', {
         id: fromid,
         response: response
       });
     },
     sendMsg: function(msg) {
-      this.emit('send message', msg);
+      this.emit('user send message', msg);
     },
     sendRoomMsg: function(msg) {
-      this.emit('send room message', msg);
+      this.emit('room send message', msg);
     },
     readyCompete: function() {
-      this.emit('ready compete');
+      this.emit('room ready compete');
     },
     unreadyComplate: function() {
-      this.emit('unready compete');
+      this.emit('room unready compete');
     },
     terminateCompete: function() {
-      this.emit('terminate compete');
+      this.emit('room terminate compete');
     },
     startCompete: function() {
-      this.emit('start compete');
+      this.emit('room start compete');
     },
     sendMouseTrack: function(pixel) {
       this.emit('mouse track', pixel);

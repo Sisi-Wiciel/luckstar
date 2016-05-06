@@ -7,16 +7,13 @@ var Promise = require('bluebird');
 var LOCK = require("redis-lock");
 
 module.exports = {
-
-  init: function(db) {
-
+  initData: function(db) {
     var self = this;
-    this.db = db;
-    this.lock = LOCK(this.db._redisClient);
-    this.LOCK_KEY = "luckstart_lock";
-    var userService = require("../user/user.service");
+    this.init(db);
 
-    var cleanAndInit = function() {
+    db.on('ready', function() {
+      var userService = require("../user/user.service");
+
       db.keys('*').then(function(keys) {
         for (var i = 0, len = keys.length; i < len; i++) {
           db.del(keys[i]);
@@ -37,17 +34,17 @@ module.exports = {
           db.sadd("topics", JSON.stringify(_topic));
         });
       });
-
-    }
-
-    db.on('ready', function() {
-      cleanAndInit();
     });
+  },
+  init: function(db) {
+    this.db = db;
+    this.lock = LOCK(this.db._redisClient);
+    this.LOCK_KEY = "luckstart_lock";
+
 
     db.on('error', function(error) {
       log.error("db problem:", error);
     })
-
   },
 
   exists: function(key) {
