@@ -7,11 +7,15 @@ var faker = require('faker');
 var socketService = require('./socket.service');
 
 describe('api/socket/socket.service', function() {
+  var users = [];
   before(function() {
-
+    utils.newUsers(2).then(function(newUser){
+      users = newUser;
+    });
   });
 
   after(function() {
+    return utils.removeUsers(users);
   });
 
   describe('#getSocketByUser', function() {
@@ -21,16 +25,15 @@ describe('api/socket/socket.service', function() {
     });
 
     it('should return null if user sid is empty', function(done) {
-      utils.newUsers(1).get(0).then(function(unSignedinUser) {
-        should.equal(socketService.getSocketByUser(unSignedinUser), null);
-      }).then(done, done);
+        should.equal(socketService.getSocketByUser(users[0]), null);
+        done();
     });
 
     it('should return null if user has not sid property', function(done) {
-      utils.newUsers(1).get(0).then(function(unSignedinUser) {
-        delete unSignedinUser.sid;
-        should.equal(socketService.getSocketByUser(unSignedinUser), null);
-      }).then(done, done);
+        var user = users[1];
+        delete user.sid;
+        should.equal(socketService.getSocketByUser(user), null);
+        done();
     });
   })
 

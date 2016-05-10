@@ -40,8 +40,8 @@ function updateRooms(socket) {
   });
 };
 
-function roomSendMessage(socket, message, isSystem) {
-  log.verbose("room.socket#RoomSendMessage", socket.room);
+function sendRoomMessage(socket, message, isSystem) {
+  log.verbose("room.socket#sendRoomMessage", socket.room);
 
   socket.io.sockets.in(socket.room).emit('updateRoomMessage', {
     message: message,
@@ -84,7 +84,7 @@ function roomLeave(socket) {
 
 exports.events.roomUpdate = updateRooms;
 
-exports.events.roomSendMessage = roomSendMessage;
+exports.events.roomSendMessage = sendRoomMessage;
 
 exports.events.roomGet = getRoom;
 // Only join room as player.
@@ -283,10 +283,10 @@ exports.events.roomKickUserOff = function(socket, userid) {
     }
 
   });
-}
+};
 
 exports.updateRooms = updateRooms;
-exports.sendRoomMessage = roomSendMessage;
+exports.sendRoomMessage = sendRoomMessage;
 exports.deregister = function(socket) {
   roomLeave(socket);
 };

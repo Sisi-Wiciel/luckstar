@@ -20,12 +20,14 @@ describe('api/room/room.socket', function() {
   });
 
 
-  describe('#joinRoom', function() {
+  describe('#roomJoin', function() {
     it('should a room creator can join room as admin', function(done) {
       var admin = users[0];
       var socket = utils.newSocket(admin.id);
-      roomSocket.__get__('joinRoom')(socket, admin.id);
-      done();
+      utils.newRoom(admin.id).then(function(newRoom){
+        roomSocket.events.roomJoin(socket, newRoom.id);
+        done();
+      });
     });
 
     //it('should can join room as player', function(done) {
