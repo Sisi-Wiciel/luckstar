@@ -40,7 +40,7 @@ function updateRooms(socket) {
   });
 };
 
-function roomSendMessage(socket, message, isSystem) {
+function sendRoomMessage(socket, message, isSystem) {
   log.verbose("room.socket#RoomSendMessage", socket.room);
 
   socket.io.sockets.in(socket.room).emit('updateRoomMessage', {
@@ -84,7 +84,7 @@ function roomLeave(socket) {
 
 exports.events.roomUpdate = updateRooms;
 
-exports.events.roomSendMessage = roomSendMessage;
+exports.events.roomSendMessage = sendRoomMessage;
 
 exports.events.roomGet = getRoom;
 // Only join room as player.
@@ -202,9 +202,9 @@ exports.events.roomTerminateCompete = function(socket) {
   });
 };
 
-exports.events.roomGetStat = function(socket) {
+exports.events.roomGetStat = function(socket, cb) {
   log.verbose("room.socket#roomGetStat, " + socket.room);
-  return roomService.listRoomStat(socket.room);
+  roomService.listRoomStat(socket.room).then(cb);
 };
 
 exports.events.roomCreate = function(socket, newroom, cb) {
@@ -286,7 +286,7 @@ exports.events.roomKickUserOff = function(socket, userid) {
 }
 
 exports.updateRooms = updateRooms;
-exports.sendRoomMessage = roomSendMessage;
+exports.sendRoomMessage = sendRoomMessage;
 exports.deregister = function(socket) {
   roomLeave(socket);
 };
