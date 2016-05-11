@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var _ = require('lodash');
-
+var redisService = require('../server/api/redis/redis.service');
 var userService = require('../server/api/user/user.service');
 var roomService = require('../server/api/room/room.service');
 var faker = require('faker');
@@ -22,6 +22,10 @@ redisSrv.init(redis.createClient({
 var User = require('../server/api/user/user.model');
 
 module.exports = {
+  clean: function(){   
+    User.remove({}, _.noop);
+    return redisService.clean();
+  },
   newSocket: function(userid) {
     function socket(){
       this.uid = userid;
@@ -61,16 +65,6 @@ module.exports = {
         return userService.add(dbUser);
       });
     })
-  },
-  removeUsers: function(users) {
-    return Promise.map(users, function(user) {
-      if (!_.isEmpty(user.id)) {
-        // console.info("Remove user id ", user.id);
-        return User.remove({'_id': user.id})
-      } else {
-        return Promise.reject('User must has id or _id property');
-      }
-    });
   }
 };
 

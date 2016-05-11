@@ -18,7 +18,7 @@ describe('api/user/user.service', function() {
   });
 
   after(function() {
-    return utils.removeUsers(users);
+    return utils.clean();
   });
 
   describe('#isUniqueName', function() {

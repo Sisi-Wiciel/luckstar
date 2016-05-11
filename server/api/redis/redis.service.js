@@ -14,36 +14,29 @@ module.exports = {
     db.on('ready', function() {
       var userService = require("../user/user.service");
 
-      db.keys('*').then(function(keys) {
-        for (var i = 0, len = keys.length; i < len; i++) {
-          db.del(keys[i]);
-        }
-      });
-
-      User.find().exec().then(function(users) {
-        _.each(users, function(user) {
-          userService.add(user);
+      self.clean().then(function(){
+        Promise.map(User.find().exec(), function(user){
+          return userService.add(user);
         });
-      })
 
-      Topic.find().exec().then(function(topics) {
-
-        _.each(topics, function(topic) {
-          var _topic = topic.toObject();
-
-          db.sadd("topics", JSON.stringify(_topic));
+        Promise.map(Topic.find().exec(), function(){
+          db.sadd("topics", JSON.stringify(topic.toObject()));
         });
-      });
+      });    
     });
+  },
+  clean: function(){
+    return Promise.map(this.db.keys('*'), function(key){
+      return this.db.del(key);
+    }.bind(this));
   },
   init: function(db) {
     this.db = db;
     this.lock = LOCK(this.db._redisClient);
     this.LOCK_KEY = "luckstart_lock";
 
-
     db.on('error', function(error) {
-      log.error("db problem:", error);
+      log.error("DB problem:", error);
     })
   },
 

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node server/app",
+    "start": "REDIS_PASSWORD=redisPass node server/app",
     "test": "node_modules/.bin/mocha -w --reporter spec server/**/*test.js"
   },
   "dependencies": {

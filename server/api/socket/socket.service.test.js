@@ -15,7 +15,7 @@ describe('api/socket/socket.service', function() {
   });
 
   after(function() {
-    return utils.removeUsers(users);
+    return utils.clean();
   });
 
   describe('#getSocketByUser', function() {
