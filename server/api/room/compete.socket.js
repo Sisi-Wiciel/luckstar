@@ -111,33 +111,23 @@ function checkTopic(socket, answer) {
   });
 };
 
-var getTopic = function(socket) {
-  roomService.list(socket.room).then(function(room) {
-    if (room && room.topic) {
-      topicService.get(room.topic).then(function(topic) {
-        socket.emit('topicUpdate', topic);
-      });
-    } else {
-      log.debug("no current topic in this competition");
-    }
+exports.events = {
+  completeCheckTopic: checkTopic,
+  completeGetTopic: function(socket) {
+    roomService.list(socket.room).then(function(room) {
+      if (room && room.topic) {
+        topicService.get(room.topic).then(function(topic) {
+          socket.emit('topicUpdate', topic);
+        });
+      } else {
+        log.debug("no current topic in this competition");
+      }
 
-  })
-}
-
-exports.checkTopic = checkTopic;
-
-exports.nextTopic = nextTopic;
-
-exports.register = function(socket) {
-  var ss = require('../socket/socket.service');
-  ss.on(socket, 'complete get topic', function() {
-    getTopic(socket);
-  });
-
-  ss.on(socket, 'complete check topic', function(answer) {
-    checkTopic(socket, answer);
-  });
+    });
+  }
 };
 
+exports.checkTopic = checkTopic;
+exports.nextTopic = nextTopic;
 exports.deregister = function(socket) {
 };

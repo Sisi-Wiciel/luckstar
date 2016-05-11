@@ -138,7 +138,7 @@ module.exports = ['store', '$q', '$location', function(store, $q, $location) {
       this.emit('room start compete');
     },
     sendMouseTrack: function(pixel) {
-      this.emit('mouse track', pixel);
+      this.emit('topic mouse track', pixel);
     },
     topicCheckOpt: function(opt) {
       this.emit('complete check topic', opt);

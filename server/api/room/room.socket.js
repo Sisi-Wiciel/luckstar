@@ -202,9 +202,9 @@ exports.events.roomTerminateCompete = function(socket) {
   });
 };
 
-exports.events.roomGetStat = function(socket) {
+exports.events.roomGetStat = function(socket, cb) {
   log.verbose("room.socket#roomGetStat, " + socket.room);
-  return roomService.listRoomStat(socket.room);
+  roomService.listRoomStat(socket.room).then(cb);
 };
 
 exports.events.roomCreate = function(socket, newroom, cb) {
