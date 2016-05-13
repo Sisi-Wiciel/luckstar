@@ -5,9 +5,6 @@ var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var path = require('path');
-var nodeModulesDir = path.join(__dirname, 'node_modules');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = function makeWebpackConfig() {
   var config = {
@@ -26,7 +23,7 @@ module.exports = function makeWebpackConfig() {
   config.entry = {
     app: ['./client/index.js'],
     static: './client/core/static.js',
-    vendors: ['angular', 'angular-ui-router', 'angular-animate']
+    vendors: ['angular', 'angular-ui-router', 'angular-animate', 'angular-material']
   };
 
   config.module = {

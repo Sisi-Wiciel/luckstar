@@ -1,3 +1,6 @@
+#login-page .name {
+  color: dodgerblue;
+}
 #signup-page .loading {
   position: absolute;
   right: -10px;
@@ -16,11 +19,11 @@
   background-clip: padding-box;
 }
 #signup-page .avatar-selection span:hover {
-  border-color: #0775e3;
+  border-color: dodgerblue;
 }
 #signup-page .avatar-selection span.actived {
-  background: #0775e3;
-  border-color: #0775e3;
+  background: dodgerblue;
+  border-color: dodgerblue;
 }
 #signup-page .avatar-selection span .avatar {
   width: 50px;
