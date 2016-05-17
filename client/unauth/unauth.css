@@ -1,47 +1,60 @@
 body {
-  font-size: 11px;
+  font-size: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  overflow-x: hidden;
-  color: #767676;
 }
-body > [ui-view].ng-enter {
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
+body > div[ui-view] {
+  padding-top: 10%;
+}
+body .login,
+body .signup {
+  font-size: 1.5em;
+}
+body .login md-icon,
+body .signup md-icon {
+  color: dodgerblue;
+}
+body .login .md-title,
+body .signup .md-title {
+  margin: 15px 0;
+}
+body #signup-page .loading {
   position: absolute;
-  left: 0px;
-  right: 0px;
-  -webkit-animation-name: fadeIn;
-  animation-name: fadeIn;
+  right: -10px;
+  top: 10px;
 }
-body .unauth {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -moz-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  padding-top: 100px;
+body #signup-page .avatar-selection span {
+  display: inline-block;
+  padding: 5px;
+  border: 1px dashed #f2e3d0;
+  cursor: pointer;
+  -webkit-border-radius: 30px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 30px;
+  -moz-background-clip: padding;
+  border-radius: 30px;
+  background-clip: padding-box;
 }
-body .unauth .page-header h1 {
-  display: inline;
+body #signup-page .avatar-selection span:hover {
+  border-color: dodgerblue;
 }
-body .unauth .login,
-body .unauth .signup {
+body #signup-page .avatar-selection span.actived {
+  background: dodgerblue;
+  border-color: dodgerblue;
+}
+body #signup-page .avatar-selection span .avatar {
+  width: 50px;
+  height: 50px;
+}
+body #signup-page .error {
   -webkit-border-radius: 5px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 5px;
   -moz-background-clip: padding;
   border-radius: 5px;
   background-clip: padding-box;
-  width: 410px;
-  background-color: #f2e3d0;
+  border: 1px solid #f88d00;
+  color: #f88d00;
 }

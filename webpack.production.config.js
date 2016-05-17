@@ -9,6 +9,13 @@ var path = require('path');
 module.exports = function makeWebpackConfig() {
   var config = require('./webpack.config');
 
+  config.externals = {
+    'moment': true,
+    'bootstrap': true,
+    'jquery': 'jQuery',
+    'io': true
+  };
+
   config.output = {
     path: __dirname + '/dist',
     publicPath: '/',

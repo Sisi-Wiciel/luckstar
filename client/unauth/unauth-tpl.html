@@ -1,5 +1,8 @@
-
 <div layout="row" layout-align="center center">
-  <div ng-include="'/users/auth/login.html'" class="login" ng-show="status === 'login'"></div>
-  <div ng-include="'/users/auth/signup.html'" class="signup" ng-show="status === 'signup'"></div>
+  <md-whiteframe class="md-whiteframe-1dp" flex-sm="45" flex-gt-sm="35" flex-gt-md="30">
+    <md-content layout-padding>
+      <div ng-include="'/users/auth/login.html'" class="login" ng-show="status === 'login'"></div>
+      <div ng-include="'/users/auth/signup.html'" class="signup" ng-show="status === 'signup'"></div>
+    </md-content>
+  </md-whiteframe>
 </div>

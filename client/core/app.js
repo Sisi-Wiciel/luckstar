@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('luckstar', ['ui.router', 'ngAnimate', 'ngMaterial']);
+var app = angular.module('luckstar', ['ui.router', 'ngAnimate', 'ngMaterial', 'ngMessages']);
 
 app.config(['$urlRouterProvider', '$httpProvider', '$locationProvider', '$urlMatcherFactoryProvider', function($urlRouterProvider,
                                                                                                                $httpProvider,

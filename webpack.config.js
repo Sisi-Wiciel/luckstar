@@ -9,21 +9,14 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = function makeWebpackConfig() {
   var config = {
     resolve: {
-      alias: {},
-      extentions: ["", "js"]
-    },
-    devtool: 'eval-source-map',
-    externals: {
-      'moment': true,
-      'bootstrap': true,
-      'jquery': 'jQuery',
-      'io': true
+      extentions: ["js"]
     }
   };
+
   config.entry = {
+    vendors: ['angular', 'angular-ui-router', 'angular-animate', 'angular-messages', 'angular-material'],
     app: ['./client/index.js'],
-    static: './client/core/static.js',
-    vendors: ['angular', 'angular-ui-router', 'angular-animate', 'angular-material']
+    static: './client/core/static.js'
   };
 
   config.module = {
@@ -58,7 +51,8 @@ module.exports = function makeWebpackConfig() {
     }),
     new webpack.ProvidePlugin({
       $: "jquery",
-      jQuery: "jquery"
+      jQuery: "jquery",
+      io: 'socket.io-client'
     }),
     new HtmlWebpackPlugin({
       template: './client/index.html',
