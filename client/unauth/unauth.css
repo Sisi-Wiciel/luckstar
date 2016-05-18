@@ -5,16 +5,20 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
-body > div[ui-view] {
-  padding-top: 10%;
+body > div[ui-view] > div {
+  padding-top: 5%;
 }
 body .login,
 body .signup {
   font-size: 1.5em;
 }
-body .login md-icon,
-body .signup md-icon {
+body .login md-icon.name,
+body .signup md-icon.name {
   color: dodgerblue;
+}
+body .login md-icon.email,
+body .signup md-icon.email {
+  color: green;
 }
 body .login .md-title,
 body .signup .md-title {
@@ -25,28 +29,27 @@ body #signup-page .loading {
   right: -10px;
   top: 10px;
 }
-body #signup-page .avatar-selection span {
-  display: inline-block;
-  padding: 5px;
-  border: 1px dashed #f2e3d0;
+body #signup-page md-input-container.face md-whiteframe {
+  display: block;
+  margin: 2px;
+}
+body #signup-page md-input-container.face md-whiteframe.errorFrame {
+  border: 2px solid #dd2c00;
+}
+body #signup-page md-input-container.face md-whiteframe.errorFrame .md-subheader {
+  color: #dd2c00;
+}
+body #signup-page md-input-container.face md-whiteframe img.avatar {
+  border: 1px solid #fff;
   cursor: pointer;
-  -webkit-border-radius: 30px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 30px;
-  -moz-background-clip: padding;
-  border-radius: 30px;
-  background-clip: padding-box;
-}
-body #signup-page .avatar-selection span:hover {
-  border-color: dodgerblue;
-}
-body #signup-page .avatar-selection span.actived {
-  background: dodgerblue;
-  border-color: dodgerblue;
-}
-body #signup-page .avatar-selection span .avatar {
   width: 50px;
   height: 50px;
+}
+body #signup-page md-input-container.face md-whiteframe img.avatar:hover {
+  border-color: dodgerblue;
+}
+body #signup-page md-input-container.face md-whiteframe img.avatar.actived {
+  border-color: dodgerblue;
 }
 body #signup-page .error {
   -webkit-border-radius: 5px;

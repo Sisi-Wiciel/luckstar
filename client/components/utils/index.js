@@ -1,8 +1,7 @@
 'use strict';
 
-module.exports = angular.module('luckstar.utils', [require('./form').name])
+module.exports = angular.module('luckstar.utils', [])
 .service('messageCenter', require('./message/message-center'))
-.directive('avatarSelection', require('./avatarSelection'))
 .directive('countTo', require('./countTo'))
 .directive('typing', require('./typing'))
 .directive('loadingText', require('./loadingText'))

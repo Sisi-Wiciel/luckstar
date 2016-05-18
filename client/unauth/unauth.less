@@ -4,14 +4,17 @@ body {
   font-size: 10px;
   .user-select(none);
 
-  > div[ui-view] {
-    padding-top: 10%;
+  > div[ui-view] > div{
+    padding-top: 5%;
   }
 
   .login,
   .signup {
-    md-icon {
+    md-icon.name {
       color: dodgerblue;
+    }
+    md-icon.email {
+      color: green;
     }
     .md-title {
       margin: 15px 0;
@@ -26,34 +29,38 @@ body {
       right: -10px;
       top: 10px;
     }
-    .avatar-selection {
-
-      span {
-        display: inline-block;
-        padding: 5px;
-        border: 1px dashed #f2e3d0;
-
-        cursor: pointer;
-        .border-radius(30px);
-        &:hover {
-          border-color: dodgerblue;
+    md-input-container.face{
+      md-whiteframe{
+        display: block;
+        margin: 2px;
+        
+        &.errorFrame{
+          border: 2px solid rgb(221,44,0);
+          .md-subheader{
+            color: rgb(221,44,0);
+          }
         }
-        &.actived {
-          background: dodgerblue;
-          border-color: dodgerblue;
-        }
-        .avatar {
+        img.avatar {
+          border: 1px solid #fff;
+          cursor: pointer;
+          &:hover {
+            border-color: dodgerblue;
+          }
+          &.actived {
+            border-color: dodgerblue;
+          }
           width: 50px;
           height: 50px;
         }
       }
+      }
 
-    }
+
     .error {
       .border-radius(5px);
       border: 1px solid #f88d00;
       color: #f88d00;
     }
   }
-
 }
+

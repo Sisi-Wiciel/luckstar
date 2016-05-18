@@ -1,7 +1,7 @@
 <section id="login-page" ng-cloak ng-controller="userLoginCtrl">
   <div class="md-title">用户登录</div>
   <md-content>
-    <form autocomplete="off" name="loginForm" ng-submit="login()">
+    <form autocomplete="off" name="loginForm" ng-submit="login()" novalidate>
       <md-input-container class="md-icon-float md-block">
         <label>用户名</label>
         <md-icon aria-label="用户名图标" class="name">person</md-icon>
@@ -18,7 +18,7 @@
       <md-input-container class="md-icon-float md-block">
         <label>密码</label>
         <md-icon aria-label="密码图标">lock</md-icon>
-        <input ng-model="user.password" type="password" required minlength="3" maxlength="15" name="password">
+        <input ng-model="user.password" type="password" required minlength="5" maxlength="15" name="password">
         <div ng-messages="loginForm.password.$error" role="alert">
           <div ng-message="required">
             请填写密码
