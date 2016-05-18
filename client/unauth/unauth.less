@@ -4,7 +4,7 @@ body {
   font-size: 10px;
   .user-select(none);
 
-  > div[ui-view] > div{
+  .unauth-page {
     padding-top: 5%;
   }
 
@@ -29,15 +29,15 @@ body {
       right: -10px;
       top: 10px;
     }
-    md-input-container.face{
-      md-whiteframe{
+    md-input-container.face {
+      md-whiteframe {
         display: block;
         margin: 2px;
-        
-        &.errorFrame{
-          border: 2px solid rgb(221,44,0);
-          .md-subheader{
-            color: rgb(221,44,0);
+
+        &.errorFrame {
+          border: 2px solid rgb(221, 44, 0);
+          .md-subheader {
+            color: rgb(221, 44, 0);
           }
         }
         img.avatar {
@@ -53,13 +53,6 @@ body {
           height: 50px;
         }
       }
-      }
-
-
-    .error {
-      .border-radius(5px);
-      border: 1px solid #f88d00;
-      color: #f88d00;
     }
   }
 }

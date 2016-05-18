@@ -5,7 +5,7 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
-body > div[ui-view] > div {
+body .unauth-page {
   padding-top: 5%;
 }
 body .login,
@@ -50,14 +50,4 @@ body #signup-page md-input-container.face md-whiteframe img.avatar:hover {
 }
 body #signup-page md-input-container.face md-whiteframe img.avatar.actived {
   border-color: dodgerblue;
-}
-body #signup-page .error {
-  -webkit-border-radius: 5px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 5px;
-  -moz-background-clip: padding;
-  border-radius: 5px;
-  background-clip: padding-box;
-  border: 1px solid #f88d00;
-  color: #f88d00;
 }
