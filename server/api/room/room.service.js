@@ -12,14 +12,14 @@ var settings = require('../../config/setting');
 var uuid = require('node-uuid');
 
 //obj => redis
-var objSaved = function(room) {
+var objSaved = function (room) {
   var _room = _.clone(room);
 
-  _room.users = _.map(_room.users, function(user) {
+  _room.users = _.map(_room.users, function (user) {
     return _.isString(user) ? user : user.id;
   });
 
-  _room.obs = _.map(_room.obs, function(user) {
+  _room.obs = _.map(_room.obs, function (user) {
     return _.isString(user) ? user : user.id;
   });
 
@@ -30,13 +30,13 @@ var objSaved = function(room) {
 };
 
 //redis => obj
-var assemble = function(room) {
+var assemble = function (room) {
 
   if (_.isEmpty(room)) {
     return room;
   }
 
-  var parseArrIds = function(key) {
+  var parseArrIds = function (key) {
     if (room.hasOwnProperty(key) && !_.isEmpty(room[key])) {
       if (_.isString(room[key])) {
         room[key] = room[key].split(',');
@@ -44,7 +44,7 @@ var assemble = function(room) {
     } else {
       room[key] = [];
     }
-  }
+  };
 
   room.status = parseInt(room.status);
   room.number = parseInt(room.number);
@@ -57,15 +57,15 @@ var assemble = function(room) {
     room.users = room.users.split(',');
   }
 
-  return userService.list(room.users).then(function(users) {
+  return userService.list(room.users).then(function (users) {
     room.users = users;
     room.admin = users[0];
     return room;
   })
 };
-exports.list = function(id) {
-  return db.listObj("rooms", id).then(function(rooms) {
-    if(_.isArray(rooms)){
+exports.list = function (id) {
+  return db.listObj("rooms", id).then(function (rooms) {
+    if (_.isArray(rooms)) {
       return Promise.map(rooms, assemble);
     }
     return assemble(rooms);
@@ -80,21 +80,25 @@ exports.list = function(id) {
   //}
 };
 
-exports.update = function(room, setFun) {
+exports.update = function (room, setFun) {
   room = _.isString(room) ? {id: room} : room;
-  return db.saveObj("rooms", room, function(lockedRoom) {
-    return assemble(lockedRoom).then(function(assembledRoom) {
+
+  return db.saveOrUpdateObj("rooms", room, function (lockedRoom) {
+    return assemble(lockedRoom).then(function (assembledRoom) {
       setFun(assembledRoom);
+      room = assembledRoom;
       return objSaved(assembledRoom);
-    }, function(error) {
+    }, function (error) {
       log.error("update room error", error);
     })
-  }, function(error) {
+  }, function (error) {
     log.error("save room error", error);
+  }).then(function () {
+    return room;
   })
 };
 
-exports.save = function(room, userid) {
+exports.save = function (room, userid) {
   room.create = moment().format();
   room.id = uuid.v1();
   room.admin = userid;
@@ -102,23 +106,23 @@ exports.save = function(room, userid) {
   room.users = [userid];
   room.readyUsers = [userid];
   room.obs = [];
-  room.number = 5;
+  room.number = room.number || 5;
   room.mode = 0;
-  return db.saveObj("rooms", objSaved(room));
+  return db.saveOrUpdateObj("rooms", objSaved(room));
 };
 
-exports.remove = function(room) {
-  return this.removeCompeteState(room).then(function() {
+exports.remove = function (room) {
+  return this.removeCompeteState(room).then(function () {
     return db.delete("rooms:" + room.id);
   })
 };
-exports.listRoomStat = function(id) {
-  return db.list("roomstats:" + id).then(function(state) {
+exports.listRoomStat = function (id) {
+  return db.list("roomstats:" + id).then(function (state) {
     return JSON.parse(state);
   });
 };
-exports.updateRoomStat = function(room, verdictObj) {
-  return this.listRoomStat(room.id).then(function(userstats) {
+exports.updateRoomStat = function (room, verdictObj) {
+  return this.listRoomStat(room.id).then(function (userstats) {
     if (userstats) {
       if (verdictObj.user) {
         var currentUserStat = _.find(userstats.users, {"userid": verdictObj.user.id});
@@ -137,7 +141,7 @@ exports.updateRoomStat = function(room, verdictObj) {
         }
       } else {
         if (verdictObj.verdict == -1) {
-          _.each(userstats.users, function(user) {
+          _.each(userstats.users, function (user) {
             user.timeoutNum++;
           });
         }
@@ -145,7 +149,7 @@ exports.updateRoomStat = function(room, verdictObj) {
 
       userstats.currNum++;
 
-      return db.save("roomstats:" + room.id, JSON.stringify(userstats)).then(function() {
+      return db.save("roomstats:" + room.id, JSON.stringify(userstats)).then(function () {
         return userstats;
       });
     } else {
@@ -154,17 +158,17 @@ exports.updateRoomStat = function(room, verdictObj) {
   });
 };
 
-exports.finishCompete = function(room, statist) {
+exports.finishCompete = function (room, statist) {
 
   if (statist) {
-    _.each(statist.users, function(user) {
+    _.each(statist.users, function (user) {
       Statistic.create({
         correctNum: user.correctNum,
         incorrectNum: user.incorrectNum,
         timeoutNum: user.timeoutNum,
         point: user.point || 0,
         user: user.userid
-      }, function(err) {
+      }, function (err) {
         if (err) {
           log.error("finish compete error ", err);
           return errorHandler(err);
@@ -173,29 +177,29 @@ exports.finishCompete = function(room, statist) {
     });
   }
 
-  return this.update(room, function(locked) {
+  return this.update(room, function (locked) {
     locked.status = 0;
     locked.readyUsers = [locked.admin.id];
     locked.topic = '';
   });
 };
 
-exports.leave = function(room, user) {
+exports.leave = function (room, user) {
   var self = this, promise;
 
-  function adminPolicy(room, user) {
+  function adminPolicy(room) {
     return self.remove(room);
   }
 
   function playerPolicy(room, user) {
-    return self.update(room, function(locked) {
+    return self.update(room, function (locked) {
       _.remove(locked.users, {'id': user.id});
       _.pull(locked.readyUsers, user.id);
     });
   }
 
   function obPolicy(room, user) {
-    return self.update(room, function(locked) {
+    return self.update(room, function (locked) {
       _.pull(locked.obs, user.id);
     });
   }
@@ -216,16 +220,17 @@ exports.leave = function(room, user) {
     return null;
   }
 
-  return promise.then(function() {
+  return promise.then(function () {
     return userService.setRoom(user.id, '');
   });
 
 };
 
-exports.join = function(room, user) {
-  log.verbose("room.service#Join", room, user);
-  return this.update(room, function(locked) {
-    if (locked.users.length < locked.number) {
+exports.join = function (room, user, isPlayer) {
+  isPlayer = isPlayer === undefined || isPlayer;
+  log.verbose("room.service#Join", room, user, isPlayer);
+  return this.update(room, function (locked) {
+    if (isPlayer && locked.users.length < locked.number) {
       if (!_.find(locked.users, {'id': user.id})) {
         locked.users.push(user);
       }
@@ -237,27 +242,28 @@ exports.join = function(room, user) {
   });
 };
 
-exports.terminateCompete = function(room) {
+exports.terminateCompete = function (room) {
   return this.finishCompete(room);
 };
 
-exports.startCompete = function(room) {
+exports.startCompete = function (room) {
   room.status = 1;
   return db.set("rooms:" + room.id, "status", room.status);
 };
 
-exports.removeCompeteState = function(room) {
+exports.removeCompeteState = function (room) {
   return db.delete("roomstats:" + room.id);
-}
-exports.createCompeteState = function(roomValue) {
+};
+
+exports.createCompeteState = function (roomValue) {
   if (_.isString(_.first(roomValue.users))) {
     roomValue = assemble(roomValue);
   }
 
-  return Promise.resolve(roomValue).then(function(room) {
+  return Promise.resolve(roomValue).then(function (room) {
     var roomstate = {
       id: uuid.v1(),
-      users: _.map(room.users, function(user) {
+      users: _.map(room.users, function (user) {
         return {
           userid: user.id,
           username: user.username,

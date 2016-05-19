@@ -35,12 +35,11 @@ function getTopic(id) {
 function isCorrect(id, answer) {
   return Topic.findById(id).exec().then(function(topic) {
     var _topic = topic.toJSON();
-    var ret = {
+    
+    return {
       point: _topic.point,
       verdict: _topic.corrector.join('') == answer.split('').sort().join('') ? 1 : 0
-    }
-
-    return ret;
+    };
   })
 };
 

@@ -1,10 +1,7 @@
 var should = require('chai').should();
 var roomSocket = require('rewire')('./room.socket');
 var utils = require('../../../test/test.utils');
-var _ = require('lodash');
-
 var faker = require('faker');
-
 
 describe('api/room/room.socket', function() {
   var users = [];

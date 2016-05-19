@@ -22,7 +22,7 @@ module.exports = {
         Promise.map(Topic.find().exec(), function(){
           db.sadd("topics", JSON.stringify(topic.toObject()));
         });
-      });    
+      });
     });
   },
   clean: function(){
@@ -41,7 +41,7 @@ module.exports = {
   },
 
   exists: function(key) {
-    return this.db.exists('topics').then(function(result) {
+    return this.db.exists(key).then(function(result) {
       return result === 0;
     })
   },
@@ -57,7 +57,7 @@ module.exports = {
   list: function(key) {
     return this.db.get(key);
   },
-  saveObj: function(key, obj, setFun) {
+  saveOrUpdateObj: function(key, obj, setFun) {
     var id_ = _.isString(obj) ? obj : obj.id;
     var key_ = key + ":" + id_;
     var self = this;
@@ -69,11 +69,13 @@ module.exports = {
         self.lock(self.LOCK_KEY, function(done) {
           self.listObj(key, id_).then(function(lockedObj) {
             if (lockedObj) {
-              Promise.resolve(setFun(_.clone(lockedObj))).then(function(_obj) {
-                self.db.hmset(key_, _obj).then(function() {
-                  log.debug("REDIS-CAS-LOCK-UNLOCK: [%s] = ", key_, _obj);
+              Promise.resolve(setFun(lockedObj)).then(function(obj_) {
+                if(_.isEmpty(obj_)) obj_ = lockedObj;
+                log.debug("REDIS-CAS-LOCK-UNLOCK: [%s] = ", key_, obj_);
+
+                self.db.hmset(key_, obj_).then(function() {
                   done();
-                  resolve(_obj);
+                  resolve(obj_);
                 });
               })
             } else {

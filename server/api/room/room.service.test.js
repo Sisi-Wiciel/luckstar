@@ -1,29 +1,27 @@
 var should = require('chai').should();
 var roomService = require('./room.service');
-var redisService = require('../redis/redis.service');
 var utils = require('../../../test/test.utils');
 var _ = require('lodash');
-
+var Promise = require('bluebird');
 var faker = require('faker');
 
-describe('api/room/room.service', function() {
+describe('api/room/room.service', function () {
   var admin;
-  beforeEach(function() {
-    return utils.newUsers().then(function(dbUsers) {
+  beforeEach(function (done) {
+    return utils.newUsers().then(function (dbUsers) {
       admin = dbUsers[0];
-      return dbUsers;
+      done();
     });
   });
 
-  after(function() {
+  after(function () {
     return utils.clean();
   });
-
-  describe('#newRoom', function() {
-    it('should create new room, given a room title', function(done) {
+  describe('#new', function () {
+    it('should create new room, given a room title', function (done) {
       roomService.save({
         title: faker.random.word()
-      }, admin.id).then(function(newroom){
+      }, admin.id).then(function (newroom) {
         should.exist(newroom);
         should.exist(newroom.id);
         done();
@@ -31,18 +29,129 @@ describe('api/room/room.service', function() {
     });
   });
 
-  describe('#joinRoom', function() {
+  describe('#join', function () {
     var room;
-    beforeEach(function(done){
-      utils.newRoom(admin.id).then(function(newroom){
+    beforeEach(function (done) {
+      utils.newRoom(admin.id).then(function (newroom) {
         room = newroom;
         done();
       });
     });
-    it('should user can join a room as a player', function(done) {
-      // roomService.join(room, )     
-      done();
+    it('should user can join a room as a player', function (done) {
+
+      utils.newUsers().then(function (newUsers) {
+        var player = newUsers[0];
+        roomService.join(room, player).then(function (room) {
+          if(room.number === 1){
+            room.users.length.should.equal(1);
+            room.obs.length.should.equal(0);
+          }else{
+            room.users.length.should.equal(2);
+            room.obs.length.should.equal(0);
+            room.users.pop().id.should.equal(player.id);
+          }
+
+          done();
+        }).catch(done);
+      });
+    });
+
+    it('should at most of users in room can join room as a player', function (done) {
+      utils.newUsers(room.number - 1).then(function (newUsers) {
+        var promises = [];
+        _.each(newUsers, function (player) {
+          promises.push(roomService.join(room, player));
+        });
+        Promise.all(promises).then(function () {
+          roomService.list(room.id).then(function (room) {
+            room.users.length.should.equal(room.number);
+            done();
+          }).catch(done);
+        });
+      });
+    });
+
+    it('should join room as observer automatically on more then the max of users in room ', function (done) {
+      utils.newUsers(room.number).then(function (newUsers) {
+        var promises = [];
+        _.each(newUsers, function (player, index) {
+          promises.push(roomService.join(room, player));
+        });
+        Promise.all(promises).then(function () {
+          roomService.list(room.id).then(function (room) {
+            room.users.length.should.equal(room.number);
+            room.obs.length.should.equal(1);
+            done();
+          }).catch(done);
+        });
+      });
+    });
+
+    it('should join room as observer', function (done) {
+      utils.newUsers(10).then(function (newUsers) {
+        var promises = [];
+        _.each(newUsers, function (player, index) {
+          promises.push(roomService.join(room, player, false));
+        });
+        Promise.all(promises).then(function () {
+          roomService.list(room.id).then(function (room) {
+            room.users.length.should.equal(1);
+            room.obs.length.should.equal(10);
+            done();
+          }).catch(done);
+        });
+      });
+    });
+
+    it('should not join the same room as a player', function () {
+      utils.newUsers().then(function (users) {
+        var player = users[0];
+        roomService.join(room, player);
+        roomService.join(room, player);
+        roomService.list(room.id).then(function (room) {
+          room.users.length.should.equal(1);
+          done();
+        }).catch(done);
+      });
+    });
+
+    it('should not join the same room as a observer', function () {
+      utils.newUsers().then(function (users) {
+        var player = users[0];
+        roomService.join(room, player, false);
+        roomService.join(room, player, false);
+        roomService.list(room.id).then(function (room) {
+          room.users.length.should.equal(1);
+          done();
+        }).catch(done);
+      });
+    });
+
+    it('should can change the role of user between player and observer', function () {
+      utils.newUsers().then(function (users) {
+        var player = users[0];
+        roomService.join(room, player).then(function(){
+          roomService.join(room, player, false).then(function () {
+            roomService.list(room.id).then(function (room) {
+              room.users.length.should.equal(1);
+              room.obverser.length.should.equal(1);
+
+              roomService.join(room, player).then(function(){
+                roomService.list(room.id).then(function (room) {
+                  room.users.length.should.equal(2);
+                  room.obverser.length.should.equal(0);
+                  done();
+                });
+              });
+
+            });
+          });
+        }).catch(done);
+
+      });
     });
   });
-
+  describe('#leave', function () {
+    
+  });
 });

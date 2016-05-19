@@ -13,7 +13,7 @@ var updateUsers = function(socket, id) {
       socket.io.emit("updateUsers", users);
     }
   });
-}
+};
 exports.events = {
   userOnline: function(socket) {
     userService.online(socket.uid).then(function() {
@@ -62,7 +62,7 @@ exports.events = {
       }
     })
   }
-}
+};
 exports.updateUsers = updateUsers;
 
 exports.deregister = function(socket) {

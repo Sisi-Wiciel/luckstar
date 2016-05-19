@@ -22,30 +22,31 @@ redisSrv.init(redis.createClient({
 var User = require('../server/api/user/user.model');
 
 module.exports = {
-  clean: function(){   
+  clean: function(){
     User.remove({}, _.noop);
     return redisService.clean();
   },
   newSocket: function(userid) {
-    function socket(){
+    function Socket(){
       this.uid = userid;
       this.emit = sinon.spy();
       this.join = sinon.spy();
-      this.close = sinon.spy()
+      this.close = sinon.spy();
       this.io = {
         sockets: {
           in: function(id){
-            return new socket(id);
+            return new Socket(id);
           }
         }
       }
     }
-  
-    return new socket(userid);
+
+    return new Socket(userid);
   },
   newRoom: function(userid){
     return roomService.save({
-      title: faker.name.title()
+      title: faker.name.title(),
+      number: ~~(Math.random()* 10 + 1)
     }, userid);
   },
   newUsers: function(number) {

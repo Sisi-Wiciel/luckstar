@@ -5,7 +5,7 @@ var uuid = require('node-uuid');
 
 var topicService = require('../topic/topic.service');
 var roomService = require('../room/room.service');
-var userService = require('../user/user.service')
+var userService = require('../user/user.service');
 var setting = require('../../config/setting');
 
 function saveTopic(newTopic, user) {
@@ -76,7 +76,7 @@ exports.events.topicMouseTrack= function(socket, pixel) {
       pixel: pixel
     });
   }
-}
+};
 exports.events.topicTotalSize = function(socket, cb) {
   topicService.getTotalSize().then(cb);
 };

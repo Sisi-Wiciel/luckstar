@@ -251,7 +251,7 @@ exports.events.roomInviteUser = function(socket, userid) {
       });
     }
   });
-}
+};
 
 exports.events.roomInviteUserResponse = function(socket, userid, response) {
   log.verbose("room.socket#roomInviteUserResponse");
