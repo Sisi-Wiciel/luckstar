@@ -1,8 +1,10 @@
-<div class="unauth-page" layout="row" layout-align="center center">
-  <md-whiteframe class="md-whiteframe-1dp" flex-sm="45" flex-gt-sm="35" flex-gt-md="30">
-    <md-content layout-padding>
-      <div ng-include="'/users/auth/login.html'" class="login" ng-if="status === 'login'"></div>
-      <div ng-include="'/users/auth/signup.html'" class="signup" ng-if="status === 'signup'"></div>
-    </md-content>
-  </md-whiteframe>
-</div>
+<md-content class="unauth-page" layout="column" layout-padding flex-xs="95" flex-gt-xs="55" flex-gt-md="35">
+  <div class="md-subhead">
+    <img src="libs/images/logo.gif" class="logo"/>
+    |
+      <b ng-if="status === 'login'">登录</b>
+      <b ng-if="status === 'signup'">注册新用户</b>
+  </div>
+  <div ng-include="'/users/auth/login.html'" class="login" ng-if="status === 'login'"></div>
+  <div ng-include="'/users/auth/signup.html'" class="signup" ng-if="status === 'signup'"></div>
+</md-content>

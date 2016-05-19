@@ -1,8 +1,7 @@
 <div id="nav-main" ng-controller="navbarCtrl">
   <a href="/home" class="logo">
-    LuckyStar
+    <img src="libs/images/logo.gif"/>
   </a>
-
 
   <ul class="menu">
     <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}" ng-click="goto(item)">

@@ -1,5 +1,4 @@
 <section id="login-page" ng-cloak ng-controller="userLoginCtrl">
-  <div class="md-title">用户登录</div>
   <md-content>
     <form autocomplete="off" name="loginForm" ng-submit="login()" novalidate>
       <md-input-container class="md-icon-float md-block">
@@ -31,7 +30,10 @@
 
       <md-button type="submit" class="md-raised md-primary">登录</md-button>
       <md-button class="md-raised" ng-click="reset()">重置</md-button>
-      <md-button ng-click="toSignup()" class=" md-caption md-primary">注册新用户</md-button>
     </form>
+  </md-content>
+  <md-content>
+    还没有账户吗?
+    <md-button ng-click="toSignup()" class="md-primary">注册新账户</md-button>
   </md-content>
 </section>

@@ -1,5 +1,4 @@
 <section id="signup-page" ng-cloak ng-controller="userSignupCtrl">
-  <div class="md-title">注册新用户</div>
   <md-content>
     <form autocomplete="off" name="regForm" ng-submit="register()" novalidate>
       <md-input-container class="md-icon-float md-block">
@@ -45,9 +44,9 @@
       <md-input-container class="md-block md-icon-float face">
         <md-icon aria-label="头像图标">face</md-icon>
 
-        <md-whiteframe class="md-whiteframe-2dp" ng-class="{errorFrame: regForm.$submitted && avatar.length == 0}">
+        <md-whiteframe ng-class="{errorFrame: regForm.$submitted && avatar.length == 0, 'md-whiteframe-2dp': !regForm.$submitted || avatar.length > 0}">
           <md-subheader>选择一个头像:</md-subheader>
-          <md-grid-list md-cols="4" md-row-height="4:3">
+          <md-grid-list md-cols="4" md-row-height="80px">
             <md-grid-tile ng-repeat="ava in avatarArray">
               <img class="avatar" ng-class="{actived: avatar == ava}"
                    ng-click="setAvatar(ava)" ng-src="{{ava}}">
@@ -57,7 +56,10 @@
       </md-input-container>
       <md-button type="submit" class="md-raised md-primary">注册</md-button>
       <md-button class="md-raised" ng-click="reset()">重置</md-button>
-      <md-button ng-click="toLogin()" class="md-caption md-primary">用户登录</md-button>
     </form>
+  </md-content>
+  <md-content>
+    已有账户?
+    <md-button ng-click="toLogin()" class="md-primary">去登录</md-button>
   </md-content>
 </section>
