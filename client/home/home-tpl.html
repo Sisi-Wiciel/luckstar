@@ -1,11 +1,24 @@
-<div class="container-fluid" id="home">
-  <div class="head" ng-include="'/home/navbar/navbar.html'"></div>
-  <div class="row ">
-    <div class="col-md-10 content">
-      <div ui-view></div>
-    </div>
-    <div class="col-md-2 hidden-xs sidebar" ng-include="'../users/list/user-list.html'">
-    </div>
-  </div>
+<!--<div class="container-fluid" id="home">-->
+  <!--<div class="head" ng-include="'/home/navbar/navbar.html'"></div>-->
+  <!--<div class="row ">-->
+    <!--<div class="col-md-10 content">-->
+      <!--<div ui-view></div>-->
+    <!--</div>-->
+    <!--<div class="col-md-2 hidden-xs sidebar" ng-include="'../users/list/user-list.html'">-->
+    <!--</div>-->
+  <!--</div>-->
 
+<!--</div>-->
+
+<div layout="column" id="home" layout-align="center center">
+  <md-toolbar layout="row" class="md-hue-3">
+    <div flex="40">
+      <img src="libs/images/logo.gif"/>
+    </div>
+    <div flex="60" layout layout-align="center center" >
+    </div>
+  </md-toolbar>
+  <md-content>
+    <div ui-view></div>
+  </md-content>
 </div>

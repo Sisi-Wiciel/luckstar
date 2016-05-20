@@ -1,10 +1,12 @@
-<md-content class="unauth-page" layout="column" layout-padding flex-xs="95" flex-gt-xs="55" flex-gt-md="35">
-  <div class="md-subhead">
-    <img src="libs/images/logo.gif" class="logo"/>
-    |
-      <b ng-if="status === 'login'">登录</b>
-      <b ng-if="status === 'signup'">注册新用户</b>
-  </div>
-  <div ng-include="'/users/auth/login.html'" class="login" ng-if="status === 'login'"></div>
-  <div ng-include="'/users/auth/signup.html'" class="signup" ng-if="status === 'signup'"></div>
-</md-content>
+<section layout-align="center center" layout >
+  <md-content class="unauth-page" layout="column" layout-padding flex-xs="95" flex-gt-xs="55" flex-gt-md="35">
+    <div class="md-subhead">
+      <img src="libs/images/logo.gif" class="logo"/>
+      |
+      <span ng-if="status === 'login'">登录</span>
+      <span ng-if="status === 'signup'">注册新用户</span>
+    </div>
+    <div ng-include="'/users/auth/login.html'" class="login" ng-if="status === 'login'"></div>
+    <div ng-include="'/users/auth/signup.html'" class="signup" ng-if="status === 'signup'"></div>
+  </md-content>
+</section>

@@ -29,6 +29,9 @@ module.exports = {
   getSocketByUser: function(user) {
     return io.sockets.connected[user.sid];
   },
+  emitAll: function(event, data) {
+    io.emit(event, data);
+  },
   auth: function(socket) {
     return new Promise(function(resolve, reject) {
       if (socket.uid && socket.auth) {
@@ -107,14 +110,14 @@ module.exports = {
             cbToClient(0);
           }
         } catch (err) {
-          log.error("connect socket error", err.message);
+          log.error("Connect to socket failed", err.message);
         }
       });
 
       setTimeout(function() {
         if (!socket.auth) {
           log.info("Disconnecting unauthorized socket with id", socket.id);
-          self.disconnect('unauthorized');
+          self.disconnect(socket, 'unauthorized');
         }
       }, setting.SOCKET.AUTH_TIME_OUT);
 

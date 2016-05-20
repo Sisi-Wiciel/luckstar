@@ -3,21 +3,19 @@ var _ = require('lodash');
 var log = require('../../log');
 var moment = require('moment');
 var settings = require('../../config/setting');
-
+var socketService = require('../socket/socket.service');
 var updateUsers = function(socket, id) {
 
   userService.list(id).then(function(users) {
     if (!_.isEmpty(id)) {
       socket.emit("updateUser", _.first(users));
     } else {
-      socket.io.emit("updateUsers", users);
+      socketService.emitAll("updateUsers", users);
     }
   });
 }
 
 exports.register = function(socket) {
-
-  var socketService = require('../socket/socket.service');
 
   socketService.on(socket, 'user online', function() {
     userService.online(socket.uid).then(function() {
