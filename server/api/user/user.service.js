@@ -1,21 +1,22 @@
 'use strict';
 var db = require('../redis/redis.service');
 var User = require("./user.model");
-var Promise = require('bluebird');
-var _ = require('lodash');
 var log = require('../../log');
 var setting = require('../../config/setting');
 
 var update = function(id, setFunc) {
-  return db.saveObj("users", id, function(lockedUser) {
+  return db.saveOrUpdateObj("users", id, function(lockedUser) {
     setFunc(lockedUser);
     return lockedUser;
   });
 };
 
 exports.isUniqueName = function(username) {
-  return User.findOne({username: username}).exec();
+  return User.findOne({username: username}).exec().then(function(user) {
+    return user == null;
+  });
 };
+
 exports.disconnect = function(id) {
   return db.set("users:" + id, "sid", '');
 };
@@ -55,7 +56,7 @@ exports.add = function(user) {
   log.debug("user.service#AddUser", user.id);
 
   if (user.id) {
-    return db.saveObj("users", {
+    return db.saveOrUpdateObj("users", {
       avatar: user.avatar,
       point: user.point,
       id: user.id,

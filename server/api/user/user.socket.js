@@ -15,25 +15,21 @@ var updateUsers = function(socket, id) {
   });
 }
 
-exports.register = function(socket) {
-
-  socketService.on(socket, 'user online', function() {
+exports.events = {
+  userOnline: function(socket) {
     userService.online(socket.uid).then(function() {
       updateUsers(socket);
     });
-  });
-
-  socketService.on(socket, 'user offline', function() {
+  },
+  userOffline: function(socket) {
     userService.offline(socket.uid).then(function() {
       updateUsers(socket);
     });
-  });
-
-  socketService.on(socket, 'user update', function() {
+  },
+  userUpdate: function(socket) {
     updateUsers(socket, socket.uid);
-  });
-
-  socketService.on(socket, 'user get', function(cb) {
+  },
+  userGet: function(socket, cb) {
     if (_.isEmpty(socket.uid)) {
       cb({});
     } else {
@@ -41,17 +37,15 @@ exports.register = function(socket) {
         cb(user || {});
       });
     }
-  });
-
-  socketService.on(socket, 'user change status', function(status) {
+  },
+  userChangeStatus: function(socket, status){
     if (status) {
       userService.changeStatus(socket.uid, settings.USER.STATUS[status]).then(function() {
         updateUsers(socket);
       })
     }
-  });
-
-  socketService.on(socket, 'send message', function(message) {
+  },
+  userSendMessage: function(socket, message) {
 
     userService.list([socket.uid, message.to]).then(function(result) {
       var fromUser = result[0];
@@ -68,11 +62,8 @@ exports.register = function(socket) {
         });
       }
     })
-
-  });
-
+  }
 };
-
 exports.updateUsers = updateUsers;
 
 exports.deregister = function(socket) {
@@ -80,6 +71,4 @@ exports.deregister = function(socket) {
     updateUsers(socket);
   });
 };
-
-
 

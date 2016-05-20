@@ -4,8 +4,8 @@ var userService = require('./user.service');
 var logger = require('../../log');
 
 function save(req, res) {
-  userService.isUniqueName(req.body.username).then(function(user) {
-    if (_.isEmpty(user)) {
+  userService.isUniqueName(req.body.username).then(function(result) {
+    if (result) {
       User.create(req.body, function(err, user) {
         if (err) {
           return handleError(res, err)
