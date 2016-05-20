@@ -5,89 +5,82 @@ var uuid = require('node-uuid');
 
 var topicService = require('../topic/topic.service');
 var roomService = require('../room/room.service');
-var userService = require('../user/user.service')
+var userService = require('../user/user.service');
 var setting = require('../../config/setting');
 
 function saveTopic(newTopic, user) {
   return topicService.save(newTopic, user);
 }
 
-function reportTopicBug(socket) {
+exports.events = {};
+
+exports.events.topicSave = function(socket, newtopic, cb) {
+  userService.list(socket.uid).then(function(user) {
+    saveTopic(newtopic, user).then(function(topic) {
+      cb({
+        id: topic._id
+      });
+    });
+  })
+};
+
+exports.events.topicBug = function(socket) {
   roomService.list(socket.room).then(function(room){
     topicService.topicBug(socket.uid, room.topic);
   });
-}
+};
 
-exports.register = function(socket) {
-  var socketSrv = require('../socket/socket.service');
+exports.events.topicUploadFile = function(socket, data, cb) {
 
-  socketSrv.on(socket, 'topic save', function(newtopic, cb) {
-    userService.list(socket.uid).then(function(user) {
-      saveTopic(newtopic, user).then(function(topic) {
-        cb({
-          id: topic._id
-        })
-      });
-    })
-  });
+  if (!socket.file_bufs || data.index == 0) {
+    socket.file_bufs = [];
+    socket.file_buf_length = 0;
+  }
 
-  socketSrv.on(socket, 'topic bug', function() {
-    reportTopicBug(socket)
-  });
+  socket.file_buf_length += data.length;
+  socket.file_bufs.push(data.buf);
 
-  socketSrv.on(socket, 'topic total size', function(cb) {
-    topicService.getTotalSize().then(cb);
-  });
+  if (data.index == setting.FILE.UPLOAD_POLICY.BLOCK_NUMBER - 1) {
+    var fileName = uuid.v1();
+    var _path = path.join(setting.FILE.UPLOAD_DIR, fileName);
+    var buffArray = Buffer.concat(socket.file_bufs, socket.file_buf_length);
 
-  socketSrv.on(socket, 'topic get upload policy', function(cb) {
-    cb(setting.FILE.UPLOAD_POLICY);
-  });
+    fs.writeFile(_path, buffArray, function(err) {
+      if (err) {
+        console.log(err);
+      }
 
-  socketSrv.on(socket, 'topic upload file', function(data, cb) {
-
-    if (!socket.file_bufs || data.index == 0) {
       socket.file_bufs = [];
       socket.file_buf_length = 0;
-    }
 
-    socket.file_buf_length += data.length;
-    socket.file_bufs.push(data.buf);
+      topicService.update(data.id, {image: fileName}).then(function() {
+        cb({status: 1});
+      })
 
-    if (data.index == setting.FILE.UPLOAD_POLICY.BLOCK_NUMBER - 1) {
-      var fileName = uuid.v1();
-      var _path = path.join(setting.FILE.UPLOAD_DIR, fileName);
-      var buffArray = Buffer.concat(socket.file_bufs, socket.file_buf_length);
-
-      fs.writeFile(_path, buffArray, function(err) {
-        if (err) {
-          console.log(err);
-        }
-
-        socket.file_bufs = [];
-        socket.file_buf_length = 0;
-
-        topicService.update(data.id, {image: fileName}).then(function() {
-          cb({status: 1});
-        })
-
-      });
-    } else {
-      cb({
-        index: data.index,
-        status: 1
-      });
-    }
-  });
-
-  socketSrv.on(socket, 'mouse track', function(pixel) {
-    if(socket.room){
-      socket.io.sockets.in(socket.room).emit('updateMouseTrack', {
-        id: socket.uid,
-        pixel: pixel
-      });
-    }
-  });
+    });
+  } else {
+    cb({
+      index: data.index,
+      status: 1
+    });
+  }
 };
+exports.events.topicGetUploadPolicy= function(socket, cb) {
+  cb(setting.FILE.UPLOAD_POLICY);
+};
+
+exports.events.topicMouseTrack= function(socket, pixel) {
+  if(socket.room){
+    socket.io.sockets.in(socket.room).emit('updateMouseTrack', {
+      id: socket.uid,
+      pixel: pixel
+    });
+  }
+};
+exports.events.topicTotalSize = function(socket, cb) {
+  topicService.getTotalSize().then(cb);
+};
+
 
 exports.deregister = function(socket) {
 };

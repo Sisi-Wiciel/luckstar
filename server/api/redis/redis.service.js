@@ -7,61 +7,41 @@ var Promise = require('bluebird');
 var LOCK = require("redis-lock");
 
 module.exports = {
-
-  init: function(db) {
-
+  initData: function(db) {
     var self = this;
+    this.init(db);
+
+    db.on('ready', function() {
+      var userService = require("../user/user.service");
+
+      self.clean().then(function(){
+        Promise.map(User.find().exec(), function(user){
+          return userService.add(user);
+        });
+
+        Promise.map(Topic.find().exec(), function(){
+          db.sadd("topics", JSON.stringify(topic.toObject()));
+        });
+      });
+    });
+  },
+  clean: function(){
+    return Promise.map(this.db.keys('*'), function(key){
+      return this.db.del(key);
+    }.bind(this));
+  },
+  init: function(db) {
     this.db = db;
     this.lock = LOCK(this.db._redisClient);
     this.LOCK_KEY = "luckstart_lock";
-    var userService = require("../user/user.service");
-
-    var cleanAndInit = function() {
-      db.keys('*').then(function(keys) {
-        for (var i = 0, len = keys.length; i < len; i++) {
-          db.del(keys[i]);
-        }
-      });
-
-      User.find().exec().then(function(users) {
-        _.each(users, function(user) {
-          userService.add(user);
-        });
-      })
-
-      Topic.find().exec().then(function(topics) {
-
-        _.each(topics, function(topic) {
-          var _topic = topic.toObject();
-
-          //if(_topic._id == "567b9fed2a4f8a501a3cf074"){//多选题
-          //    db.sadd("topics", JSON.stringify(_topic));
-          //}
-          //if(_topic._id == "567b8f8836b14aa8189819d0"){//单选题
-          //    db.sadd("topics", JSON.stringify(_topic));
-          //}
-          //if(_topic._id == "568f6c501b9a0d902b007877"){//图片题
-          //    db.sadd("topics", JSON.stringify(_topic));
-          //}
-
-          db.sadd("topics", JSON.stringify(_topic));
-        });
-      });
-
-    }
-
-    db.on('ready', function() {
-      cleanAndInit();
-    });
 
     db.on('error', function(error) {
-      log.error("db problem:", error);
+      log.error("DB problem:", error);
     })
-
   },
 
   exists: function(key) {
-    return this.db.exists('topics').then(function(result) {
+    return this.db.exists(key).then(function(result) {
       return result === 0;
     })
   },
@@ -77,7 +57,7 @@ module.exports = {
   list: function(key) {
     return this.db.get(key);
   },
-  saveObj: function(key, obj, setFun) {
+  saveOrUpdateObj: function(key, obj, setFun) {
     var id_ = _.isString(obj) ? obj : obj.id;
     var key_ = key + ":" + id_;
     var self = this;
@@ -89,11 +69,13 @@ module.exports = {
         self.lock(self.LOCK_KEY, function(done) {
           self.listObj(key, id_).then(function(lockedObj) {
             if (lockedObj) {
-              Promise.resolve(setFun(_.clone(lockedObj))).then(function(_obj) {
-                self.db.hmset(key_, _obj).then(function() {
-                  log.debug("REDIS-CAS-LOCK-UNLOCK: [%s] = ", key_, _obj);
+              Promise.resolve(setFun(lockedObj)).then(function(obj_) {
+                if(_.isEmpty(obj_)) obj_ = lockedObj;
+                log.debug("REDIS-CAS-LOCK-UNLOCK: [%s] = ", key_, obj_);
+
+                self.db.hmset(key_, obj_).then(function() {
                   done();
-                  resolve(_obj);
+                  resolve(obj_);
                 });
               })
             } else {
