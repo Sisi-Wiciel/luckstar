@@ -47,7 +47,9 @@ module.exports = {
     return roomService.save({
       title: faker.name.title(),
       number: ~~(Math.random()* 10 + 1)
-    }, userid);
+    }, userid).then(function (room) {
+      return roomService.list(room.id);
+    });
   },
   newUsers: function(number) {
 

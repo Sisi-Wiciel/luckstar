@@ -18,13 +18,28 @@ describe('api/room/room.service', function () {
     return utils.clean();
   });
   describe('#new', function () {
-    it('should create new room, given a room title', function (done) {
+    it('should create new room, given a room title at least', function (done) {
       roomService.save({
         title: faker.random.word()
       }, admin.id).then(function (newroom) {
         should.exist(newroom);
         should.exist(newroom.id);
         done();
+      });
+    });
+
+    it('should admin was in that room, when it created', function (done) {
+      roomService.save({
+        title: faker.random.word()
+      }, admin.id).then(function (newroom) {
+        roomService.list(newroom.id).then(function (room) {
+          console.info(room);
+          room.admin.id.should.equal(admin.id);
+          room.users.length.should.equal(1);
+          room.users[0].id.should.equal(admin.id);
+          done();
+        });
+
       });
     });
   });
@@ -87,7 +102,7 @@ describe('api/room/room.service', function () {
       });
     });
 
-    it('should join room as observer', function (done) {
+    it('should user can join room as observer', function (done) {
       utils.newUsers(10).then(function (newUsers) {
         var promises = [];
         _.each(newUsers, function (player, index) {
@@ -152,6 +167,21 @@ describe('api/room/room.service', function () {
     });
   });
   describe('#leave', function () {
-    
+    var room;
+    beforeEach(function(done){
+      utils.newRoom(admin.id).then(function (newroom) {
+        room = newroom;
+        done();
+      });
+    });
+
+    it('should close room when the role of admin user leave room', function(done){
+      roomService.leave(room, admin).then(function () {
+        roomService.list(room.id).then(function (nullRoom) {
+          should.equal(nullRoom, null);
+          done();
+        });
+      });
+    });
   });
 });

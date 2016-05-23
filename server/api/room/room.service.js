@@ -185,6 +185,7 @@ exports.finishCompete = function (room, statist) {
 };
 
 exports.leave = function (room, user) {
+  log.verbose("room.service#Leave", room, user);
   var self = this, promise;
 
   function adminPolicy(room) {
