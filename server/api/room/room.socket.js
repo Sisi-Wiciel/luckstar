@@ -31,10 +31,10 @@ function updateRooms(socket) {
   log.verbose("room.socket#updateRooms", socket.room);
 
   return roomService.list().then(function(rooms) {
-    roomid = socket.room;
+    var roomId = socket.room;
     // if currRoom is null, this room is closed.
-    if (!_.isEmpty(roomid)) {
-      socket.io.sockets.in(roomid).emit('updateRoom', _.find(rooms, {"id": roomid}));
+    if (!_.isEmpty(roomId)) {
+      socket.io.sockets.in(roomId).emit('updateRoom', _.find(rooms, {"id": roomId}));
     }
     socket.io.emit("updateRooms", rooms);
   });
