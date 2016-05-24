@@ -1,12 +1,12 @@
 <div layout="column" id="home" layout-fill>
   <md-toolbar layout="row" >
     <div class="md-toolbar-tools">
-      <md-button hide-gt-md class="md-icon-button md-primary menuBtn" aria-label="Menu" ng-click="toggleSidenav('menuNav')">
+      <md-button hide-gt-md class="md-icon-button md-primary menuBtn" aria-label="Menu" ng-click="toggleSidenav('navMenu')">
       </md-button>
       <p flex>
         <b>LuckyStar | {{currentMenu().title}}</b>
       </p>
-      <md-button class="md-icon-button" aria-label="Show OnLine users button">
+      <md-button class="md-icon-button" aria-label="Show OnLine users button" ng-click="toggleSidenav('usersMenu')">
         <md-icon>people</md-icon>
       </md-button>
       <md-button class="md-icon-button" aria-label="My avatar button">
@@ -19,5 +19,6 @@
     <ng-include src="'/home/navbar/navbar.html'"></ng-include>
     <md-content layout="column" flex ui-view>
     </md-content>
+    <ng-include src="'/users/list/user-list.html'"></ng-include>
   </md-content>
 </div>

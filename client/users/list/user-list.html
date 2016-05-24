@@ -1,37 +1,48 @@
 <div id="user-list" ng-controller="userlistCtrl">
-  <div class="userlist-box" ng-show="!chatting">
-    <div class="head box-title">
-      <i class="fa fa-user"></i> 用户列表
-    </div>
+  <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-1'" md-component-id="usersMenu">
+    <md-content>
+      <md-list>
+        <md-subheader class="md-no-sticky">在线用户列表</md-subheader>
+        <md-list-item ng-repeat="user in userlist" ng-if="user.id != curr.id" ng-click="goToPerson(person.name, $event)">
+          <img alt="{{ user.username }}" ng-src="{{ user.avatar }}" class="md-avatar" />
+          <p>{{ user.username }}</p>
+          <md-icon ng-click="" aria-label="Open Chat" class="md-secondary md-hue-3 " >message</md-icon>
+          <md-icon ng-click="" aria-label="Invite User" class="md-secondary md-hue-3" >library_add</md-icon>
+        </md-list-item>
+  </md-sidenav>
+  <!--<div class="userlist-box">-->
+    <!--<div class="head box-title">-->
+      <!--<i class="fa fa-user"></i> 用户列表-->
+    <!--</div>-->
 
-    <ul class="list-unstyled">
-      <li ng-repeat="user in userlist"
-          ng-if="user.id != curr.id">
-        <img class="gravatar" ng-src="{{user.avatar}}">
+    <!--<ul class="list-unstyled">-->
+      <!--<li ng-repeat="user in userlist"-->
+          <!--ng-if="user.id != curr.id">-->
+        <!--<img class="gravatar" ng-src="{{user.avatar}}">-->
 
-        <div class="content" >
-          <span>{{user.username}}</span>
-          <span class="last-message">{{user.status}}</span>
-        </div>
-        <div class="tools" ng-if="user.state == '1'">
-          <a href ng-click="showChatPanel(user)" title="发起聊天">
-            <i class="fa fa-comments"></i>
-          </a>
-          <a href ng-click="inviteUser(user)" title="邀请对战" ng-if="room.id">
-            <i class="fa fa-gavel"></i>
-          </a>
-        </div>
+        <!--<div class="content">-->
+          <!--<span>{{user.username}}</span>-->
+          <!--<span class="last-message">{{user.status}}</span>-->
+        <!--</div>-->
+        <!--<div class="tools" ng-if="user.state == '1'">-->
+          <!--<a href ng-click="showChatPanel(user)" title="发起聊天">-->
+            <!--<i class="fa fa-comments"></i>-->
+          <!--</a>-->
+          <!--<a href ng-click="inviteUser(user)" title="邀请对战" ng-if="room.id">-->
+            <!--<i class="fa fa-gavel"></i>-->
+          <!--</a>-->
+        <!--</div>-->
 
-      </li>
-    </ul>
-  </div>
-  <div class="chat-box" ng-show="chatting">
-    <div class="head">
-      <i class="fa fa-comments"></i> {{toUser.username}}
-      <a href ng-click="hideChatPanel()">
-        <small class="text-muted pull-right"><i class="fa fa-times"></i></small>
-      </a>
-    </div>
-    <user-chat messages="messages[toUser.id]" name="false" sender="sendMsg(msg)"></user-chat>
-  </div>
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</div>-->
+  <!--<div class="chat-box" ng-show="chatting">-->
+  <!--<div class="head">-->
+  <!--<i class="fa fa-comments"></i> {{toUser.username}}-->
+  <!--<a href ng-click="hideChatPanel()">-->
+  <!--<small class="text-muted pull-right"><i class="fa fa-times"></i></small>-->
+  <!--</a>-->
+  <!--</div>-->
+  <!--<user-chat messages="messages[toUser.id]" name="false" sender="sendMsg(msg)"></user-chat>-->
+  <!--</div>-->
 </div>
