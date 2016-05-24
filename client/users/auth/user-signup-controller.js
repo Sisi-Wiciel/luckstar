@@ -1,11 +1,19 @@
 'use strict';
 
 module.exports = ['$scope', '$timeout', 'authSrv', 'messageCenter', function($scope, $timeout, authSrv, messageCenter) {
-  $scope.avatarError = false;
+  var BASEURL = 'libs/images/avatar/';
+  var SUFFIX = '.png';
 
-  $scope.register = function(target) {
+  $scope.avatarArray = [];
+
+  _.times(12, function(value) {
+    var index = value + 1;
+    $scope.avatarArray.push(BASEURL + index + SUFFIX);
+  });
+
+  $scope.register = function() {
+    var target = _.clone($scope.user);
     if ($scope.avatar) {
-      $scope.avatarError = false;
       target.avatar = $scope.avatar;
       authSrv.createUser(target).then(function() {
         messageCenter.notify('用户注册成功');
@@ -13,18 +21,20 @@ module.exports = ['$scope', '$timeout', 'authSrv', 'messageCenter', function($sc
       }, function(data) {
         messageCenter.error(data.message);
       });
-    } else {
-      $scope.avatarError = true;
     }
   };
 
-  $scope.check = function(username) {
-    return authSrv.usernameIsExisted(username).then(function(existed) {
-      $scope.$broadcast('ngbs-error', existed, 'username');
-    });
+  $scope.reset = function() {
+    $scope.user = {
+      email: '',
+      username: '',
+      password: ''
+    }
+    $scope.avatar = '';
   };
 
   $scope.setAvatar = function(url) {
     $scope.avatar = url;
   };
+  $scope.reset();
 }];

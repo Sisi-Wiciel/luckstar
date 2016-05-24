@@ -7,21 +7,18 @@ var jwt = require('jwt-simple');
 var log = require('../../log');
 var Promise = require('bluebird');
 
-var socketBundles = [
-  require('../user/user.socket'),
-  require('../room/room.socket'),
-  require('../user/user.service'),
-  require('../topic/topic.socket'),
-  require('../room/compete.socket')
-];
-
-function register(socketBundle, socket) {
-
+function loadSocketBundles (){
+  return [
+    require('../user/user.socket'),
+    require('../room/room.socket'),
+    require('../topic/topic.socket'),
+    require('../room/compete.socket')
+  ];
 }
 
 function disconnect(socket, reason) {
   userService.disconnect(socket.uid).then(function() {
-    _.each(socketBundles, function(bundle) {
+    _.each(loadSocketBundles(), function(bundle) {
       bundle.deregister(socket);
     });
     socket.disconnect(reason);
@@ -29,7 +26,7 @@ function disconnect(socket, reason) {
 }
 
 function addEventsListener(socket) {
-  _.each(socketBundles, function(bundle) {
+  _.each(loadSocketBundles(), function(bundle) {
     var events = bundle.events;
     _.each(_.functions(events), function(funcString) {
 
@@ -41,7 +38,7 @@ function addEventsListener(socket) {
             disconnect(socket, 'unauthorized');
           }, setting.USER.INACTIVE_IN_SECOND);
 
-          console.info("Function " + funcString + " called", events[funcString]);
+          log.debug("Function " + funcString + " called");
           events[funcString](socket, args, _cb);
         });
       });
@@ -70,8 +67,6 @@ function onAuthenticate(socket) {
         resolve(socket);
         callback(1); // auth successed and notify to client.
       } else {
-        log.error('Invalid token data');
-        reject('Invalid token data');
         callback(0);
       }
       //} catch (err) {
@@ -131,9 +126,9 @@ module.exports = {
     }
     return io.sockets.connected[user.sid];
   },
-  //preCallEventAuth: function(socket) {
-  //  return preCallEventAuth(socket);
-  //},
+  emitAll: function(event, data) {
+    io.emit(event, data);
+  },
   createIO: function(cb, namespace) {
     var self = this;
     if (namespace) {
@@ -145,7 +140,7 @@ module.exports = {
       setTimeout(function() {
         if (!socket.auth) {
           log.info("Disconnecting unauthorized socket with id", socket.id);
-          disconnect('unauthorized');
+          disconnect(socket, 'unauthorized');
         }
       }, setting.SOCKET.AUTH_TIME_OUT);
     });
@@ -173,7 +168,7 @@ module.exports = {
                 log.info("User reconnected immediately", user.id);
               }
             });
-          }, 1500);
+          }, 3000);
         });
       });
 
@@ -184,6 +179,5 @@ module.exports = {
     disconnect(socket, reason);
     log.info("Disconnecting socket with user", socket.uid);
   }
-
 };
 

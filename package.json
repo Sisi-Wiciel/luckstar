@@ -7,6 +7,10 @@
     "test": "node_modules/.bin/mocha -w --reporter spec server/**/*test.js"
   },
   "dependencies": {
+    "angular-material": "^1.1.0-rc4",
+    "angular-messages": "^1.5.5",
+    "angular-route": "^1.5.5",
+    "angular-sanitize": "^1.5.5",
     "autoprefixer": "~6.2.0",
     "babel-core": "^6.7.4",
     "babel-loader": "^6.2.4",
@@ -26,6 +30,7 @@
     "jsonwebtoken": "5.0.0",
     "jwt-simple": "^0.3.0",
     "lodash": "^4.11.1",
+    "material-design-icons": "^2.2.3",
     "moment": "^2.13.0",
     "mongoose": "^4.0.5",
     "morgan": "~1.5.3",

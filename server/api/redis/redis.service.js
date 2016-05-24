@@ -19,7 +19,7 @@ module.exports = {
           return userService.add(user);
         });
 
-        Promise.map(Topic.find().exec(), function(){
+        Promise.map(Topic.find().exec(), function(topic){
           db.sadd("topics", JSON.stringify(topic.toObject()));
         });
       });

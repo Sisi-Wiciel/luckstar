@@ -1,43 +1,55 @@
 @import (reference) "common";
 
 body {
-  font-size: 11px;
+  font-size: 10px;
   .user-select(none);
 
-  //font-family: "Microsoft YaHei", "微软雅黑", helvetica, arial, verdana, tahoma, sans-serif;
-  //background-image: url("libs/images/bg.gif");
-
-  overflow-x: hidden;
-
-  > [ui-view] {
-    &.ng-enter {
-      .animated;
-      position: absolute;
-      left: 0px;
-      right: 0px;
-      .fadeIn;
+  .login,
+  .signup {
+    md-icon.name {
+      color: dodgerblue;
     }
-
+    md-icon.email {
+      color: green;
+    }
+    .md-title {
+      margin: 15px 0;
+    }
+    font-size: 1.5em;
   }
-  color: #767676;
 
-  .unauth {
-    .display(flex);
-    .justify-content(center);
-    padding-top: 100px;
-    .page-header {
-      h1 {
-        display: inline;
+  #signup-page {
+
+    .loading {
+      position: absolute;
+      right: -10px;
+      top: 10px;
+    }
+    md-input-container.face {
+      md-whiteframe {
+        display: block;
+        margin: 2px;
+
+        &.errorFrame {
+          border: 2px solid rgb(221, 44, 0);
+          .md-subheader {
+            color: rgb(221, 44, 0);
+          }
+        }
+        img.avatar {
+          border: 1px solid #fff;
+          cursor: pointer;
+          &:hover {
+            border-color: dodgerblue;
+          }
+          &.actived {
+            border-color: dodgerblue;
+          }
+          width: 50px;
+          height: 50px;
+        }
       }
     }
-
-    .login,
-    .signup {
-      .border-radius(5);
-      width: 410px;
-      background-color: #f2e3d0;
-    }
-
   }
-
 }
+

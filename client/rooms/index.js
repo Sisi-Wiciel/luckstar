@@ -11,11 +11,11 @@ module.exports = angular.module('luckstar.rooms', [])
 .directive('roomMessage', require('./room/message/room-message-directive'))
 .directive('roomTopicwrapper', require('./room/topicwrapper/topic-panelwrapper-directive'))
 .config(['$stateProvider', function($stateProvider) {
-  $stateProvider.state('home.rooms', {
-    url: '/home/rooms',
-    template: require('./list/room-list.html')
-  })
-  .state('home.room', {
+  //$stateProvider.state('home.rooms', {
+  //  url: '/home/rooms',
+  //  template: require('./list/room-list.html')
+  //})
+  $stateProvider.state('home.room', {
     url: '/home/rooms/:id',
     template: require('./room/room.html'),
     controller: 'roomCtrl'

@@ -1,3 +1,65 @@
-<div id="home-page" >
-  <div ng-include="'rooms/list/room-list.html'" style="height: 100%"></div>
+<div class="room-main" ng-controller="roomListCtrl">
+  <md-content flex layout-padding>
+    <div layout="column" layout-fill layout-align="top center">
+      <div class="room-list">
+        <div class="empty-room" ng-if="rooms.length == 0">
+          <h1 >目前没有任何房间.</h1>
+          <md-button class="md-primary">Click me</md-button>
+          <md-button class="md-primary md-hue-1">Click me</md-button>
+          <md-button class="md-primary md-hue-2">Click me</md-button>
+          <md-button class="md-accent">or maybe me</md-button>
+          <md-button class="md-warn">Careful</md-button>
+        </div>
+        <div class="body" ng-if="rooms.length > 0">
+          <div class="room-list-item" ng-repeat="room in rooms | filter:q as results">
+
+            <div class="title">
+              <span><i class="fa fa-home"></i>{{room.title}}</span>
+              <span ng-show="room.status == 1" class="text-success">正在进行</span>
+              <span ng-show="room.status == 0" class="text-danger">空闲中</span>
+              <small class="text-muted " from-now="{{room.create}}"></small>
+            </div>
+            <div class="main">
+              <div class="users">
+
+                <div class="user" ng-repeat="user in room.users track by $index"
+                     ng-class='{admin:user.id === room.admin.id}'>
+                  <div ng-if="user">
+                    <i class="fa fa-star" ng-if="user.id === room.admin.id"></i>{{user.username}}
+                    <span class="badge">{{user.point}}</span>
+
+                    <img ng-src="{{user.avatar}}"/>
+                  </div>
+                  <div ng-if="!user">
+                    空位
+                  </div>
+                </div>
+              </div>
+              <div class="toolbar">
+                <a ng-click="join(room.id)" ng-show="room.status == 0 && !room.full" class="btn btn-success">
+                  参赛
+                </a>
+                <!--<a ng-click="joinAsOb(room.id)" class="btn btn-info">-->
+                <!--观看-->
+                <!--</a>-->
+              </div>
+
+            </div>
+
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </md-content>
 </div>
+
+<!--<div class="modal room-creation-modal" tabindex="-1" role="dialog">-->
+<!--<div class="modal-dialog modal-sm">-->
+<!--<div class="modal-content" ng-include="'/rooms/creation/room-creation.html'">-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+

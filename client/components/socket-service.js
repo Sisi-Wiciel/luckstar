@@ -1,6 +1,5 @@
 'use strict';
 var settings = require('../settings');
-var io = require('io');
 
 module.exports = ['store', '$q', '$location', function(store, $q, $location) {
   var socket = null;

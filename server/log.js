@@ -3,7 +3,7 @@ var winston = require('winston');
 //winston.handleExceptions(new winston.transports.File({ filename: 'exceptions.log' }))
 
 var logger = new (winston.Logger)({
-  level: 'verbose',//{ error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 }
+  level: 'debug',//{ error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 }
   transports: [
     new (winston.transports.Console)({
       //handleExceptions: true,

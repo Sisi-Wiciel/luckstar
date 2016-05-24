@@ -5,28 +5,18 @@ var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var path = require('path');
-var nodeModulesDir = path.join(__dirname, 'node_modules');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = function makeWebpackConfig() {
   var config = {
     resolve: {
-      alias: {},
-      extentions: ["", "js"]
-    },
-    devtool: 'eval-source-map',
-    externals: {
-      'moment': true,
-      'bootstrap': true,
-      'jquery': 'jQuery',
-      'io': true
+      extentions: ["js"]
     }
   };
+
   config.entry = {
+    vendors: ['angular', 'angular-ui-router', 'angular-animate', 'angular-messages', 'angular-material'],
     app: ['./client/index.js'],
-    static: './client/core/static.js',
-    vendors: ['angular', 'angular-ui-router', 'angular-animate']
+    static: './client/core/static.js'
   };
 
   config.module = {
@@ -61,7 +51,8 @@ module.exports = function makeWebpackConfig() {
     }),
     new webpack.ProvidePlugin({
       $: "jquery",
-      jQuery: "jquery"
+      jQuery: "jquery",
+      io: 'socket.io-client'
     }),
     new HtmlWebpackPlugin({
       template: './client/index.html',
