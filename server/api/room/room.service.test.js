@@ -57,10 +57,10 @@ describe('api/room/room.service', function () {
       utils.newUsers().then(function (newUsers) {
         var player = newUsers[0];
         roomService.join(room, player).then(function (room) {
-          if(room.number === 1){
+          if (room.number === 1) {
             room.users.length.should.equal(1);
             room.obs.length.should.equal(0);
-          }else{
+          } else {
             room.users.length.should.equal(2);
             room.obs.length.should.equal(0);
             room.users.pop().id.should.equal(player.id);
@@ -130,7 +130,7 @@ describe('api/room/room.service', function () {
       });
     });
 
-    it('should not join the same room as a observer', function () {
+    it('should not join the same room as a observer', function (done) {
       utils.newUsers().then(function (users) {
         var player = users[0];
         roomService.join(room, player, false);
@@ -142,19 +142,19 @@ describe('api/room/room.service', function () {
       });
     });
 
-    it('should can change the role of user between player and observer', function () {
+    it('should can change the role of user between player and observer', function (done) {
       utils.newUsers().then(function (users) {
         var player = users[0];
-        roomService.join(room, player).then(function(){
-          roomService.join(room, player, false).then(function () {
+        roomService.join(room, player).then(function (room) {
+          roomService.join(room, player, false).then(function () { // changed its role
             roomService.list(room.id).then(function (room) {
-              room.users.length.should.equal(1);
-              room.obverser.length.should.equal(1);
+              room.users.length.should.equal(1); //only room admin
+              room.obs.length.should.equal(1); // one player
 
-              roomService.join(room, player).then(function(){
+              roomService.join(room, player).then(function () {
                 roomService.list(room.id).then(function (room) {
                   room.users.length.should.equal(2);
-                  room.obverser.length.should.equal(0);
+                  room.obs.length.should.equal(0);
                   done();
                 });
               });
@@ -168,14 +168,33 @@ describe('api/room/room.service', function () {
   });
   describe('#leave', function () {
     var room;
-    beforeEach(function(done){
-      utils.newRoom(admin.id).then(function (newroom) {
+
+    beforeEach(function (done) {
+      utils.newRoom(admin.id, 5).then(function (newroom) {
         room = newroom;
         done();
       });
     });
 
-    it('should close room when the role of admin user leave room', function(done){
+
+    it('should user as player can leave from room', function (done) {
+      utils.newUsers().then(function (users) {
+        var player = users[0];
+        roomService.join(room, player).then(function (room) {
+          roomService.leave(room, player).then(function () {
+            roomService.list(room.id).then(function (room) {
+              room.users.length.should.equal(1); //only admin user
+              room.admin.should.not.null;
+              room.users[0].id.should.equal(room.admin.id);
+              done();
+            });
+          });
+        })
+      }).catch(done);
+    });
+
+
+    it('should close room when the role of admin user leave room', function (done) {
       roomService.leave(room, admin).then(function () {
         roomService.list(room.id).then(function (nullRoom) {
           should.equal(nullRoom, null);
@@ -184,4 +203,5 @@ describe('api/room/room.service', function () {
       });
     });
   });
-});
+})
+;

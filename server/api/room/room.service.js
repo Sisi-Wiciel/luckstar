@@ -63,6 +63,49 @@ var assemble = function (room) {
     return room;
   })
 };
+
+function leaveRoom(room, user) {
+  log.verbose("room.service#Leave", room, user);
+  var self = this, promise;
+
+  function adminPolicy(room) {
+    return self.remove(room);
+  }
+
+  function playerPolicy(room, user) {
+    return self.update(room, function (locked) {
+      _.remove(locked.users, {'id': user.id});
+      _.pull(locked.readyUsers, user.id);
+    });
+  }
+
+  function obPolicy(room, user) {
+    return self.update(room, function (locked) {
+      _.pull(locked.obs, user.id);
+    });
+  }
+
+  if (!_.isEmpty(room) && !_.isEmpty(user)) {
+
+    if (user.id === room.admin.id) {
+      promise = adminPolicy(room, user);
+    } else if (_.find(room.users, {"id": user.id})) {
+      promise = playerPolicy(room, user);
+    } else if (room.obs.indexOf(user.id) >= 0) {
+      promise = obPolicy(room, user);
+    } else {
+      log.info("User was not joined the room");
+    }
+  }
+  if (_.isEmpty(promise)) {
+    return Promise.resolve(null);
+  }
+
+  return promise.then(function () {
+    return userService.setRoom(user.id, '');
+  });
+
+};
 exports.list = function (id) {
   return db.listObj("rooms", id).then(function (rooms) {
     if (_.isArray(rooms)) {
@@ -184,63 +227,26 @@ exports.finishCompete = function (room, statist) {
   });
 };
 
-exports.leave = function (room, user) {
-  log.verbose("room.service#Leave", room, user);
-  var self = this, promise;
-
-  function adminPolicy(room) {
-    return self.remove(room);
-  }
-
-  function playerPolicy(room, user) {
-    return self.update(room, function (locked) {
-      _.remove(locked.users, {'id': user.id});
-      _.pull(locked.readyUsers, user.id);
-    });
-  }
-
-  function obPolicy(room, user) {
-    return self.update(room, function (locked) {
-      _.pull(locked.obs, user.id);
-    });
-  }
-
-  if (!_.isEmpty(room) && !_.isEmpty(user)) {
-
-    if (user.id === room.admin.id) {
-      promise = adminPolicy(room, user);
-    } else if (_.find(room.users, {"id": user.id})) {
-      promise = playerPolicy(room, user);
-    } else if (room.obs.indexOf(user.id) >= 0) {
-      promise = obPolicy(room, user);
-    } else {
-      log.error("Unknown role of user");
-    }
-  }
-  if (_.isEmpty(promise)) {
-    return null;
-  }
-
-  return promise.then(function () {
-    return userService.setRoom(user.id, '');
-  });
-
-};
+exports.leave = leaveRoom;
 
 exports.join = function (room, user, isPlayer) {
   isPlayer = isPlayer === undefined || isPlayer;
   log.verbose("room.service#Join", room, user, isPlayer);
-  return this.update(room, function (locked) {
-    if (isPlayer && locked.users.length < locked.number) {
-      if (!_.find(locked.users, {'id': user.id})) {
-        locked.users.push(user);
+
+  //Firstly check if user in room already.
+  return this.leave(room, user).then(function () {
+    return this.update(room, function (locked) {
+      if (isPlayer && locked.users.length < locked.number) {
+        if (!_.find(locked.users, {'id': user.id})) {
+          locked.users.push(user);
+        }
+      } else {
+        if (locked.obs.indexOf(user.id) == -1) {
+          locked.obs.push(user);
+        }
       }
-    } else {
-      if (locked.obs.indexOf(user.id) == -1) {
-        locked.obs.push(user);
-      }
-    }
-  });
+    });
+  }.bind(this));
 };
 
 exports.terminateCompete = function (room) {

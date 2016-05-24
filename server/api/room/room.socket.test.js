@@ -31,7 +31,7 @@ describe('api/room/room.socket', function() {
     //     done();
     //   });
     // });
-    it.only('should emit null, if room not existed', function(done) {
+    it('should emit null, if room not existed', function(done) {
       var fakeRoomId = faker.random.uuid();
       roomSocket.events.roomJoin(socket, fakeRoomId);
       setTimeout(function () {
