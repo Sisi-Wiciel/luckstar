@@ -1,24 +1,25 @@
-<div id="nav-main" ng-controller="navbarCtrl">
-  <a href="/home" class="logo">
-    <img src="libs/images/logo.gif"/>
-  </a>
+<div ng-controller="navbarCtrl" id="nav-main" >
+  <md-sidenav layout="column" ng-class="{'md-sidenav-left md-whiteframe-z2': !bigScreen}" md-component-id="menuNav"
+              md-is-locked-open="leftNavIsOpen">
+    <md-list ng-cloak>
+      <md-list-item ng-if="!bigScreen">
+        <h1>LuckyStar</h1>
+        <md-button  class="md-icon-button md-secondary"  aria-label="Return button"
+                   ng-click="toggleSidenav('menuNav')">
+          <md-icon>navigate_before</md-icon>
+        </md-button>
+      </md-list-item>
+      <md-list-item  ng-class="{'actived': isActive(item)}" ng-click="goto(item.link) ; toggleSidenav('menuNav')"
+                    ng-repeat="item in menu">
+          <md-icon>{{item.icon}}</md-icon>
+          <p><b>{{item.title}}</b></p>
 
-  <ul class="menu">
-    <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}" ng-click="goto(item)">
-          {{item.title}}
-    </li>
-  </ul>
-
-  <ul class="user-info">
-    <li>
-        <span href class="dropdown-toggle" data-toggle="dropdown" ng-if="user.username">
-            <i class="fa fa-user"></i> {{ user.username }}({{ user.point }})
-        </span>
-    </li>
-    <li>
-      <span href ng-click="logout()"><i class="fa fa-sign-out"></i> 注销</span>
-    </li>
-
-  </ul>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item  class="secondary-button-padding" ng-click="logout() ; toggleSidenav('menuNav')">
+        <md-icon>exit_to_app</md-icon>
+        <p class="md-subhead" >注销</p>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
 </div>
-

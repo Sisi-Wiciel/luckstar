@@ -72,7 +72,7 @@ exports.add = function(user) {
 };
 
 exports.setRoom = function(userid, roomid) {
-  log.debug("user.service#JoinRoom", userid, roomid);
+  log.debug("user.service#setRoom", userid, roomid);
   return db.set("users:" + userid, "room", roomid);
 };
 

@@ -2,13 +2,17 @@
 
 var app = angular.module('luckstar', ['ui.router', 'ngAnimate', 'ngMaterial', 'ngMessages']);
 
-app.config(['$urlRouterProvider', '$httpProvider', '$locationProvider', '$urlMatcherFactoryProvider', function($urlRouterProvider,
-                                                                                                               $httpProvider,
-                                                                                                               $locationProvider,
-                                                                                                               $urlMatcherFactoryProvider) {
+app.config(['$urlRouterProvider', '$httpProvider', '$locationProvider', '$urlMatcherFactoryProvider', '$mdThemingProvider', function($urlRouterProvider,
+                                                                                                                                     $httpProvider,
+                                                                                                                                     $locationProvider,
+                                                                                                                                     $urlMatcherFactoryProvider,
+                                                                                                                                     $mdThemingProvider) {
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
   $urlMatcherFactoryProvider.strictMode(false);
+  $mdThemingProvider.theme('default')
+  .primaryPalette('cyan');
+
   $httpProvider.interceptors.push('authInterceptor');
 }]);
 

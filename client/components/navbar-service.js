@@ -3,10 +3,20 @@
 module.exports = function() {
   this.menu = [{
     title: '首页',
+    icon: 'home',
     link: '/home'
   }, {
     title: '题目',
+    icon: 'receipt',
     link: '/home/topic'
+  }, {
+    title: '个人资料',
+    icon: 'account_circle',
+    link: ''
+  }, {
+    title: '设置',
+    icon: 'settings',
+    link: ''
   }];
 
   this.removeItem = function(title) {
@@ -20,5 +30,9 @@ module.exports = function() {
         link: link
       });
     }
+  };
+  
+  this.getCurrentItem = function(path) {
+    return _.find(this.menu, {'link': path});
   };
 };

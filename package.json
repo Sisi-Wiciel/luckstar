@@ -7,7 +7,7 @@
     "test": "node_modules/.bin/mocha -w --reporter spec server/**/*test.js"
   },
   "dependencies": {
-    "angular-material": "^1.0.8",
+    "angular-material": "^1.1.0-rc4",
     "angular-messages": "^1.5.5",
     "angular-route": "^1.5.5",
     "angular-sanitize": "^1.5.5",

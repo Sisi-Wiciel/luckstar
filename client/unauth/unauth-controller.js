@@ -17,6 +17,6 @@ module.exports = ['$scope', '$location', 'messageCenter', 'store', function($sco
     $scope.status = 'login';
   };
 
-  store.delete('token');
+  //store.delete('token');
 }];
 

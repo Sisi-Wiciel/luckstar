@@ -1,22 +1,16 @@
 require('./navbar.css');
 
-module.exports = ['$scope', '$location', 'authSrv', 'navbarSrv', function($scope, $location, authSrv, navbarSrv) {
+module.exports = ['$scope', 'authSrv', 'navbarSrv', '$location', function($scope, authSrv, navbarSrv, $location) {
   $scope.menu = navbarSrv.menu;
 
   $scope.user = authSrv.getCurrentUser();
-
-  $scope.isCollapsed = true;
-
+  $scope.leftNavIsOpen = $scope.bigScreen;
   $scope.logout = function() {
     authSrv.logout();
-    $location.path('/');
+    $scope.goto('/');
   };
 
-  $scope.goto = function(item) {
-    $location.path(item.link);
-  };
-
-  $scope.isActive = function(route) {
-    return route === $location.path();
+  $scope.isActive = function(item) {
+    return item.link === $location.path();
   };
 }];

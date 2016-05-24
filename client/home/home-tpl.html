@@ -1,24 +1,23 @@
-<!--<div class="container-fluid" id="home">-->
-  <!--<div class="head" ng-include="'/home/navbar/navbar.html'"></div>-->
-  <!--<div class="row ">-->
-    <!--<div class="col-md-10 content">-->
-      <!--<div ui-view></div>-->
-    <!--</div>-->
-    <!--<div class="col-md-2 hidden-xs sidebar" ng-include="'../users/list/user-list.html'">-->
-    <!--</div>-->
-  <!--</div>-->
-
-<!--</div>-->
-
-<div layout="column" id="home" layout-align="center center">
-  <md-toolbar layout="row" class="md-hue-3">
-    <div flex="40">
-      <img src="libs/images/logo.gif"/>
-    </div>
-    <div flex="60" layout layout-align="center center" >
+<div layout="column" id="home" layout-fill>
+  <md-toolbar layout="row" >
+    <div class="md-toolbar-tools">
+      <md-button hide-gt-md class="md-icon-button md-primary menuBtn" aria-label="Menu" ng-click="toggleSidenav('menuNav')">
+      </md-button>
+      <p flex>
+        <b>LuckyStar | {{currentMenu().title}}</b>
+      </p>
+      <md-button class="md-icon-button" aria-label="Show OnLine users button">
+        <md-icon>people</md-icon>
+      </md-button>
+      <md-button class="md-icon-button" aria-label="My avatar button">
+        <img class="avatar" ng-src="{{currentUser.avatar}}">
+      </md-button>
     </div>
   </md-toolbar>
-  <md-content>
-    <div ui-view></div>
+
+  <md-content class="home_body" layout="row" flex  ng-style="{position: bigScreen?'relative':'inherit'}">
+    <ng-include src="'/home/navbar/navbar.html'"></ng-include>
+    <md-content layout="column" flex ui-view>
+    </md-content>
   </md-content>
 </div>

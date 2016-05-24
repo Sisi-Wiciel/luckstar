@@ -19,12 +19,14 @@ angular.element(document).ready(function() {
     'store',
     function($rootScope, $location, $timeout, $window, store) {
       $rootScope.goto = function(path) {
-        $location.path(path);
-        $timeout(function() {
-          if ($window.location.pathname !== path) {
-            $window.location = '/';
-          }
-        }, 500);
+        if(path){
+          $location.path(path);
+          $timeout(function() {
+            if ($window.location.pathname !== path) {
+              $window.location = '/';
+            }
+          }, 500);
+        }
       };
 
       $rootScope.$on('$stateChangeSuccess',

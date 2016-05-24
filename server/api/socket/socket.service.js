@@ -67,8 +67,6 @@ function onAuthenticate(socket) {
         resolve(socket);
         callback(1); // auth successed and notify to client.
       } else {
-        log.error('Invalid token data');
-        reject('Invalid token data');
         callback(0);
       }
       //} catch (err) {
@@ -131,9 +129,6 @@ module.exports = {
   emitAll: function(event, data) {
     io.emit(event, data);
   },
-  //preCallEventAuth: function(socket) {
-  //  return preCallEventAuth(socket);
-  //},
   createIO: function(cb, namespace) {
     var self = this;
     if (namespace) {
@@ -173,7 +168,7 @@ module.exports = {
                 log.info("User reconnected immediately", user.id);
               }
             });
-          }, 1500);
+          }, 3000);
         });
       });
 
@@ -184,6 +179,5 @@ module.exports = {
     disconnect(socket, reason);
     log.info("Disconnecting socket with user", socket.uid);
   }
-
 };
 

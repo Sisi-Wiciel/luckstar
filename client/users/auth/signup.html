@@ -41,12 +41,13 @@
           </div>
         </div>
       </md-input-container>
-      <md-input-container class="md-block md-icon-float face">
+      <md-input-container class="md-block md-icon-float face md-icon-left">
         <md-icon aria-label="头像图标">face</md-icon>
 
-        <md-whiteframe ng-class="{errorFrame: regForm.$submitted && avatar.length == 0, 'md-whiteframe-2dp': !regForm.$submitted || avatar.length > 0}">
+        <md-whiteframe
+            ng-class="{errorFrame: regForm.$submitted && avatar.length == 0, 'md-whiteframe-1dp': !regForm.$submitted || avatar.length > 0}">
           <md-subheader>选择一个头像:</md-subheader>
-          <md-grid-list md-cols="4" md-row-height="80px">
+          <md-grid-list md-cols="3" md-row-height="80px">
             <md-grid-tile ng-repeat="ava in avatarArray">
               <img class="avatar" ng-class="{actived: avatar == ava}"
                    ng-click="setAvatar(ava)" ng-src="{{ava}}">
@@ -61,5 +62,6 @@
   <md-content>
     已有账户?
     <md-button ng-click="toLogin()" class="md-primary">去登录</md-button>
+
   </md-content>
 </section>
