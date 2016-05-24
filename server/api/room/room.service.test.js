@@ -153,7 +153,7 @@ describe('api/room/room.service', function () {
 
               roomService.join(room, player).then(function () {
                 roomService.list(room.id).then(function (room) {
-                  room.users.length.should.equal(2);
+                  room.users.length.should.equal(2);//Sometime test failed
                   room.obs.length.should.equal(0);
                   done();
                 });

@@ -98,7 +98,7 @@ function leaveRoom(room, user) {
     }
   }
   if (_.isEmpty(promise)) {
-    return Promise.resolve(null);
+    return null;
   }
 
   return promise.then(function () {
@@ -234,7 +234,7 @@ exports.join = function (room, user, isPlayer) {
   log.verbose("room.service#Join", room, user, isPlayer);
 
   //Firstly check if user in room already.
-  return this.leave(room, user).then(function () {
+  return Promise.resolve(this.leave(room, user)).then(function () {
     return this.update(room, function (locked) {
       if (isPlayer && locked.users.length < locked.number) {
         if (!_.find(locked.users, {'id': user.id})) {
