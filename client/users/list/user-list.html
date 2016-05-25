@@ -1,14 +1,16 @@
-<div id="user-list" ng-controller="userlistCtrl">
+<div id="user-list" ng-controller="userlistCtrl as ctrl">
   <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-1'" md-component-id="usersMenu">
-    <md-content>
-      <md-list>
-        <md-subheader class="md-no-sticky">在线用户列表</md-subheader>
-        <md-list-item ng-repeat="user in userlist" ng-if="user.id != curr.id" ng-click="goToPerson(person.name, $event)">
+      <md-list layout="column" layout-fill>
+        <md-subheader class="md-no-sticky" ng-if="!ctrl.selectedUser">在线用户列表</md-subheader>
+        <md-list-item ng-repeat="user in userlist" ng-if="user.id != curr.id && (!ctrl.selectedUser || ctrl.selectedUser == user)" ng-click="ctrl.selectedUser = user" ng-class="{selected: ctrl.selectedUser.id == user.id}">
           <img alt="{{ user.username }}" ng-src="{{ user.avatar }}" class="md-avatar" />
           <p>{{ user.username }}</p>
-          <md-icon ng-click="" aria-label="Open Chat" class="md-secondary md-hue-3 " >message</md-icon>
-          <md-icon ng-click="" aria-label="Invite User" class="md-secondary md-hue-3" >library_add</md-icon>
+          <md-icon ng-show="!ctrl.selectedUser" ng-click="ctrl.selectedUser = user" aria-label="Open Chat" class="md-secondary md-hue-3 " >message</md-icon>
+          <md-icon ng-show="!ctrl.selectedUser" ng-click="" aria-label="Invite User" class="md-secondary md-hue-3" >library_add</md-icon>
+          <md-icon ng-show="ctrl.selectedUser" ng-click="ctrl.selectedUser=null" aria-label="Navigate back" class="md-secondary md-hue-3" >navigate_before</md-icon>
         </md-list-item>
+        <user-chat messages="messages[user.id]" ng-if="ctrl.selectedUser == user"></user-chat>
+      </md-list>
   </md-sidenav>
   <!--<div class="userlist-box">-->
     <!--<div class="head box-title">-->

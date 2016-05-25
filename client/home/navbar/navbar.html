@@ -5,18 +5,18 @@
       <md-list-item ng-if="!bigScreen">
         <h1>LuckyStar</h1>
         <md-button  class="md-icon-button md-secondary"  aria-label="Return button"
-                   ng-click="toggleSidenav('menuNav')">
+                   ng-click="toggleSidenav('navMenu')">
           <md-icon>navigate_before</md-icon>
         </md-button>
       </md-list-item>
-      <md-list-item  ng-class="{'actived': isActive(item)}" ng-click="goto(item.link) ; toggleSidenav('menuNav')"
+      <md-list-item  ng-class="{'actived': isActive(item)}" ng-click="goto(item.link) ; toggleSidenav('navMenu')"
                     ng-repeat="item in menu">
           <md-icon>{{item.icon}}</md-icon>
           <p><b>{{item.title}}</b></p>
 
       </md-list-item>
       <md-divider></md-divider>
-      <md-list-item  class="secondary-button-padding" ng-click="logout() ; toggleSidenav('menuNav')">
+      <md-list-item  class="secondary-button-padding" ng-click="logout() ; toggleSidenav('navMenu')">
         <md-icon>exit_to_app</md-icon>
         <p class="md-subhead" >注销</p>
       </md-list-item>

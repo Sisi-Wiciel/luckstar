@@ -25,7 +25,7 @@ module.exports = ['$scope', 'socketSrv', 'authSrv', 'messageCenter', 'roomSrv', 
     $scope.$apply();
   });
 
-  $scope.showChatPanel = function(to) {
+  $scope.openChat = function(to) {
     $scope.toUser = to;
     if (!$scope.messages[to.id]) {
       $scope.messages[to.id] = [];
