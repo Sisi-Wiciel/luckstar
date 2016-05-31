@@ -1,22 +1,22 @@
 <div layout="column" id="home" layout-fill>
   <md-toolbar layout="row" >
     <div class="md-toolbar-tools">
-      <md-button hide-gt-md class="md-icon-button md-primary menuBtn" aria-label="Menu" ng-click="toggleSidenav('navMenu')">
+      <md-button hide-gt-md class="md-icon-button md-primary menuBtn" aria-label="Menu" ng-click="toggleSidenav(MAIN_NAV_MENU_NAME)">
       </md-button>
       <p flex>
         <b>LuckyStar | {{currentMenu().title}}</b>
       </p>
-      <md-button class="md-icon-button" aria-label="Show OnLine users button" ng-click="toggleSidenav('usersMenu')">
+      <md-button class="md-icon-button" aria-label="Show OnLine users button" ng-click="toggleSidenav(USER_LIST_MENU_NAME)">
         <md-icon>people</md-icon>
       </md-button>
       <md-button class="md-icon-button" aria-label="My avatar button">
-        <img class="avatar" ng-src="{{currentUser.avatar}}">
+        <img class="avatar"  ng-src="{{currentUser.avatar}}">
       </md-button>
     </div>
   </md-toolbar>
 
   <md-content class="home_body" layout="row" flex  ng-style="{position: bigScreen?'relative':'inherit'}">
-    <ng-include src="'/home/navbar/navbar.html'"></ng-include>
+    <ng-include src="'/home/navbar/navbar.html'" style="background: #fff"></ng-include>
     <md-content layout="column" flex ui-view>
     </md-content>
     <ng-include src="'/users/list/user-list.html'"></ng-include>

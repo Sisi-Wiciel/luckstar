@@ -17,7 +17,7 @@ var gulpSSH = new $.ssh({
     username: 'root',
     privateKey: fs.readFileSync(path.join(os.homedir(), '.ssh/id_rsa'))
   }
-})
+});
 
 gulp.task("webpack-dev-server", function(callback) {
   var config = require('./webpack.develop.config');

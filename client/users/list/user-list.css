@@ -1,0 +1,21 @@
+div#userlist-page md-list {
+  padding: 0;
+}
+div#userlist-page div.user {
+  height: 56px;
+  overflow: hidden;
+  -webkit-transition: -webkit-box-shadow 0s 0.3s, height 0.375s cubic-bezier(0.4, 0, 1, 1);
+  -moz-transition: -moz-box-shadow 0s 0.3s, height 0.375s cubic-bezier(0.4, 0, 1, 1);
+  -o-transition: box-shadow 0s 0.3s, height 0.375s cubic-bezier(0.4, 0, 1, 1);
+  transition: box-shadow 0s 0.3s, height 0.375s cubic-bezier(0.4, 0, 1, 1);
+}
+div#userlist-page div.user.selected {
+  -webkit-transition: -webkit-box-shadow 0s, height 0.375s cubic-bezier(0, 0, 0.2, 1);
+  -moz-transition: -moz-box-shadow 0s, height 0.375s cubic-bezier(0, 0, 0.2, 1);
+  -o-transition: box-shadow 0s, height 0.375s cubic-bezier(0, 0, 0.2, 1);
+  transition: box-shadow 0s, height 0.375s cubic-bezier(0, 0, 0.2, 1);
+  height: 290px;
+}
+div#userlist-page div.user.selected md-list-item {
+  background: rgba(158, 158, 158, 0.2);
+}

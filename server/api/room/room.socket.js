@@ -237,7 +237,7 @@ exports.events.roomCreate = function(socket, newroom, cb) {
 exports.events.roomInviteUser = function(socket, userid) {
   log.verbose("room.socket#roomInviteUser");
   getRoom(socket, socket.room, function(room, me) {
-    //make sure that i am a player in room
+    //make sure that user as a player in room
     if (_.find(room.users, {'id': me.id})) {
       userService.list(userid).then(function(user) {
         var userSocket = socketSrv.getSocketByUser(user);

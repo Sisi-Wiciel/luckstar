@@ -25,6 +25,16 @@ function disconnect(socket, reason) {
   });
 }
 
+function clearSocket(socket){
+  if(socket && socket.timeoutId){
+    log.info('clear time out !!!');
+    clearTimeout(socket.timeoutId);
+    socket.timeoutId = null;
+  }else{
+    console.info('socket is null');
+  }
+}
+
 function addEventsListener(socket) {
   _.each(loadSocketBundles(), function(bundle) {
     var events = bundle.events;
@@ -32,22 +42,22 @@ function addEventsListener(socket) {
 
       socket.on(_.lowerCase(funcString), function(args, _cb) {
         preCallEventAuth(socket).then(function() {
-          socket.timeoutId && clearTimeout(socket.timeoutId);
+          clearSocket(socket);
           socket.timeoutId = setTimeout(function() {
-            log.info('User inavtived', socket.uid);
+            log.info('User '+socket.uid +' inavtived', socket.timeoutId);
             disconnect(socket, 'unauthorized');
           }, setting.USER.INACTIVE_IN_SECOND);
 
-          log.debug("Function " + funcString + " called");
+          log.debug("Function " + funcString + " called with args ", args);
           events[funcString](socket, args, _cb);
         });
       });
     });
   });
-}
 
-function onAuthenticate(socket) {
-  socket.auth = false;
+  function onAuthenticate(socket) {
+    socket.auth = false;
+}
   //auth socket
   return new Promise(function(resolve, reject) {
     socket.on('authenticate', function(data, callback) {
@@ -149,15 +159,13 @@ module.exports = {
 
   init: function() {
 
-    //setInterval(function() {
-    //  console.info('connected socket numbers for now, ' + io.sockets.sockets.length);
-    //}, 5000);
     var self = this;
     this.createIO(function(socket) {
       socket.connectedAt = new Date();
 
       socket.on('disconnect', function() {
         var userid = socket.uid;
+        clearSocket(socket);
         // ignore f5
         userService.disconnect(userid).then(function() {
           setTimeout(function() {
