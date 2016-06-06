@@ -10,8 +10,8 @@ app.config(['$urlRouterProvider', '$httpProvider', '$locationProvider', '$urlMat
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
   $urlMatcherFactoryProvider.strictMode(false);
-  $mdThemingProvider.theme('default')
-  .primaryPalette('cyan');
+  //$mdThemingProvider.theme('default')
+  //.primaryPalette('cyan');
 
   $httpProvider.interceptors.push('authInterceptor');
 }]);

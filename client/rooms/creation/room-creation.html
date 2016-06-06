@@ -1,42 +1,50 @@
-<div id="room-creation" ng-controller="roomCreationCtrl">
-  <div class="page-header">
-    <h4>创建房间</h4>
-  </div>
-  <form name="popoverForm" class="form-horizontal" role="form">
-    <div class="form-group ">
-      <label class="col-md-3" for="title">标题: </label>
+<md-dialog aria-label="创建对战房间" >
 
-      <div class="col-md-9">
-        <input ng-model="newroom.title" class="form-control input-sm" id="title">
-      </div>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>创建房间</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="close()">
+        <md-icon aria-label="Close dialog">close</md-icon>
+      </md-button>
     </div>
-    <!--<div class="form-group ">-->
-    <!--<label class="col-md-3" for="title">模式: </label>-->
-    <!--<div class="col-md-9">-->
-    <!--<div class="btn-group">-->
-    <!--<button class="btn btn-default"-->
-    <!--ng-class="{'active': newroom.mode == 0}"-->
-    <!--ng-click="newroom.mode = 0">合作</button>-->
-    <!--<button type="button" ng-class="{'active': newroom.mode == 1}"-->
-    <!--class="btn btn-default"-->
-    <!--ng-click="newroom.mode = 1">竞赛</button>-->
-    <!--</div>-->
+  </md-toolbar>
+  <md-dialog-content style="max-width:800px;max-height:810px; ">
+    <md-content layout-padding>
+      <form name="roomForm" novalidate autocomplete="off">
+        <md-input-container md-no-float layout>
+          <div flex="20">
+            <span class="md-body-1">标题</span>
+          </div>
+          <input flex md-no-asterisk  name="title" ng-model="newroom.title" placeholder="房间标题" maxlength="15">
+        </md-input-container>
+        <md-slider-container>
+          <div flex="20" layout layout-align="center center">
+            <span class="md-body-1">人数</span>
+          </div>
+          <md-slider md-discrete ng-model="newroom.number" min="1" max="5" aria-label="参赛人数"></md-slider>
+          <md-input-container>
+            {{newroom.number}}人
+          </md-input-container>
+        </md-slider-container>
+        <md-input-container md-no-float layout>
+          <div flex="20">
+            <span class="md-body-1">观众</span>
+          </div>
+          <md-checkbox flex ng-model="newroom.observable"  ng-true-value="1"
+                       ng-false-value="0" aria-label="观众选项"></md-checkbox>
+        </md-input-container>
 
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="form-group ">-->
-    <!--<label class="col-md-3" for="title">人数:</label>-->
+      </form>
+    </md-content>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="save()" class="md-primary md-raised">
+      创建房间
+    </md-button>
+    <md-button ng-click="close()" style="margin-right:20px;">
+      取消
+    </md-button>
+  </md-dialog-actions>
 
-    <!--<div class="col-md-9">-->
-    <!--<select class="form-control" ng-model="newroom.number"-->
-    <!--ng-options="number.value as number.label for number in numbers">-->
-
-    <!--</select>-->
-    <!--</div>-->
-    <!--</div>-->
-    <div class="form-actions">
-      <button type="button" class="btn  btn-success " data-dismiss="modal" ng-click="create();">确认</button>
-      <button type="button" class="btn btn-default" data-dismiss="modal" >取消</button>
-    </div>
-  </form>
-</div>
+</md-dialog>

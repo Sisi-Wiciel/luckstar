@@ -46,9 +46,9 @@ var assemble = function (room) {
     }
   };
 
-  room.status = parseInt(room.status);
-  room.number = parseInt(room.number);
-  room.mode = parseInt(room.mode);
+  room.status = parseInt(room.status, 10);
+  room.number = parseInt(room.number, 10);
+  room.mode = parseInt(room.mode, 10);
 
   parseArrIds("readyUsers");
   parseArrIds("obs");
@@ -143,6 +143,7 @@ exports.update = function (room, setFun) {
 
 exports.save = function (room, userid) {
   room.create = moment().format();
+  room.observable = room.observable || 1,
   room.id = uuid.v1();
   room.admin = userid;
   room.status = 0;

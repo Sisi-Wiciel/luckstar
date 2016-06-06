@@ -1,8 +1,8 @@
 'use strict';
 require('./room.css');
 
-module.exports = ['$scope', '$rootScope', '$location', 'socketSrv', 'authSrv', 'messageCenter', 'roomSrv', 'navbarSrv',
-  '$stateParams', function($scope, $rootScope, $location, socketSrv, authSrv, messageCenter, roomSrv, navbarSrv,
+module.exports = ['$scope', '$location', 'socketSrv', 'authSrv', 'messageCenter', 'roomSrv', 'navbarSrv',
+  '$stateParams', function($scope, $location, socketSrv, authSrv, messageCenter, roomSrv, navbarSrv,
                            $stateParams) {
     $scope.text = '';
     $scope.curr = authSrv.getCurrentUser();
@@ -39,7 +39,7 @@ module.exports = ['$scope', '$rootScope', '$location', 'socketSrv', 'authSrv', '
         }
 
         navbarSrv.removeItem('我的房间');
-        $rootScope.goto('/home');
+        $scope.goto('/home');
         socketSrv.unregister('updateRoom');
         $scope.$apply();
         return;

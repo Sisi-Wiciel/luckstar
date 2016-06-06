@@ -1,68 +1,9 @@
-#nav-main{
-  .actived, .actived md-icon {
-    color: rgb(0,188,212);
+#navbar-page {
+  md-list-item {
+    &.selected {
+      md-icon, p {
+        color: rgb(255,64,129);
+      }
+    }
   }
 }
-
-//@import "lesshat";
-//
-//@header-bg-color: #fff;
-//@header-menu-hover-color: #f88d00;
-//@header-menu-hover-bg-color: #f6f6f6;
-//@header-menu-color: rgb(118, 118, 118);
-//
-//#nav-main {
-//  height: 40px;
-//  margin-bottom: 10px;
-//  background-color: @header-bg-color;
-//  color: @header-menu-color;
-//
-//  .display(flex);
-//  //.box-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
-//  //.border-radius(5px);
-//  a.logo {
-//    display: block;
-//    font-size: 24px;
-//    color: @header-menu-hover-color;
-//    text-shadow: 0 4px 4px lighten(#f88d00, 10%);
-//    font-weight: bold;
-//    letter-spacing: 4px;
-//    padding: 5px 10px;
-//  }
-//  ul {
-//    .display(inline-flex);
-//    margin-bottom: 0;
-//    list-style: none;
-//    li {
-//      border-bottom: 3px solid @header-bg-color;
-//      cursor: pointer;
-//      padding: 10px;
-//    }
-//
-//    &.menu {
-//      font-size: 16px;
-//      .flex(1);
-//      li {
-//        text-align: center;
-//        &:hover, &.active {
-//          border-bottom-color: @header-menu-hover-color;
-//          .transition(.25s linear);
-//          background-color: @header-menu-hover-bg-color;
-//        }
-//      }
-//    }
-//
-//    &.user-info {
-//      li {
-//        text-align: center;
-//        &:hover, &.active {
-//          .transition(.5s linear);
-//          color: @header-menu-hover-color;
-//        }
-//      }
-//    }
-//  }
-//
-//}
-//
-//

@@ -7,4 +7,5 @@ module.exports = angular.module('luckstar.utils', [])
 .directive('loadingText', require('./loadingText'))
 .directive('textLimit', require('./textLimit'))
 .directive('fromNow', require('./fromNow'))
+.directive('expandList', require('./expand'))
 .directive('comfirm', require('./message/comfirm')).name;

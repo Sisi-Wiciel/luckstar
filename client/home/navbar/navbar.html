@@ -1,22 +1,26 @@
-<div ng-controller="navbarCtrl" id="nav-main" >
-  <md-sidenav layout="column" ng-class="{'md-sidenav-left md-whiteframe-z2': !bigScreen}" md-component-id="navMenu"
+<div ng-controller="navbarCtrl" id="navbar-page" ng-cloak>
+  <md-sidenav layout="column" ng-class="{'md-sidenav-left md-whiteframe-z2': !bigScreen}" md-component-id="MainNavMenu"
               md-is-locked-open="leftNavIsOpen">
-    <md-list ng-cloak>
-      <md-list-item ng-if="!bigScreen">
-        <h1>LuckyStar</h1>
-        <md-button  class="md-icon-button md-secondary"  aria-label="Return button"
-                   ng-click="toggleSidenav('navMenu')">
+
+    <md-toolbar ng-if="!bigScreen">
+      <div class="md-toolbar-tools">
+        <md-button ng-click="toggleSidenav(MAIN_NAV_MENU_NAME)" aria-label="返回按钮" class="md-icon-button">
           <md-icon>navigate_before</md-icon>
         </md-button>
-      </md-list-item>
-      <md-list-item  ng-class="{'actived': isActive(item)}" ng-click="goto(item.link) ; toggleSidenav('navMenu')"
-                    ng-repeat="item in menu">
-          <md-icon>{{item.icon}}</md-icon>
-          <p><b>{{item.title}}</b></p>
+        <h2>
+          LuckyStar
+        </h2>
+      </div>
+    </md-toolbar>
 
+    <md-list ng-cloak>
+      <md-list-item  ng-click="goto(item.link) ; toggleSidenav(MAIN_NAV_MENU_NAME)"
+                    ng-repeat="item in menu" ng-class="{'selected': isActive(item)}">
+          <md-icon>{{item.icon}}</md-icon>
+          <p class="md-subhead">{{item.title}}</p>
       </md-list-item>
       <md-divider></md-divider>
-      <md-list-item  class="secondary-button-padding" ng-click="logout() ; toggleSidenav('navMenu')">
+      <md-list-item  class="secondary-button-padding" ng-click="logout() ; toggleSidenav(MAIN_NAV_MENU_NAME)">
         <md-icon>exit_to_app</md-icon>
         <p class="md-subhead" >注销</p>
       </md-list-item>

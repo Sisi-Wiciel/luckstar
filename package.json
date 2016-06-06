@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "REDIS_PASSWORD=redisPass node server/app",
-    "test": "./node_modules/.bin/istanbul test ./node_modules/.bin/_mocha -- -R spec server/**/*test.js"
+    "start": "REDIS_PASSWORD=redisPass /usr/local/bin/node server/app",
+    "test": "./node_modules/.bin/istanbul test ./node_modules/.bin/_mocha -- server/**/*test.js -R spec ",
+    "rsync": "rsync --exclude=node_modules --exclude=dist --exclude=.git * /Users/kangta123/Google云端硬盘/luckstar/ -rv"
   },
   "dependencies": {
     "angular": "^1.5.5",
@@ -46,6 +47,7 @@
     "rsvp": "^3.0.21",
     "serve-favicon": "~2.2.1",
     "socket.io": "^1.4.5",
+    "socket.io-client": "^1.4.6",
     "supervisor": "^0.10.0",
     "then-redis": "^1.3.0",
     "winston": "^2.2.0",

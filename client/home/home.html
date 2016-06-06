@@ -1,65 +1,89 @@
-<div class="room-main" ng-controller="roomListCtrl">
-  <md-content flex layout-padding>
-    <div layout="column" layout-fill layout-align="top center">
-      <div class="room-list">
-        <div class="empty-room" ng-if="rooms.length == 0">
-          <h1 >目前没有任何房间.</h1>
-          <md-button class="md-primary">Click me</md-button>
-          <md-button class="md-primary md-hue-1">Click me</md-button>
-          <md-button class="md-primary md-hue-2">Click me</md-button>
-          <md-button class="md-accent">or maybe me</md-button>
-          <md-button class="md-warn">Careful</md-button>
-        </div>
-        <div class="body" ng-if="rooms.length > 0">
-          <div class="room-list-item" ng-repeat="room in rooms | filter:q as results">
+<section id="roomlist-page" ng-controller="roomListCtrl" layout="row" flex layout-fill
+         ng-controller="roomListCtrl">
+  <md-button class="md-fab md-fab-bottom-right" aria-label="创建房间" ng-click="createRoom($event)" id="createRoomBtn">
+    <md-icon>add</md-icon>
+  </md-button>
 
-            <div class="title">
-              <span><i class="fa fa-home"></i>{{room.title}}</span>
-              <span ng-show="room.status == 1" class="text-success">正在进行</span>
-              <span ng-show="room.status == 0" class="text-danger">空闲中</span>
-              <small class="text-muted " from-now="{{room.create}}"></small>
-            </div>
-            <div class="main">
-              <div class="users">
-
-                <div class="user" ng-repeat="user in room.users track by $index"
-                     ng-class='{admin:user.id === room.admin.id}'>
-                  <div ng-if="user">
-                    <i class="fa fa-star" ng-if="user.id === room.admin.id"></i>{{user.username}}
-                    <span class="badge">{{user.point}}</span>
-
-                    <img ng-src="{{user.avatar}}"/>
-                  </div>
-                  <div ng-if="!user">
-                    空位
-                  </div>
-                </div>
-              </div>
-              <div class="toolbar">
-                <a ng-click="join(room.id)" ng-show="room.status == 0 && !room.full" class="btn btn-success">
-                  参赛
-                </a>
-                <!--<a ng-click="joinAsOb(room.id)" class="btn btn-info">-->
-                <!--观看-->
-                <!--</a>-->
-              </div>
-
-            </div>
-
-
-          </div>
-        </div>
-
-
-      </div>
-    </div>
+  <md-content class="empty-room" ng-if="rooms.length == 0">
+    <h1>目前没有任何房间.</h1>
   </md-content>
-</div>
 
-<!--<div class="modal room-creation-modal" tabindex="-1" role="dialog">-->
-<!--<div class="modal-dialog modal-sm">-->
-<!--<div class="modal-content" ng-include="'/rooms/creation/room-creation.html'">-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
+  <!--<md-content class="roomlist" ng-if="rooms.length > 0" layout-fill layout="column" layout-padding>-->
+    <!--<div class="roomlist-item" ng-repeat="room in rooms" layout="row">-->
+      <!--<img ng-src="{{room.admin.avatar}}" class="avatar" alt="{{room.title}}"/>-->
+      <!--<div class="room-info" flex>-->
+        <!--<h3 class="room-title">-->
+          <!--{{ room.title }}-->
+        <!--</h3>-->
+        <!--<p class="room-status">-->
+          <!--<span ng-show="room.status == 1" md-colors="{color: 'md-primary'}">正在进行</span>-->
+          <!--<span ng-show="room.status == 0" md-colors="{color: 'background'}">空闲中</span>-->
+        <!--</p>-->
+      <!--</div>-->
+      <!--<div class="room-additional">-->
+        <!--<md-icon class="md-secondary" ng-click="doSecondaryAction($event)" aria-label="Chat">-->
+          <!--visibility-->
+        <!--</md-icon>-->
+      <!--</div>-->
+    <!--</div>-->
+
+
+    <md-list layout-fill  layout-padding>
+      <md-list-item class="md-2-line" ng-repeat="room in rooms">
+        <img ng-src="{{room.admin.avatar}}" class="md-avatar" alt="{{room.title}}"/>
+        <div class="md-list-item-text">
+          <h3>{{ room.title }}</h3>
+          <p>
+            <span ng-show="room.status == 1" class="text-success">正在进行</span>
+            <span ng-show="room.status == 0" class="text-danger">空闲中</span>
+          </p>
+        </div>
+        <md-icon class="md-secondary" ng-click="join(room.id)" aria-label="Chat">
+          playlist_add
+        </md-icon>
+        <md-icon class="md-secondary" ng-click="joinAsObs(room.id)" aria-label="Chat">
+          visibility
+        </md-icon>
+      </md-list-item>
+    </md-list>
+
+    <!--<div class="room-list-item" ng-repeat="room in rooms | filter:q as results">-->
+
+    <!--<div class="title">-->
+    <!--<span><i class="fa fa-home"></i>{{room.title}}</span>-->
+    <!--<span ng-show="room.status == 1" class="text-success">正在进行</span>-->
+    <!--<span ng-show="room.status == 0" class="text-danger">空闲中</span>-->
+    <!--<small class="text-muted " from-now="{{room.create}}"></small>-->
+    <!--</div>-->
+    <!--<div class="main">-->
+    <!--<div class="users">-->
+
+    <!--<div class="user" ng-repeat="user in room.users track by $index"-->
+    <!--ng-class='{admin:user.id === room.admin.id}'>-->
+    <!--<div ng-if="user">-->
+    <!--<i class="fa fa-star" ng-if="user.id === room.admin.id"></i>{{user.username}}-->
+    <!--<span class="badge">{{user.point}}</span>-->
+    <!--<img ng-src="{{user.avatar}}"/>-->
+    <!--</div>-->
+    <!--<div ng-if="!user">-->
+    <!--空位-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="toolbar">-->
+    <!--<a ng-click="join(room.id)" ng-show="room.status == 0 && !room.full" class="btn btn-success">-->
+    <!--参赛-->
+    <!--</a>-->
+    <!---->
+    <!--</div>-->
+
+    <!--</div>-->
+
+
+    <!--</div>-->
+
+
+  </md-content>
+
+</section>
 

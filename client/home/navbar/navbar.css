@@ -1,4 +1,4 @@
-#nav-main .actived,
-#nav-main .actived md-icon {
-  color: #00bcd4;
+#navbar-page md-list-item.selected md-icon,
+#navbar-page md-list-item.selected p {
+  color: #ff4081;
 }

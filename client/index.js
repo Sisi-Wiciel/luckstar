@@ -17,9 +17,14 @@ angular.element(document).ready(function() {
     '$timeout',
     '$window',
     'store',
-    function($rootScope, $location, $timeout, $window, store) {
+    '$mdSidenav',
+    '$mdMedia',
+    'authSrv',
+    function($rootScope, $location, $timeout, $window, store, $mdSidenav, $mdMedia, authSrv) {
+      $rootScope.currentUser = authSrv.getCurrentUser();
+
       $rootScope.goto = function(path) {
-        if(path){
+        if (path) {
           $location.path(path);
           $timeout(function() {
             if ($window.location.pathname !== path) {
@@ -27,6 +32,22 @@ angular.element(document).ready(function() {
             }
           }, 500);
         }
+      };
+
+      $rootScope.$watch(function() {
+        return $mdMedia('gt-md');
+      }, function(big) {
+        $rootScope.bigScreen = big;
+      });
+
+      $rootScope.toggleSidenav = function(componentId) {
+        $mdSidenav(componentId).toggle();
+      };
+      $rootScope.openSidenav = function(componentId) {
+        return $mdSidenav(componentId).open()
+      };
+      $rootScope.isOpenSidenav = function(componentId) {
+        return $mdSidenav(componentId).isOpen();
       };
 
       $rootScope.$on('$stateChangeSuccess',
