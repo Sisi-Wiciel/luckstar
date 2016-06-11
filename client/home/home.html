@@ -1,12 +1,10 @@
-<section id="roomlist-page" ng-controller="roomListCtrl" layout="row" flex layout-fill
+<section id="roomlist-page" ng-controller="roomListCtrl" layout="column" flex layout-fill layout-align="center center"
          ng-controller="roomListCtrl">
   <md-button class="md-fab md-fab-bottom-right" aria-label="创建房间" ng-click="createRoom($event)" id="createRoomBtn">
     <md-icon>add</md-icon>
   </md-button>
 
-  <md-content class="empty-room" ng-if="rooms.length == 0">
-    <h1>目前没有任何房间.</h1>
-  </md-content>
+    <h1 class="empty-room" ng-if="rooms.length == 0">目前没有任何房间.</h1>
 
   <!--<md-content class="roomlist" ng-if="rooms.length > 0" layout-fill layout="column" layout-padding>-->
     <!--<div class="roomlist-item" ng-repeat="room in rooms" layout="row">-->
@@ -44,7 +42,9 @@
         <md-icon class="md-secondary" ng-click="joinAsObs(room.id)" aria-label="Chat">
           visibility
         </md-icon>
+        <md-divider md-inset ng-if="!$last"></md-divider>
       </md-list-item>
+
     </md-list>
 
     <!--<div class="room-list-item" ng-repeat="room in rooms | filter:q as results">-->

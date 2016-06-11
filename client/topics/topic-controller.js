@@ -6,4 +6,6 @@ module.exports = ['$scope', 'socketSrv', function($scope, socketSrv) {
   socketSrv.getTopicSize().then(function(size) {
     $scope.topicTotalSize = size;
   });
+
+  $scope.currentNavItem = 'commit';
 }];

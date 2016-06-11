@@ -1,0 +1,35 @@
+<md-dialog aria-label="提交题目" id="topiccommit-status-page">
+
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>提交题目</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="close()">
+        <md-icon aria-label="关闭窗口">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content layout-padding>
+    <ol>
+      <li ng-repeat="step in steps" layout="row" md-color="{'border-color': 'background'}">
+        <span class="title">{{step.title}}</span>
+
+        <span class="status" ng-if="!step.result.hasOwnProperty('index')" flex>
+          <span ng-if="step.result.status == 0">处理中...</span>
+          <span class="success" ng-if="step.result.status == 1"><i class="fa fa-check"></i> 成功</span>
+          <span class="failed" ng-if="step.result.status == 2">失败</span>
+        </span>
+
+        <span class="status" ng-if="step.result.hasOwnProperty('index')" flex>
+          <md-progress-linear md-mode="determinate" value="{{(step.result.index+1)*10}}"></md-progress-linear>
+           {{(step.result.index+1)*10}}%
+        </span>
+
+      </li>
+    </ol>
+    <md-content class="footer" ng-show="isAllFinished()" layout layout-align="center center">
+      <md-button class="md-raised md-primary" ng-click="close()">关闭</md-button>
+    </md-content>
+
+  </md-dialog-content>
+</md-dialog>

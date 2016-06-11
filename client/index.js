@@ -23,17 +23,6 @@ angular.element(document).ready(function() {
     function($rootScope, $location, $timeout, $window, store, $mdSidenav, $mdMedia, authSrv) {
       $rootScope.currentUser = authSrv.getCurrentUser();
 
-      $rootScope.goto = function(path) {
-        if (path) {
-          $location.path(path);
-          $timeout(function() {
-            if ($window.location.pathname !== path) {
-              $window.location = '/';
-            }
-          }, 500);
-        }
-      };
-
       $rootScope.$watch(function() {
         return $mdMedia('gt-md');
       }, function(big) {
@@ -50,13 +39,27 @@ angular.element(document).ready(function() {
         return $mdSidenav(componentId).isOpen();
       };
 
-      $rootScope.$on('$stateChangeSuccess',
-      function(event, toState) {
+      $rootScope.goto = goto;
+
+      $rootScope.$on('$stateChangeSuccess', function(event, toState) {
         if (_.startsWith(toState.url, '/home')) {
           if (!store.exists('token')) {
-            $rootScope.goto('/');
+            console.info('no token and exist')
+            goto('/');
           }
         }
       });
+
+
+      function goto(path) {
+        if (path) {
+          $location.path(path);
+          $timeout(function() {
+            if ($window.location.pathname !== path) {
+              $window.location = '/';
+            }
+          }, 500);
+        }
+      }
     }]);
 });

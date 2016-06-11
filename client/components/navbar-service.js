@@ -8,7 +8,7 @@ module.exports = function() {
   }, {
     title: '题目',
     icon: 'receipt',
-    link: '/home/topic'
+    link: '/home/topic/commit'
   }, {
     title: '个人资料',
     icon: 'account_circle',
@@ -33,6 +33,18 @@ module.exports = function() {
   };
   
   this.getCurrentItem = function(path) {
-    return _.find(this.menu, {'link': path});
+    var current;
+    if(current = _.find(this.menu, {'link': path})){
+      return current;
+    }else{
+      _.each(this.menu, function(item) {
+        if(item.link && _.startsWith(path, item.link)){
+          current = item;
+          return true;
+        }
+      })
+    }
+
+    return current;
   };
 };

@@ -1,7 +1,16 @@
 <div id="topic_home_page">
-  <div class="page-header">
-    <h3>添加题目<span><small>共({{topicTotalSize}})道题</small></span></h3>
-  </div>
-  <div ng-include="'/topics/commit/topic-commit.html'"></div>
+
+  <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="题目导航">
+    <!--<md-nav-item md-nav-click="goto('page1')" name="page1">Page One</md-nav-item>-->
+    <!--<md-nav-item md-nav-click="goto('page2')" name="page2">Page Two</md-nav-item>-->
+    <!--<md-nav-item md-nav-click="goto('page3')" name="page3">Page Three</md-nav-item>-->
+    <!--<md-nav-item md-nav-href="/home/topic/commit" name="commit" >Page 1</md-nav-item>-->
+    <md-nav-item md-nav-sref="home.topic.commit" name="commit">添加题目</md-nav-item>
+  </md-nav-bar>
+  <md-content layout-padding ui-view></md-content>
+  <!--<md-content class="md-title" layout-padding>添加题目-->
+    <!--<span class="md-subhead">共({{topicTotalSize}})道题</span>-->
+  <!--</md-content>-->
+
 </div>
 

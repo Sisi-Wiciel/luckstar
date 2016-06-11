@@ -2,10 +2,11 @@
 
 require('./topic-commit.css');
 
-module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv', 'fileSrv', function($scope, $timeout, socketSrv, messageCenter, authSrv, fileSrv) {
+module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv', 'fileSrv', '$mdDialog', function($scope, $timeout,
+                                                                                                     socketSrv,
+                                                                                                     messageCenter,
+                                                                                                     authSrv, fileSrv, $mdDialog) {
   var curr = authSrv.getCurrentUser();
-
-  $scope.showStatus = false;
 
   $scope.points = [
     {value: '2', label: '2分'},
@@ -18,11 +19,14 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv',
       messageCenter.error('至少要有2个选项');
       return;
     }
+
     _.remove($scope.topic.options, opt);
 
     _.each($scope.topic.options, function(opt, index) {
       opt.title = String.fromCharCode(index + 65);
     });
+
+    $scope.topic.corrector = [];
   };
   $scope.addOpt = function() {
     if ($scope.topic.options.length >= 5) {
@@ -42,103 +46,53 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv',
   };
 
   $scope.initForm = function() {
-    $scope.showStatus = false;
 
-    $scope.imageEnabled = false;
+      //Fix F5 issue
+      if (_.isEmpty(curr)) {
+        $timeout($scope.initForm, 100);
+        return;
+      }
 
-    fileSrv.setFile(null);
+      $scope.imageEnabled = false;
+      fileSrv.setFile(null);
 
-    $scope.topic = {
-      options: [
-        {title: 'A', value: ''},
-        {title: 'B', value: ''}
-      ],
-      creator: curr.id,
-      creatorUsername: curr.username,
-      corrector: '',
-      answercount: 1,
-      point: $scope.points[0].value
-    };
+      $scope.topic = {
+        options: [
+          {title: 'A', value: ''},
+          {title: 'B', value: ''}
+        ],
+        creator: curr.id,
+        creatorUsername: curr.username,
+        corrector: [0],
+        answercount: 1,
+        point: $scope.points[0].value
+      };
+
+
   };
 
-  $scope.submit = function() {
-    var t = _.clone($scope.topic);
+  $scope.submit = function(event) {
+    var topic = $scope.topic;
 
-    $scope.steps = [
-      {
-        title: '上传题目',
-        result: {
-          status: 0
-        }
-      }
-    ];
-
-    if ($scope.imageEnabled && fileSrv.getFile()) {
-      $scope.steps.push({
-        title: '上传图片'
-      });
-    }
-
-    var setStepResult = (function(steps) {
-      var _index = 0;
-      return function(result) {
-        if (!result || steps.length === _index) {
-          return;
-        }
-        steps[_index].result = result;
-
-        if (!result.hasOwnProperty('index')) {
-          _index++;
-          if (steps.length > _index) {
-            steps[_index].result = {
-              status: 0
-            };
-          }
-        }
-      };
-    })($scope.steps);
-
-    // $timeout(function() {
-    //  setStepResult({
-    //    status: 1
-    //  });
-    //
-    //  (function fake(index) {
-    //    $timeout(function() {
-    //      setStepResult({
-    //        status: 1,
-    //        index: index
-    //      });
-    //
-    //      if (index < 9) {
-    //        fake(++index);
-    //      } else {
-    //        setStepResult({
-    //          status: 1
-    //        });
-    //      }
-    //    }, 300);
-    //  })(0);
-    // }, 1000);
-    if (!t.title) {
+    if (!topic.title) {
       messageCenter.error('请填写题目');
       return;
     }
-    if (t.title.length > 80) {
+    if (topic.title.length > 80) {
       messageCenter.error('题目字数不要超过80个字符');
       return;
     }
 
-    t.options = _.map(t.options, function(opt) {
+    topic.options = _.map(topic.options, function(opt) {
       return opt.value;
     });
 
-    if (_.compact(t.options).length < 2) {
+    if (_.compact(topic.options).length < 2) {
       messageCenter.error('请填写至少2个选项');
       return;
     }
 
-    if (_.isEmpty(t.corrector)) {
+    if (_.isEmpty(topic.corrector)) {
       messageCenter.error('请选择题目的正确答案');
       return;
     }
@@ -148,44 +102,25 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv',
       return;
     }
 
-    $scope.showStatus = true;
-
     $timeout(function() {
-      socketSrv.saveTopic(t).then(function(result) {
-        if (result.id) {
-          setStepResult({status: 1});
-          if ($scope.imageEnabled && fileSrv.getFile()) {
-            $timeout(function() {
-              fileSrv.upload({id: result.id}, function(result) {
-                setStepResult(result);
-              });
-            }, 1000);
-          }
-        } else {
-          setStepResult({status: 2});
-        }
-      });
+      var dialogScope = $scope.$new();
+      dialogScope.topic = topic;
+      $mdDialog.show({
+        controller: 'topicCommitStatusCtrl',
+        template: require('./preview/topic-commit-status.html'),
+        scope: dialogScope,
+        parent: angular.element(document.body),
+        targetEvent: event,
+        clickOutsideToClose:true,
+        fullscreen: !$scope.bigScreen
+      }).finally($scope.initForm);
     }, 1000);
   };
-  $scope.isAllFinished = function() {
-    if (_.isEmpty($scope.steps)) {
-      return false;
-    }
-    var finishedSteps = _.filter($scope.steps, function(step) {
-      if (step && step.result) {
-        if (step.result.hasOwnProperty('index')) {
-          return false;
-        }
-        return step.result.status > 0;
-      }
-      return false;
-    });
 
-    return finishedSteps.length === $scope.steps.length;
-  };
 
   $scope.addImage = function() {
-    if (!$scope.imageEnabled) {
+    $scope.topic.image = !!!$scope.topic.image;
+    if (!$scope.topic.image) {
       fileSrv.setFile(null);
     }
   };

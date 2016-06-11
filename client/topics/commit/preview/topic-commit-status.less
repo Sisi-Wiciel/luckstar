@@ -1,0 +1,36 @@
+@import (reference) "common";
+
+#topiccommit-status-page {
+
+  md-dialog-content{
+    min-height: 384px;
+    min-width: 300px;
+    ol {
+      margin-left: 10px;
+      li {
+        margin: 10px 0;
+        font-size: 1.6em;
+        border-bottom: 1px solid;
+        span{
+          text-align: right;
+          padding: 5px 10px;
+          .success {
+            color: green;
+          }
+          .failed {
+            color: #f88d00;
+          }
+        }
+      }
+    }
+
+    md-content.footer{
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+    }
+  }
+
+}
+

@@ -1,6 +1,6 @@
 module.exports = function() {
   return {
-    template: require('./topic-panelwrapper-directive.html'),
+    template: require('./topic-panelwrapper.html'),
     transclude: true,
     controller: ['$scope', 'socketSrv', 'roomSrv', '$timeout', function($scope, socketSrv, roomSrv, $timeout) {
       var preCoordinate = [0, 0];

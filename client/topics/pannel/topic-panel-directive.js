@@ -88,6 +88,7 @@ module.exports = ['$timeout', function($timeout) {
         return !_topic.hasOwnProperty('corrector') && !_.isEmpty($scope.checkedOpt) &&
         _topic.answercount && _topic.answercount - $scope.checkedOpt.length > 0;
       };
+      
     }]
   };
 }];

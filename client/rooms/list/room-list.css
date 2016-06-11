@@ -1,3 +1,9 @@
+#roomlist-page {
+  overflow-x: hidden;
+}
+#roomlist-page h1.empty-room {
+  margin-top: 150px;
+}
 #roomlist-page .roomlist div.roomlist-item img.avatar {
   width: 40px;
   height: 40px;
