@@ -2,19 +2,34 @@
 
 require('./home.css');
 
-module.exports = ['$scope', 'socketSrv', 'authSrv', 'messageCenter', '$location', 'navbarSrv', function($scope,
-                                                                                                        socketSrv,
-                                                                                                        authSrv,
-                                                                                                        messageCenter,
-                                                                                                        $location,
-                                                                                                        navbarSrv) {
+module.exports = ['$scope', 'socketSrv', 'authSrv', 'messageCenter', '$location', '$mdSidenav', '$mdMedia', 'navbarSrv', function($scope,
+                                                                                                                                  socketSrv,
+                                                                                                                                  authSrv,
+                                                                                                                                  messageCenter,
+                                                                                                                                  $location,
+                                                                                                                                  $mdSidenav,
+                                                                                                                                  $mdMedia,
+                                                                                                                                  navbarSrv) {
   $scope.USER_LIST_MENU_NAME = 'UsersMenu';
   $scope.MAIN_NAV_MENU_NAME = 'MainNavMenu';
-
+  $scope.currentUser = authSrv.getCurrentUser();
   $scope.currentMenu = function() {
     return navbarSrv.getCurrentItem($location.path());
   };
-
+  $scope.toggleSidenav = function(componentId) {
+    $mdSidenav(componentId).toggle();
+  };
+  $scope.openSidenav = function(componentId) {
+    return $mdSidenav(componentId).open()
+  };
+  $scope.isOpenSidenav = function(componentId) {
+    return $mdSidenav(componentId).isOpen();
+  };
+  $scope.$watch(function() {
+    return $mdMedia('gt-md');
+  }, function(big) {
+    $scope.bigScreen= big;
+  });
   socketSrv.changeUserStatus('HOME_PAGE');
 
   socketSrv.register('inviteUser', function(result) {

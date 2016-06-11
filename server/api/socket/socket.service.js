@@ -48,16 +48,16 @@ function addEventsListener(socket) {
             disconnect(socket, 'unauthorized');
           }, setting.USER.INACTIVE_IN_SECOND);
 
-          log.debug("Function " + funcString + " called");
+          log.debug("Function " + funcString + " called with args ", args);
           events[funcString](socket, args, _cb);
         });
       });
     });
   });
-}
 
-function onAuthenticate(socket) {
-  socket.auth = false;
+  function onAuthenticate(socket) {
+    socket.auth = false;
+}
   //auth socket
   return new Promise(function(resolve, reject) {
     socket.on('authenticate', function(data, callback) {
