@@ -1,77 +1,71 @@
-<md-content id="test_page" layout="row" flex layout-align="center" layout-fill ng-controller="roomListCtrl">
-  <div flex class="content" ui-view>
-    <md-button class="md-primary">Click me</md-button>
-    <md-button class="md-primary md-hue-1">Click me</md-button>
-    <md-button class="md-primary md-hue-2">Click me</md-button>
-    <md-button class="md-primary md-hue-3">Click me</md-button>
-    <md-button class="md-primary md-hue-4">Click me</md-button>
-    <md-button class="md-accent">Click me</md-button>
-  </div>
-</md-content>
+<section id="roomlist-page" ng-controller="roomListCtrl" layout="column" layout-fill
+         ng-controller="roomListCtrl">
+  <md-button class="md-fab md-fab-bottom-right" aria-label="创建房间" ng-click="createRoom($event)" id="createRoomBtn">
+    <md-icon>add</md-icon>
+  </md-button>
+  <!--<div layout layout-align="end" ng-if="screen('gt-xs')">-->
+    <!--<md-button class="md-icon-button"-->
+               <!--ng-click="changeMode('list')"-->
+               <!--ng-class="{'md-accent': roomListMode == 'list'}" aria-label="列表模式">-->
+      <!--<md-icon>view_headline</md-icon>-->
+    <!--</md-button>-->
+    <!--<md-button class="md-icon-button"-->
+               <!--ng-click="changeMode('card')"-->
+               <!--ng-class="{'md-accent': roomListMode == 'card'}" aria-label="卡片模式">-->
+      <!--<md-icon>view_module</md-icon>-->
+    <!--</md-button>-->
+  <!--</div>-->
 
-<!--<div class="room-main" ng-controller="roomListCtrl">-->
-  <!--<md-content flex layout-padding>-->
-    <!--<div layout="column" layout-fill layout-align="top center">-->
-      <!--<div class="room-list">-->
-        <!--<div class="empty-room" ng-if="rooms.length == 0">-->
-          <!--<h1 >目前没有任何房间.</h1>-->
-          <!--<md-button class="md-primary">Click me</md-button>-->
-          <!--<md-button class="md-primary md-hue-1">Click me</md-button>-->
-          <!--<md-button class="md-primary md-hue-2">Click me</md-button>-->
-          <!--<md-button class="md-accent">or maybe me</md-button>-->
-          <!--<md-button class="md-warn">Careful</md-button>-->
+  <h1 class="empty-room" ng-if="rooms.length == 0">目前没有任何房间.</h1>
+  <!-- layout-gt-md="row" layout-align="center center"-->
 
-        <!--</div>-->
-        <!--<div class="body" ng-if="rooms.length > 0">-->
-          <!--<div class="room-list-item" ng-repeat="room in rooms | filter:q as results">-->
+  <md-content class="roomlist" layout="row" layout-wrap  layout-align="space-around start"
+              ng-if="rooms.length > 0">
+    <div ng-repeat="room in rooms"  flex="100" flex-sm="80" flex-md="80" flex-gt-md="45" class="room md-whiteframe-1dp">
+      <!--ng-if="roomListMode == 'list'"-->
+      <div class="roomtitle" layout >
+        <img ng-src="{{room.admin.avatar}}" class="avatar md-avatar" alt="{{room.title}}"/>
+        <div flex layout layout-align="center center">
+          <b class="md-subhead">{{room.title}}</b>
+          <md-icon>play_arrow</md-icon>
+          <span class="md-caption" >
+            <small ng-if="room.status == 1">正在进行</small>
+            <small ng-if="room.status == 0">空闲中</small>
+          </span>
+          <span flex></span>
+          <small from-now="{{room.create}}" class="time md-caption"></small>
+        </div>
+      </div>
+      <div class="roomtopics" ng-if="expandTopic">
+        <topic-panel topic="room.topic" typeable="false" checkable="false" themeable="false" ng-if="room.status == 1 && room.topic"></topic-panel>
+        <h1 ng-if="room.status != 1 || !room.topic">
+          答题尚未开始
+        </h1>
+      </div>
 
-            <!--<div class="title">-->
-              <!--<span><i class="fa fa-home"></i>{{room.title}}</span>-->
-              <!--<span ng-show="room.status == 1" class="text-success">正在进行</span>-->
-              <!--<span ng-show="room.status == 0" class="text-danger">空闲中</span>-->
-              <!--<small class="text-muted " from-now="{{room.create}}"></small>-->
-            <!--</div>-->
-            <!--<div class="main">-->
-              <!--<div class="users">-->
+      <div class="roomactions" layout layout-align="space-between center">
+        <span class="status">
+          <md-icon>people</md-icon>
+          {{room.users.length}}
+          <md-icon>visibility</md-icon>
+          {{room.obs.length}}
+        </span>
+        <span>
+          <md-button class="md-icon-button" aria-label="看题目按钮" ng-click="expandTopic = !expandTopic">
+            <md-icon>launch</md-icon>
+          </md-button>
 
-                <!--<div class="user" ng-repeat="user in room.users track by $index"-->
-                     <!--ng-class='{admin:user.id === room.admin.id}'>-->
-                  <!--<div ng-if="user">-->
-                    <!--<i class="fa fa-star" ng-if="user.id === room.admin.id"></i>{{user.username}}-->
-                    <!--<span class="badge">{{user.point}}</span>-->
+          <md-button class="md-icon-button" aria-label="观看比赛按钮" ng-click="join(room.id)">
+            <md-icon>remove_red_eye</md-icon>
+          </md-button>
+          <md-button class="md-icon-button md-primary" aria-label="加入比赛按钮" ng-click="join(room.id)">
+            <md-icon>group_add</md-icon>
+          </md-button>
+        </span>
+      </div>
+    </div>
 
-                    <!--<img ng-src="{{user.avatar}}"/>-->
-                  <!--</div>-->
-                  <!--<div ng-if="!user">-->
-                    <!--空位-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<div class="toolbar">-->
-                <!--<a ng-click="join(room.id)" ng-show="room.status == 0 && !room.full" class="btn btn-success">-->
-                  <!--参赛-->
-                <!--</a>-->
-                <!--&lt;!&ndash;<a ng-click="joinAsOb(room.id)" class="btn btn-info">&ndash;&gt;-->
-                <!--&lt;!&ndash;观看&ndash;&gt;-->
-                <!--&lt;!&ndash;</a>&ndash;&gt;-->
-              <!--</div>-->
+  </md-content>
 
-            <!--</div>-->
-
-
-          <!--</div>-->
-        <!--</div>-->
-
-
-      <!--</div>-->
-    <!--</div>-->
-  <!--</md-content>-->
-<!--</div>-->
-
-<!--<div class="modal room-creation-modal" tabindex="-1" role="dialog">-->
-<!--<div class="modal-dialog modal-sm">-->
-<!--<div class="modal-content" ng-include="'/rooms/creation/room-creation.html'">-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
+</section>
 

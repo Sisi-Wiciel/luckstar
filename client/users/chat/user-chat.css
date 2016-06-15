@@ -18,6 +18,7 @@ section#userchat-page md-input-container {
   background: rgba(158, 158, 158, 0.2);
   height: 30px;
   margin: 0;
+  border-top: 1px solid rgba(158, 158, 158, 0.2);
 }
 section#userchat-page md-input-container md-icon {
   left: 6px;

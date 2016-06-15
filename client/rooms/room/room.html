@@ -1,22 +1,34 @@
-<div id="room_home_page" ng-if="room.id">
-  <div class="room-head">
-    <span class="title ">
-      {{::room.title}}
-    </span>
-    <span class="text-danger" ng-bind="getRoleName()"></span>
-    <a href ng-click="leave(room.id)" comfirm="是否要退出房间, 管理员退出房间将会被关闭.">
-      <span class="text-muted pull-right"><i class="fa fa-power-off"></i></span>
-    </a>
-  </div>
-  <div class="room-body">
-    <div class="room-body-users">
-      <div ng-include="'rooms/room/users/room-users.html'"></div>
-      <div ng-include="'rooms/room/tools/room-tools.html'"></div>
-    </div>
-    <div class="room-body-complete" ng-include="'rooms/room/compete/room-compete.html'"></div>
-  </div>
+<section id="room-page" ng-if="room.id">
+  <md-toolbar class="md-title md-hue-1 room-head" layout layout-align="center center" layout-padding >
+    <img class="avatar" ng-src="{{room.admin.avatar}}"/>
+    <b flex>{{room.title}}</b>
+    <!--<span hide-xs class="role" flex ng-bind="getRoleName()"></span>-->
 
-  <div class="room-foot">
-    <room-message style="width: 100%"></room-message>
-  </div>
-</div>
+    <md-button ng-click="leave(room.id)"
+               comfirm="是否要退出房间, 管理员退出房间将会被关闭."
+               aria-label="关闭房间按钮"
+               class="md-icon-button">
+      关闭
+    </md-button>
+  </md-toolbar>
+  <!--<div class="room-head">-->
+    <!--<span class="title ">-->
+      <!--{{::room.title}}-->
+    <!--</span>-->
+    <!--<span class="text-danger" ng-bind="getRoleName()"></span>-->
+    <!--<a href ng-click="leave(room.id)" comfirm="是否要退出房间, 管理员退出房间将会被关闭.">-->
+      <!--<span class="text-muted pull-right"><i class="fa fa-power-off"></i></span>-->
+    <!--</a>-->
+  <!--</div>-->
+  <!--<div class="room-body">-->
+    <!--<div class="room-body-users">-->
+      <!--<div ng-include="'rooms/room/users/room-users.html'"></div>-->
+      <!--<div ng-include="'rooms/room/tools/room-tools.html'"></div>-->
+    <!--</div>-->
+    <!--<div class="room-body-complete" ng-include="'rooms/room/compete/room-compete.html'"></div>-->
+  <!--</div>-->
+
+  <!--<div class="room-foot">-->
+    <!--<room-message style="width: 100%"></room-message>-->
+  <!--</div>-->
+</section>

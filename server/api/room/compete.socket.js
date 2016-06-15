@@ -50,13 +50,13 @@ var nodifyVerdict = function(socket, room, verdictObj) {
 
 };
 
-var topicTimeoutChecker = function(socket, topicId) {
+function topicTimeoutChecker(socket, topicId) {
   log.verbose("compete.socket#TopicTimeoutChecker", topicId);
 
   setTimeout(function() {
     if (socket.room) {
       roomService.list(socket.room).then(function(room) {
-        if (room && room.status == 1 && topicId === room.topic) {
+        if (room && room.status == 1 && topicId === room.topicid) {
           nodifyVerdict(socket, room, {
             verdict: -1
           });
@@ -64,11 +64,11 @@ var topicTimeoutChecker = function(socket, topicId) {
       });
     }
   }, settings.ROOM.COMPETE_TOPIC_COUNTDOWN * 1000);
-};
+}
 
 function nextTopic(socket) {
   log.verbose("compete.socket#NextTopic");
-  var self = this;
+
   roomService.list(socket.room).then(function(room) {
     if (room) {
       topicService.get().then(function(topic) {
@@ -83,13 +83,11 @@ function nextTopic(socket) {
 
       });
     }
-
   });
-};
+}
 
 function checkTopic(socket, answer) {
   log.verbose("compete.socket#CheckTopic");
-  var self = this;
 
   Promise.props({
     'user': userService.list(socket.uid),
@@ -99,7 +97,7 @@ function checkTopic(socket, answer) {
     var room = results.room;
 
     if (_.find(room.users, {"id": socket.uid})) {
-      topicService.isCorrect(room.topic, answer).then(function(verdictObj) {
+      topicService.isCorrect(room.topicid, answer).then(function(verdictObj) {
         verdictObj.user = user;
         verdictObj.opt = answer;
         nodifyVerdict(socket, room, verdictObj);
@@ -109,22 +107,23 @@ function checkTopic(socket, answer) {
     }
 
   });
-};
+}
+
+function getRoomCurrentTopic(socket) {
+  roomService.list(socket.room).then(function(room) {
+    if (room && room.topicid) {
+      topicService.get(room.topicid).then(function(topic) {
+        socket.emit('topicUpdate', topic);
+      });
+    } else {
+      log.debug("no current topic in this competition");
+    }
+  });
+}
 
 exports.events = {
   completeCheckTopic: checkTopic,
-  completeGetTopic: function(socket) {
-    roomService.list(socket.room).then(function(room) {
-      if (room && room.topic) {
-        topicService.get(room.topic).then(function(topic) {
-          socket.emit('topicUpdate', topic);
-        });
-      } else {
-        log.debug("no current topic in this competition");
-      }
-
-    });
-  }
+  completeGetTopic: getRoomCurrentTopic
 };
 
 exports.checkTopic = checkTopic;

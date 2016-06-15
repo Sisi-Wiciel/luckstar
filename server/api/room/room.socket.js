@@ -1,12 +1,10 @@
 var roomService = require('./room.service');
 var userService = require('../user/user.service');
-var topicService = require('../topic/topic.service');
 
 var competeSocket = require('./compete.socket');
 var log = require('../../log');
 var _ = require('lodash');
 var moment = require('moment');
-var Promise = require('bluebird');
 var setting = require('../../config/setting');
 var socketSrv;
 
@@ -38,7 +36,7 @@ function updateRooms(socket) {
     }
     socket.io.emit("updateRooms", rooms);
   });
-};
+}
 
 function sendRoomMessage(socket, message, isSystem) {
   log.verbose("room.socket#sendRoomMessage", socket.room);
@@ -48,7 +46,7 @@ function sendRoomMessage(socket, message, isSystem) {
     system: isSystem,
     time: moment().format()
   });
-};
+}
 
 function roomLeave(socket) {
   log.verbose("room.socket#roomLeave", socket.room);
@@ -80,7 +78,7 @@ function roomLeave(socket) {
     });
   });
 
-};
+}
 
 exports.events.roomUpdate = updateRooms;
 
@@ -127,7 +125,7 @@ exports.events.roomStartCompete = function(socket) {
       return;
     }
     if (room.readyUsers.length == room.users.length) {
-      roomService.createCompeteState(room).then(function(roomStat) {
+      roomService.createCompeteState(room).then(function() {
         (function startCountDown(number) {
           setTimeout(function() {
             if (number > 0) {
@@ -193,7 +191,7 @@ exports.events.roomReadyCompete = function(socket) {
 exports.events.roomTerminateCompete = function(socket) {
   log.verbose("room.socket#RoomTerminateCompete");
 
-  getRoom(socket, socket.room, function(room, user) {
+  getRoom(socket, socket.room, function(room) {
     roomService.terminateCompete(room).then(function() {
       sendRoomMessage(socket, '管理员已终止答题', true);
     }).then(function() {

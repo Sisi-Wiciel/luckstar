@@ -1,0 +1,40 @@
+section#roomlist-page h1.empty-room {
+  text-align: center;
+}
+section#roomlist-page .roomlist {
+  padding-top: 24px;
+  height: 100%;
+}
+section#roomlist-page .roomlist img.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+section#roomlist-page .roomlist div.room {
+  margin-bottom: 18px;
+}
+section#roomlist-page .roomlist div.room div.roomtitle {
+  margin: 16px;
+}
+section#roomlist-page .roomlist div.room div.roomtitle md-icon {
+  font-size: 1.4em;
+  line-height: 1.6em;
+  text-align: center;
+}
+section#roomlist-page .roomlist div.room div.roomtopics {
+  border-bottom: 1px solid rgba(158, 158, 158, 0.2);
+  border-top: 1px solid rgba(158, 158, 158, 0.2);
+}
+section#roomlist-page .roomlist div.room div.roomtopics h1 {
+  text-align: center;
+}
+section#roomlist-page .roomlist div.room div.roomactions {
+  margin: 0 16px 16px;
+}
+section#roomlist-page .roomlist div.room div.roomactions .status md-icon {
+  margin: 0 8px;
+}
+section#roomlist-page .roomlist div.room div.roomactions md-button {
+  margin: 0;
+}

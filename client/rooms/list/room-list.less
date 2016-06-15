@@ -1,5 +1,52 @@
 @import (reference) "common";
 
+section#roomlist-page {
+  //overflow-x: hidden;
+  h1.empty-room {
+    text-align: center;
+  }
+  .roomlist {
+    padding-top: 24px;
+    height: 100%;
+    img.avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    div.room{
+      margin-bottom: 18px;
+      div.roomtitle{
+        margin: 16px;
+
+        md-icon{
+          font-size: 1.4em;
+          line-height: 1.6em;
+          text-align: center;
+        }
+      }
+      div.roomtopics{
+        border-bottom: 1px solid @borderColor;
+        border-top: 1px solid @borderColor;
+        h1{
+          text-align: center;
+        }
+      }
+      div.roomactions{
+        margin: 0 16px 16px;
+        .status{
+          md-icon{
+            margin: 0 8px;
+          }
+        }
+        md-button{
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
 //@room-tool-color: #f88d00;
 //.room-main {
 //  height: 100%;

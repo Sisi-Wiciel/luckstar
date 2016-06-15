@@ -48,18 +48,18 @@ function addEventsListener(socket) {
             disconnect(socket, 'unauthorized');
           }, setting.USER.INACTIVE_IN_SECOND);
 
-          log.debug("Function " + funcString + " called with args ", args);
+          log.debug("Function " + funcString + " called");
           events[funcString](socket, args, _cb);
         });
       });
     });
   });
-
-  function onAuthenticate(socket) {
-    socket.auth = false;
 }
+
+function onAuthenticate(socket) {
+  socket.auth = false;
   //auth socket
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     socket.on('authenticate', function(data, callback) {
       //try {
       if (data && data.token) {
@@ -87,7 +87,7 @@ function addEventsListener(socket) {
 
 
   });
-};
+}
 
 function preCallEventAuth(socket) {
   return new Promise(function(resolve, reject) {
@@ -140,7 +140,6 @@ module.exports = {
     io.emit(event, data);
   },
   createIO: function(cb, namespace) {
-    var self = this;
     if (namespace) {
       io = io.of(namespace);
     }
@@ -159,7 +158,6 @@ module.exports = {
 
   init: function() {
 
-    var self = this;
     this.createIO(function(socket) {
       socket.connectedAt = new Date();
 
@@ -176,7 +174,7 @@ module.exports = {
                 log.info("User reconnected immediately", user.id);
               }
             });
-          }, 3000);
+          }, 5000);
         });
       });
 

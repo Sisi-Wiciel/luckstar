@@ -1,24 +1,24 @@
-<div layout="column" id="home" layout-fill>
-  <md-toolbar layout="row" >
+<div layout="column" id="home-page" layout-fill>
+  <md-toolbar layout="row" class="md-whiteframe-1dp">
     <div class="md-toolbar-tools">
-      <md-button hide-gt-md class="md-icon-button md-primary menuBtn" aria-label="Menu" ng-click="toggleSidenav(MAIN_NAV_MENU_NAME)">
+      <md-button hide-gt-sm class="md-icon-button md-primary menuBtn" aria-label="Menu" ng-click="toggleSidenav(MAIN_NAV_MENU_NAME)">
       </md-button>
       <p flex>
-        <b>LuckyStar | {{currentMenu().title}}</b>
+        <a href ng-click="goto('/home')"><b hide-xs><md-icon>stars</md-icon> LuckyStar | </b></a>
+        <span class="md-subhead">{{currentMenu().title}}</span>
       </p>
-      <md-button class="md-icon-button" aria-label="Show OnLine users button" ng-click="toggleSidenav(USER_LIST_MENU_NAME)">
+      <md-button class="md-icon-button" aria-label="用户在线列表" ng-click="toggleSidenav(USER_LIST_MENU_NAME)">
         <md-icon>people</md-icon>
       </md-button>
-      <md-button class="md-icon-button" aria-label="My avatar button">
-        <img class="avatar"  ng-src="{{currentUser.avatar}}">
+      <md-button class="md-icon-button" aria-label="我的头像">
+        <img class="avatar" ng-src="{{currentUser.avatar}}">
       </md-button>
     </div>
   </md-toolbar>
 
-  <md-content class="home_body" layout="row" flex  ng-style="{position: bigScreen?'relative':'inherit'}">
-    <ng-include src="'/home/navbar/navbar.html'" style="background: #fff"></ng-include>
-    <md-content layout="column" flex ui-view>
-    </md-content>
+  <md-content class="home_body" layout="row"   ng-style="{position: screen('gt-md')?'relative':'inherit'}">
+    <ng-include src="'/home/navbar/navbar.html'"></ng-include>
+    <div layout="column"  ui-view style="height: 100%;width: 100%"></div>
     <ng-include src="'/users/list/user-list.html'"></ng-include>
   </md-content>
 </div>

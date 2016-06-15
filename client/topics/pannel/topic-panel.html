@@ -1,54 +1,52 @@
-<div id="topic-panel">
+<section id="topic-panel">
 
-  <section ng-class="verdictCls">
+  <md-content layout-padding layout="column" ng-class="{'default-theme': themeable == 'true', verdictCls}">
     <div class="panel-cover" ng-if="verdict && verdictCls"></div>
-
     <div class="head" ng-if="topic">
-      <b><span typing>{{topic.title}}</span></b><span class="text-success">({{topic.point}}分){{topic.answercount > 1?'(多选题)': ''}}</span>
+      <b><span typing="{{typeable}}">{{topic.title}}</span></b><span class="text-success">({{topic.point}}分){{topic.answercount > 1?'(多选题)': ''}}</span>
     </div>
 
-    <div class="body" ng-if="topic">
+    <div class="body" ng-if="topic" layout="column" layout-align="start stretch" flex>
 
       <div class="countdown progress">
         <div class="progress-bar progress-bar-danger">
         </div>
       </div>
+      <div class="image-container" ng-if="topic.image">
+        <!--<div class="image-container" ng-if="topic.image">-->
+        <img ng-src="{{uploadPath + topic.image}}" ng-if="_.isString(topic.image)"/>
+        <section ng-if="topic.image === true">
+          <b>点击</b>此处 或 将图片<b>拖入</b>
+        </section>
+        <!--<img ng-src="{{uploadPath + topic.image}}"/>-->
+      </div>
       <div class="options">
-        <ul class="list-unstyled ">
+        <ul>
           <li ng-repeat="opt in topic.options ">
-            <!-- for competetion-->
-            <div ng-if="!topic.hasOwnProperty('corrector')">
-              <a href ng-click="actived =! actived;check($index)"
-                 ng-style="{background: setOptBgColorByUser($index)}"
-                 ng-class="{actived: actived || (verdict  && verdict.opt.indexOf($index) > -1)}"
-                 typing duration="1000" delay="{{1000 * $index+1000}}">
-                {{$index+1}}. {{opt}}
-              </a>
-            </div>
+            <md-icon style="color:green;"
+                     ng-if="topic.corrector && topic.corrector.indexOf($index) > -1">done
+            </md-icon>
 
-            <!-- for preview -->
-            <div ng-if="topic.hasOwnProperty('corrector')">
-              <i class="fa fa-check" ng-if="topic.corrector.indexOf($index.toString()) > -1"></i>
-              <a href ng-click="actived=!actived" ng-class="{actived: actived}">
-                {{$index+1}}. {{opt.value}}
-              </a>
-            </div>
+            <a href ng-click="check($index)"
+               ng-style="{background: setOptBgColorByUser($index)}"
+               ng-class="{actived: actived || (verdict  && verdict.opt.indexOf($index) > -1)}"
+               typing="{{typeable}}" duration="1000" delay="{{1000 * $index+1000}}">
+              {{$index+1}}. {{opt.hasOwnProperty('value')?opt.value: opt}}
+            </a>
           </li>
         </ul>
-        <div class="image-container" ng-if="topic.image">
-          <img ng-src="{{uploadPath + topic.image}}"/>
-        </div>
+
         <div class="tip" ng-show="showTip()">
           <i class="fa fa-lightbulb-o"></i>请再选择<b>{{topic.answercount - checkedOpt.length}}</b>个.
         </div>
       </div>
 
     </div>
-    <div class="foot text-right" ng-if="topic.creator">
+    <div class="foot" ng-if="topic.creator">
       <small>本题目由用户</small>
       <b class="text-success" ng-bind="topic.creatorUsername"></b>
       <small>提供</small>
     </div>
-  </section>
+  </md-content>
 
-</div>
+</section>

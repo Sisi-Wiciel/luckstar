@@ -1,6 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-var _ = require('lodash');
 var uuid = require('node-uuid');
 
 var topicService = require('../topic/topic.service');
@@ -26,7 +25,7 @@ exports.events.topicSave = function(socket, newtopic, cb) {
 
 exports.events.topicBug = function(socket) {
   roomService.list(socket.room).then(function(room){
-    topicService.topicBug(socket.uid, room.topic);
+    topicService.topicBug(socket.uid, room.topicid);
   });
 };
 
@@ -77,10 +76,16 @@ exports.events.topicMouseTrack= function(socket, pixel) {
     });
   }
 };
+
 exports.events.topicTotalSize = function(socket, cb) {
   topicService.getTotalSize().then(cb);
 };
 
+exports.events.topicFetch = function(socket, id, cb) {
+  topicService.get(id).then(function(topic) {
+    cb(topic);
+  });
+};
 
 exports.deregister = function(socket) {
 };

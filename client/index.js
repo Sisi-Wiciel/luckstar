@@ -17,9 +17,38 @@ angular.element(document).ready(function() {
     '$timeout',
     '$window',
     'store',
-    function($rootScope, $location, $timeout, $window, store) {
-      $rootScope.goto = function(path) {
-        if(path){
+    '$mdSidenav',
+    '$mdMedia',
+    'authSrv',
+    'socketSrv',
+    function($rootScope, $location, $timeout, $window, store, $mdSidenav, $mdMedia, authSrv, socketSrv) {
+      $rootScope.currentUser = authSrv.getCurrentUser();
+
+      $rootScope.toggleSidenav = function(componentId) {
+        $mdSidenav(componentId).toggle();
+      };
+      $rootScope.openSidenav = function(componentId) {
+        return $mdSidenav(componentId).open()
+      };
+      $rootScope.isOpenSidenav = function(componentId) {
+        return $mdSidenav(componentId).isOpen();
+      };
+      $rootScope.changeUserStatus = socketSrv.changeUserStatus.bind(socketSrv);
+      $rootScope.goto = goto;
+
+      $rootScope.screen = $mdMedia;
+      $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+        if (_.startsWith(toState.url, '/home')) {
+          if (!store.exists('token')) {
+            console.info('no token and exist')
+            goto('/');
+          }
+        }
+      });
+
+
+      function goto(path) {
+        if (path) {
           $location.path(path);
           $timeout(function() {
             if ($window.location.pathname !== path) {
@@ -27,15 +56,6 @@ angular.element(document).ready(function() {
             }
           }, 500);
         }
-      };
-
-      $rootScope.$on('$stateChangeSuccess',
-      function(event, toState) {
-        if (_.startsWith(toState.url, '/home')) {
-          if (!store.exists('token')) {
-            $rootScope.goto('/');
-          }
-        }
-      });
+      }
     }]);
 });

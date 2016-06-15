@@ -142,6 +142,9 @@ module.exports = ['store', '$q', '$location', function(store, $q, $location) {
     topicCheckOpt: function(opt) {
       this.emit('complete check topic', opt);
     },
+    topicFetch: function(id) {
+      return this.getResult('topic fetch', id);
+    },
     getTopic: function() {
       this.emit('complete get topic');
     },

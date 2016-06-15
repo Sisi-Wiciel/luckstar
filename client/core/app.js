@@ -7,7 +7,7 @@ app.config(['$urlRouterProvider', '$httpProvider', '$locationProvider', '$urlMat
                                                                                                                                      $locationProvider,
                                                                                                                                      $urlMatcherFactoryProvider,
                                                                                                                                      $mdThemingProvider) {
-  $urlRouterProvider.otherwise('/');
+  // $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
   $urlMatcherFactoryProvider.strictMode(false);
   //$mdThemingProvider.theme('default')

@@ -7,9 +7,16 @@ module.exports = ['$timeout', function($timeout) {
   return {
     template: require('./topic-panel.html'),
     scope: {
-      topic: '='
+      topic: '=',
+      typeable: '@',
+      checkable: '@',
+      themeable: '@'
     },
-    link: function(scope, elem) {
+    link: function(scope, elem, attr) {
+      scope.typeable = 'true';
+      scope.checkable = 'true';
+      scope.themeable = 'true';
+
       scope.countdownPause = function() {
         $timeout(function() {
           $(elem).find('.progress-bar').addClass('paused');
@@ -69,6 +76,9 @@ module.exports = ['$timeout', function($timeout) {
       });
 
       $scope.check = function(opt) {
+        if(!$scope.checkable){
+          return false;
+        }
         if (!$scope.verdict) {
           if ($scope.checkedOpt.indexOf(opt) > -1) {
             $scope.checkedOpt = _.without($scope.checkedOpt, opt);
@@ -81,6 +91,7 @@ module.exports = ['$timeout', function($timeout) {
             socketSrv.topicCheckOpt($scope.checkedOpt.join(''));
           }
         }
+        return true;
       };
 
       $scope.showTip = function() {
@@ -88,6 +99,7 @@ module.exports = ['$timeout', function($timeout) {
         return !_topic.hasOwnProperty('corrector') && !_.isEmpty($scope.checkedOpt) &&
         _topic.answercount && _topic.answercount - $scope.checkedOpt.length > 0;
       };
+      
     }]
   };
 }];

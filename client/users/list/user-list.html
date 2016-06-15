@@ -1,7 +1,7 @@
-<div id="userlist-page" ng-controller="userlistCtrl as ctrl">
+<md-sidenav layout="column" class="md-sidenav-right md-whiteframe-1'" md-component-id="UsersMenu">
+  <div id="userlist-page" ng-controller="userlistCtrl as ctrl">
 
-  <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-1'" md-component-id="UsersMenu">
-    <md-toolbar ng-if="!bigScreen">
+    <md-toolbar class="md-hue-1">
       <div class="md-toolbar-tools">
         <md-button ng-click="toggleSidenav(USER_LIST_MENU_NAME)" aria-label="返回按钮" class="md-icon-button">
           <md-icon>navigate_before</md-icon>
@@ -12,24 +12,28 @@
       </div>
     </md-toolbar>
 
-    <md-list class="md-primary">
+    <md-list class="md-primary md-dense">
       <div class="user" ng-repeat="user in userlist"
            ng-if="user.id && user.id != curr.id"
            ng-class="{'selected md-whiteframe-1dp': user.id === toUser.id}">
-        <md-list-item ng-click="toggleChat(user)">
+
+        <md-list-item ng-click="toggleChat(user)" class="md-2-line" aria-label="用户{{user.username}}">
           <img ng-src="{{ user.avatar }}" class="md-avatar" alt="{{ user.username }}"/>
           <div class="md-list-item-text">
-            <p>
+            <h3>
               {{ user.username }}
+            </h3>
+            <p>
+              {{user.status}}
             </p>
           </div>
           <md-menu class="md-secondary">
             <md-button aria-label="更多操作" class="md-icon-button" ng-click="$mdOpenMenu()">
-              <md-icon >more_horiz</md-icon>
+              <md-icon>more_horiz</md-icon>
             </md-button>
             <md-menu-content width="4">
               <md-menu-item>
-                <md-button ng-click="$mdMenu.hide()" aria-label="关闭菜单" >
+                <md-button ng-click="$mdMenu.hide()" aria-label="关闭菜单">
                   <md-icon class="md-warn">block</md-icon>
                   <p>关闭菜单</p>
                 </md-button>
@@ -44,15 +48,17 @@
 
               <md-menu-item>
                 <md-button ng-click="inviteUser(user)" aria-label="邀请对战">
-                  <md-icon class="md-accent">queue</md-icon>
+                  <md-icon class="md-accent">group_add</md-icon>
                   <p>邀请对战</p>
                 </md-button>
               </md-menu-item>
             </md-menu-content>
           </md-menu>
         </md-list-item>
-        <user-chat user="user"></user-chat>
+        <user-chat user="user" ng-if="toUser.id === user.id"></user-chat>
+        <md-divider ng-if="!toUser"></md-divider>
       </div>
-
     </md-list>
-</div>
+
+  </div>
+</md-sidenav>
