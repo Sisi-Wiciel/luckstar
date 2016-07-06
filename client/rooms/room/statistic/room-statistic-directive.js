@@ -5,41 +5,16 @@ require('./room-statistic.css');
 module.exports = ['$timeout', function($timeout) {
   return {
     scope: {
-      room: '=',
-      roomstat: '='
+      room: '='
     },
     template: require('./room-statistic.html'),
-    controller: ['$scope', 'roomSrv', function($scope, roomSrv) {
+    controller: ['$scope', 'roomSrv', 'socketSrv',function($scope, roomSrv, socketSrv) {
       $scope.statTable = false;
-      roomSrv.onEndCompetition($scope.setScorebarWidth);
-
-      $scope.switchStatTable = function() {
-        $scope.statTable = !$scope.statTable;
-        $scope.statTable || $scope.setScorebarWidth();
-      };
-
+      $scope.roomstat = {};
       $scope.userColors = roomSrv.getUserColor();
-      // Fix F5 issue.
-      $timeout(function() {
-        $scope.setScorebarWidth();
-      }, 500);
+      socketSrv.getRoomStat().then(function(result) {
+        $scope.roomstat = result;
+      });
     }],
-    link: function(scope, elem) {
-      var $elem = $(elem);
-      scope.setScorebarWidth = function() {
-        $timeout(function() {
-          var _stat = scope.roomstat;
-          if (_stat) {
-            $elem.find('.statistic .progress>.progress-bar').each(function(index) {
-              $(this).width(_stat.users[index].point / _stat.maxNum * 10 + '%');
-            });
-
-            $timeout(function() {
-              $elem.find('.statistic .progress>.progress-bar').removeClass('active');
-            }, 2000);
-          }
-        });
-      };
-    }
   };
 }];

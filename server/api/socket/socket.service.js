@@ -135,7 +135,6 @@ module.exports = {
     return io.sockets.connected[user.sid];
   },
   emitInAll: function(id, event, data) {
-    console.info('emit in all')
     log.debug('EmitInAll', id, event);
     io.sockets.in(id).emit(event, data);
   },

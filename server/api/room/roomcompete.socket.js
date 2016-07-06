@@ -60,19 +60,15 @@ function topicTimeoutChecker(socket, topicId) {
       sendVerdict.call(self, socket, room, {
         verdict: -1
       });
-    })
+    });
   }, topicCountdown * 1000);
 
   function checkTopicStatus() {
-    return new Promise(function(resolve, reject) {
-      if (_.isEmpty(socket.room)) {
-        reject();
-      } else {
+    return new Promise(function(resolve) {
+      if (!_.isEmpty(socket.room)) {
         roomService.list(socket.room).then(function(room) {
           if (room && room.status == 1 && topicId === room.topicid) {
             resolve(room);
-          } else {
-            reject();
           }
         });
       }

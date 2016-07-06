@@ -4,9 +4,8 @@
   <div class="compete-countdown" ng-if="room.status === 1 && countdown > 0">
     <h1 class="md-display-3">{{countdown}}</h1>
   </div>
-  <!--<div class="compete-record" ng-if="room.status === 0" flex="100" flex-sm="80" flex-gt-sm="60">-->
-  <room-statistic class="compete-record" ng-if="room.status === 0"
-                  room="room" roomstat="roomstat"  flex="100"
+  <room-statistic class="roomstat" ng-if="room.status === 0"
+                  room="room"  flex="100"
                   flex-sm="80" flex-gt-sm="60"></room-statistic>
   <!--</div>-->
 </section>

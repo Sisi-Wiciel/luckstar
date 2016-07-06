@@ -113,7 +113,6 @@ module.exports = ['socketSrv', 'authSrv', function(socketSrv, authSrv) {
     if (_.isString(message)) {
       messages.push({
         content: message,
-        roleText: '[系统信息]',
         role: 'system'
       });
     } else {
@@ -124,7 +123,6 @@ module.exports = ['socketSrv', 'authSrv', function(socketSrv, authSrv) {
         message.role = 'observer';
         message.roleText = '[观众]';
       } else {
-        message.roleText = '[系统信息]',
         message.role = 'system'
       }
 

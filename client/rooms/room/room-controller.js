@@ -15,12 +15,12 @@ module.exports = ['$scope', '$location', 'socketSrv', 'authSrv', 'messageCenter'
     $scope.getRoleName = roomSrv.getRoleName;
 
     $scope.roomstat = {};
-
-    $scope.updateRoomstat = function() {
-      socketSrv.getRoomStat().then(function(result) {
-        _.assign($scope.roomstat, result);
-      });
-    };
+    //
+    // $scope.updateRoomstat = function() {
+    //   socketSrv.getRoomStat().then(function(result) {
+    //     _.assign($scope.roomstat, result);
+    //   });
+    // };
 
     $scope.leave = function() {
       socketSrv.leaveRoom();

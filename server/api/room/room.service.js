@@ -271,7 +271,7 @@ function finishCompete(room) {
         return self.update(room, function(locked) {
           locked.status = 0;
           locked.readyUsers = [locked.admin.id];
-          locked.topic = '';
+          locked.topicid = '';
         });
       })
 

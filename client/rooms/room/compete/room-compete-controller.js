@@ -11,7 +11,6 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'authSrv', 'roomSrv', funct
   });
 
   socketSrv.register('topicUpdate', function(topic) {
-    console.info(topic)
     $scope.topic = null;
     $timeout(function() {
       $scope.topic = topic;
@@ -26,6 +25,6 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'authSrv', 'roomSrv', funct
     $scope.$apply();
   });
   // Fix F5 issue
-  $scope.updateRoomstat();
+  // $scope.updateRoomstat();
   socketSrv.getCompeteTopic();
 }];
