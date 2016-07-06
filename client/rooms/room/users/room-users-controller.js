@@ -13,7 +13,7 @@ module.exports = ['$scope', '$q', 'messageCenter', 'authSrv', 'socketSrv', 'room
     UNREADY: '#f88d00',
     READY: '#73e252'
   };
-  $scope.userPointerColors = roomSrv.getUserMousePointerColor();
+  $scope.userColors = roomSrv.getUserColor();
 
   $scope.start = function() {
     // $q.reject() 用户reload btn loading文字

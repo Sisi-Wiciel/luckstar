@@ -5,6 +5,7 @@ var _ = require('lodash');
 var Promise = require('bluebird');
 var faker = require('faker');
 
+
 describe('api/redis/redis.service', function () {
     var key, obj;
     function randomObj() {
@@ -14,16 +15,14 @@ describe('api/redis/redis.service', function () {
             number: '0'
         };
     }
-    beforeEach(function (done) {
-        key = faker.lorem.word();
-        obj = randomObj();
-        done();
-    });
-    after(function (done) {
-        done();
-        // return utils.clean();
-    });
+
     describe('#saveOrUpdateObj', function () {
+        beforeEach(function (done) {
+            key = faker.lorem.word();
+            obj = randomObj();
+            done();
+        });
+
         it('should store obj to redis db', function (done) {
             redisService.saveOrUpdateObj(key, obj).then(function (retObj) {
                 retObj.should.deep.equal(obj);

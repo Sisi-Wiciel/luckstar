@@ -1,4 +1,7 @@
 module.exports = {
+  LOG:{
+    LEVEL: 'error',//{ error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 }
+  },
   SOCKET: {
     PORT: 8889,
     AUTH_TIME_OUT: 1 * 1000,
@@ -7,7 +10,11 @@ module.exports = {
   },
   ROOM: {
     COMPETE_MAX_TOPICS: 20,
-    COMPETE_TOPIC_COUNTDOWN: 20
+    COMPETE_COUNTDOWN_INTERVAL: 1, //1s
+    COMPETE_COUNTDOWN_TIMES: 3,
+    COMPETE_TOPIC_COUNTDOWN: 20,
+    COMPETE_TOPIC_COUNTDOWN_SYNC: [20, 10, 5, 3, 0], // sync topic countdown times
+    TOPICI_INTERVAL_TIME: 2//the interval time between topics
   },
   USER: {
     STATUS: {

@@ -58,7 +58,7 @@ module.exports = {
         var fromUser = result[0];
         var toUser = result[1];
 
-        var toSocket = socket.io.sockets.connected[toUser.sid];
+        var toSocket = socketService.getSocketByUser(toUser);
 
         if (toSocket) {
           toSocket.emit('updateMessage', {

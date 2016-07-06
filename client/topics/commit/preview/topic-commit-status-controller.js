@@ -1,15 +1,11 @@
 'use strict';
 
 require('./topic-commit-status.css');
-module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv', 'fileSrv', '$mdMedia', '$mdDialog', function($scope,
-                                                                                                                              $timeout,
-                                                                                                                              socketSrv,
-                                                                                                                              messageCenter,
-                                                                                                                              authSrv,
-                                                                                                                              fileSrv,
-                                                                                                                              $mdMedia,
-                                                                                                                              $mdDialog) {
-  console.info($scope);
+module.exports = ['$scope', '$timeout', 'socketSrv', 'fileSrv', '$mdDialog', function($scope,
+                                                                                      $timeout,
+                                                                                      socketSrv,
+                                                                                      fileSrv,
+                                                                                      $mdDialog) {
   $scope.steps = [
     {
       title: '上传题目',
@@ -43,7 +39,6 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv',
       }
     };
   })($scope.steps);
-  console.info($scope.topic)
   socketSrv.saveTopic($scope.topic).then(function(result) {
     if (result.id) {
       setStepResult({status: 1});

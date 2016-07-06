@@ -26,10 +26,10 @@ module.exports = ['$scope', '$location', 'socketSrv', 'authSrv', 'messageCenter'
       socketSrv.leaveRoom();
     };
 
-    $scope.$on('topicVerdict', function(event, verdict) {
-      $scope.verdict = verdict;
-      $scope.updateRoomstat();
-    });
+    // $scope.$on('topicVerdict', function(event, verdict) {
+    //   $scope.verdict = verdict;
+    //   $scope.updateRoomstat();
+    // });
 
     socketSrv.register('updateRoom', function(room) {
       roomSrv.updateCurrentRoom(room);
@@ -45,10 +45,10 @@ module.exports = ['$scope', '$location', 'socketSrv', 'authSrv', 'messageCenter'
         return;
       }
 
-      $scope.updateRoomstat();
+      // $scope.updateRoomstat();
       $scope.$apply();
     });
 
     roomSrv.joinRoom($stateParams.id);
-    navbarSrv.addItem('我的房间', $location.path());
+    navbarSrv.addItem('我的房间', $location.path(), 'portrait');
   }];

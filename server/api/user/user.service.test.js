@@ -7,21 +7,10 @@ var _ = require('lodash');
 
 var faker = require('faker');
 
-
 describe('api/user/user.service', function() {
-  var users = [];
-  before(function() {
-    return utils.newUsers(5).then(function(dbusers) {
-      users = dbusers;
-      return dbusers;
-    });
-  });
-
-  after(function() {
-    return utils.clean();
-  });
 
   describe('#isUniqueName', function() {
+
     it('should return true when username is unique', function() {
       return userService.isUniqueName(faker.internet.userName()).then(function(isUnique) {
         isUnique.should.to.be.true;
@@ -30,11 +19,11 @@ describe('api/user/user.service', function() {
     });
 
     it('should return false when username is not unique', function() {
-      return userService.isUniqueName(users[0].username).then(function(isUnique) {
+      return userService.isUniqueName(this.users[0].username).then(function(isUnique) {
         isUnique.should.to.be.false;
         return isUnique;
       });
      });
-  })
+  });
 
 });

@@ -1,22 +1,96 @@
-<div id="room_home_page" ng-if="room.id">
-  <div class="room-head">
-    <span class="title ">
-      {{::room.title}}
-    </span>
-    <span class="text-danger" ng-bind="getRoleName()"></span>
-    <a href ng-click="leave(room.id)" comfirm="是否要退出房间, 管理员退出房间将会被关闭.">
-      <span class="text-muted pull-right"><i class="fa fa-power-off"></i></span>
-    </a>
-  </div>
-  <div class="room-body">
+<section id="room-page" ng-if="room.id" layout="column">
+  <header class="md-title md-whiteframe-1dp" layout layout-align="center center" layout-padding>
+    <img class="avatar" ng-src="{{room.admin.avatar}}"/>
+    <b flex>{{room.title}}</b>
+    <!--<span hide-xs class="role" flex ng-bind="getRoleName()"></span>-->
+    <!--<md-menu-bar>-->
+    <!--<md-menu>-->
+    <!--<md-button ng-click="$mdOpenMenu()" aria-label="更多操作" class="md-icon-button">-->
+    <!--<md-icon>more_vert</md-icon>-->
+    <!--</md-button>-->
+    <!--<md-menu-divider></md-menu-divider>-->
+    <!--<md-menu-content>-->
+    <!--<md-menu-item>-->
+    <!--<md-button ng-click="leave(room.id)"-->
+    <!--comfirm="是否要退出房间, 管理员退出房间将会被关闭."-->
+    <!--aria-label="关闭房间按钮">-->
+    <!--关闭-->
+    <!--</md-button>-->
+    <!--</md-menu-item>-->
+    <!--</md-menu-content>-->
+    <!--</md-menu>-->
+    <!--</md-menu-bar>-->
+    <md-menu class="md-secondary">
+      <md-button aria-label="更多操作" class="md-icon-button" ng-click="$mdOpenMenu()">
+        <md-icon>more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+
+          <md-slider-container>
+            <div flex="20" layout layout-align="center center">
+              <span class="md-body-1">人数</span>
+            </div>
+            <md-slider md-discrete ng-model="room.number" min="1" max="5" aria-label="参赛人数"></md-slider>
+            <md-input-container>
+              {{room.number}}人
+            </md-input-container>
+          </md-slider-container>
+
+        </md-menu-item>
+        <md-menu-item>
+            <div layout="row" flex>
+              <p flex>加入观众</p>
+              <md-switch ng-model="room.observable" aria-label="加入观众切换"></md-switch>
+            </div>
+        </md-menu-item>
+
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button ng-click="leave(room.id)"
+          comfirm="退出房间, 管理员退出房间将会被关闭."
+          aria-label="关闭房间按钮">
+          退出房间
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+
+    <!---->
+    <!--<md-menu-bar>-->
+      <!--<md-menu>-->
+        <!--<button ng-click="$mdOpenMenu()"  class="md-icon-button">-->
+          <!--<md-icon>more_vert</md-icon>-->
+        <!--</button>-->
+        <!---->
+        <!--<md-menu-content>-->
+          <!--<md-menu-item>-->
+            <!--<md-button ng-click="leave(room.id)" aria-label="观看比赛切换">-->
+              <!--观看比赛-->
+              <!--<span class="md-alt-text"> test</span>-->
+            <!--</md-button>-->
+          <!--</md-menu-item>-->
+          <!--<md-menu-divider></md-menu-divider>-->
+          <!--<md-menu-item>-->
+            <!--<md-button ng-click="leave(room.id)"-->
+                       <!--comfirm="是否要退出房间, 管理员退出房间将会被关闭."-->
+                       <!--aria-label="关闭房间按钮">-->
+              <!--退出房间-->
+            <!--</md-button>-->
+          <!--</md-menu-item>-->
+
+        <!--</md-menu-content>-->
+      <!--</md-menu>-->
+    <!--</md-menu-bar>-->
+
+  </header>
+  <section class="room-body" flex layout="column">
     <div class="room-body-users">
       <div ng-include="'rooms/room/users/room-users.html'"></div>
-      <div ng-include="'rooms/room/tools/room-tools.html'"></div>
+      <!--<div ng-include="'rooms/room/tools/room-tools.html'"></div>-->
     </div>
-    <div class="room-body-complete" ng-include="'rooms/room/compete/room-compete.html'"></div>
-  </div>
+    <div class="room-body-complete" flex ng-include="'rooms/room/compete/room-compete.html'"></div>
+  </section>
 
-  <div class="room-foot">
-    <room-message style="width: 100%"></room-message>
-  </div>
-</div>
+  <room-message class="room-foot"  style="width: 100%"></room-message>
+</section>

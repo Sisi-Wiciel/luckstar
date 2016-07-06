@@ -1,67 +1,64 @@
 <section id="signup-page" ng-cloak ng-controller="userSignupCtrl">
-  <md-content>
-    <form autocomplete="off" name="regForm" ng-submit="register()" novalidate>
-      <md-input-container class="md-icon-float md-block">
-        <label>用户名</label>
-        <md-icon aria-label="用户名图标" class="name">person</md-icon>
-        <input ng-model="user.username" type="text" name="username" required minlength="5" maxlength="15">
-        <div ng-messages="regForm.username.$error" role="alert">
-          <div ng-message="required">
-            请填写用户名
-          </div>
-          <div ng-message-exp="['minlength', 'maxlength']">
-            用户名长度5-15个字.
-          </div>
+  <form autocomplete="off" name="regForm" ng-submit="register()" novalidate>
+    <md-input-container class="md-icon-float md-block">
+      <label>用户名</label>
+      <md-icon aria-label="用户名图标" class="name">person</md-icon>
+      <input ng-model="user.username" type="text" name="username" required minlength="5" maxlength="15">
+      <div ng-messages="regForm.username.$error" role="alert">
+        <div ng-message="required">
+          请填写用户名
         </div>
-      </md-input-container>
-      <md-input-container class="md-icon-float md-block">
-        <label>密码</label>
-        <md-icon class="md-warn md-hue-1" aria-label="密码图标">lock</md-icon>
-        <input ng-model="user.password" type="password" required minlength="5" maxlength="15" name="password">
-        <div ng-messages="regForm.password.$error" role="alert">
-          <div ng-message="required">
-            请填写密码
-          </div>
-          <div ng-message-exp="['minlength', 'maxlength']">
-            密码长度5到15个字.
-          </div>
+        <div ng-message-exp="['minlength', 'maxlength']">
+          用户名长度5-15个字.
         </div>
-      </md-input-container>
-      <md-input-container class="md-icon-float md-block">
-        <label>Email</label>
-        <md-icon aria-label="Email图标" class="email">mail</md-icon>
-        <input ng-model="user.email" type="text" ng-pattern="/^.+@.+\..+$/"
-               name="email" email required minlength="10" maxlength="50">
-        <div ng-messages="regForm.email.$error" role="alert">
-          <div ng-message="pattern">
-            请填写正确的Email地址
-          </div>
-          <div ng-message-exp="['required','minlength', 'maxlength']">
-            Email地址长度10到50个字.
-          </div>
+      </div>
+    </md-input-container>
+    <md-input-container class="md-icon-float md-block">
+      <label>密码</label>
+      <md-icon class="md-warn md-hue-1" aria-label="密码图标">lock</md-icon>
+      <input ng-model="user.password" type="password" required minlength="5" maxlength="15" name="password">
+      <div ng-messages="regForm.password.$error" role="alert">
+        <div ng-message="required">
+          请填写密码
         </div>
-      </md-input-container>
-      <md-input-container class="md-block md-icon-float face md-icon-left">
-        <md-icon aria-label="头像图标">face</md-icon>
+        <div ng-message-exp="['minlength', 'maxlength']">
+          密码长度5到15个字.
+        </div>
+      </div>
+    </md-input-container>
+    <md-input-container class="md-icon-float md-block">
+      <label>Email</label>
+      <md-icon aria-label="Email图标" class="email">mail</md-icon>
+      <input ng-model="user.email" type="text" ng-pattern="/^.+@.+\..+$/"
+             name="email" email required minlength="10" maxlength="50">
+      <div ng-messages="regForm.email.$error" role="alert">
+        <div ng-message="pattern">
+          请填写正确的Email地址
+        </div>
+        <div ng-message-exp="['required','minlength', 'maxlength']">
+          Email地址长度10到50个字.
+        </div>
+      </div>
+    </md-input-container>
+    <md-input-container class="md-block md-icon-float face md-icon-left">
+      <md-icon aria-label="头像图标">face</md-icon>
 
-        <md-whiteframe
-            ng-class="{errorFrame: regForm.$submitted && avatar.length == 0, 'md-whiteframe-1dp': !regForm.$submitted || avatar.length > 0}">
-          <md-subheader>选择一个头像:</md-subheader>
-          <md-grid-list md-cols="3" md-row-height="80px">
-            <md-grid-tile ng-repeat="ava in avatarArray">
-              <img class="avatar" ng-class="{actived: avatar == ava}"
-                   ng-click="setAvatar(ava)" ng-src="{{ava}}">
-            </md-grid-tile>
-          </md-grid-list>
-        </md-whiteframe>
-      </md-input-container>
-      <md-button type="submit" class="md-raised md-primary">注册</md-button>
-      <md-button class="md-raised" ng-click="reset()">重置</md-button>
-    </form>
-  </md-content>
-  <md-content>
-    已有账户?
-    <md-button ng-click="toLogin()" class="md-primary">去登录</md-button>
+      <md-whiteframe
+          ng-class="{errorFrame: regForm.$submitted && avatar.length == 0, 'md-whiteframe-1dp': !regForm.$submitted || avatar.length > 0}">
+        <md-subheader>选择一个头像:</md-subheader>
+        <md-grid-list md-cols="3" md-row-height="80px">
+          <md-grid-tile ng-repeat="ava in avatarArray">
+            <img class="avatar" ng-class="{actived: avatar == ava}"
+                 ng-click="setAvatar(ava)" ng-src="{{ava}}">
+          </md-grid-tile>
+        </md-grid-list>
+      </md-whiteframe>
+    </md-input-container>
+    <md-button type="submit" class="md-raised md-primary">注册</md-button>
+    <md-button class="md-raised" ng-click="reset()">重置</md-button>
+  </form>
+  <section>
+    已有账户?<md-button ng-click="toLogin()" class="md-primary">去登录</md-button>
+  </section>
 
-  </md-content>
 </section>

@@ -1,0 +1,49 @@
+@import (reference) "common";
+
+section#room-statistic {
+  //padding: 8px;
+  > md-toolbar {
+    background-color: inherit;
+    color: rgba(0, 0, 0, .54);
+    padding-left: 8px;
+    @media (max-width: 768px) {
+      padding-left: 0;
+    }
+  }
+  .table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    > thead,
+    > tbody,
+    > tfoot {
+      > tr {
+        .transition(all .3s ease);
+        > th,
+        > td {
+          text-align: left;
+          padding: .6rem 1.2rem;
+          padding-left: 0;
+          vertical-align: top;
+          border-top: 0;
+
+          .transition(all .3s ease);
+          &:first-child {
+            padding-left: 24px;
+            @media (max-width: 768px) {
+              padding-left: 16px;
+            }
+          }
+        }
+      }
+    }
+    > thead > tr {
+      font-weight: 400;
+      vertical-align: bottom;
+      border-bottom: 1px solid rgba(0, 0, 0, .12);
+      > td {
+        color: rgba(0, 0, 0, .54);
+      }
+    }
+  }
+}

@@ -6,38 +6,38 @@ var log = require('../../log');
 var Promise = require('bluebird');
 var LOCK = require("redis-lock");
 
+
 module.exports = {
-  initData: function(db) {
-    var self = this;
-    this.init(db);
 
-    db.on('ready', function() {
-      var userService = require("../user/user.service");
-
-      self.clean().then(function(){
-        Promise.map(User.find().exec(), function(user){
-          return userService.add(user);
-        });
-
-        Promise.map(Topic.find().exec(), function(topic){
-          db.sadd("topics", JSON.stringify(topic.toObject()));
-        });
-      });
-    });
-  },
-  clean: function(){
-    return Promise.map(this.db.keys('*'), function(key){
+  clean: function() {
+    return Promise.map(this.db.keys('*'), function(key) {
       return this.db.del(key);
     }.bind(this));
   },
   init: function(db) {
+    var self = this;
     this.db = db;
     this.lock = LOCK(this.db._redisClient);
-    this.LOCK_KEY = "luckstart_lock";
-
     db.on('error', function(error) {
       log.error("DB problem:", error);
-    })
+    });
+    return new Promise(function (resolve, reject) {
+      db.on('ready', function() {
+        var userService = require("../user/user.service");
+        self.clean().then(function() {
+          var userPromises = Promise.map(User.find().exec(), function(obj) {
+            return userService.add(fixId(obj));
+          });
+          var topicPromises = Promise.map(Topic.find().exec(), function(obj) {
+            return db.sadd("topics", JSON.stringify(fixId(obj)));
+          });
+
+          Promise.join(userPromises, topicPromises).then(function() {
+            resolve();
+          });
+        });
+      });
+    });
   },
 
   exists: function(key) {
@@ -66,11 +66,11 @@ module.exports = {
       log.debug("REDIS-CAS-LOCK: [%s] = ", key_, id_);
 
       return new Promise(function(resolve, reject) {
-        self.lock(self.LOCK_KEY, function(done) {
+        self.lock(key_, function(done) {
           self.listObj(key, id_).then(function(lockedObj) {
             if (lockedObj) {
               Promise.resolve(setFun(lockedObj)).then(function(obj_) {
-                if(_.isEmpty(obj_)) obj_ = lockedObj;
+                if (_.isEmpty(obj_)) obj_ = lockedObj;
                 log.debug("REDIS-CAS-LOCK-UNLOCK: [%s] = ", key_, obj_);
 
                 self.db.hmset(key_, obj_).then(function() {
@@ -147,3 +147,8 @@ module.exports = {
 
 };
 
+function fixId(obj) {
+  obj.id = obj._id;
+  delete obj._id;
+  return obj;
+}

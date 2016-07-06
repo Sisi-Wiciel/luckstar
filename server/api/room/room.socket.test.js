@@ -4,22 +4,11 @@ var utils = require('../../../test/test.utils');
 var faker = require('faker');
 
 describe('api/room/room.socket', function() {
-  var users = [];
-  before(function() {
-    return utils.newUsers(3).then(function(dbUsers) {
-      users = dbUsers;
-      return dbUsers;
-    });
-  });
-
-  after(function() {
-    return utils.clean();
-  });
 
   describe('#roomJoin', function() {
     var socket, admin;
     beforeEach(function (done) {
-      admin = users[0];
+      admin = this.users[0];
       socket = utils.newSocket(admin.id);
       done();
     });
@@ -42,7 +31,6 @@ describe('api/room/room.socket', function() {
 
     //it('should can join room as player', function(done) {
     //});
-    //it('should can join room as observer ', function(done) {});
     //it('should can join room as observer', function(done) {});
   });
 

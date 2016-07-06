@@ -3,7 +3,6 @@ div#userlist-page md-list {
 }
 div#userlist-page div.user {
   height: 56px;
-  overflow: hidden;
   -webkit-transition: -webkit-box-shadow 0s 0.3s, height 0.375s cubic-bezier(0.4, 0, 1, 1);
   -moz-transition: -moz-box-shadow 0s 0.3s, height 0.375s cubic-bezier(0.4, 0, 1, 1);
   -o-transition: box-shadow 0s 0.3s, height 0.375s cubic-bezier(0.4, 0, 1, 1);
@@ -17,5 +16,9 @@ div#userlist-page div.user.selected {
   height: 390px;
 }
 div#userlist-page div.user.selected md-list-item {
+  min-height: auto;
   background: rgba(158, 158, 158, 0.2);
+}
+div#userlist-page div.user md-divider {
+  margin-left: 72px;
 }

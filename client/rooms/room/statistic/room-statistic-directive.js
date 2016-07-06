@@ -1,6 +1,6 @@
 'use strict';
 
-require('./room-statistic-directive.css');
+require('./room-statistic.css');
 
 module.exports = ['$timeout', function($timeout) {
   return {
@@ -18,6 +18,7 @@ module.exports = ['$timeout', function($timeout) {
         $scope.statTable || $scope.setScorebarWidth();
       };
 
+      $scope.userColors = roomSrv.getUserColor();
       // Fix F5 issue.
       $timeout(function() {
         $scope.setScorebarWidth();

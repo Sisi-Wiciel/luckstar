@@ -4,29 +4,53 @@ require('./room-list.css');
 
 module.exports = ['$scope', 'socketSrv', 'roomSrv', '$mdDialog', function($scope, socketSrv, roomSrv, $mdDialog) {
 
-
   $scope.rooms = [];
 
+  function fixRoom(rooms) {
+    _.each(rooms, function(room, index) {
+      var viewRoom = $scope.rooms[index];
+      if (_.isEmpty(viewRoom)) {
+        viewRoom = room;
+        $scope.rooms.push(room);
+      } else {
+        if (viewRoom.id === room.id) {
+          // Room existed && update info
+          _.assign(viewRoom, room);
+        } else {
+          // Room removed
+          _.remove($scope.rooms, {'id': room.id});
+          return;
+        }
+      }
+      roomSrv.fillRoomUsers(viewRoom);
+    });
+  }
+
   socketSrv.register('updateRooms', function(rooms) {
-    _.map(rooms, roomSrv.fillRoomUsers);
-    $scope.rooms = rooms;
+    fixRoom(rooms);
     $scope.$apply();
   });
 
-  socketSrv.updateRooms();
 
+
+  $scope.viewTopic = function(room) {
+    if(!room.topic || room.topic.id !== room.topicid){
+      socketSrv.topicFetch(room.topicid).then(function(topic) {
+        room.topic = topic;
+      });
+    }
+  }
   $scope.join = function(roomId) {
     $scope.goto('/home/rooms/' + roomId);
   };
 
-  $scope.joinAsObs = function(roomId){
+  $scope.joinAsObs = function(roomId) {
     //roomSrv.joinRoomAsObs($stateParams.id);
     $scope.goto('/home/rooms/' + roomId);
   };
 
-  $scope.createRoom = function($event){
+  $scope.createRoom = function($event) {
     var scope = $scope.$new();
-    console.info(scope);
     $mdDialog.show({
       template: require('../creation/room-creation.html'),
       parent: angular.element(document.body),
@@ -35,11 +59,17 @@ module.exports = ['$scope', 'socketSrv', 'roomSrv', '$mdDialog', function($scope
       scope: scope,
       openFrom: '#createRoomBtn',
       closeTo: '#createRoomBtn',
-      clickOutsideToClose:true
+      clickOutsideToClose: true,
+      fullscreen: !$scope.screen('gt-xs')
     }).then(function(answer) {
-      $scope.join();
+      // $scope.join();
     });
   }
 
-  socketSrv.changeUserStatus('HOME_PAGE');
+  $scope.changeMode = function(mode) {
+    $scope.roomListMode = mode;
+  }
+
+  socketSrv.updateRooms();
+  $scope.changeUserStatus('HOME_PAGE');
 }];

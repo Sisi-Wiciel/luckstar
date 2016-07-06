@@ -2,7 +2,7 @@
 
 module.exports = ['$timeout', 'fileSrv', function($timeout, fileSrv) {
   return {
-    template: require('./topic-preview.html'),
+    template: '<topic-panel typeable="false"  topic="topic"></topic-panel>',
     scope: {
       image: '=',
       topic: '='
@@ -36,16 +36,13 @@ module.exports = ['$timeout', 'fileSrv', function($timeout, fileSrv) {
        var fileSelector;
 
        $(elem).on('dragover', '.image-container', function() {
-         console.info('dragover');
          $(this).addClass('focus');
          return false;
        }).on('drop', '.image-container', function(event) {
-         console.info('drop', event);
          $(this).removeClass('focus');
          previewFile(event.originalEvent.dataTransfer.files[0]);
          return false;
        }).on('click', '.image-container', function(e) {
-         console.info('click');
          if ($(e.target).hasClass('remove-btn')) {
            return;
          }
@@ -54,7 +51,6 @@ module.exports = ['$timeout', 'fileSrv', function($timeout, fileSrv) {
 
        fileSelector = $('<input type="file" style="display: none"/>');
        fileSelector.on('change', function(e) {
-         console.info(e)
          previewFile(e.originalEvent.target.files[0]);
        });
        $(elem).after(fileSelector);

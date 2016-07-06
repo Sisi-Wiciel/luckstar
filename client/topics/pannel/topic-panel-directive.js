@@ -3,25 +3,34 @@
 
 require('./topic-panel.css');
 
-module.exports = ['$timeout', function($timeout) {
+module.exports = function() {
   return {
     template: require('./topic-panel.html'),
     scope: {
-      topic: '='
+      topic: '=',
+      typeable: '@',
+      checkable: '@',
+      themeable: '@'
     },
-    link: function(scope, elem) {
-      scope.countdownPause = function() {
-        $timeout(function() {
-          $(elem).find('.progress-bar').addClass('paused');
-        });
-      };
+    link: function(scope, elem, attr) {
+      scope.typeable = 'true';
+      scope.checkable = 'true';
+      scope.themeable = 'true';
+
     },
-    controller: ['$scope', 'socketSrv', 'authSrv', 'roomSrv', function($scope, socketSrv, authSrv, roomSrv) {
+    controller: ['$scope', 'socketSrv', 'authSrv', 'roomSrv', '$interval',function($scope, socketSrv, authSrv, roomSrv, $interval) {
       var settings = require('../../settings');
+      var topicCountdownInterval;
 
       $scope.imageEnabled = false;
       $scope.checkedOpt = [];
       $scope.uploadPath = settings.upload.path;
+
+      function stopCountdown() {
+        $interval.cancel(topicCountdownInterval);
+        topicCountdownInterval = null;
+      }
+
 
       $scope.setOptBgColorByUser = function(optIndex) {
         var verdict_ = $scope.verdict;
@@ -31,44 +40,62 @@ module.exports = ['$timeout', function($timeout) {
 
         var curr = authSrv.getCurrentUser();
         if (verdict_.opt.indexOf(optIndex) > -1 && verdict_.user.id !== curr.id) {
-          return ('#' + roomSrv.getUserMousePointerColor($scope.verdict.user.id)) || '';
+          return ('#' + roomSrv.getUserColor($scope.verdict.user.id)) || '';
         }
         return '';
       };
 
-      var setVerdict = function(verObj) {
-        $scope.verdict = verObj;
-        $scope.$emit('topicVerdict', verObj);
+      socketSrv.register('topicCountDownUpdate', function(countdownObj) {
 
-        $scope.verdictCls = null;
+        var factor = 100 / countdownObj.max ;
 
-        if (verObj) {
-          $scope.countdownPause();
-          if ($scope.verdict.user) {
-            if ($scope.verdict.verdict) {
-              $scope.verdictCls = 'correct';
-            } else {
-              $scope.verdictCls = 'incorrect';
-            }
-          } else {
-            $scope.verdictCls = 'timeout';
-          }
+        if(countdownObj.max === countdownObj.value){
+          $scope.countdown = 100;
+        }else{
+          $scope.countdown = factor * countdownObj.value;
         }
-      };
+        if(!topicCountdownInterval){
+          topicCountdownInterval = $interval(function() {
+            if($scope.countdown > 0){
+              $scope.countdown -= factor / 10;
+            }else{
+              stopCountdown();
+            }
+          }, 100);
+        }
+        console.info($scope.countdown)
+        $scope.$apply();
+      });
 
-      socketSrv.register('topicVerdict', function(obj) {
-        setVerdict(obj);
+      socketSrv.register('topicVerdict', function(verdict) {
+        $scope.verdict = verdict;
+        var topicIndexText = '';
+        if($scope.topic && $scope.topic.hasOwnProperty('index')){
+          topicIndexText = '第'+($scope.topic.index+1)+'题, ';
+        }
+        if(verdict.verdict == -1){
+          roomSrv.addMessage(topicIndexText + '答题超时');
+        }
+        if(verdict.verdict == 0){
+          roomSrv.addMessage(topicIndexText + '用户'+verdict.user.username + '答题错误');
+        }
+        if(verdict.verdict == 1){
+          roomSrv.addMessage(topicIndexText + '用户'+verdict.user.username + '答题正确');
+        }
         $scope.$apply();
       });
 
       $scope.$watch('topic', function(newValue) {
-        if (newValue && newValue._id) {
-          setVerdict(null);
+        if (newValue && newValue.id) {
+          $scope.verdict = null;
           $scope.checkedOpt = [];
         }
       });
 
       $scope.check = function(opt) {
+        if(!$scope.checkable){
+          return false;
+        }
         if (!$scope.verdict) {
           if ($scope.checkedOpt.indexOf(opt) > -1) {
             $scope.checkedOpt = _.without($scope.checkedOpt, opt);
@@ -77,12 +104,14 @@ module.exports = ['$timeout', function($timeout) {
           }
 
           if ($scope.topic.answercount === $scope.checkedOpt.length) {
-            $scope.countdownPause();
             socketSrv.topicCheckOpt($scope.checkedOpt.join(''));
+            stopCountdown();
           }
         }
+        return true;
       };
 
+      
       $scope.showTip = function() {
         var _topic = $scope.topic;
         return !_topic.hasOwnProperty('corrector') && !_.isEmpty($scope.checkedOpt) &&
@@ -91,4 +120,4 @@ module.exports = ['$timeout', function($timeout) {
       
     }]
   };
-}];
+};

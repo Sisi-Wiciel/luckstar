@@ -19,7 +19,7 @@
           <input flex md-no-asterisk  name="title" ng-model="newroom.title" placeholder="房间标题" maxlength="15">
         </md-input-container>
         <md-slider-container>
-          <div flex="20" layout layout-align="center center">
+          <div flex="20" >
             <span class="md-body-1">人数</span>
           </div>
           <md-slider md-discrete ng-model="newroom.number" min="1" max="5" aria-label="参赛人数"></md-slider>
@@ -32,17 +32,17 @@
             <span class="md-body-1">观众</span>
           </div>
           <md-checkbox flex ng-model="newroom.observable"  ng-true-value="1"
-                       ng-false-value="0" aria-label="观众选项"></md-checkbox>
+                       ng-false-value="0" aria-label="观看比赛"></md-checkbox>
         </md-input-container>
 
       </form>
     </md-content>
   </md-dialog-content>
-  <md-dialog-actions layout="row">
+  <md-dialog-actions layout="row" layout-align="center center">
     <md-button ng-click="save()" class="md-primary md-raised">
       创建房间
     </md-button>
-    <md-button ng-click="close()" style="margin-right:20px;">
+    <md-button ng-click="close()">
       取消
     </md-button>
   </md-dialog-actions>

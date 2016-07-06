@@ -1,25 +1,47 @@
 'use strict';
 
 var _ = require('lodash');
-var db = require('../redis/redis.service.js');
-var userService = require('../user/user.service.js');
 var log = require('../../log');
 var Promise = require('bluebird');
 var moment = require('moment');
 var Statistic = require('./statistic.model');
-var errorHandler = require('express-error-handler');
 var settings = require('../../config/setting');
 var uuid = require('node-uuid');
 
+var redisService = require('../redis/redis.service.js');
+var userService = require('../user/user.service.js');
+var topicService = require('../topic/topic.service');
+
+var REIDS_ROOM_KEY = 'rooms';
+var REIDS_ROOMTOPIC_KEY = 'roomtopics';
+var REIDS_ROOMSTATS_KEY = 'roomstats';
+
+module.exports = {
+  createCompeteState: createCompeteState,
+  removeCompeteState: removeCompeteState,
+  startCompete: startCompete,
+  terminateCompete: terminateCompete,
+  list: listRoom,
+  update: updateRoom,
+  save: saveRoom,
+  remove: removeRoom,
+  listRoomStat: listRoomStat,
+  updateRoomStat: updateRoomStat,
+  finishCompete: finishCompete,
+  join: joinRoom,
+  leave: leaveRoom,
+  nextRoomTopic: nextRoomTopic
+};
+
 //obj => redis
-var objSaved = function (room) {
+function objSaved(room) {
   var _room = _.clone(room);
 
-  _room.users = _.map(_room.users, function (user) {
+  _room.users = _.map(_room.users, function(user) {
     return _.isString(user) ? user : user.id;
   });
 
-  _room.obs = _.map(_room.obs, function (user) {
+  _room.obs = _.map(_room.obs, function(user) {
     return _.isString(user) ? user : user.id;
   });
 
@@ -27,16 +49,16 @@ var objSaved = function (room) {
     _room.admin = _room.admin.id;
   }
   return _room;
-};
+}
 
 //redis => obj
-var assemble = function (room) {
+function assemble(room) {
 
   if (_.isEmpty(room)) {
     return room;
   }
 
-  var parseArrIds = function (key) {
+  var parseArrIds = function(key) {
     if (room.hasOwnProperty(key) && !_.isEmpty(room[key])) {
       if (_.isString(room[key])) {
         room[key] = room[key].split(',');
@@ -46,9 +68,10 @@ var assemble = function (room) {
     }
   };
 
-  room.status = parseInt(room.status, 10);
-  room.number = parseInt(room.number, 10);
-  room.mode = parseInt(room.mode, 10);
+  room.status = ~~room.status;
+  room.number = ~~room.number;
+  room.mode = ~~room.mode;
+  room.topicindex = ~~room.topicindex || 0;
 
   parseArrIds("readyUsers");
   parseArrIds("obs");
@@ -57,12 +80,32 @@ var assemble = function (room) {
     room.users = room.users.split(',');
   }
 
-  return userService.list(room.users).then(function (users) {
+  return userService.list(room.users).then(function(users) {
     room.users = users;
     room.admin = users[0];
     return room;
   })
-};
+}
+
+function nextRoomTopic(roomid) {
+  return this.list(roomid).then(function(room) {
+    return redisService.list(REIDS_ROOMTOPIC_KEY + ':' + room.id).then(function(topics) {
+      var topicindex = ~~(room.topicindex);
+      var topicArray = JSON.parse(topics);
+      if (topicindex >= topicArray.length) {
+        return null;
+      } else {
+        var topic = topicArray[topicindex];
+        return updateRoomTopics(room.id, topicArray).then(function() {
+          return updateRoom(room.id, function(locked) {
+            locked.topicindex ++;
+            locked.topicid = topic.id;
+          });
+        }).return(topic);
+      }
+    });
+  })
+}
 
 function leaveRoom(room, user) {
   log.verbose("room.service#Leave", room, user);
@@ -73,14 +116,14 @@ function leaveRoom(room, user) {
   }
 
   function playerPolicy(room, user) {
-    return self.update(room, function (locked) {
+    return self.update(room, function(locked) {
       _.remove(locked.users, {'id': user.id});
       _.pull(locked.readyUsers, user.id);
     });
   }
 
   function obPolicy(room, user) {
-    return self.update(room, function (locked) {
+    return self.update(room, function(locked) {
       _.pull(locked.obs, user.id);
     });
   }
@@ -94,20 +137,20 @@ function leaveRoom(room, user) {
     } else if (room.obs.indexOf(user.id) >= 0) {
       promise = obPolicy(room, user);
     } else {
-      log.info("User was not joined the room");
+      log.warn("User was not joined the room");
     }
   }
   if (_.isEmpty(promise)) {
     return null;
   }
 
-  return promise.then(function () {
+  return promise.then(function() {
     return userService.setRoom(user.id, '');
   });
+}
 
-};
-exports.list = function (id) {
-  return db.listObj("rooms", id).then(function (rooms) {
+function listRoom(id) {
+  return redisService.listObj(REIDS_ROOM_KEY, id).then(function(rooms) {
     if (_.isArray(rooms)) {
       return Promise.map(rooms, assemble);
     }
@@ -115,35 +158,35 @@ exports.list = function (id) {
   });
   //return Promise.map(ret, assemble);
   //if(id === undefined){
-  //  return db.listObj("rooms").map(assemble);
+  //  return redisService.listObj("rooms").map(assemble);
   //}else if(_.isEmpty(id)){
   //  return Promise.resolve(null);
   //}else if(_.isA){
-  //  return db.listObj("rooms", id).map(assemble);
+  //  return redisService.listObj("rooms", id).map(assemble);
   //}
-};
+}
 
-exports.update = function (room, setFun) {
+function updateRoom(room, setFun) {
   room = _.isString(room) ? {id: room} : room;
 
-  return db.saveOrUpdateObj("rooms", room, function (lockedRoom) {
-    return assemble(lockedRoom).then(function (assembledRoom) {
+  return redisService.saveOrUpdateObj(REIDS_ROOM_KEY, room, function(lockedRoom) {
+    return assemble(lockedRoom).then(function(assembledRoom) {
       setFun(assembledRoom);
       room = assembledRoom;
       return objSaved(assembledRoom);
-    }, function (error) {
+    }, function(error) {
       log.error("update room error", error);
-    })
-  }, function (error) {
+    });
+  }, function(error) {
     log.error("save room error", error);
-  }).then(function () {
+  }).then(function() {
     return room;
   })
-};
+}
 
-exports.save = function (room, userid) {
+function saveRoom(room, userid) {
   room.create = moment().format();
-  room.observable = room.observable || 1,
+  room.observable = room.observable || 1;
   room.id = uuid.v1();
   room.admin = userid;
   room.status = 0;
@@ -152,21 +195,23 @@ exports.save = function (room, userid) {
   room.obs = [];
   room.number = room.number || 5;
   room.mode = 0;
-  return db.saveOrUpdateObj("rooms", objSaved(room));
-};
+  return redisService.saveOrUpdateObj(REIDS_ROOM_KEY, objSaved(room));
+}
 
-exports.remove = function (room) {
-  return this.removeCompeteState(room).then(function () {
-    return db.delete("rooms:" + room.id);
+function removeRoom(room) {
+  return this.removeCompeteState(room).then(function() {
+    return redisService.delete(REIDS_ROOM_KEY +':'+ room.id);
   })
-};
-exports.listRoomStat = function (id) {
-  return db.list("roomstats:" + id).then(function (state) {
+}
+
+function listRoomStat(id) {
+  return redisService.list(REIDS_ROOMSTATS_KEY + ":" + id).then(function(state) {
     return JSON.parse(state);
   });
-};
-exports.updateRoomStat = function (room, verdictObj) {
-  return this.listRoomStat(room.id).then(function (userstats) {
+}
+
+function updateRoomStat(room, verdictObj) {
+  return this.listRoomStat(room.id).then(function(userstats) {
     if (userstats) {
       if (verdictObj.user) {
         var currentUserStat = _.find(userstats.users, {"userid": verdictObj.user.id});
@@ -185,7 +230,7 @@ exports.updateRoomStat = function (room, verdictObj) {
         }
       } else {
         if (verdictObj.verdict == -1) {
-          _.each(userstats.users, function (user) {
+          _.each(userstats.users, function(user) {
             user.timeoutNum++;
           });
         }
@@ -193,50 +238,56 @@ exports.updateRoomStat = function (room, verdictObj) {
 
       userstats.currNum++;
 
-      return db.save("roomstats:" + room.id, JSON.stringify(userstats)).then(function () {
+      return redisService.save(REIDS_ROOMSTATS_KEY + ":" + room.id, JSON.stringify(userstats)).then(function() {
         return userstats;
       });
     } else {
       log.error("cannot found room statistics " + room.id);
     }
   });
-};
+}
 
-exports.finishCompete = function (room, statist) {
+function finishCompete(room) {
+  var self = this;
+  return this.listRoomStat(room.id).then(function(statist) {
 
-  if (statist) {
-    _.each(statist.users, function (user) {
-      Statistic.create({
-        correctNum: user.correctNum,
-        incorrectNum: user.incorrectNum,
-        timeoutNum: user.timeoutNum,
-        point: user.point || 0,
-        user: user.userid
-      }, function (err) {
-        if (err) {
-          log.error("finish compete error ", err);
-          return errorHandler(err);
-        }
+    redisService.delete(REIDS_ROOMTOPIC_KEY + ":" + room.id);
+
+    if (statist) {
+      return Promise.map(statist.users, function(user) {
+        Statistic.create({
+          correctNum: user.correctNum,
+          incorrectNum: user.incorrectNum,
+          timeoutNum: user.timeoutNum,
+          point: user.point || 0,
+          user: user.userid
+        }, function(err) {
+          if (err) {
+            log.error("Save statistic error ", err);
+          }
+        });
+        return userService.updatePoint(user.userid, user.point);
+      }).then(function() {
+        return self.update(room, function(locked) {
+          locked.status = 0;
+          locked.readyUsers = [locked.admin.id];
+          locked.topic = '';
+        });
       })
-    });
-  }
 
-  return this.update(room, function (locked) {
-    locked.status = 0;
-    locked.readyUsers = [locked.admin.id];
-    locked.topic = '';
+    }
   });
-};
 
-exports.leave = leaveRoom;
+}
 
-exports.join = function (room, user, isPlayer) {
+
+function joinRoom(room, user, isPlayer) {
   isPlayer = isPlayer === undefined || isPlayer;
   log.verbose("room.service#Join", room, user, isPlayer);
 
   //Firstly check if user in room already.
-  return Promise.resolve(this.leave(room, user)).then(function () {
-    return this.update(room, function (locked) {
+  return Promise.resolve(this.leave(room, user)).then(function() {
+    return this.update(room, function(locked) {
       if (isPlayer && locked.users.length < locked.number) {
         if (!_.find(locked.users, {'id': user.id})) {
           locked.users.push(user);
@@ -248,30 +299,42 @@ exports.join = function (room, user, isPlayer) {
       }
     });
   }.bind(this));
-};
+}
 
-exports.terminateCompete = function (room) {
+function terminateCompete(room) {
   return this.finishCompete(room);
-};
+}
 
-exports.startCompete = function (room) {
-  room.status = 1;
-  return db.set("rooms:" + room.id, "status", room.status);
-};
+function updateRoomTopics(roomid, topics) {
+  return redisService.save(REIDS_ROOMTOPIC_KEY + ':' + roomid, JSON.stringify(topics));
+}
 
-exports.removeCompeteState = function (room) {
-  return db.delete("roomstats:" + room.id);
-};
+function startCompete(room) {
+  var self = this;
+  return topicService.fetchTopic(settings.ROOM.COMPETE_MAX_TOPICS)
+  .then(function(topics) {
+    return updateRoomTopics(room.id, topics);
+  }).then(function() {
+    return self.update(room, function(lockroom) {
+      lockroom.status = 1;
+      lockroom.topicindex = 0;
+    });
+  });
+}
 
-exports.createCompeteState = function (roomValue) {
+function removeCompeteState(room) {
+  return redisService.delete(REIDS_ROOMSTATS_KEY + ":" + room.id);
+}
+
+function createCompeteState(roomValue) {
   if (_.isString(_.first(roomValue.users))) {
     roomValue = assemble(roomValue);
   }
 
-  return Promise.resolve(roomValue).then(function (room) {
+  return Promise.resolve(roomValue).then(function(room) {
     var roomstate = {
       id: uuid.v1(),
-      users: _.map(room.users, function (user) {
+      users: _.map(room.users, function(user) {
         return {
           userid: user.id,
           username: user.username,
@@ -286,7 +349,8 @@ exports.createCompeteState = function (roomValue) {
       start: moment()
     };
 
-    db.save("roomstats:" + room.id, JSON.stringify(roomstate));
+    redisService.save(REIDS_ROOMSTATS_KEY + ":" + room.id, JSON.stringify(roomstate));
     return roomstate;
   })
-};
+}
+

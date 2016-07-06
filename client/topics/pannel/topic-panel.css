@@ -1,45 +1,9 @@
-@keyframes slideInY {
-  from {
-    -webkit-transform: translate3d(0, 0, 1200px);
-    -moz-transform: translate3d(0, 0, 1200px);
-    -ms-transform: translate3d(0, 0, 1200px);
-    -o-transform: translate3d(0, 0, 1200px);
-    transform: translate3d(0, 0, 1200px);
-  }
-  to {
-    -webkit-transform: translate3d(0);
-    -moz-transform: translate3d(0);
-    -ms-transform: translate3d(0);
-    -o-transform: translate3d(0);
-    transform: translate3d(0);
-  }
-}
-@keyframes countdown {
-  from {
-    width: 100%;
-  }
-  to {
-    width: 0;
-  }
-}
-section#topic-panel md-content {
-  min-height: 350px;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIElEQVQYV2NkIAK8ffv2PyMR6hhGFeINJXDwgAhiwhIAIyslx2i5iywAAAAASUVORK5CYII=) repeat #fff;
-  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4), inset 0 1px 0 #ccc, inset 1px 0 0 #aaa, inset 0 -1px 0 #ccc, inset -1px 0 0 #aaa, inset 0 2px 0 #c6c6c6, inset 2px 0 0 #a6a6a6, inset 0 -2px 0 #c6c6c6, inset -2px 0 0 #a6a6a6, inset 0 3px 0 #c0c0c0, inset 3px 0 0 #a0a0a0, inset 0 -3px 0 #c0c0c0, inset -3px 0 0 #a0a0a0, inset 0 4px 0 #b9b9b9, inset 4px 0 0 #999, inset 0 -4px 0 #b9b9b9, inset -4px 0 0 #999, inset 0 5px 0 #b6b6b6, inset 5px 0 0 #969696, inset 0 -5px 0 #b6b6b6, inset -5px 0 0 #969696, inset 0 6px 0 #b0b0b0, inset 6px 0 0 #909090, inset 0 -6px 0 #b0b0b0, inset -6px 0 0 #909090, inset 0 7px 0 #a9a9a9, inset 7px 0 0 #898989, inset 0 -7px 0 #a9a9a9, inset -7px 0 0 #898989, inset 0 8px 0 #a6a6a6, inset 8px 0 0 #868686, inset 0 -8px 0 #a6a6a6, inset -8px 0 0 #868686, inset 0 9px 0 #a0a0a0, inset 9px 0 0 #808080, inset 0 -9px 0 #a0a0a0, inset -9px 0 0 #808080, inset 0 10px 0 #888, inset 10px 0 0 #666, inset 0 -10px 0 #888, inset -10px 0 0 #666, inset 0 0 10px 10px rgba(0, 0, 0, 0.5), inset 0 0 50px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4), inset 0 1px 0 #ccc, inset 1px 0 0 #aaa, inset 0 -1px 0 #ccc, inset -1px 0 0 #aaa, inset 0 2px 0 #c6c6c6, inset 2px 0 0 #a6a6a6, inset 0 -2px 0 #c6c6c6, inset -2px 0 0 #a6a6a6, inset 0 3px 0 #c0c0c0, inset 3px 0 0 #a0a0a0, inset 0 -3px 0 #c0c0c0, inset -3px 0 0 #a0a0a0, inset 0 4px 0 #b9b9b9, inset 4px 0 0 #999, inset 0 -4px 0 #b9b9b9, inset -4px 0 0 #999, inset 0 5px 0 #b6b6b6, inset 5px 0 0 #969696, inset 0 -5px 0 #b6b6b6, inset -5px 0 0 #969696, inset 0 6px 0 #b0b0b0, inset 6px 0 0 #909090, inset 0 -6px 0 #b0b0b0, inset -6px 0 0 #909090, inset 0 7px 0 #a9a9a9, inset 7px 0 0 #898989, inset 0 -7px 0 #a9a9a9, inset -7px 0 0 #898989, inset 0 8px 0 #a6a6a6, inset 8px 0 0 #868686, inset 0 -8px 0 #a6a6a6, inset -8px 0 0 #868686, inset 0 9px 0 #a0a0a0, inset 9px 0 0 #808080, inset 0 -9px 0 #a0a0a0, inset -9px 0 0 #808080, inset 0 10px 0 #888, inset 10px 0 0 #666, inset 0 -10px 0 #888, inset -10px 0 0 #666, inset 0 0 10px 10px rgba(0, 0, 0, 0.5), inset 0 0 50px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4), inset 0 1px 0 #ccc, inset 1px 0 0 #aaa, inset 0 -1px 0 #ccc, inset -1px 0 0 #aaa, inset 0 2px 0 #c6c6c6, inset 2px 0 0 #a6a6a6, inset 0 -2px 0 #c6c6c6, inset -2px 0 0 #a6a6a6, inset 0 3px 0 #c0c0c0, inset 3px 0 0 #a0a0a0, inset 0 -3px 0 #c0c0c0, inset -3px 0 0 #a0a0a0, inset 0 4px 0 #b9b9b9, inset 4px 0 0 #999, inset 0 -4px 0 #b9b9b9, inset -4px 0 0 #999, inset 0 5px 0 #b6b6b6, inset 5px 0 0 #969696, inset 0 -5px 0 #b6b6b6, inset -5px 0 0 #969696, inset 0 6px 0 #b0b0b0, inset 6px 0 0 #909090, inset 0 -6px 0 #b0b0b0, inset -6px 0 0 #909090, inset 0 7px 0 #a9a9a9, inset 7px 0 0 #898989, inset 0 -7px 0 #a9a9a9, inset -7px 0 0 #898989, inset 0 8px 0 #a6a6a6, inset 8px 0 0 #868686, inset 0 -8px 0 #a6a6a6, inset -8px 0 0 #868686, inset 0 9px 0 #a0a0a0, inset 9px 0 0 #808080, inset 0 -9px 0 #a0a0a0, inset -9px 0 0 #808080, inset 0 10px 0 #888, inset 10px 0 0 #666, inset 0 -10px 0 #888, inset -10px 0 0 #666, inset 0 0 10px 10px rgba(0, 0, 0, 0.5), inset 0 0 50px rgba(0, 0, 0, 0.5);
-  -webkit-border-radius: 3px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 3px;
-  -moz-background-clip: padding;
-  border-radius: 3px;
-  background-clip: padding-box;
-  -webkit-perspective: 20em;
-  -moz-perspective: 20em;
-  perspective: 20em;
+section#topic-panel md-content.default-theme {
+  font-size: 1.4rem;
+  background: inherit;
+  min-height: 300px;
 }
 section#topic-panel md-content .head {
-  padding: 25px 0 10px 10px;
   word-break: break-all;
 }
 section#topic-panel md-content .body div.image-container {
@@ -56,35 +20,52 @@ section#topic-panel md-content .body div.image-container section {
   cursor: pointer;
   display: block;
   line-height: 250px;
-  font-size: 1.5em;
   text-align: center;
   border-style: dashed;
 }
 section#topic-panel md-content .body div.options {
   position: relative;
+  min-height: 120px;
 }
 section#topic-panel md-content .body div.options ul {
   list-style: none;
+  min-width: 150px;
   padding-left: 20px;
 }
 section#topic-panel md-content .body div.options ul li {
+  padding: 0 8px;
   position: relative;
-}
-section#topic-panel md-content .body div.options ul li a {
   text-decoration: none;
   line-height: 30px;
+  cursor: pointer;
 }
-section#topic-panel md-content .body div.options ul li a:hover,
-section#topic-panel md-content .body div.options ul li a.actived {
+section#topic-panel md-content .body div.options ul li:hover,
+section#topic-panel md-content .body div.options ul li.actived {
   background: #777;
   color: #fff;
-  padding: 5px 20px;
 }
-section#topic-panel md-content .body div.options ul li a:hover.passive,
-section#topic-panel md-content .body div.options ul li a.actived.passive {
+section#topic-panel md-content .body div.options ul li:hover.passive,
+section#topic-panel md-content .body div.options ul li.actived.passive {
   border: 1px solid #075e3;
   color: #075e3;
   background-color: #fff;
+}
+section#topic-panel md-content .body div.options .panel-cover {
+  font-weight: bold;
+}
+section#topic-panel md-content .body div.options .panel-cover md-icon {
+  font-size: 112px;
+}
+@media (max-width: 768px) {
+  section#topic-panel md-content .body div.options .panel-cover md-icon {
+    font-size: 56px;
+  }
+}
+section#topic-panel md-content .body div.options .panel-cover md-icon.incorrect {
+  color: red;
+}
+section#topic-panel md-content .body div.options .panel-cover md-icon.correct {
+  color: green;
 }
 section#topic-panel md-content .foot {
   text-align: center;

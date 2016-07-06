@@ -13,29 +13,21 @@
     transform: none;
   }
 }
-div#room-message {
-  -webkit-box-direction: normal;
-  -moz-box-direction: normal;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: auto;
+section#room-message {
+  font-size: 1.4rem;
   width: 100%;
+  height: 100%;
 }
-div#room-message > ul {
-  height: 120px;
-  overflow-x: hidden;
+section#room-message md-content {
+  padding: 8px;
 }
-div#room-message > ul li.ng-enter {
-  -webkit-animation: 0.8s message-receive;
-  -moz-animation: 0.8s message-receive;
-  -o-animation: 0.8s message-receive;
-  animation: 0.8s message-receive;
+section#room-message div.message > .system {
+  color: red;
+}
+section#room-message > md-input-container {
+  margin: 0;
+  padding-bottom: 0;
+}
+section#room-message > md-input-container .md-errors-spacer {
+  min-height: 0;
 }

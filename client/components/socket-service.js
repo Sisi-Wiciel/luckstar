@@ -136,14 +136,14 @@ module.exports = ['store', '$q', '$location', function(store, $q, $location) {
     startCompete: function() {
       this.emit('room start compete');
     },
-    sendMouseTrack: function(pixel) {
-      this.emit('topic mouse track', pixel);
-    },
     topicCheckOpt: function(opt) {
-      this.emit('complete check topic', opt);
+      this.emit('compete check topic', opt);
     },
-    getTopic: function() {
-      this.emit('complete get topic');
+    topicFetch: function(id) {
+      return this.getResult('topic fetch', id);
+    },
+    getCompeteTopic: function() {
+      this.emit('compete get topic');
     },
     getTopicSize: function() {
       return this.getResult('topic total size');

@@ -11,7 +11,6 @@ module.exports = angular.module('luckstar.topics', [])
     controller: 'topicCommitCtrl',
     template: require('./commit/topic-commit.html')
   });
-  console.info('topic/index');
 }])
 .directive('topicPreview', require('./commit/preview/topic-preview-directive'))
 .directive('topicPanel', require('./pannel/topic-panel-directive'))

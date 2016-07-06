@@ -28,6 +28,7 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv',
 
     $scope.topic.corrector = [];
   };
+
   $scope.addOpt = function() {
     if ($scope.topic.options.length >= 5) {
       messageCenter.error('最多要有5个选项');
@@ -67,8 +68,6 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv',
         answercount: 1,
         point: $scope.points[0].value
       };
-
-
   };
 
   $scope.submit = function(event) {
@@ -112,7 +111,7 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv',
         parent: angular.element(document.body),
         targetEvent: event,
         clickOutsideToClose:true,
-        fullscreen: !$scope.bigScreen
+        fullscreen: !$scope.screen('gt-sm')
       }).finally($scope.initForm);
     }, 1000);
   };
@@ -130,6 +129,6 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv',
       $scope.topic.answercount = $scope.topic.corrector.length;
     }
   });
-  socketSrv.changeUserStatus('IN_TOPIC');
+  $scope.changeUserStatus('IN_TOPIC');
   $scope.initForm();
 }];

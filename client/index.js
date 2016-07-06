@@ -20,14 +20,9 @@ angular.element(document).ready(function() {
     '$mdSidenav',
     '$mdMedia',
     'authSrv',
-    function($rootScope, $location, $timeout, $window, store, $mdSidenav, $mdMedia, authSrv) {
+    'socketSrv',
+    function($rootScope, $location, $timeout, $window, store, $mdSidenav, $mdMedia, authSrv, socketSrv) {
       $rootScope.currentUser = authSrv.getCurrentUser();
-
-      $rootScope.$watch(function() {
-        return $mdMedia('gt-md');
-      }, function(big) {
-        $rootScope.bigScreen = big;
-      });
 
       $rootScope.toggleSidenav = function(componentId) {
         $mdSidenav(componentId).toggle();
@@ -38,9 +33,10 @@ angular.element(document).ready(function() {
       $rootScope.isOpenSidenav = function(componentId) {
         return $mdSidenav(componentId).isOpen();
       };
-
+      $rootScope.changeUserStatus = socketSrv.changeUserStatus.bind(socketSrv);
       $rootScope.goto = goto;
 
+      $rootScope.screen = $mdMedia;
       $rootScope.$on('$stateChangeSuccess', function(event, toState) {
         if (_.startsWith(toState.url, '/home')) {
           if (!store.exists('token')) {

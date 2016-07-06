@@ -1,50 +1,48 @@
-<section id="topic-panel">
+<section id="topic-panel" ng-if="topic && topic.id">
 
-  <md-content ng-class="verdictCls" layout-padding layout="column" >
-    <div class="panel-cover" ng-if="verdict && verdictCls"></div>
+  <md-content layout-padding layout="column" ng-class="{'default-theme': themeable == 'true'}" >
 
-    <div class="head" ng-if="topic">
-      <b><span typing>{{topic.title}}</span></b><span class="text-success">({{topic.point}}分){{topic.answercount > 1?'(多选题)': ''}}</span>
+    <div class="head" >
+      <b ng-if="topic.hasOwnProperty('index')">第{{topic.index+1}}题:</b>
+      <span typing="{{typeable}}">{{topic.title}}</span>
+      <span class="text-success">({{topic.point}}分){{topic.answercount > 1?'(多选题)': ''}}</span>
     </div>
 
-    <div class="body" ng-if="topic" layout="column"  layout-align="start stretch" flex>
-
-      <div class="countdown progress">
-        <div class="progress-bar progress-bar-danger">
-        </div>
+    <div class="body" layout="column" layout-align="start stretch" flex>
+      <div class="countdown" layout layout-align="center center" ng-show="themeable == 'true' ">
+        <md-progress-linear flex="100" flex-gt-xs="50" ng-class="{'md-warn': countdown < 25}" md-mode="determinate" value="{{countdown}}"></md-progress-linear>
       </div>
+
       <div class="image-container" ng-if="topic.image">
-      <!--<div class="image-container" ng-if="topic.image">-->
-        <img  ng-src="{{uploadPath + topic.image}}" ng-if="_.isString(topic.image)"/>
+        <!--<div class="image-container" ng-if="topic.image">-->
+        <img ng-src="{{uploadPath + topic.image}}" ng-if="_.isString(topic.image)"/>
         <section ng-if="topic.image === true">
           <b>点击</b>此处 或 将图片<b>拖入</b>
         </section>
-        <!--<img ng-src="{{uploadPath + topic.image}}"/>-->
       </div>
-      <div class="options">
-        <ul>
-          <li ng-repeat="opt in topic.options " >
-            <!-- for competetion-->
-            <div ng-if="!topic.hasOwnProperty('corrector')">
-              <a href ng-click="actived =! actived;check($index)"
-                 ng-style="{background: setOptBgColorByUser($index)}"
-                 ng-class="{actived: actived || (verdict  && verdict.opt.indexOf($index) > -1)}"
-                 typing duration="1000" delay="{{1000 * $index+1000}}">
-                {{$index+1}}. {{opt}}
-              </a>
-            </div>
-
-            <!-- for preview -->
-            <div ng-if="topic.hasOwnProperty('corrector')">
-              <md-icon style="color:green;margin-right: 8px" ng-if="topic.corrector.indexOf($index) > -1">done</md-icon>
-              <a href>{{$index+1}}. {{opt.value}}</a>
-            </div>
-          </li>
-        </ul>
-
+      <div class="options" layout >
         <div class="tip" ng-show="showTip()">
           <i class="fa fa-lightbulb-o"></i>请再选择<b>{{topic.answercount - checkedOpt.length}}</b>个.
         </div>
+        <ul>
+          <li ng-repeat="opt in topic.options "
+              ng-style="{background: setOptBgColorByUser($index)}"
+              ng-click="check($index)"
+              ng-class="{actived: actived || (verdict  && verdict.opt.indexOf($index) > -1)}"
+              typing="{{typeable}}" duration="1000" delay="{{1000 * $index+1000}}">
+            <md-icon style="color:green;"
+                     ng-if="topic.corrector && topic.corrector.indexOf($index) > -1">check
+            </md-icon>
+
+            {{$index+1}}. {{opt.hasOwnProperty('value')?opt.value: opt}}
+          </li>
+        </ul>
+        <div class="panel-cover" ng-if="verdict" layout-align="center center" layout flex>
+          <md-icon ng-if="verdict.user && verdict.verdict" class="correct">check</md-icon>
+          <md-icon ng-if="verdict.user && !verdict.verdict" class="incorrect">close</md-icon>
+          <md-icon ng-if="!verdict.user" class="timeout">sentiment_dissatisfied</md-icon>
+        </div>
+
       </div>
 
     </div>

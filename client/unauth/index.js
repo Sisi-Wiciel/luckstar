@@ -1,6 +1,6 @@
 'use strict';
 
-require('./unauth.css');
+require('./index.css');
 
 module.exports = angular.module('luckstar.unauth', [])
 .config(['$stateProvider', function($stateProvider) {

@@ -4,7 +4,6 @@ module.exports = ['$scope', 'authSrv', 'navbarSrv', '$location', function($scope
   $scope.menu = navbarSrv.menu;
 
   $scope.user = authSrv.getCurrentUser();
-  $scope.leftNavIsOpen = $scope.bigScreen;
   $scope.logout = function() {
     authSrv.logout();
     $scope.goto('/');

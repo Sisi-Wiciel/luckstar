@@ -7,8 +7,8 @@ module.exports = ['socketSrv', 'authSrv', function(socketSrv, authSrv) {
   var currentUser = authSrv.getCurrentUser();
   var roomEndCompetitionCb = $.Callbacks();
   var roomStartCompetitionCb = $.Callbacks();
-
   var userColors = ['acdce6', 'fed5aa', '84dbc8', 'ffa3a4', 'e9cee1'];
+  var messages = [];
 
   this.isUser = function(user) {
     if (!currentRoom.id) {
@@ -34,16 +34,17 @@ module.exports = ['socketSrv', 'authSrv', function(socketSrv, authSrv) {
   };
 
   this.joinRoom = function(id) {
-    return socketSrv.getRoom(id).then(function(result) {
+    var self = this;
+    return socketSrv.getRoom(id).then(function(room) {
       // init room data
-      this.updateCurrentRoom(result);
-
+      messages = [];
+      self.updateCurrentRoom(room);
       socketSrv.joinRoom(id);
       return currentRoom;
     }.bind(this));
   };
 
-  this.getUserMousePointerColor = function(id) {
+  this.getUserColor = function(id) {
     if (id) {
       var index = _.findIndex(currentRoom.users, {id: id});
       return userColors[index];
@@ -107,4 +108,33 @@ module.exports = ['socketSrv', 'authSrv', function(socketSrv, authSrv) {
       }
     }
   };
+
+  this.addMessage = function(message) {
+    if (_.isString(message)) {
+      messages.push({
+        content: message,
+        roleText: '[系统信息]',
+        role: 'system'
+      });
+    } else {
+      if (_.find(currentRoom.users, {id: message.userid})) {
+        message.role = 'player';
+        message.roleText = '[参赛者]';
+      } else if (currentRoom.obs.indexOf(message.userid) > -1) {
+        message.role = 'observer';
+        message.roleText = '[观众]';
+      } else {
+        message.roleText = '[系统信息]',
+        message.role = 'system'
+      }
+
+      messages.push(message);
+    }
+
+  }
+
+  this.getMessage = function() {
+    return messages;
+  }
+
 }];

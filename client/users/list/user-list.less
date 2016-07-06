@@ -5,15 +5,20 @@ div#userlist-page {
   }
   div.user {
     height: 56px;
-    overflow: hidden;
+    //overflow: hidden;
     .transition(box-shadow 0s .3s, height .375s cubic-bezier(0.4, 0.0, 1, 1)); //expand
 
     &.selected {
       .transition(box-shadow 0s, height .375s cubic-bezier(0.0, 0.0, 0.2, 1)); //expand
       height: 390px;
       md-list-item{
+        min-height: auto;
         background: rgba(158,158,158,0.2);
       }
+    }
+
+    md-divider {
+      margin-left: 72px;
     }
   }
 }

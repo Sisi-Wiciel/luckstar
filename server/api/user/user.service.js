@@ -1,48 +1,54 @@
 'use strict';
-var db = require('../redis/redis.service');
+var redisDbService = require('../redis/redis.service');
 var User = require("./user.model");
 var log = require('../../log');
 var setting = require('../../config/setting');
 
-var update = function(id, setFunc) {
-  return db.saveOrUpdateObj("users", id, function(lockedUser) {
-    setFunc(lockedUser);
-    return lockedUser;
-  });
+module.exports = {
+  isUniqueName: isUniqueName,
+  disconnect: disconnect,
+  online: online,
+  changeStatus: changeStatus,
+  offline: offline,
+  isOnline: isOnline,
+  add: addUser,
+  setRoom: setRoom,
+  updatePoint: updatePoint,
+  list: listUser
 };
 
-exports.isUniqueName = function(username) {
+function isUniqueName(username) {
   return User.findOne({username: username}).exec().then(function(user) {
     return user == null;
   });
-};
+}
 
-exports.disconnect = function(id) {
-  return db.set("users:" + id, "sid", '');
-};
+function disconnect(id) {
+  return redisDbService.set("users:" + id, "sid", '');
+}
 
-exports.online = function(id) {
+function online(id) {
   log.debug("user.service#UserOnline", id);
-  return db.set("users:" + id, "state", 1);
-};
+  return redisDbService.set("users:" + id, "state", 1);
+}
 
-exports.changeStatus = function(id, status) {
+function changeStatus(id, status) {
   log.debug("user.service#ChangeStatus", id, status);
-  return db.set("users:" + id, "status", status);
-};
+  return redisDbService.set("users:" + id, "status", status);
+}
 
-exports.offline = function(id) {
+function offline(id) {
   log.debug("user.service#UserOffline", id);
   return this.setRoom(id, null)
   .then(function() {
-    return db.set("users:" + id, "state", 0)
+    return redisDbService.set("users:" + id, "state", 0)
   })
   .then(function() {
     this.changeStatus(id, setting.USER.STATUS.OFFLINE);
   }.bind(this));
-};
+}
 
-exports.isOnline = function(id) {
+function isOnline(id) {
   return this.list(id).then(function(user) {
     if(user){
       return 1 === parseInt(user.state, 10);
@@ -50,13 +56,13 @@ exports.isOnline = function(id) {
       return false;
     }
   });
-};
+}
 
-exports.add = function(user) {
+function addUser(user) {
   log.debug("user.service#AddUser", user.id);
 
   if (user.id) {
-    return db.saveOrUpdateObj("users", {
+    return redisDbService.saveOrUpdateObj("users", {
       avatar: user.avatar,
       point: user.point,
       id: user.id,
@@ -68,23 +74,22 @@ exports.add = function(user) {
   } else {
     log.error("addUser: invalid id", user);
   }
+}
 
-};
-
-exports.setRoom = function(userid, roomid) {
+function setRoom(userid, roomid) {
   log.debug("user.service#setRoom", userid, roomid);
-  return db.set("users:" + userid, "room", roomid);
-};
+  return redisDbService.set("users:" + userid, "room", roomid);
+}
 
-exports.updatePoint = function(uid, point) {
+function updatePoint(uid, point) {
   log.debug("user.service#UpdatePoint", uid, point);
   return this.list(uid).then(function(user) {
-    return update(user.id, function(lockedUser) {
+    return redisDbService.saveOrUpdateObj("users", user.id, function(lockedUser) {
       lockedUser.point = parseInt(user.point) + parseInt(point);
     });
   });
-};
+}
 
-exports.list = function(ids) {
-  return db.listObj("users", ids);
-};
+function listUser(ids) {
+  return redisDbService.listObj("users", ids);
+}

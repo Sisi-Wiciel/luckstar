@@ -1,9 +1,12 @@
-<div id="complete" ng-controller="roomCompeteCtrl">
-  <room-topicwrapper ng-if="room.status === 1">
-    <topic-panel topic="topic"></topic-panel>
-  </room-topicwrapper>
-
-  <div class="compete-record" ng-if="room.status === 0">
-    <room-statistic room="room" roomstat="roomstat"></room-statistic>
-</div>
-</div>
+<section id="roomcompete-page" ng-controller="roomCompeteCtrl" layout layout-align="center center">
+  <topic-panel topic="topic" typeable='true' checkable='true' themeable='true' flex="100" flex-sm="80" flex-gt-sm="60"
+               ng-show="room.status === 1 && topic.id"></topic-panel>
+  <div class="compete-countdown" ng-if="room.status === 1 && countdown > 0">
+    <h1 class="md-display-3">{{countdown}}</h1>
+  </div>
+  <!--<div class="compete-record" ng-if="room.status === 0" flex="100" flex-sm="80" flex-gt-sm="60">-->
+  <room-statistic class="compete-record" ng-if="room.status === 0"
+                  room="room" roomstat="roomstat"  flex="100"
+                  flex-sm="80" flex-gt-sm="60"></room-statistic>
+  <!--</div>-->
+</section>

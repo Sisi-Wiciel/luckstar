@@ -12,7 +12,7 @@ function loadSocketBundles (){
     require('../user/user.socket'),
     require('../room/room.socket'),
     require('../topic/topic.socket'),
-    require('../room/compete.socket')
+    require('../room/roomcompete.socket')
   ];
 }
 
@@ -27,11 +27,10 @@ function disconnect(socket, reason) {
 
 function clearSocket(socket){
   if(socket && socket.timeoutId){
-    log.info('clear time out !!!');
     clearTimeout(socket.timeoutId);
     socket.timeoutId = null;
   }else{
-    console.info('socket is null');
+    log.info('socket is null');
   }
 }
 
@@ -48,18 +47,18 @@ function addEventsListener(socket) {
             disconnect(socket, 'unauthorized');
           }, setting.USER.INACTIVE_IN_SECOND);
 
-          log.debug("Function " + funcString + " called with args ", args);
+          log.debug("Function " + funcString + " called");
           events[funcString](socket, args, _cb);
         });
       });
     });
   });
-
-  function onAuthenticate(socket) {
-    socket.auth = false;
 }
+
+function onAuthenticate(socket) {
+  socket.auth = false;
   //auth socket
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     socket.on('authenticate', function(data, callback) {
       //try {
       if (data && data.token) {
@@ -67,7 +66,6 @@ function addEventsListener(socket) {
         if (decoded && decoded.id) {
           log.info("Authenticated socket with id", socket.id);
           socket.auth = true;
-          socket.io = io;
           socket.uid = decoded.id;
           dbService.set("users:" + decoded.id, "sid", socket.id);
 
@@ -87,7 +85,7 @@ function addEventsListener(socket) {
 
 
   });
-};
+}
 
 function preCallEventAuth(socket) {
   return new Promise(function(resolve, reject) {
@@ -136,11 +134,16 @@ module.exports = {
     }
     return io.sockets.connected[user.sid];
   },
+  emitInAll: function(id, event, data) {
+    console.info('emit in all')
+    log.debug('EmitInAll', id, event);
+    io.sockets.in(id).emit(event, data);
+  },
   emitAll: function(event, data) {
+    log.debug('EmitAll', event);
     io.emit(event, data);
   },
   createIO: function(cb, namespace) {
-    var self = this;
     if (namespace) {
       io = io.of(namespace);
     }
@@ -159,7 +162,6 @@ module.exports = {
 
   init: function() {
 
-    var self = this;
     this.createIO(function(socket) {
       socket.connectedAt = new Date();
 
@@ -176,7 +178,7 @@ module.exports = {
                 log.info("User reconnected immediately", user.id);
               }
             });
-          }, 3000);
+          }, 5000);
         });
       });
 

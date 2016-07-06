@@ -1,71 +1,65 @@
-<div id="room-users" ng-controller="roomUsersCtrl">
-  <div class="room-users-list">
+<section id="roomusers-page" ng-controller="roomUsersCtrl" layout="column" >
+  <div class="room-users-list" layout="row" layout-align="center center">
 
-    <div ng-repeat="user in room.users track by $index" class="user"
-         ng-class="{empty: !user}">
-
+    <div ng-repeat="user in room.users track by $index" class="user">
+      <div class="represent"  ng-style="{background: '#{{userColors[$index]}}'}"></div>
       <div class="user-inner" ng-if="user">
         <img class="avatar" ng-src="{{user.avatar}}"/>
-        <i ng-if="room.admin.id == user.id" class="fa fa-star admin-tag"></i>
-        <i class="fa fa-circle status" ng-style="{color: getUserStatusColor(user)}"></i>
+        <!--<md-icon class="status">lens</md-icon>-->
+        <i class="material-icons status" md-colors="{color: isReady(user.id)? 'primary': 'warn'}">lens</i>
       </div>
       <div class="user-inner" ng-if="!user">
-        <i class="fa fa-user"></i>
+        <md-icon class="empty">account_box</md-icon>
       </div>
-      <div class="hover-mask"></div>
-      <div class="user-profile popover bottom" ng-if="user">
-        <div class="arrow"></div>
-        <div class="media popover-content">
-          <div class="media-left">
-            <img class="img-circle media-object" ng-src="{{user.avatar}}"/>
-          </div>
-          <div class="media-body">
-            <h4 class="media-heading">{{user.username}}</h4>
-            <p>
-              <div class="item">
-                积分: {{user.point}}
-              </div>
-              <div class="item">
-                角色: {{getRoleName(user)}}
-              </div>
-              <div class="item">
-                状态: {{getUserStatus(user)}}
-              </div>
-              <div class="item pointer-color">
-                颜色: <span ng-style="{background: '#{{userPointerColors[$index]}}'}"></span>
-              </div>
-            </p>
-            <div class="foot">
-                <a href ng-click="kickOff(user.id)" comfirm="是否要移除此用户?" ng-if="isAdmin() && !isAdmin(user)">
-                  <i class="fa fa-sign-out"></i>
-                </a>
-            </div>
-          </div>
-        </div>
+      <!--<div class="user-profile popover bottom" ng-if="user">-->
+        <!--<div class="arrow"></div>-->
+        <!--<div class="media popover-content">-->
+          <!--<div class="media-left">-->
+            <!--<img class="img-circle media-object" ng-src="{{user.avatar}}"/>-->
+          <!--</div>-->
+          <!--<div class="media-body">-->
+            <!--<h4 class="media-heading">{{user.username}}</h4>-->
+            <!--<p>-->
+              <!--<div class="item">-->
+                <!--积分: {{user.point}}-->
+              <!--</div>-->
+              <!--<div class="item">-->
+                <!--角色: {{getRoleName(user)}}-->
+              <!--</div>-->
+              <!--<div class="item">-->
+                <!--状态: {{getUserStatus(user)}}-->
+              <!--</div>-->
+              <!--<div class="item pointer-color">-->
+                <!--颜色: <span ng-style="{background: '#{{userPointerColors[$index]}}'}"></span>-->
+              <!--</div>-->
+            <!--</p>-->
+            <!--<div class="foot">-->
+                <!--<a href ng-click="kickOff(user.id)" comfirm="是否要移除此用户?" ng-if="isAdmin() && !isAdmin(user)">-->
+                  <!--<i class="fa fa-sign-out"></i>-->
+                <!--</a>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    </div>
+    <div class="action">
+      <div ng-if="room.admin.id == curr.id">
+        <md-button class="md-primary" ng-if="room.status == 0" ng-click="start()" loading-text="处理中">
+          开始答题
+        </md-button>
+        <md-button class="md-warn" ng-if="room.status == 1" ng-click="terminate()"
+        comfirm="答题终止将不会得到任何积分, 确认是否要终止.">
+        答题终止
+        </md-button>
+      </div>
+      <div ng-if="room.admin.id != curr.id && room.status == 0 && isUser()">
+        <md-button class="md-primary" ng-click="ready()" loading-text="处理中" ng-if="!isReady()">
+        准备就绪
+        </md-button>
+        <md-button class="md-warn"  ng-click="unReady()" loading-text="处理中" ng-if="isReady()">
+        取消准备
+        </md-button>
       </div>
     </div>
   </div>
-
-  <span class="ctrlbtn">
-      <div ng-if="room.admin.id == curr.id">
-        <button class="btn btn-success" ng-if="room.status == 0" ng-click="start()" loading-text="处理中">
-          开始答题
-        </button>
-        <button class="btn btn-info" ng-if="room.status == 1" ng-click="terminate()"
-                comfirm="答题终止将不会得到任何积分, 确认是否要终止.">
-          答题终止
-        </button>
-      </div>
-      <div ng-if="room.admin.id != curr.id && room.status == 0 && isUser()">
-        <button class="btn btn-success" ng-click="ready()" loading-text="处理中"
-                ng-if="!isReady()">
-          准备就绪
-        </button>
-        <button class="btn btn-info" ng-click="unReady()" loading-text="处理中"
-                ng-if="isReady()">
-          取消准备
-        </button>
-      </div>
-
-  </span>
-</div>
+</section>

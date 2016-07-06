@@ -4,8 +4,8 @@
     <div class="md-toolbar-tools">
       <h2>提交题目</h2>
       <span flex></span>
-      <md-button class="md-icon-button" ng-click="close()">
-        <md-icon aria-label="关闭窗口">close</md-icon>
+      <md-button class="md-icon-button" ng-click="close()" aria-label="关闭窗口按钮">
+        <md-icon >close</md-icon>
       </md-button>
     </div>
   </md-toolbar>
@@ -24,12 +24,13 @@
           <md-progress-linear md-mode="determinate" value="{{(step.result.index+1)*10}}"></md-progress-linear>
            {{(step.result.index+1)*10}}%
         </span>
-
       </li>
     </ol>
-    <md-content class="footer" ng-show="isAllFinished()" layout layout-align="center center">
-      <md-button class="md-raised md-primary" ng-click="close()">关闭</md-button>
-    </md-content>
+    <section layout="row" class="footer" ng-show="isAllFinished()">
+      <md-button md-autofocus class="md-primary md-raised" ng-click="close()" aria-label="关闭窗口按钮">
+        关闭
+      </md-button>
+    </section>
 
   </md-dialog-content>
 </md-dialog>

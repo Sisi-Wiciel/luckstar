@@ -1,16 +1,35 @@
 var roomService = require('./room.service');
 var userService = require('../user/user.service');
-var topicService = require('../topic/topic.service');
-
-var competeSocket = require('./compete.socket');
+var socketService = require('../socket/socket.service');
+var competeSocket = require('./roomcompete.socket');
 var log = require('../../log');
 var _ = require('lodash');
 var moment = require('moment');
-var Promise = require('bluebird');
 var setting = require('../../config/setting');
-var socketSrv;
 
-exports.events = {};
+module.exports = {
+  events: {
+    roomKickUserOff: roomKickUserOff,
+    roomInviteUserResponse: roomInviteUserResponse,
+    roomInviteUser: roomInviteUser,
+    roomCreate: roomCreate,
+    roomGetStat: roomGetStat,
+    roomTerminateCompete: roomTerminateCompete,
+    roomUpdate: updateRooms,
+    roomSendMessage: sendRoomMessage,
+    roomGet: getRoom,
+    roomReadyCompete: roomReadyCompete,
+    roomJoin: roomJoin,
+    roomLeave: roomLeave,
+    roomStartCompete: roomStartCompete,
+    roomUnreadyCompete: roomUnreadyCompete
+  },
+  updateRooms: updateRooms,
+  sendRoomMessage: sendRoomMessage,
+  deregister: function(socket) {
+    roomLeave(socket);
+  }
+};
 
 function getRoom(socket, id, cb) {
   log.verbose("room.socket#getRoom", id);
@@ -34,21 +53,17 @@ function updateRooms(socket) {
     var roomId = socket.room;
     // if currRoom is null, this room is closed.
     if (!_.isEmpty(roomId)) {
-      socket.io.sockets.in(roomId).emit('updateRoom', _.find(rooms, {"id": roomId}));
+      socketService.emitInAll(roomId, 'updateRoom', _.find(rooms, {"id": roomId}));
     }
-    socket.io.emit("updateRooms", rooms);
+    socketService.emitAll("updateRooms", rooms);
   });
-};
+}
 
-function sendRoomMessage(socket, message, isSystem) {
+function sendRoomMessage(socket, message) {
   log.verbose("room.socket#sendRoomMessage", socket.room);
-
-  socket.io.sockets.in(socket.room).emit('updateRoomMessage', {
-    message: message,
-    system: isSystem,
-    time: moment().format()
-  });
-};
+  message.time = moment().format();
+  socketService.emitInAll(socket.room, 'updateRoomMessage', message)
+}
 
 function roomLeave(socket) {
   log.verbose("room.socket#roomLeave", socket.room);
@@ -80,15 +95,10 @@ function roomLeave(socket) {
     });
   });
 
-};
+}
 
-exports.events.roomUpdate = updateRooms;
 
-exports.events.roomSendMessage = sendRoomMessage;
-
-exports.events.roomGet = getRoom;
-// Only join room as player.
-exports.events.roomJoin = function(socket, id) {
+function roomJoin(socket, id) {
   log.verbose("room.socket#roomJoin", id);
   socket.room = id;
 
@@ -104,54 +114,41 @@ exports.events.roomJoin = function(socket, id) {
     if (!_.find(room.users, {'id': socket.uid})) {
       roomService.join(room, user).then(function(room) {
         return userService.setRoom(socket.uid, room.id).then(function() {
-          sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
+          sendRoomMessage(socket, '用户' + user.username + '加入房间');
         });
       }).then(function() {
         updateRooms(socket);
       });
     } else {
       log.verbose("User already in room ", room.id);
-      sendRoomMessage(socket, '用户' + user.username + '加入房间', true);
+      sendRoomMessage(socket, '用户' + user.username + '加入房间');
     }
   });
-};
+}
 
-exports.events.roomLeave = roomLeave;
-
-exports.events.roomStartCompete = function(socket) {
+function roomStartCompete(socket) {
   log.verbose("room.socket#roomStartCompete");
-  var COUNTDOWN_MAXNUMBER = 3;
+  
   getRoom(socket, socket.room, function(room, user) {
     if (room.admin.id !== user.id) {
-      socket.io.sockets.in(socket.room).emit('RoomAlert', '需要管理员开启比赛.');
+      socketService.emitInAll(socket.room, 'RoomAlert', '需要管理员开启比赛.');
       return;
     }
     if (room.readyUsers.length == room.users.length) {
-      roomService.createCompeteState(room).then(function(roomStat) {
-        (function startCountDown(number) {
-          setTimeout(function() {
-            if (number > 0) {
-              socket.io.sockets.in(socket.room).emit('StartCompeteCountDown', number);
-              sendRoomMessage(socket, number + '秒后开始...', true);
-              startCountDown(--number);
-            } else {
-              competeSocket.nextTopic(socket);
-            }
-          }, 1500);
-        })(COUNTDOWN_MAXNUMBER);
+
+      roomService.startCompete(room).then(function(updatedRoom) {
+        updateRooms(socket);
+        competeSocket.start(socket, updatedRoom);
       });
 
-      roomService.startCompete(room).then(function() {
-        updateRooms(socket);
-      });
     } else {
-      socket.io.sockets.in(socket.room).emit('RoomAlert', '需要全部用户准备就绪后才可开始');
+      socketService.emitInAll(socket.room, 'RoomAlert', '需要全部用户准备就绪后才可开始');
     }
 
   });
-};
+}
 
-exports.events.roomUnreadyCompete = function(socket) {
+function roomUnreadyCompete(socket) {
   log.verbose("room.socket#UnReadyRoomCompete");
 
   getRoom(socket, socket.room, function(room, user) {
@@ -161,17 +158,17 @@ exports.events.roomUnreadyCompete = function(socket) {
 
       if (userIndex > -1) {
         _.pullAt(locked.readyUsers, userIndex);
-        socket.io.sockets.in(socket.room).emit('updateRoom', locked);
+        socketService.emitInAll(socket.room, 'updateRoom', locked);
       } else {
         log.warn("User %s was not in ready status yet ", user.id);
       }
     }).then(function() {
-      sendRoomMessage(socket, '用户' + user.username + '取消准备.', true);
+      sendRoomMessage(socket, '用户' + user.username + '取消准备.');
     });
   });
-};
+}
 
-exports.events.roomReadyCompete = function(socket) {
+function roomReadyCompete(socket) {
   log.verbose("room.socket#roomReadyCompete");
 
   getRoom(socket, socket.room, function(room, user) {
@@ -179,35 +176,35 @@ exports.events.roomReadyCompete = function(socket) {
     roomService.update(socket.room, function(locked) {
       if (locked.readyUsers.indexOf(user.id) == -1) {
         locked.readyUsers.push(user.id);
-        socket.io.sockets.in(socket.room).emit('updateRoom', locked);
+        socketService.emitInAll(socket.room, 'updateRoom', locked);
       } else {
         log.warn("User %s was in ready status ", user.id);
       }
     }).then(function() {
-      sendRoomMessage(socket, '用户' + user.username + '准备就绪.', true);
+      sendRoomMessage(socket, '用户' + user.username + '准备就绪.');
     })
 
   });
-};
+}
 
-exports.events.roomTerminateCompete = function(socket) {
+function roomTerminateCompete(socket) {
   log.verbose("room.socket#RoomTerminateCompete");
 
-  getRoom(socket, socket.room, function(room, user) {
+  getRoom(socket, socket.room, function(room) {
     roomService.terminateCompete(room).then(function() {
-      sendRoomMessage(socket, '管理员已终止答题', true);
+      sendRoomMessage(socket, '管理员已终止答题');
     }).then(function() {
       updateRooms(socket);
     });
   });
-};
+}
 
-exports.events.roomGetStat = function(socket, cb) {
+function roomGetStat(socket, cb) {
   log.verbose("room.socket#roomGetStat, " + socket.room);
   roomService.listRoomStat(socket.room).then(cb);
-};
+}
 
-exports.events.roomCreate = function(socket, newroom, cb) {
+function roomCreate(socket, newroom, cb) {
   log.verbose("room.socket#roomCreate ", socket.uid, socket.room);
 
   function do_save() {
@@ -233,14 +230,15 @@ exports.events.roomCreate = function(socket, newroom, cb) {
   } else {
     do_save();
   }
-};
-exports.events.roomInviteUser = function(socket, userid) {
+}
+
+function roomInviteUser(socket, userid) {
   log.verbose("room.socket#roomInviteUser");
   getRoom(socket, socket.room, function(room, me) {
     //make sure that user as a player in room
     if (_.find(room.users, {'id': me.id})) {
       userService.list(userid).then(function(user) {
-        var userSocket = socketSrv.getSocketByUser(user);
+        var userSocket = socketService.getSocketByUser(user);
         if (userSocket) {
           userSocket.emit('inviteUser', {
             'room': socket.room,
@@ -251,26 +249,26 @@ exports.events.roomInviteUser = function(socket, userid) {
       });
     }
   });
-};
+}
 
-exports.events.roomInviteUserResponse = function(socket, userid, response) {
+function roomInviteUserResponse(socket, userid, response) {
   log.verbose("room.socket#roomInviteUserResponse");
   userService.list(userid).then(function(user) {
-    var userSocket = socketSrv.getSocketByUser(user);
+    var userSocket = socketService.getSocketByUser(user);
     userSocket.emit('inviteUserResponse', {
       response: response,
       username: user.username
     });
   });
-};
+}
 
-exports.events.roomKickUserOff = function(socket, userid) {
+function roomKickUserOff(socket, userid) {
   log.verbose("room.socket#roomKickUserOff");
   getRoom(socket, socket.room, function(room, me) {
     if (room.admin.id === me.id) {
       userService.list(userid).then(function(user) {
         roomService.leave(room, user).then(function() {
-          var userSocket = socket.io.sockets.connected[user.sid];
+          var userSocket = socketService.getSocketByUser(user);
 
           if (userSocket) {
             userSocket.emit('updateRoom', null);
@@ -283,10 +281,4 @@ exports.events.roomKickUserOff = function(socket, userid) {
     }
 
   });
-};
-
-exports.updateRooms = updateRooms;
-exports.sendRoomMessage = sendRoomMessage;
-exports.deregister = function(socket) {
-  roomLeave(socket);
-};
+}

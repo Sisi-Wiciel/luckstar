@@ -19,18 +19,36 @@
   }
 }
 
-div#room-message {
-  .flex-direction(column);
-  .display(flex);
-  overflow: auto;
+section#room-message {
+  font-size: 1.4rem;
+  //.flex-direction(column);
+  //.display(flex);
+  //overflow: auto;
   width: 100%;
-  > ul {
-    height: 120px;
-    overflow-x: hidden;
-    li {
-      &.ng-enter {
-        .animation(.8s message-receive);
-      }
+  height: 100%;
+  //> ul {
+  //  //height: 120px;
+  //  //overflow-x: hidden;
+  //  list-style: none;
+  //  li {
+  //    &.ng-enter {
+  //      .animation(.8s message-receive);
+  //    }
+  //  }
+  //}
+  md-content{
+    padding: 8px;
+  }
+  div.message{
+    >.system{
+      color:red;
+    }
+  }
+  >md-input-container{
+    margin: 0;
+    padding-bottom: 0;
+    .md-errors-spacer{
+      min-height: 0;
     }
   }
 }

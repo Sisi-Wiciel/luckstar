@@ -1,49 +1,74 @@
 @import (reference) "common";
 
-div#room_home_page {
-
+section#room-page {
   height: 100%;
-  .border-radius(10);
-  .flex-column;
-  > .room-head {
-    .flex-center;
-    .justify-content(space-between);
-    padding: 10px;
-    border-bottom: 1px solid #fff;
-    a {
-      .flex(0 0 1em);
-      .fa-power-off {
-        font-size: .5em;
-        .hover;
-      }
-    }
-
-    font-size: 20px;
-    font-weight: bold;
+  position: relative;
+  @media (min-width: 768px) {
+    margin: 0 8px;
   }
-  > .room-body {
-    min-height: 450px;
-    padding: 10px;
-    .flex(1);
-    .flex-column;
-    .justify-content(space-between);
-
-    .room-body-users{
-      .display(flex);
-      .justify-content(space-between);
+  >header{
+    margin: 8px 0;
+    img.avatar{
+      width: 60px;
+      height: 60px;
+      background: #fff;
+      border-radius: 50%;
     }
-    .room-body-complete{
-      flex: 1;
-      padding: 10px;
+    span.role{
+      text-align: center;
     }
-
+  }
+  > section.room-body{
+    div.room-body-complete{
+      margin: 8px 0;
+    }
   }
   > .room-foot {
-    padding: 4px;
-    .bg-fff;
-    .border-radius(5);
-    .chat {
-      width: 100%;
+    height: 120px;
+    width: 100%;
+    margin: 5px 0;
+    &:hover{
+      //position: fixed;
+      //bottom: 0;
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
     }
   }
+  //
+  //height: 100%;
+  //.border-radius(10);
+  //.flex-column;
+  //> .room-head {
+  //  .flex-center;
+  //  .justify-content(space-between);
+  //  padding: 10px;
+  //  border-bottom: 1px solid #fff;
+  //  a {
+  //    .flex(0 0 1em);
+  //    .fa-power-off {
+  //      font-size: .5em;
+  //      .hover;
+  //    }
+  //  }
+  //
+  //  font-size: 20px;
+  //  font-weight: bold;
+  //}
+  //> .room-body {
+  //  min-height: 450px;
+  //  padding: 10px;
+  //  .flex(1);
+  //  .flex-column;
+  //  .justify-content(space-between);
+  //
+  //  .room-body-users{
+  //    .display(flex);
+  //    .justify-content(space-between);
+  //  }
+  //  .room-body-complete{
+  //    flex: 1;
+  //    padding: 10px;
+  //  }
+  //
+  //}
+
 }

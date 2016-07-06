@@ -39,6 +39,11 @@ module.exports = ['$timeout', function($timeout) {
   return {
     link: function(scope, element, attrs) {
       $timeout(function() {
+        if(!_.isEmpty(attrs.typing)){
+          if(!eval(attrs.typing)){
+            return
+          }
+        }
         new Typing({
           target: element,
           duration: attrs.duration || 1000,

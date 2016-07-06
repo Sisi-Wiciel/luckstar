@@ -23,11 +23,12 @@ module.exports = function() {
     _.remove(this.menu, {title: title});
   };
 
-  this.addItem = function(title, link) {
+  this.addItem = function(title, link, icon) {
     if (!_.find(this.menu, {title: title})) {
       this.menu.push({
         title: title,
-        link: link
+        link: link,
+        icon: icon
       });
     }
   };
