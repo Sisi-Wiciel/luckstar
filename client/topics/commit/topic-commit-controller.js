@@ -1,13 +1,13 @@
 'use strict';
 
-require('./topic-commit.css');
+require('./topic-commit.less');
 
-module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv', 'fileSrv', '$mdDialog', function($scope, $timeout,
-                                                                                                     socketSrv,
-                                                                                                     messageCenter,
-                                                                                                     authSrv, fileSrv, $mdDialog) {
-  var curr = authSrv.getCurrentUser();
-
+module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'fileSrv', '$mdDialog', function($scope,
+                                                                                                       $timeout,
+                                                                                                       socketSrv,
+                                                                                                       messageCenter,
+                                                                                                       fileSrv,
+                                                                                                       $mdDialog) {
   $scope.points = [
     {value: '2', label: '2分'},
     {value: '5', label: '5分'},
@@ -47,27 +47,26 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv',
   };
 
   $scope.initForm = function() {
+    // Fix F5 issue
+    if (_.isEmpty($scope.currentUser)) {
+      $timeout($scope.initForm, 100);
+      return;
+    }
 
-      //Fix F5 issue
-      if (_.isEmpty(curr)) {
-        $timeout($scope.initForm, 100);
-        return;
-      }
+    $scope.imageEnabled = false;
+    fileSrv.setFile(null);
 
-      $scope.imageEnabled = false;
-      fileSrv.setFile(null);
-
-      $scope.topic = {
-        options: [
-          {title: 'A', value: ''},
-          {title: 'B', value: ''}
-        ],
-        creator: curr.id,
-        creatorUsername: curr.username,
-        corrector: [0],
-        answercount: 1,
-        point: $scope.points[0].value
-      };
+    $scope.topic = {
+      options: [
+        {title: 'A', value: ''},
+        {title: 'B', value: ''}
+      ],
+      creator: $scope.currentUser.id,
+      creatorUsername: $scope.currentUser.username,
+      corrector: [0],
+      answercount: 1,
+      point: $scope.points[0].value
+    };
   };
 
   $scope.submit = function(event) {
@@ -110,15 +109,14 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'messageCenter', 'authSrv',
         scope: dialogScope,
         parent: angular.element(document.body),
         targetEvent: event,
-        clickOutsideToClose:true,
+        clickOutsideToClose: true,
         fullscreen: !$scope.screen('gt-sm')
       }).finally($scope.initForm);
     }, 1000);
   };
 
-
   $scope.addImage = function() {
-    $scope.topic.image = !!!$scope.topic.image;
+    $scope.topic.image = Boolean(!$scope.topic.image);
     if (!$scope.topic.image) {
       fileSrv.setFile(null);
     }

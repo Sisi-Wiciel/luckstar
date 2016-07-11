@@ -1,20 +1,23 @@
 'use strict';
 
-require('./room-statistic.css');
+require('./room-statistic.less');
 
-module.exports = ['$timeout', function($timeout) {
+module.exports = function() {
   return {
     scope: {
       room: '='
     },
     template: require('./room-statistic.html'),
-    controller: ['$scope', 'roomSrv', 'socketSrv',function($scope, roomSrv, socketSrv) {
-      $scope.statTable = false;
-      $scope.roomstat = {};
-      $scope.userColors = roomSrv.getUserColor();
-      socketSrv.getRoomStat().then(function(result) {
-        $scope.roomstat = result;
-      });
-    }],
+    controller: roomStatCtrl
   };
-}];
+};
+
+/* @ngInject */
+function roomStatCtrl($scope, roomSrv, socketSrv) {
+  $scope.statTable = false;
+  $scope.roomstat = {};
+  $scope.userColors = roomSrv.getUserColor();
+  socketSrv.getRoomStat().then(function(result) {
+    $scope.roomstat = result;
+  });
+}

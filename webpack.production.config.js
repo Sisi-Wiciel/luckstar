@@ -1,20 +1,17 @@
 'use strict';
 
-// Modules
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+var ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
 var path = require('path');
 
 module.exports = function makeWebpackConfig() {
   var config = require('./webpack.config');
 
-  config.externals = {
-    'moment': true,
-    'bootstrap': true,
-    'jquery': 'jQuery',
-    'io': true
-  };
+  // config.externals = {
+    // 'moment': true,
+    // 'jquery': "jQuery"
+  // };
 
   config.output = {
     path: __dirname + '/dist',
@@ -23,10 +20,12 @@ module.exports = function makeWebpackConfig() {
     chunkFilename: '[name].[hash:8].js'
   };
 
-  config.devtool = 'source-map';
+  // config.devtool = 'source-map';
 
   config.plugins.push(
-
+  new ngAnnotatePlugin({
+    add: true
+  }),
   new ExtractTextPlugin('[name].[hash:8].css'),
 
   new webpack.optimize.DedupePlugin(),
@@ -36,6 +35,5 @@ module.exports = function makeWebpackConfig() {
     }
   })
   );
-
   return config;
 }();

@@ -1,8 +1,11 @@
 'use strict';
 
-require('./room-compete.css');
-module.exports = ['$scope', '$timeout', 'socketSrv', 'authSrv', 'roomSrv', function($scope, $timeout, socketSrv,
-                                                                                    authSrv, roomSrv) {
+require('./room-compete.less');
+module.exports = roomCompeteCtrl;
+
+/* @ngInject */
+function roomCompeteCtrl($scope, $timeout, socketSrv,
+                         authSrv, roomSrv) {
   $scope.countdown = 0;
   roomSrv.onEndCompetition(function() {
     $scope.countdown = 0;
@@ -14,17 +17,16 @@ module.exports = ['$scope', '$timeout', 'socketSrv', 'authSrv', 'roomSrv', funct
     $scope.topic = null;
     $timeout(function() {
       $scope.topic = topic;
-      
     });
     $scope.countdown = 0;
     $scope.$apply();
   });
   socketSrv.register('StartCompeteCountDown', function(countdown) {
     $scope.countdown = countdown;
-    roomSrv.addMessage(countdown + "秒后开始...");
+    roomSrv.addMessage(countdown + '秒后开始...');
     $scope.$apply();
   });
   // Fix F5 issue
   // $scope.updateRoomstat();
   socketSrv.getCompeteTopic();
-}];
+}

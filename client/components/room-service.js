@@ -1,7 +1,10 @@
 /* eslint new-cap: [2, {"capIsNewExceptions": ["$.Callbacks"]}] */
 'use strict';
 
-module.exports = ['socketSrv', 'authSrv', function(socketSrv, authSrv) {
+module.exports = roomService;
+
+/* @ngInject */
+function roomService(socketSrv, authSrv) {
   var currentRoom = {id: null};
 
   var currentUser = authSrv.getCurrentUser();
@@ -41,7 +44,7 @@ module.exports = ['socketSrv', 'authSrv', function(socketSrv, authSrv) {
       self.updateCurrentRoom(room);
       socketSrv.joinRoom(id);
       return currentRoom;
-    }.bind(this));
+    });
   };
 
   this.getUserColor = function(id) {
@@ -123,16 +126,14 @@ module.exports = ['socketSrv', 'authSrv', function(socketSrv, authSrv) {
         message.role = 'observer';
         message.roleText = '[观众]';
       } else {
-        message.role = 'system'
+        message.role = 'system';
       }
 
       messages.push(message);
     }
-
-  }
+  };
 
   this.getMessage = function() {
     return messages;
-  }
-
-}];
+  };
+}

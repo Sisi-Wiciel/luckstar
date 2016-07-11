@@ -5,9 +5,9 @@ module.exports = ['$scope', 'authSrv', 'messageCenter', function($scope, authSrv
   $scope.user = {
     password: '',
     username: ''
-  }
+  };
   $scope.login = function() {
-    if(_.isEmpty($scope.loginForm.$error)){
+    if (_.isEmpty($scope.loginForm.$error)) {
       authSrv.login(_.clone($scope.user)).then(function() {
         $scope.goto('/home');
       }, function(err) {
@@ -20,6 +20,6 @@ module.exports = ['$scope', 'authSrv', 'messageCenter', function($scope, authSrv
     $scope.user = {
       password: '',
       username: ''
-    }
+    };
   };
 }];

@@ -1,11 +1,14 @@
 'use strict';
 
-require('./room-creation.css');
+require('./room-creation.less');
 
-module.exports = ['$scope', 'socketSrv', 'messageCenter', '$timeout', '$mdDialog', function($scope, socketSrv,
-                                                                                            messageCenter, $timeout,
-                                                                                            $mdDialog) {
-  $scope.reset = function () {
+module.exports = roomCreationCtrl;
+
+/* @ngInject */
+function roomCreationCtrl($scope, socketSrv,
+                          messageCenter, $timeout,
+                          $mdDialog) {
+  $scope.reset = function() {
     $scope.newroom = {
       title: '',
       number: 5,
@@ -39,4 +42,4 @@ module.exports = ['$scope', 'socketSrv', 'messageCenter', '$timeout', '$mdDialog
   };
 
   $scope.reset();
-}];
+}

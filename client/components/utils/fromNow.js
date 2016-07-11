@@ -2,7 +2,10 @@
 var moment = require('moment');
 moment.locale('zh-cn');
 
-module.exports = ['$interval', function($interval) {
+module.exports = fromNowDirective;
+
+/* @ngInject */
+function fromNowDirective($interval) {
   return {
     restrict: 'A',
     link: function(scope, ele, attr) {
@@ -13,4 +16,4 @@ module.exports = ['$interval', function($interval) {
       }, 5000);
     }
   };
-}];
+}

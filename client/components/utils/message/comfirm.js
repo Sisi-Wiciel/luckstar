@@ -1,4 +1,7 @@
-module.exports = ['messageCenter', function(messageCenter) {
+module.exports = confirmDirective;
+
+/* @ngInject */
+function confirmDirective(messageCenter) {
   return {
     restrict: 'A',
     scope: {
@@ -26,4 +29,4 @@ module.exports = ['messageCenter', function(messageCenter) {
       });
     }
   };
-}];
+}

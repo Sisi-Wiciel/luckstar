@@ -1,10 +1,13 @@
 'use strict';
 
-require('./room-users.css');
+require('./room-users.less');
 
-module.exports = ['$scope', '$q', 'messageCenter', 'authSrv', 'socketSrv', 'roomSrv', function($scope, $q,
-                                                                                               messageCenter, authSrv,
-                                                                                               socketSrv, roomSrv) {
+module.exports = roomUsersCtrl;
+
+/* @ngInject */
+function roomUsersCtrl($scope, $q,
+         messageCenter, authSrv,
+         socketSrv, roomSrv) {
   $scope.curr = authSrv.getCurrentUser();
 
   var userStatusColors = {
@@ -72,4 +75,4 @@ module.exports = ['$scope', '$q', 'messageCenter', 'authSrv', 'socketSrv', 'room
   $scope.kickOff = function(userid) {
     socketSrv.kickOff(userid);
   };
-}];
+}

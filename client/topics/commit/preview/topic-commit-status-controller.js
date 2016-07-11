@@ -1,6 +1,6 @@
 'use strict';
 
-require('./topic-commit-status.css');
+require('./topic-commit-status.less');
 module.exports = ['$scope', '$timeout', 'socketSrv', 'fileSrv', '$mdDialog', function($scope,
                                                                                       $timeout,
                                                                                       socketSrv,

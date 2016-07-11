@@ -1,7 +1,10 @@
 'use strict';
 
-require('./room-tools.css');
-module.exports = ['$scope', 'socketSrv', 'messageCenter', function($scope, socketSrv, messageCenter) {
+require('./room-tools.less');
+module.exports = roomToolsCtrl;
+
+/* @ngInject */
+function roomToolsCtrl($scope, socketSrv, messageCenter) {
   $scope.roomstatVisiable = false;
 
   $scope.showRoomStat = function() {
@@ -17,4 +20,4 @@ module.exports = ['$scope', 'socketSrv', 'messageCenter', function($scope, socke
       messageCenter.notify('我们已经收到您的举报.');
     });
   };
-}];
+}

@@ -11,7 +11,6 @@ module.exports = function makeWebpackConfig() {
   var config = require('./webpack.config.js');
   config.devtool = '#eval-source-map';
   config.entry.app.unshift('webpack-dev-server/client?http://localhost:8080', 'webpack/hot/dev-server');
-  config.entry.vendors.unshift('jquery', 'socket.io-client', 'lodash', 'moment');
   config.debug = true;
   config.output = {
     path: __dirname + '/dist',
@@ -19,7 +18,7 @@ module.exports = function makeWebpackConfig() {
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js'
   };
-
+  
   config.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin('[name].[hash].css', {disable: true})

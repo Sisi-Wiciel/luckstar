@@ -58,7 +58,7 @@ describe('api/room/room.service', function() {
       }, 1000);
     });
   });
-  describe.only('#nextRoomTopic', function() {
+  describe('#nextRoomTopic', function() {
     var room;
 
     beforeEach(function(done) {
@@ -233,7 +233,7 @@ describe('api/room/room.service', function() {
         }).catch(done);
       });
     });
-
+``
     it('should can change the role of user between player and observer', function(done) {
       utils.newUsers().then(function(users) {
         var player = users[0];

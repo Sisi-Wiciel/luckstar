@@ -1,7 +1,12 @@
+/* eslint no-undef: 0 */
 'use strict';
 var settings = require('../settings');
+var io = require('socket.io-client');
 
-module.exports = ['store', '$q', '$location', function(store, $q, $location) {
+module.exports = socketService;
+
+/* @ngInject */
+function socketService(store, $q, $location) {
   var socket = null;
   var onAuthSuccess = _.noop;
   var onAuthFailed = _.noop;
@@ -168,4 +173,4 @@ module.exports = ['store', '$q', '$location', function(store, $q, $location) {
       return this.getResult('topic upload file', data);
     }
   };
-}];
+}

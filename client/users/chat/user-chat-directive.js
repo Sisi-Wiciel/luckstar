@@ -1,14 +1,13 @@
 'use strict';
 
-require('./user-chat.css');
+require('./user-chat.less');
 module.exports = function() {
   return {
     template: require('./user-chat.html'),
-    scope:{
+    scope: {
       user: '='
     },
-    controller: ['$scope', 'authSrv', 'socketSrv', function($scope, authSrv, socketSrv) {
-      $scope.curr = authSrv.getCurrentUser();
+    controller: ['$scope', 'socketSrv', function($scope, socketSrv) {
       $scope.messages = [];
       $scope.sendMsg = function() {
         if (!$scope.messageInput) {
@@ -25,7 +24,7 @@ module.exports = function() {
           content: msg,
           time: new Date(),
           system: false,
-          from: $scope.curr
+          from: $scope.currentUser
         });
         $scope.messageInput = '';
       };
@@ -40,7 +39,7 @@ module.exports = function() {
         }, 370);
       };
       scope.$on('MessageReceivedEvent', function(event, message) {
-        if(message.from.id === scope.user.id){
+        if (message.from.id === scope.user.id) {
           scope.messages.push(message);
           scrollBottom();
         }

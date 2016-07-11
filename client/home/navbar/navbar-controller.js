@@ -1,6 +1,9 @@
-require('./navbar.css');
+require('./navbar.less');
 
-module.exports = ['$scope', 'authSrv', 'navbarSrv', '$location', function($scope, authSrv, navbarSrv, $location) {
+module.exports = navbarCtrl;
+
+/* @ngInject */
+function navbarCtrl($scope, authSrv, navbarSrv, $location) {
   $scope.menu = navbarSrv.menu;
 
   $scope.user = authSrv.getCurrentUser();
@@ -12,4 +15,4 @@ module.exports = ['$scope', 'authSrv', 'navbarSrv', '$location', function($scope
   $scope.isActive = function(item) {
     return item.link === $location.path();
   };
-}];
+}

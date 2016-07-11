@@ -126,20 +126,19 @@ describe('api/room/roomcompete.socket', function() {
       done();
     });
 
-    it('should received a topic without corrector attr, then start countdown notify', function(done) {
-
+    it.only('should received a topic without corrector attr, then start countdown notify', function(done) {
       roomCompeteSocket.nextTopic(socket);
       var nextTopicFunc = sinon.stub(roomCompeteSocket, 'nextTopic');
       setTimeout(function() {
         emitInAllFunc.called.should.true;
         emitInAllFunc.alwaysCalledWith(room.id).should.true;
 
-        /*
-          topic event     : 1
-          countdown event : settings.ROOM.COMPETE_TOPIC_COUNTDOWN_SYNC.length
-          verdict event   : 1
-         */
-        emitInAllFunc.callCount.should.equal(1 + settings.ROOM.COMPETE_TOPIC_COUNTDOWN_SYNC.length + 1);
+        var topic_event = 1;
+        var verdict_event = 1;
+        var next_topics_events_times = topic_event + settings.ROOM.COMPETE_TOPIC_COUNTDOWN_SYNC.length + verdict_event;
+        var fininsh_event = 1;
+
+        emitInAllFunc.callCount.should.equal(next_topics_events_times * settings.ROOM.COMPETE_MAX_TOPICS + fininsh_event);
 
         //Topic event.
         var topicEventCall = emitInAllFunc.firstCall;

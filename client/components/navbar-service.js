@@ -1,6 +1,8 @@
 'use strict';
 
-module.exports = function() {
+module.exports = navbarService;
+
+function navbarService() {
   this.menu = [{
     title: '首页',
     icon: 'home',
@@ -32,20 +34,17 @@ module.exports = function() {
       });
     }
   };
-  
+
   this.getCurrentItem = function(path) {
-    var current;
-    if(current = _.find(this.menu, {'link': path})){
-      return current;
-    }else{
+    var current = _.find(this.menu, {link: path});
+    if (_.isEmpty(current)) {
       _.each(this.menu, function(item) {
-        if(item.link && _.startsWith(path, item.link)){
+        if (item.link && _.startsWith(path, item.link)) {
           current = item;
           return true;
         }
-      })
+      });
     }
-
     return current;
   };
-};
+}

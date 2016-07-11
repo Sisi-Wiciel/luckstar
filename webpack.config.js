@@ -9,14 +9,20 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = function makeWebpackConfig() {
   var config = {
     resolve: {
-      extentions: ["js"]
+      extentions: ["js"],
+      alias: {
+        moment: "moment/min/moment-with-locales.min.js",
+        io: "socket.io-client"
+      }
     }
   };
 
+  // config.externals = {
+  //   'io': true
+  // };
   config.entry = {
-    vendors: ['angular', 'angular-ui-router', 'angular-animate', 'angular-messages', 'angular-material'],
-    app: ['./client/index.js'],
-    static: './client/core/static.js'
+    vendors: ['lodash', 'angular', 'angular-ui-router', 'angular-animate', 'angular-messages', 'angular-material'],
+    app: ['./client/index.js']
   };
 
   config.module = {
@@ -34,8 +40,11 @@ module.exports = function makeWebpackConfig() {
     }, {
       test: /\.html$/,
       loader: 'raw'
-    },
-      {test: /\.less$/, loader: 'style!css!less'}]
+    }, {
+      test: /\.less$/,
+      loader: 'style!css!less'
+    }],
+    noParse: [/moment-with-locales/]
   };
 
   config.postcss = [
@@ -45,14 +54,13 @@ module.exports = function makeWebpackConfig() {
   ];
 
   config.plugins = [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: ['vendors'],
-      minChunks: Infinity
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: ['commons'],
+    //   minChunks: Infinity
+    // }),
     new webpack.ProvidePlugin({
       $: "jquery",
-      jQuery: "jquery",
-      io: 'socket.io-client'
+      jQuery: "jquery"
     }),
     new HtmlWebpackPlugin({
       template: './client/index.html',

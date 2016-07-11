@@ -29,7 +29,7 @@ module.exports = ['$scope', '$timeout', 'authSrv', 'messageCenter', function($sc
       email: '',
       username: '',
       password: ''
-    }
+    };
     $scope.avatar = '';
   };
 

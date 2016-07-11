@@ -10,7 +10,10 @@ require('./messenger-theme-future.css');
 require('./messenger.min.js');
 require('./messenger-theme-future.min.js');
 
-module.exports = ['$q', function($q) {
+module.exports = messageCenter;
+
+/* @ngInject */
+function messageCenter($q) {
   Messenger.options = {
     maxMessages: 9,
     // extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
@@ -74,5 +77,5 @@ module.exports = ['$q', function($q) {
       });
     });
   };
-}];
+}
 

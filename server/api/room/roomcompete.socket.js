@@ -22,9 +22,7 @@ module.exports = {
   }
 };
 
-
 function sendVerdict(socket, room, verdictObj) {
-  var self = this;
   log.verbose("compete.socket#NodifyVerdict", verdictObj);
 
   socketService.emitInAll(socket.room, 'topicVerdict', verdictObj);
@@ -34,7 +32,7 @@ function sendVerdict(socket, room, verdictObj) {
   }).then(function() {
     roomService.updateRoomStat(room, verdictObj).then(function() {
       setTimeout(function() {
-        nextTopic.call(self, socket);
+        nextTopic(socket);
       }, settings.ROOM.TOPICI_INTERVAL_TIME * 1000)
     })
   });
@@ -42,7 +40,6 @@ function sendVerdict(socket, room, verdictObj) {
 }
 
 function topicTimeoutChecker(socket, topicId) {
-  var self = this;
   log.verbose("compete.socket#TopicTimeoutChecker", topicId);
   var topicSyncTimes = settings.ROOM.COMPETE_TOPIC_COUNTDOWN_SYNC;
   var topicCountdown = settings.ROOM.COMPETE_TOPIC_COUNTDOWN;
@@ -57,7 +54,7 @@ function topicTimeoutChecker(socket, topicId) {
 
   setTimeout(function() {
     checkTopicStatus().then(function(room) {
-      sendVerdict.call(self, socket, room, {
+      sendVerdict(socket, room, {
         verdict: -1
       });
     });
@@ -79,23 +76,22 @@ function topicTimeoutChecker(socket, topicId) {
 function nextTopic(socket) {
   log.verbose("compete.socket#NextTopic");
   var roomSocket = require('./room.socket');
-  var self = this;
 
-    roomService.list(socket.room).then(function(room) {
-      if (room) {
-        roomService.nextRoomTopic(room.id).then(function(topic) {
-          if (_.isEmpty(topic)) {
-            roomService.finishCompete(room).then(function() {
-              roomSocket.updateRooms(socket);
-            });
-          } else {
-            topic.index = room.topicindex;
-            socketService.emitInAll(socket.room, 'topicUpdate', topic);
-            topicTimeoutChecker.call(self, socket, topic.id);
-          }
-        });
-      }
-    });
+  roomService.list(socket.room).then(function(room) {
+    if (room) {
+      roomService.nextRoomTopic(room.id).then(function(topic) {
+        if (_.isEmpty(topic)) {
+          roomService.finishCompete(room).then(function() {
+            roomSocket.updateRooms(socket);
+          });
+        } else {
+          topic.index = room.topicindex;
+          socketService.emitInAll(socket.room, 'topicUpdate', topic);
+          topicTimeoutChecker(socket, topic.id);
+        }
+      });
+    }
+  });
 
 }
 

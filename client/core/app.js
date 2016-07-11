@@ -2,21 +2,28 @@
 
 var app = angular.module('luckstar', ['ui.router', 'ngAnimate', 'ngMaterial', 'ngMessages']);
 
-app.config(['$urlRouterProvider', '$httpProvider', '$locationProvider', '$urlMatcherFactoryProvider', '$mdThemingProvider', function($urlRouterProvider,
-                                                                                                                                     $httpProvider,
-                                                                                                                                     $locationProvider,
-                                                                                                                                     $urlMatcherFactoryProvider,
-                                                                                                                                     $mdThemingProvider) {
+app.config(appConfig)
+.factory('authInterceptor', authInterceptor)
+.factory('store', storeFactory)
+.factory('httpq', httpFactory);
+
+module.exports = app.name;
+
+/* @ngInject */
+function appConfig($urlRouterProvider,
+                   $httpProvider,
+                   $locationProvider,
+                   $urlMatcherFactoryProvider) {
   // $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
   $urlMatcherFactoryProvider.strictMode(false);
-  //$mdThemingProvider.theme('default')
-  //.primaryPalette('cyan');
+  // $mdThemingProvider.theme('default').primaryPalette('cyan');
 
   $httpProvider.interceptors.push('authInterceptor');
-}]);
+}
 
-app.factory('authInterceptor', ['store', function(store) {
+/* @ngInject */
+function authInterceptor(store) {
   return {
     request: function(config) {
       config.headers = config.headers || {};
@@ -26,9 +33,10 @@ app.factory('authInterceptor', ['store', function(store) {
       return config;
     }
   };
-}]);
+}
 
-app.factory('store', ['$window', function($window) {
+/* @ngInject */
+function storeFactory($window) {
   return {
     get: function(key) {
       return $window.localStorage[key];
@@ -44,9 +52,10 @@ app.factory('store', ['$window', function($window) {
       return this.get(key) !== undefined;
     }
   };
-}]);
+}
 
-app.factory('httpq', ['$http', '$q', function($http, $q) {
+/* @ngInject */
+function httpFactory($http, $q) {
   return {
     get: function() {
       var deferred = $q.defer();
@@ -63,6 +72,4 @@ app.factory('httpq', ['$http', '$q', function($http, $q) {
       return deferred.promise;
     }
   };
-}]);
-
-module.exports = app.name;
+}

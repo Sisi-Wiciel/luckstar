@@ -1,11 +1,12 @@
+/* eslint no-lonely-if: 0 */
 'use strict';
 
-require('./room-list.css');
+require('./room-list.less');
+module.exports = roomListController;
 
-module.exports = ['$scope', 'socketSrv', 'roomSrv', '$mdDialog', function($scope, socketSrv, roomSrv, $mdDialog) {
-
+/* @ngInject */
+function roomListController($scope, socketSrv, roomSrv, $mdDialog) {
   $scope.rooms = [];
-
   function fixRoom(rooms) {
     _.each(rooms, function(room, index) {
       var viewRoom = $scope.rooms[index];
@@ -18,7 +19,7 @@ module.exports = ['$scope', 'socketSrv', 'roomSrv', '$mdDialog', function($scope
           _.assign(viewRoom, room);
         } else {
           // Room removed
-          _.remove($scope.rooms, {'id': room.id});
+          _.remove($scope.rooms, {id: room.id});
           return;
         }
       }
@@ -31,21 +32,20 @@ module.exports = ['$scope', 'socketSrv', 'roomSrv', '$mdDialog', function($scope
     $scope.$apply();
   });
 
-
-
   $scope.viewTopic = function(room) {
-    if(!room.topic || room.topic.id !== room.topicid){
+    if (!room.topic || room.topic.id !== room.topicid) {
       socketSrv.topicFetch(room.topicid).then(function(topic) {
         room.topic = topic;
       });
     }
-  }
+  };
+
   $scope.join = function(roomId) {
     $scope.goto('/home/rooms/' + roomId);
   };
 
   $scope.joinAsObs = function(roomId) {
-    //roomSrv.joinRoomAsObs($stateParams.id);
+    // roomSrv.joinRoomAsObs($stateParams.id);
     $scope.goto('/home/rooms/' + roomId);
   };
 
@@ -61,15 +61,15 @@ module.exports = ['$scope', 'socketSrv', 'roomSrv', '$mdDialog', function($scope
       closeTo: '#createRoomBtn',
       clickOutsideToClose: true,
       fullscreen: !$scope.screen('gt-xs')
-    }).then(function(answer) {
-      // $scope.join();
+    }).then(function() {
+      $scope.join();
     });
-  }
+  };
 
   $scope.changeMode = function(mode) {
     $scope.roomListMode = mode;
-  }
+  };
 
   socketSrv.updateRooms();
   $scope.changeUserStatus('HOME_PAGE');
-}];
+}

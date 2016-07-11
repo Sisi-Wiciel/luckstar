@@ -1,13 +1,15 @@
 'use strict';
 
-require('./home.css');
+require('./home.less');
+module.exports = roomCtrl;
 
-module.exports = ['$scope', 'socketSrv', 'authSrv', 'messageCenter', '$location','navbarSrv', function($scope,
-                                                                                                                                  socketSrv,
-                                                                                                                                  authSrv,
-                                                                                                                                  messageCenter,
-                                                                                                                                  $location,
-                                                                                                                                  navbarSrv) {
+/* @ngInject */
+function roomCtrl($scope,
+                  socketSrv,
+                  authSrv,
+                  messageCenter,
+                  $location,
+                  navbarSrv) {
   $scope.USER_LIST_MENU_NAME = 'UsersMenu';
   $scope.MAIN_NAV_MENU_NAME = 'MainNavMenu';
   $scope.currentMenu = function() {
@@ -30,4 +32,4 @@ module.exports = ['$scope', 'socketSrv', 'authSrv', 'messageCenter', '$location'
       authSrv.updateCurrentUser(user);
     });
   });
-}];
+}

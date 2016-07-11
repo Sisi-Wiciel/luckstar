@@ -1,6 +1,9 @@
 'use strict';
 
-module.exports = ['$timeout', function($timeout) {
+module.exports = countToDirective;
+
+/* @ngInject */
+function countToDirective($timeout) {
   return {
     replace: false,
     scope: true,
@@ -62,4 +65,4 @@ module.exports = ['$timeout', function($timeout) {
       return true;
     }
   };
-}];
+}

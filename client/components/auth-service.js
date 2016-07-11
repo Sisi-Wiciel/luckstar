@@ -1,6 +1,9 @@
 'use strict';
 
-module.exports = ['httpq', 'store', 'socketSrv', function(httpq, store, socketSrv) {
+module.exports = authService;
+
+/* @ngInject */
+function authService(httpq, store, socketSrv) {
   var currentUser = {};
   this.login = function(u) {
     return httpq.post('/api/auth', u).then(function(result) {
@@ -39,4 +42,4 @@ module.exports = ['httpq', 'store', 'socketSrv', function(httpq, store, socketSr
   this.usernameIsExisted = function(name) {
     return httpq.post('/api/auth/name/', {name: name});
   };
-}];
+}

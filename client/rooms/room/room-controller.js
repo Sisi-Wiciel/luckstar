@@ -1,54 +1,56 @@
 'use strict';
-require('./room.css');
+require('./room.less');
 
-module.exports = ['$scope', '$location', 'socketSrv', 'authSrv', 'messageCenter', 'roomSrv', 'navbarSrv',
-  '$stateParams', function($scope, $location, socketSrv, authSrv, messageCenter, roomSrv, navbarSrv,
-                           $stateParams) {
-    $scope.text = '';
-    $scope.curr = authSrv.getCurrentUser();
-    $scope.room = roomSrv.getCurrentRoom();
+module.exports = roomCtrl;
 
-    $scope.isUser = roomSrv.isUser;
+/* @ngInject */
+function roomCtrl($scope, $location, socketSrv, authSrv, messageCenter, roomSrv, navbarSrv,
+                  $stateParams) {
+  $scope.text = '';
+  $scope.curr = authSrv.getCurrentUser();
+  $scope.room = roomSrv.getCurrentRoom();
 
-    $scope.isAdmin = roomSrv.isAdmin;
+  $scope.isUser = roomSrv.isUser;
 
-    $scope.getRoleName = roomSrv.getRoleName;
+  $scope.isAdmin = roomSrv.isAdmin;
 
-    $scope.roomstat = {};
-    //
-    // $scope.updateRoomstat = function() {
-    //   socketSrv.getRoomStat().then(function(result) {
-    //     _.assign($scope.roomstat, result);
-    //   });
-    // };
+  $scope.getRoleName = roomSrv.getRoleName;
 
-    $scope.leave = function() {
-      socketSrv.leaveRoom();
-    };
+  $scope.roomstat = {};
+  //
+  // $scope.updateRoomstat = function() {
+  //   socketSrv.getRoomStat().then(function(result) {
+  //     _.assign($scope.roomstat, result);
+  //   });
+  // };
 
-    // $scope.$on('topicVerdict', function(event, verdict) {
-    //   $scope.verdict = verdict;
-    //   $scope.updateRoomstat();
-    // });
+  $scope.leave = function() {
+    socketSrv.leaveRoom();
+  };
 
-    socketSrv.register('updateRoom', function(room) {
-      roomSrv.updateCurrentRoom(room);
-      if (_.isEmpty(room)) {
-        if (!$scope.isAdmin()) {
-          messageCenter.notify('房间已退出.');
-        }
+  // $scope.$on('topicVerdict', function(event, verdict) {
+  //   $scope.verdict = verdict;
+  //   $scope.updateRoomstat();
+  // });
 
-        navbarSrv.removeItem('我的房间');
-        $scope.goto('/home');
-        socketSrv.unregister('updateRoom');
-        $scope.$apply();
-        return;
+  socketSrv.register('updateRoom', function(room) {
+    roomSrv.updateCurrentRoom(room);
+    if (_.isEmpty(room)) {
+      if (!$scope.isAdmin()) {
+        messageCenter.notify('房间已退出.');
       }
 
-      // $scope.updateRoomstat();
+      navbarSrv.removeItem('我的房间');
+      $scope.goto('/home');
+      socketSrv.unregister('updateRoom');
       $scope.$apply();
-    });
+      return;
+    }
 
-    roomSrv.joinRoom($stateParams.id);
-    navbarSrv.addItem('我的房间', $location.path(), 'portrait');
-  }];
+    // $scope.updateRoomstat();
+    $scope.$apply();
+  });
+
+  roomSrv.joinRoom($stateParams.id);
+  navbarSrv.addItem('我的房间', $location.path(), 'portrait');
+}

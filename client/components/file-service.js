@@ -1,5 +1,10 @@
-module.exports = ['$q', '$timeout', 'socketSrv', 'messageCenter', 'utilSrv', function($q, $timeout, socketSrv,
-                                                                                      messageCenter, utilSrv) {
+'use strict';
+
+module.exports = fileService;
+
+/* @ngInject */
+function fileService($q, $timeout, socketSrv,
+                     messageCenter, utilSrv) {
   var _file;
   var _policy;
 
@@ -77,4 +82,4 @@ module.exports = ['$q', '$timeout', 'socketSrv', 'messageCenter', 'utilSrv', fun
   this.getFile = function() {
     return _file;
   };
-}];
+}
